@@ -1,0 +1,31 @@
+/* ===== Méta vivante ===== */
+.mthd{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.mtlive{font-size:11px;font-weight:900;color:#58e4a0;background:rgba(88,228,160,.12);border:1px solid rgba(88,228,160,.4);border-radius:99px;padding:2px 8px}
+.mtchips{flex-wrap:nowrap;overflow-x:auto;padding-bottom:4px;scrollbar-width:none}
+.mtchips .chip{flex:none}
+.mtsub{display:flex;flex-direction:column;gap:1px;margin:6px 0 8px;padding:8px 10px;border-radius:12px;background:var(--panel2);border:1px solid var(--line)}
+.mtsub span{font-size:12px;color:var(--muted)}
+.mtsub em{font-style:normal;font-size:12px;font-weight:900;color:#ffd84a}
+.syn.aff{border-color:rgba(255,216,74,.5);color:#ffe9a0}
+.trow.mp{grid-template-columns:34px minmax(0,1fr) 64px 38px}
+.trow.mn{grid-template-columns:34px minmax(0,1fr) auto}
+.trow .tn{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mpbar{height:7px;border-radius:99px;background:rgba(255,255,255,.08);overflow:hidden}
+.mpbar i{display:block;height:100%;background:linear-gradient(90deg,#58e4a0,#ffd84a)}
+.mppct{font-size:12px;text-align:right}
+.mprow{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:6px 0;border-top:1px solid var(--line)}
+.mpn{display:flex;flex-direction:column;min-width:0;font-size:12.5px}
+.mpn b{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mpt{display:flex;gap:3px;flex:none}
+.mpt .tpt{width:30px;height:30px}
+.mtranks{display:flex;gap:3px}
+.mtranks i{font-style:normal;display:flex;flex-direction:column;align-items:center;font-size:11px}
+.mtranks .tier{width:20px;height:20px;font-size:12px}
+.tfull{display:flex;flex-direction:column;gap:6px;margin-top:6px}
+.tfr{display:flex;gap:6px;align-items:flex-start}
+.tfr>.tier{flex:none}
+.tfh{display:flex;flex-wrap:wrap;gap:4px}
+.tfp{position:relative;width:38px;height:38px;padding:0;border-radius:8px;overflow:hidden;border:2px solid var(--rc);background:none;cursor:pointer}
+.tfp svg,.tfp img{width:100%;height:100%;display:block}
+.tfp.lk{filter:grayscale(.85) brightness(.7)}
+.tfp i{position:absolute;left:0;right:0;bottom:0;font:900 8px var(--fb);font-style:normal;background:#ff5ad8;color:#fff;text-align:center}

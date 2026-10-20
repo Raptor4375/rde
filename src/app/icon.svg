@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><defs><radialGradient id="b" cx="50%" cy="38%" r="75%"><stop offset="0" stop-color="#7c4cff"/><stop offset=".6" stop-color="#2a1260"/><stop offset="1" stop-color="#0b0819"/></radialGradient><radialGradient id="g"><stop offset="0" stop-color="#fff"/><stop offset=".35" stop-color="#ff9ae8"/><stop offset="1" stop-color="#7c5cff" stop-opacity="0"/></radialGradient><linearGradient id="t" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff6c0"/><stop offset="1" stop-color="#ffb84a"/></linearGradient></defs>
+<rect width="512" height="512" fill="url(#b)"/>
+<g transform="translate(256 200)"><circle r="150" fill="url(#g)" opacity=".8"/>
+<path d="M0 78C-96 10 -104 -60 -52 -88C-26 -100 -8 -88 0 -66C8 -88 26 -100 52 -88C104 -60 96 10 0 78Z" fill="#ffd6f4" stroke="#fff" stroke-width="8"/>
+<path d="M0 -66L-12 -26L12 0L-8 34L4 74" stroke="#5a2a9a" stroke-width="8" fill="none"/>
+<g fill="#ffd84a" stroke="#fff" stroke-width="3"><path d="M-150 -40l12 22l-12 22l-12 -22z"/><path d="M150 -40l12 22l-12 22l-12 -22z"/><path d="M0 -168l12 22l-12 22l-12 -22z"/><path d="M-110 90l10 18l-10 18l-10 -18z"/><path d="M110 90l10 18l-10 18l-10 -18z"/></g></g>
+<text x="256" y="462" text-anchor="middle" font-family="Arial Black,Arial,sans-serif" font-weight="900" font-size="128" fill="url(#t)" stroke="#2a0a4a" stroke-width="10" paint-order="stroke" letter-spacing="6">RDE</text></svg>

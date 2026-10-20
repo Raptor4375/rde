@@ -1,0 +1,16 @@
+.bgpause *,.bgpause *::before,.bgpause *::after{animation-play-state:paused!important}
+/* chargement allégé : pas de filtres ni de masques animés (évite le lag et les bugs d'affichage par-dessus les fenêtres de l'appli) */
+#boot .b2start{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;box-shadow:0 6px 24px rgba(0,0,0,.35)!important;background:linear-gradient(120deg,#e8b83a,#9a50e8)!important;animation:b3tap 1.6s ease-in-out infinite!important}
+#boot .b2tap{box-shadow:none!important;animation:b3tap 1.6s ease-in-out infinite!important}
+@keyframes b3tap{0%,100%{transform:scale(1)}50%{transform:scale(1.04)}}
+.b3rays{-webkit-mask:none!important;mask:none!important;width:520px!important;height:520px!important;margin:-260px 0 0 -260px!important;border-radius:50%;opacity:.35;background:repeating-conic-gradient(rgba(255,246,210,.18) 0deg 7deg,transparent 7deg 20deg)!important;animation-duration:90s!important}
+.b3castle{filter:none!important}
+.b3h img,.b3h.q2 img{filter:none!important}
+.b3glow{background:radial-gradient(ellipse,rgba(255,240,180,.6),transparent 70%)!important}
+.b3h.q2 .b3glow{width:130%;height:24%;background:radial-gradient(ellipse,rgba(255,236,160,.7),transparent 70%)!important}
+.b3motes i{box-shadow:none!important}
+.b3motes i:nth-child(n+11),.b3fall i:nth-child(n+9){display:none}
+.b3fall i.snow,.b3fall i.spark{box-shadow:none!important}
+.b3 .b2top{animation:none!important}
+.bgpause *{backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+.bgpause .b3rays,.bgpause .b3fall,.bgpause .b3motes,.bgpause .b3cloud,.bgpause .b3birds{display:none!important}

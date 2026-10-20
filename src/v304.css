@@ -1,0 +1,32 @@
+/* ===== chargement : mode histoire ===== */
+.bs .bssky{position:absolute;inset:0}
+.bs1 .bssky{background:linear-gradient(180deg,#0e0a2a 0%,#2a1a6a 30%,#6a3aa8 55%,#ff8ab8 78%,#ffc8a8 100%)}
+.bs2 .bssky{background:linear-gradient(180deg,#05020e 0%,#1a0838 32%,#4a1060 58%,#a0287a 80%,#ff7aa8 100%)}
+.bsstars{position:absolute;inset:0;pointer-events:none}
+.bsstars i{position:absolute;border-radius:50%;background:#fff6dc;animation:bstw 3s ease-in-out infinite}
+@keyframes bstw{0%,100%{opacity:.25}50%{opacity:1}}
+.bsheart{position:absolute;left:50%;top:27%;width:min(40vw,170px);transform:translate(-50%,-50%);animation:b3float 6s ease-in-out infinite}
+.bscorvin{position:absolute;right:-4%;top:9%;width:min(30vw,130px);opacity:.28;animation:bscv 7s ease-in-out infinite}
+.bscorvin svg{width:100%;height:auto}
+@keyframes bscv{0%,100%{opacity:.18;transform:translateY(0)}50%{opacity:.38;transform:translateY(-8px)}}
+.bsmoon{position:absolute;left:50%;top:27%;width:min(36vw,150px);transform:translate(-50%,-50%);animation:b3float 7s ease-in-out infinite}
+.bsthreads{position:absolute;left:0;right:0;top:0;width:100%;height:45%}
+.bscity{position:absolute;left:0;right:0;bottom:38%;width:100%;height:18%;opacity:.9}
+.bsfall{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.bsfall i{position:absolute;top:-24px;display:block;font-style:normal;animation:bsfall linear infinite}
+.bsfall i:nth-child(n+9){display:none}
+.bsfall i.fw,.bsfall i.fb{width:7px;height:18px;border-radius:50% 50% 50% 50%/80% 80% 20% 20%}
+.bsfall i.fw{background:linear-gradient(#fff,#d8ccff)}
+.bsfall i.fb{background:linear-gradient(#3a2a5a,#140c24)}
+.bsfall i.cd{width:16px;height:22px;border-radius:3px;background:#fbf6ff;border:1px solid #ffd84a;font-size:12px;line-height:20px;text-align:center;color:#140c24}
+.bsfall i.cd:nth-child(4n+2),.bsfall i.cd:nth-child(4n+3){color:#d1263b}
+@keyframes bsfall{0%{transform:translate(0,0) rotate(0)}50%{transform:translate(24px,55vh) rotate(160deg)}100%{transform:translate(-10px,112vh) rotate(340deg)}}
+.bsplume{position:absolute;left:7%;top:20%;width:min(15vw,64px);z-index:5;animation:bspl 5s ease-in-out infinite}
+.bsplume svg{width:100%;height:auto}
+@keyframes bspl{0%,100%{transform:translate(0,0) rotate(-4deg)}50%{transform:translate(10px,-14px) rotate(4deg)}}
+.bs .b3glow{background:radial-gradient(ellipse,rgba(255,200,240,.55),transparent 70%)!important}
+.bs2 .b3glow{background:radial-gradient(ellipse,rgba(255,216,74,.5),transparent 70%)!important}
+.bsbook{font-size:12.5px;letter-spacing:.08em}
+.bssub{margin-top:3px;font:800 12px var(--fb,'Nunito',sans-serif);color:#ffe0f4;opacity:.9;text-shadow:0 1px 3px rgba(0,0,0,.6)}
+.bs2 .b2title{text-shadow:0 3px 0 #4a0e5a,0 0 26px rgba(255,90,216,.8)}
+.bgpause .bsfall,.bgpause .bsstars{display:none!important}

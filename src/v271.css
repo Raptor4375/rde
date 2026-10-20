@@ -1,0 +1,9 @@
+
+/* ================= V26.5 atelier ================= */
+.hfg{margin-top:12px;padding:10px;border-radius:14px;background:var(--panel2);border:1px solid var(--line)}
+.hfl{display:grid;gap:6px;margin-top:8px}
+.hfi{display:grid;grid-template-columns:40px minmax(0,1fr) auto;gap:8px;align-items:center;padding:6px;border-radius:12px;background:rgba(0,0,0,.18);border:1.5px solid color-mix(in srgb,var(--rc) 45%,transparent)}
+.hfi .ieq{width:40px;height:40px;display:block}
+.hfi .ieq svg,.hfi .ieq img{width:100%;height:100%}
+.hfn{min-width:0}.hfn b{display:block;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.hfn small{font-size:11px;opacity:.8}
+.hfb{display:flex;gap:4px}

@@ -1,0 +1,22 @@
+.ghcard{padding:12px;background:linear-gradient(160deg,rgba(255,150,60,.12),rgba(40,20,40,.2)),var(--surf,#1e1838)}
+.ghhd{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px}
+.ghsc{position:relative;width:100%;aspect-ratio:400/300;border-radius:16px;overflow:hidden;border:2px solid #140c24;box-shadow:0 10px 26px rgba(0,0,0,.5),inset 0 0 40px rgba(0,0,0,.5)}
+.ghbg{position:absolute;inset:0;width:100%;height:100%}
+.ghf{position:absolute;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;justify-content:flex-end;z-index:2;animation:ghsway 3.4s ease-in-out infinite}
+.ghf img{height:100%;width:auto;filter:drop-shadow(0 4px 6px rgba(0,0,0,.55)) drop-shadow(0 0 10px rgba(255,170,80,.25))}
+.ghf.chef{z-index:3}.ghf.chef img{filter:drop-shadow(0 0 12px rgba(255,216,74,.75)) drop-shadow(0 4px 6px rgba(0,0,0,.55))}
+.ghf.s0,.ghf.s1{z-index:2}.ghf.s2,.ghf.s3,.ghf.s4,.ghf.s5{z-index:1}
+.ghf.s1{animation-delay:-.7s}.ghf.s2{animation-delay:-1.4s}.ghf.s3{animation-delay:-2s}.ghf.s4{animation-delay:-2.6s}.ghf.s5{animation-delay:-1s}.ghf.chef{animation-delay:-.3s}
+@keyframes ghsway{0%,100%{rotate:0deg}50%{rotate:1.5deg}}
+.ghn{position:absolute;top:100%;margin-top:-2px;white-space:nowrap;font:900 9.5px var(--fb,'Nunito',sans-serif);color:#fff;background:rgba(20,12,36,.82);padding:1px 6px;border-radius:99px;max-width:110px;overflow:hidden;text-overflow:ellipsis;z-index:6}
+.ghf.me .ghn{background:#c89a1a;color:#140c24}.ghf.chef .ghn{background:linear-gradient(90deg,#ffd84a,#ffb03a);color:#140c24}
+.ghb{position:absolute;bottom:100%;margin-bottom:2px;max-width:120px;font:800 9.5px/1.2 var(--fb,'Nunito',sans-serif);color:#140c24;background:#fff8e8;border:1.5px solid #140c24;border-radius:10px;padding:3px 6px;text-align:center;white-space:normal;z-index:7;animation:ghbub 4s ease-in-out infinite}
+.ghb::after{content:'';position:absolute;left:50%;top:100%;transform:translateX(-50%);border:5px solid transparent;border-top-color:#140c24}
+@keyframes ghbub{0%,100%{translate:0 0}50%{translate:0 -3px}}
+.ghtab{position:absolute;left:4%;right:4%;bottom:0;width:92%;height:30%;z-index:4}
+.ghfood{position:absolute;left:12%;right:12%;bottom:15%;display:flex;justify-content:space-between;z-index:5;font-size:clamp(12px,4.2vw,20px);pointer-events:none}
+.ghfood span{filter:drop-shadow(0 2px 2px rgba(0,0,0,.5))}
+.ghstats{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:10px}
+.ghstats div{display:flex;flex-direction:column;align-items:center;padding:7px 4px;border-radius:12px;background:var(--surf2,rgba(255,255,255,.05));border:1px solid var(--edge,rgba(255,255,255,.1))}
+.ghstats b{font-size:14px}.ghstats small{font-size:10.5px;opacity:.75}
+@media(prefers-reduced-motion:reduce){.ghf,.ghb{animation:none}}

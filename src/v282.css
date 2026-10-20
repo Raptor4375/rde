@@ -1,0 +1,26 @@
+#tuov{position:fixed;inset:0;z-index:100000;pointer-events:auto}
+.tudim{position:absolute;inset:0;background:rgba(8,4,20,.72)}
+.tuhole{position:absolute;border-radius:16px;box-shadow:0 0 0 9999px rgba(8,4,20,.72),0 0 0 3px #ffd84a,0 0 24px 6px rgba(255,216,74,.55);transition:all .35s cubic-bezier(.3,.7,.3,1);animation:tuglow 1.4s ease-in-out infinite}
+@keyframes tuglow{50%{box-shadow:0 0 0 9999px rgba(8,4,20,.72),0 0 0 4px #fff3a0,0 0 34px 10px rgba(255,216,74,.7)}}
+.tuarr{position:absolute;transform:translateX(-50%);font-size:40px;line-height:1;filter:drop-shadow(0 3px 4px rgba(0,0,0,.6));animation:tubounce .8s ease-in-out infinite;pointer-events:none}
+@keyframes tubounce{0%,100%{translate:0 0}50%{translate:0 10px}}
+.tuarr.up{animation-name:tubounceu}@keyframes tubounceu{0%,100%{translate:0 0}50%{translate:0 -10px}}
+.tubox{position:absolute;left:12px;right:12px;display:flex;align-items:flex-end;gap:6px;max-width:520px;margin:0 auto}
+.tubox.mid{top:50%;transform:translateY(-50%)}.tubox.top{top:calc(70px + env(safe-area-inset-top,0px))}.tubox.bot{bottom:calc(90px + env(safe-area-inset-bottom,0px))}
+.tumasc{flex:none;width:84px;height:84px;animation:tufloat 2.6s ease-in-out infinite;align-self:flex-start}
+.tumasc svg{width:100%;height:100%;display:block;filter:drop-shadow(0 6px 10px rgba(0,0,0,.45))}
+@keyframes tufloat{0%,100%{translate:0 0}50%{translate:0 -6px}}
+.plume .plw.l{transform-origin:24px 48px;animation:plwl 1.2s ease-in-out infinite}.plume .plw.r{transform-origin:76px 48px;animation:plwr 1.2s ease-in-out infinite}
+@keyframes plwl{50%{transform:rotate(-12deg)}}@keyframes plwr{50%{transform:rotate(12deg)}}
+.plume .pls{animation:plsp 1.6s ease-in-out infinite}.plume .pls.d{animation-delay:-.8s}@keyframes plsp{50%{opacity:.1}}
+.tubub{position:relative;flex:1;min-width:0;background:linear-gradient(160deg,#2e2460,#1c1640);border:2px solid #ffd84a;border-radius:18px;padding:12px 14px 10px;color:#fff;box-shadow:0 14px 34px rgba(0,0,0,.55);animation:tuin .3s cubic-bezier(.3,1.4,.5,1)}
+@keyframes tuin{from{transform:scale(.9);opacity:0}to{transform:scale(1);opacity:1}}
+.tubub::before{content:'';position:absolute;left:-11px;top:24px;border:9px solid transparent;border-right-color:#ffd84a}
+.tut{font:400 19px 'Lilita One','Trebuchet MS',sans-serif;margin-bottom:4px;color:#ffe9a0}
+.tux{font-size:13.5px;line-height:1.45}
+.tudots{display:flex;gap:4px;justify-content:center;margin:10px 0 6px}.tudots i{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.25)}.tudots i.ok{background:#8a7aff}.tudots i.on{background:#ffd84a;width:16px;border-radius:99px}
+.tubtns{display:flex;gap:6px;align-items:center;justify-content:flex-end;flex-wrap:wrap}.tuskip{margin-right:auto;opacity:.8}
+.tustep{text-align:right;font-size:10.5px;opacity:.55;margin-top:4px}
+.tuconf{margin-top:8px;padding:10px;border-radius:12px;background:rgba(255,90,90,.14);border:1px solid rgba(255,120,120,.5);font-size:12.5px}
+.tuloop{display:flex;flex-wrap:wrap;align-items:center;gap:4px;margin:4px 0 8px}.tuloop span{padding:4px 8px;border-radius:99px;background:rgba(255,216,74,.16);font-weight:900;font-size:12px}.tuloop i{font-style:normal;opacity:.7}
+.tubtn{cursor:pointer;color:#ffe9a0!important;border-color:rgba(255,216,74,.5)!important;font:inherit}

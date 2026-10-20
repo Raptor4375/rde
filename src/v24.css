@@ -1,0 +1,19 @@
+/* ================= V24 ================= */
+.modal>.x{z-index:20;background:rgba(20,12,36,.92);box-shadow:0 2px 8px rgba(0,0,0,.5)}
+.hvm>.x{top:14px;right:14px;width:38px;height:38px;font-size:20px;border-color:rgba(255,255,255,.35)}
+.hvbub{position:absolute;z-index:4;left:12px;right:56px;top:42px;display:flex;align-items:center;gap:8px;background:rgba(255,253,245,.95);color:#2a1a10;border-radius:16px;padding:8px 8px 8px 12px;font-weight:800;font-size:13px;line-height:1.3;box-shadow:0 4px 14px rgba(0,0,0,.4);cursor:pointer}
+.hvbub::after{content:'';position:absolute;left:50%;bottom:-9px;border:10px solid transparent;border-bottom:0;border-top-color:rgba(255,253,245,.95);transform:translateX(-30%)}
+.hvbub span{flex:1;font-style:italic}
+.hvbub.pop{animation:bubpop .35s cubic-bezier(.2,1.6,.4,1)}
+@keyframes bubpop{from{transform:scale(.85);opacity:.4}}
+.hvsp{flex:none;width:34px;height:34px;border-radius:50%;border:0;background:linear-gradient(160deg,#8a7aff,#5a3ad0);color:#fff;font-size:15px;cursor:pointer;box-shadow:0 2px 0 rgba(0,0,0,.3)}
+.hvstage.v2{padding-top:96px}
+.voxtg{position:absolute;z-index:4;right:10px;bottom:40px;font:900 11px var(--fb);color:#fff;background:rgba(11,8,25,.65);border:1px solid rgba(255,255,255,.25);border-radius:9px;padding:4px 8px;cursor:pointer}
+.mpcard{display:flex;align-items:center;gap:12px;width:100%;text-align:left;color:var(--fg);cursor:pointer;font:inherit;background:linear-gradient(100deg,#163a44,var(--panel) 70%);border-color:#2f6b70}
+.mpcard.unr{border-color:var(--gem);box-shadow:0 0 0 1px rgba(88,228,211,.3),0 4px 16px rgba(88,228,211,.15)}
+.mpcard .mpic{font-size:28px}
+.mpcard .who{display:flex;flex-direction:column;flex:1;min-width:0}
+.mpcard .who b{font-family:var(--fd);font-weight:400;font-size:17px}
+.mpcard .who small{color:var(--muted);font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mpcard .mpgo{display:flex;align-items:center;gap:6px;font-size:24px;font-weight:900;color:var(--gem)}
+#toast div.tdm{pointer-events:auto;cursor:pointer}

@@ -1,0 +1,28 @@
+/* ================= V23.1 ================= */
+.hvstage .hvscene{position:absolute;inset:0;width:100%;height:100%;z-index:0}
+.hvstage.v2{background:#0b0819}
+.hvstage .hvbody,.hvstage .hvtag,.hvstage .hvpose{z-index:2}
+.hvscene .stw{animation:stw 3s ease-in-out infinite}
+@keyframes stw{50%{opacity:.25}}
+.hvscene .srise,.hvscene .sfall,.hvscene .sfloat,.hvscene .sleaf,.hvscene .sbat,.hvscene .ssway,.hvscene .sgear,.hvscene .swv,.hvscene .srain{transform-box:fill-box;transform-origin:center}
+.hvscene .srise{animation:srise 6s linear infinite;opacity:.8}
+@keyframes srise{from{transform:translateY(0);opacity:0}15%{opacity:.85}to{transform:translateY(-150px);opacity:0}}
+.hvscene .sfall{animation:sfall 7s linear infinite}
+@keyframes sfall{from{transform:translate(0,0);opacity:0}10%{opacity:.9}to{transform:translate(14px,120px);opacity:0}}
+.hvscene .sfloat{animation:sfloat 5s ease-in-out infinite}
+@keyframes sfloat{0%,100%{transform:translateY(0);opacity:.4}50%{transform:translateY(-10px);opacity:1}}
+.hvscene .srain{animation:srain .8s linear infinite}
+@keyframes srain{to{transform:translate(-8px,60px)}}
+.hvscene .sbolt{animation:sbolt 4s steps(1) infinite}
+@keyframes sbolt{0%,86%,92%,100%{opacity:0}88%,94%{opacity:1}}
+.hvscene .sbat{animation:sbat 6s ease-in-out infinite}
+@keyframes sbat{50%{transform:translate(20px,-8px) scaleY(.6)}}
+.hvscene .sleaf{animation:sleaf 6s linear infinite}
+@keyframes sleaf{from{transform:translate(0,0) rotate(0)}to{transform:translate(160px,-30px) rotate(360deg)}}
+.hvscene .ssway{animation:ssway 4s ease-in-out infinite;transform-origin:50% 100%}
+@keyframes ssway{50%{transform:skewX(8deg)}}
+.hvscene .swv{animation:swv 3s ease-in-out infinite}
+@keyframes swv{50%{transform:translateX(12px)}}
+.hvscene .sgear{animation:sgear 20s linear infinite;transform-box:view-box}
+@keyframes sgear{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){.hvscene *{animation:none!important}}

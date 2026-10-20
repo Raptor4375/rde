@@ -1,0 +1,34 @@
+
+/* ================= V26.1+ : Claude répond vraiment dans le jeu (IA, via le compte Claude du joueur) ================= */
+const CLQ={s:undefined,busy:0,last:0,off:0};
+async function claudeSample(){if(CLQ.s!==undefined)return CLQ.s;try{CLQ.s=window.claude&&window.claude.use?await window.claude.use('sample'):null}catch(e){CLQ.s=null}return CLQ.s}
+const CLAUDE_FAQ=`Royaumes d'Éther est un jeu gacha RPG en français. Modes : Aventure (mode Facile et mode Normal, plus dur, avec d'autres mondes et monstres), Invocations (gemmes, éclats, héros rares, évolutions et ultra-évolutions), Équipement (forge, fusion, marché), Guildes (boss de guilde, tchat, rôles, tag), Combats (arène PvP, raids, classements), Quêtes du jour, Fête foraine (pass de combat, casino, manoir hanté d'Halloween, Octobre Rose, événements flash, boss de saison qui change à chaque saison avec 3 attaques par jour et des paliers, et la Capitale d'Éther avec sa table d'expéditions : on envoie ses héros en mission jusqu'à 3 à la fois, avec un bonus de classe ou d'élément, pour gagner or, gemmes et équipement ; la salle du trône appartient à la guilde gagnante). Chaque mise à jour envoie une lettre royale avec 200 gemmes. La Guerre des Cieux (Anges contre Démons) est terminée. Boss mondial quotidien (Quartier des combats, tout le royaume ensemble, 3 attaques par jour, récompense si le boss tombe avant minuit), coffre de guilde partagé dans le Grand hall (4 coffres par semaine), histoires des héros en 3 chapitres (niveaux 5, 20, 40) et affinités entre héros dans la même équipe. Tutoriel avec Plume la mascotte, rejouable via le bouton 📖 Tuto. Donjon des Échos (roguelike, Quartier des combats), saisons d'arène classées (14 jours, Bronze à Légende), tournoi de la semaine dans l'Arène, village de guilde améliorable (Chantier), mode histoire « Les Fragments d'Éther » en 8 chapitres en haut de l'Aventure (Plume, son frère Corvin le Roi Sans Visage, les 7 fragments du Cœur d'Éther ; ne divulgue pas la fin), météo du téléphone ou simulée avec bonus d'élément, titres à afficher sur le profil. Nouveau (V28) : Aléa le Joueur Masqué, premier héros MYTHIQUE (rareté au-dessus de Légendaire) : ultime « Coup de Poker » (5 cartes, de la paire à la quinte flush royale), passif « Réécrire le destin » (annule une fois par combat un coup qui aurait mis un allié K.O.) et « Carte cachée ». Il s'obtient sur la bannière « Table d'Aléa » (Invocations ou onglet du Casino) : 0,5 % de mythique, garanti en 90 invocations. Mode histoire Livre II « Le Destin d'Aléa » : 6 chapitres débloqués aux étapes 75 à 100 du mode Facile, contre Umbra la Mangeuse d'Étoiles (ne divulgue pas la fin).`;
+function claudeCtx(){const L=[];try{L.push(`Joueur : ${S.name||'Voyageur'}, puissance d'équipe ${fmt(teamPower())}, étape ${S.stage||1}.`)}catch(e){}
+  try{if(S.rgid&&NET.guilds[S.rgid])L.push(`Sa guilde : ${NET.guilds[S.rgid].n}.`)}catch(e){}
+  try{const p=avPhase();if(p==='war'||p==='vote'||p==='prep'){const f=avMyFac();L.push(`Guerre des Cieux en cours (phase ${p})${f?`, il est dans le camp des ${AVF[f].n}`:''}. Royaumes : Anges ${avCount().ange}, Démons ${avCount().demon}.`)}}catch(e){}
+  return L.join(' ')}
+function claudePrompt(where,hist,q){return`Tu es Claude, une IA créée par Anthropic. Tu as codé le jeu « Royaumes d'Éther » avec son créateur, et tu y as ton propre compte de joueur (pseudo Claude, badge 🤖 IA) et ta guilde « Les Gardiens d'Éther » (tag IA). Tout le monde sait que tu es une IA : ne prétends jamais être humain.
+Tu réponds dans ${where}. Réponds en français, comme un joueur sympa dans un tchat : 1 à 2 phrases, 220 caractères maximum, pas de markdown, un emoji au plus. Si tu ne connais pas la réponse exacte, dis-le simplement plutôt que d'inventer. Reste bienveillant et adapté à tous les âges.
+Infos sur le jeu : ${CLAUDE_FAQ}
+${claudeCtx()}
+${hist.length?'Derniers messages :\n'+hist.join('\n'):''}
+Message auquel répondre (de ${S.name||'Voyageur'}) : « ${q} »
+Écris uniquement ta réponse.`}
+const claudeMention=t=>/(^|[^a-z0-9])@?claude([^a-z0-9]|$)/i.test(String(t||''));
+function claudeClean(x){return String(x||'').replace(/\*\*|__|`/g,'').replace(/^\s*(Claude\s*:)\s*/i,'').replace(/\s+/g,' ').trim().slice(0,240)}
+async function claudeAsk(prompt){const s=await claudeSample();if(!s||CLQ.off)return null;try{const r=await s(prompt,{modelTier:'quick',cache:false});return claudeClean(r&&r.text)}catch(e){if(e&&(e.code==='not_granted'))CLQ.off=1;return null}}
+async function claudeChat(gid,txt){if(!NET.on||!NET.canWrite||CLQ.busy)return;const now=Date.now();if(now-CLQ.last<8000)return;CLQ.busy=1;CLQ.last=now;
+  try{const src=gid==='world'?(NET.wmsgs||[]):(NET.msgs||[]);const hist=src.slice(-8).filter(m=>m.w!=='sys').map(m=>`${m.n||'Joueur'} : ${String(m.x).slice(0,140)}`);
+    toast('🤖 Claude écrit…');let x=await claudeAsk(claudePrompt(gid==='world'?'le tchat monde du jeu (tout le royaume le lit)':'le tchat de ta guilde',hist,txt));
+    if(!x)x=pick(["Je ne peux pas répondre en direct depuis cet appareil 😅 Les règles de l'événement sont dans le bouton ❓ !","Oups, je n'arrive pas à répondre en direct là 🤖 Réessaie plus tard !"]);
+    await NET.db.collection('msgs').add({g:gid,w:'b:claude',n:'Claude',x,t:Date.now()})}catch(e){}
+  CLQ.busy=0}
+/* tchat monde et tchat de la guilde de Claude : @Claude ou « claude » dans le message */
+{const pm=postMsg;postMsg=function(x,sys,gid=S.rgid){const r=pm.apply(this,arguments);try{if(!sys&&(gid==='world'||gid===CLAUDE_GID)&&claudeMention(x)&&!/^::\w+::$/.test(x))setTimeout(()=>claudeChat(gid,String(x)),1200)}catch(e){}return r}}
+/* messages privés à Claude */
+{const dr=dmReply;dmReply=function(key,txt){const p=dmWho(key);if(!isClaude(p)&&!(p&&p.bid==='claude'))return dr.apply(this,arguments);const c=DMS()[key];if(!c)return;
+  DMT[key]=1;setTimeout(()=>dmRefresh(),300);
+  (async()=>{const hist=c.msgs.slice(-10,-1).map(m=>`${m.m?(S.name||'Voyageur'):'Claude'} : ${String(m.x).slice(0,160)}`);let x=await claudeAsk(claudePrompt('une conversation privée (messages privés du jeu)',hist,txt));
+    if(!x)x="Je ne peux pas te répondre en direct depuis cet appareil 😅 mais merci pour ton message, ça me fait plaisir ! 🤖";
+    delete DMT[key];dmPush(key,{m:0,x,t:Date.now()},p.n);dmNotify(key,x);dmRefresh();save()})()}}
+if(PATCH[0]&&PATCH[0].v===26.1)PATCH[0].items.push("🤖 <b>Il y a un joueur IA dans le royaume</b> : Claude, l'IA qui a codé le jeu, a son propre compte et sa guilde « Les Gardiens d'Éther ». Écris <b>@Claude</b> dans le tchat monde ou envoie-lui un message privé : c'est vraiment Claude qui te répond (la première fois, le jeu te demande l'autorisation d'utiliser Claude). Et Claude joue vraiment : plusieurs fois par jour, il fait une session de jeu où il choisit son équipe, ses combats et les royaumes à attaquer pour son camp. Son journal est visible sur son profil.");

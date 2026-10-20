@@ -1,0 +1,2 @@
+// Configuration Firebase du projet « royaume-d-ether » (clés publiques, pas secrètes)
+export const firebaseConfig={apiKey:"AIzaSyAFIM0mUyMwFDouGVVODghOfZhT13rxrAg",authDomain:"royaume-d-ether.firebaseapp.com",projectId:"royaume-d-ether",storageBucket:"royaume-d-ether.firebasestorage.app",messagingSenderId:"122398855091",appId:"1:122398855091:web:57e41983f663daee0b85c6",measurementId:"G-K4N8C3VQ4Z"};

@@ -1,0 +1,28 @@
+.affrow{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.affchip{display:inline-flex;align-items:center;gap:4px;padding:4px 9px;border-radius:99px;background:linear-gradient(90deg,rgba(255,138,192,.2),rgba(124,92,255,.2));border:1px solid rgba(255,138,192,.45);font-weight:900;font-size:12px}.affchip small{opacity:.8;font-weight:700}
+.stwrap{margin-top:14px;padding-top:12px;border-top:1px solid var(--edge,rgba(255,255,255,.12))}
+.stch{padding:10px 12px;border-radius:14px;background:linear-gradient(160deg,rgba(255,236,190,.1),rgba(255,255,255,.03));border:1px solid rgba(255,216,74,.25);margin-bottom:8px}
+.stch.lock{opacity:.6;border-style:dashed}
+.stn{font:400 14px 'Lilita One','Trebuchet MS',sans-serif;color:#ffe9a0}
+.stch p{margin:4px 0 8px;font-size:13px;line-height:1.5;font-style:italic}
+.stok{font-size:12px;font-weight:900;color:#58e4a0}
+.affc{padding:7px 10px;border-radius:12px;background:var(--surf2,rgba(255,255,255,.05));margin-bottom:6px;font-size:13px}.affc small{display:block;margin-top:2px}
+.affon{color:#58e4a0;font-weight:900}.affno{opacity:.55}
+/* boss mondial */
+.wbcard{background:linear-gradient(160deg,rgba(138,58,255,.22),rgba(20,10,40,.3)),var(--surf,#1e1838)}
+.wbart{position:relative;width:min(62vw,240px);aspect-ratio:1;margin:0 auto 10px;border-radius:22px;overflow:hidden;box-shadow:0 10px 30px rgba(0,0,0,.45),0 0 30px rgba(138,58,255,.35);animation:sbbr 3.6s ease-in-out infinite}.wbart svg{width:100%;height:100%;display:block}
+.wbdead{position:absolute;inset:0;display:grid;place-items:center;font:400 34px 'Lilita One',sans-serif;color:#fff;background:rgba(20,10,30,.55);text-shadow:0 3px 0 #d1263b;transform:rotate(-10deg)}
+.wbhp{height:14px}.wbhp i{background:linear-gradient(90deg,#8a3aff,#ff5a8a)!important}
+.wbrk{display:flex;flex-direction:column;gap:4px}
+.wbr{display:grid;grid-template-columns:32px 1fr auto;gap:6px;align-items:center;padding:6px 8px;border-radius:10px;background:var(--surf2,rgba(255,255,255,.05));font-size:13px}.wbr.me{background:rgba(255,216,74,.16);border:1px solid rgba(255,216,74,.5)}
+.wbreal{font-style:normal;font-size:9px;font-weight:900;padding:1px 5px;border-radius:99px;background:#3fbf6b;color:#fff;vertical-align:1px}
+/* coffre de guilde */
+.gchcard{background:linear-gradient(160deg,rgba(255,216,74,.14),rgba(120,70,20,.15)),var(--surf,#1e1838)}
+.gchbar{position:relative;height:14px;border-radius:99px;background:rgba(0,0,0,.35);border:1px solid rgba(255,255,255,.15);margin:18px 14px 0}
+.gchbar>i{position:absolute;left:0;top:0;bottom:0;border-radius:99px;background:linear-gradient(90deg,#ffb03a,#ffd84a);box-shadow:0 0 12px rgba(255,216,74,.5)}
+.gchn{position:absolute;top:50%;transform:translate(-50%,-50%);width:38px;height:38px;border-radius:12px;border:2px solid #140c24;background:#3a2e5a;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0;color:#fff;cursor:pointer;font:inherit}
+.gchn span{font-size:18px;line-height:1}.gchn small{position:absolute;top:100%;margin-top:3px;font-size:10px;font-weight:900;opacity:.8}
+.gchn.ok{background:linear-gradient(135deg,#ffd84a,#ff9a3a);animation:gchj 1s ease-in-out infinite}.gchn.got{background:#2a5a3a;animation:none}.gchn:disabled{cursor:default}
+@keyframes gchj{50%{transform:translate(-50%,-62%)}}
+.tubtn{font:800 11.5px var(--fb,'Nunito',sans-serif)!important;letter-spacing:0}
+.gchcard .gchbar+.row{margin-top:28px!important}

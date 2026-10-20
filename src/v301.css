@@ -1,0 +1,19 @@
+/* ===== Umbra, l'Astre Dévorant ===== */
+#sgcine.um .cn-bg{background:radial-gradient(circle at 50% 45%,#1a0a4a,#020110 70%);animation:umbg 7s ease-in forwards}
+@keyframes umbg{0%{opacity:.4}40%{opacity:1}52%{background:radial-gradient(circle at 50% 45%,#fff6dc,#ffd84a 30%,#3a1a7a 65%,#020110)}62%{background:radial-gradient(circle at 50% 45%,#3a1a7a,#020110 70%)}100%{opacity:1;background:radial-gradient(circle at 50% 42%,#2a1460,#020110 72%)}}
+#sgcine.um .cn-title small{color:#ffe9a0}
+#sgcine.um .cn-title b{background:linear-gradient(180deg,#fff,#ffd84a 50%,#9a6aff);-webkit-background-clip:text;background-clip:text;color:transparent}
+#sgcine.um .cn-title span{color:#ffe9a0}
+#sgcine.um .cn-bolts i{background:linear-gradient(#fff,#ffd84a,transparent)}
+#sgcine.um .cn-new svg{filter:drop-shadow(0 0 18px rgba(255,216,74,.5))!important}
+.um-stars{position:absolute;left:50%;top:42%;width:0;height:0}
+.um-stars i{position:absolute;left:-3px;top:-3px;width:6px;height:6px;border-radius:50%;background:#fff6dc;box-shadow:0 0 8px #ffd84a,0 0 16px #ffd84a;opacity:0;animation:umst 1.6s ease-in infinite}
+@keyframes umst{0%{transform:translate(var(--x),var(--y)) scale(1.4);opacity:0}20%{opacity:1}100%{transform:translate(0,0) scale(.2);opacity:0}}
+#sgcine.um .um-stars{animation:umstoff 7s linear forwards}
+@keyframes umstoff{0%,46%{opacity:1}50%,100%{opacity:0;visibility:hidden}}
+.um-halo{position:absolute;left:50%;top:30%;width:70vmin;height:70vmin;margin:-35vmin 0 0 -35vmin;border-radius:50%;opacity:0;background:repeating-conic-gradient(rgba(255,216,74,.5) 0 4deg,transparent 4deg 15deg);-webkit-mask:radial-gradient(circle,transparent 22%,#000 24%,transparent 66%);mask:radial-gradient(circle,transparent 22%,#000 24%,transparent 66%);animation:umhalo 7s ease-out forwards,cnspin 14s linear infinite}
+@keyframes umhalo{0%,52%{opacity:0}64%,100%{opacity:.85}}
+.cvcut.umc .cvstripes{background:repeating-linear-gradient(90deg,#0a0626 0 30px,#1a1050 30px 34px),#0a0626;border-top-color:#ffd84a;border-bottom-color:#9a6aff;box-shadow:0 0 50px rgba(255,216,74,.6)}
+.cvcut.umc .cvtxt small{color:#ffe9a0}
+.cvcut.umc .cvtxt b{text-shadow:0 3px 0 #5a2ab8,0 0 22px #ffd84a}
+.cvcut.umc .cvfeathers i{width:6px;height:6px;background:#fff6dc;box-shadow:0 0 10px #ffd84a}
