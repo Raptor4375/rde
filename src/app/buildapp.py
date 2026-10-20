@@ -10,7 +10,7 @@ head=f'''<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="
 <link rel="manifest" href="manifest.webmanifest"><link rel="icon" href="icons/icon-192.png"><link rel="apple-touch-icon" href="icons/icon-180.png">
 <style>html,body{{background:#0b0819}}</style>
 <script>{shim}</script>
-<script>if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{{}}));</script>
+<script>window.RDE_V='{V}';if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{{}}));</script>
 </head><body>'''
 out=head+src[len(head0):]
 a='NET.pid=NET.uid||localPid();';assert out.count(a)==1;out=out.replace(a,'NET.pid=(S.opid)||NET.uid||localPid();')
@@ -25,6 +25,7 @@ const C='rde-{V}';
 self.addEventListener('install',e=>{{self.skipWaiting();e.waitUntil(caches.open(C).then(c=>c.addAll(['./','index.html','manifest.webmanifest','icons/icon-192.png','icons/icon-512.png'])).catch(()=>{{}}))}});
 self.addEventListener('activate',e=>{{e.waitUntil(caches.keys().then(k=>Promise.all(k.filter(x=>x!==C).map(x=>caches.delete(x)))).then(()=>self.clients.claim()))}});
 self.addEventListener('fetch',e=>{{const r=e.request;if(r.method!=='GET')return;const u=new URL(r.url);if(u.origin!==location.origin)return;
-  e.respondWith(fetch(r).then(res=>{{const cp=res.clone();caches.open(C).then(c=>c.put(r,cp)).catch(()=>{{}});return res}}).catch(()=>caches.match(r).then(m=>m||caches.match('index.html'))))}});
+  e.respondWith(fetch(r,{{cache:'no-cache'}}).then(res=>{{const cp=res.clone();caches.open(C).then(c=>c.put(r,cp)).catch(()=>{{}});return res}}).catch(()=>caches.match(r).then(m=>m||caches.match('index.html'))))}});
 """)
+open(D+'/version.json','w').write(json.dumps({'v':V}))
 print('app ok',len(out),V)

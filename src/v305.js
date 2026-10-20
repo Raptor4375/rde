@@ -107,3 +107,7 @@ if(window.RDE_APP)setTimeout(()=>{try{if(S.xferAt&&!S.xferGift){S.xferGift=1;mai
 if(window.RDE_APP){const H=location.hash||'';if(H.startsWith('#rde=')){const c=decodeURIComponent(H.slice(5));try{history.replaceState(null,'',location.pathname+location.search)}catch(e){}
   const go=()=>{if(!BOOT.done||B){setTimeout(go,600);return}try{closeModal()}catch(e){}xferImportModal();setTimeout(()=>{const t=$('#xfin');if(t){t.value=c;const m=$('#xfmsg');if(m)m.textContent='📦 Code reçu !';xferImport()}},150)};
   S.xferAsk=1;setTimeout(go,800)}}
+/* --- appli : prévenir quand une nouvelle version est en ligne --- */
+if(window.RDE_APP&&window.RDE_V){const chk=async()=>{try{const r=await fetch('version.json?t='+Date.now(),{cache:'no-store'});const j=await r.json();
+  if(j&&j.v&&j.v!==window.RDE_V&&!document.querySelector('.updban')){const b=document.createElement('button');b.className='updban';b.innerHTML='✨ <b>Nouvelle mise à jour disponible !</b> Touche ici pour l\'installer';b.onclick=()=>{try{save()}catch(e){}location.reload()};document.body.appendChild(b)}}catch(e){}};
+  setTimeout(chk,8000);setInterval(chk,180000);document.addEventListener('visibilitychange',()=>{if(!document.hidden)chk()})}
