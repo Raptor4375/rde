@@ -7,6 +7,10 @@ V=time.strftime('%Y%m%d%H%M%S')
 head=f'''<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#1a0a3a"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="RDE">
 <meta name="description" content="Royaumes d'Éther : le jeu d'aventure et d'invocation, avec tes amis.">
+<meta property="og:type" content="website"><meta property="og:site_name" content="Royaumes d'Éther"><meta property="og:title" content="Royaumes d'Éther · Invoque, combats, guildes">
+<meta property="og:description" content="Un jeu d'invocation gratuit à jouer avec tes amis : plus de 60 héros, un héros mythique, un mode histoire, des guildes, un casino et un boss mondial. Sur téléphone et ordinateur, sans téléchargement.">
+<meta property="og:image" content="https://raptor4375.github.io/rde/og.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:url" content="https://raptor4375.github.io/rde/">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="https://raptor4375.github.io/rde/og.png">
 <link rel="manifest" href="manifest.webmanifest"><link rel="icon" href="icons/icon-192.png"><link rel="apple-touch-icon" href="icons/icon-180.png">
 <style>html,body{{background:#0b0819}}</style>
 <script>{shim}</script>

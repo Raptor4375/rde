@@ -1,6 +1,10 @@
 <!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#1a0a3a"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="RDE">
 <meta name="description" content="Royaumes d'Éther : le jeu d'aventure et d'invocation, avec tes amis.">
+<meta property="og:type" content="website"><meta property="og:site_name" content="Royaumes d'Éther"><meta property="og:title" content="Royaumes d'Éther · Invoque, combats, guildes">
+<meta property="og:description" content="Un jeu d'invocation gratuit à jouer avec tes amis : plus de 60 héros, un héros mythique, un mode histoire, des guildes, un casino et un boss mondial. Sur téléphone et ordinateur, sans téléchargement.">
+<meta property="og:image" content="https://raptor4375.github.io/rde/og.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:url" content="https://raptor4375.github.io/rde/">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="https://raptor4375.github.io/rde/og.png">
 <link rel="manifest" href="manifest.webmanifest"><link rel="icon" href="icons/icon-192.png"><link rel="apple-touch-icon" href="icons/icon-180.png">
 <style>html,body{background:#0b0819}</style>
 <script>/* RDE : branche le jeu sur Firebase (remplace la base de données de Claude) */
@@ -43,7 +47,7 @@ window.claude={use:async k=>{if(k==='db'||k==='user'){try{const F=await window.R
 window.RDEF();
 })();
 </script>
-<script>window.RDE_V='20261020180013';if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));</script>
+<script>window.RDE_V='20261020183427';if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));</script>
 </head><body>
 <title>RDE · Royaumes d'Éther</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -2446,6 +2450,8 @@ body.sgmode>*:not(#sgov):not(#sgcine):not(#ovl):not(#battle):not(#toast):not(.to
 .rmbar{height:8px;border-radius:99px;background:rgba(255,255,255,.1);overflow:hidden;margin:16px 0 8px}.rmbar i{display:block;height:100%;width:40%;border-radius:99px;background:linear-gradient(90deg,#ff5ad8,#ffd84a);animation:rmb 1.4s ease-in-out infinite}
 @keyframes rmb{0%{transform:translateX(-100%)}100%{transform:translateX(260%)}}
 .rmn{font-size:12px;color:#b8a8d8;margin-bottom:12px}
+.invbox{display:flex;align-items:baseline;justify-content:center;gap:6px;margin:6px 0 10px;padding:10px;border-radius:14px;background:rgba(255,216,74,.1);border:1px solid rgba(255,216,74,.4)}
+.invbox b{font-size:30px;color:#ffd84a}.invbox span{font-weight:800;color:#e8dcff}
 </style>
 <div id="boot" role="status" aria-live="polite"><div class="bt-in"><div class="bt-logo" aria-hidden="true"><svg viewBox="0 0 120 120"><defs><linearGradient id="btg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8a6aff"/><stop offset="1" stop-color="#3a2a8a"/></linearGradient><linearGradient id="btgo" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff6c0"/><stop offset="1" stop-color="#e2a42c"/></linearGradient></defs><g class="bt-ring"><circle cx="60" cy="60" r="54" fill="none" stroke="#ffd84a" stroke-width="2" stroke-dasharray="4 9" opacity=".7"/><circle cx="60" cy="6" r="4" fill="#58e4d3"/><circle cx="114" cy="60" r="3" fill="#ffd84a"/><circle cx="60" cy="114" r="4" fill="#ff8ac0"/><circle cx="6" cy="60" r="3" fill="#fff"/></g><path d="M60 16L94 28L90 70Q84 92 60 104Q36 92 30 70L26 28Z" fill="url(#btg)" stroke="#140c24" stroke-width="3" stroke-linejoin="round"/><path d="M60 24L86 33L83 68Q78 86 60 96Q42 86 37 68L34 33Z" fill="none" stroke="url(#btgo)" stroke-width="3"/><path d="M60 38L69 56L60 82L51 56Z" fill="#58e4d3" stroke="#140c24" stroke-width="2.4" stroke-linejoin="round"/><path d="M60 38L60 82L51 56Z" fill="#b0fff4"/><path d="M60 30l2.4 5 5.4.6-4 3.7 1.1 5.3-4.9-2.7-4.9 2.7 1.1-5.3-4-3.7 5.4-.6z" fill="url(#btgo)" stroke="#140c24" stroke-width="1.2"/></svg></div><div class="bt-t">Royaumes<span>d'Éther</span></div><div class="bt-bar"><i></i></div><div class="bt-s" id="bts">Chargement…</div></div></div>
 
@@ -13675,6 +13681,51 @@ alPortrait=function(){return alPortraitU(0)};
   return L.filter(r=>{const k=String(r.n||'').trim().toLowerCase();return k&&best.get(k)===r})}catch(e){return L}}}
 /* ménage : si on joue avec l'identité transférée, on supprime la vieille fiche créée sous l'identité de l'appareil */
 setTimeout(async()=>{try{if(!NET.on||!NET.db||!NET.uid||!NET.pid||NET.uid===NET.pid)return;const d=NET.players&&NET.players[NET.uid];if(d)await NET.db.doc('players/'+NET.uid).delete()}catch(e){}},15000);
+
+/* ================= OUVERTURE AU PUBLIC : sécurité du chat, invitations, parrainage ================= */
+/* --- filtre anti-insultes --- */
+const BADW=['connard','connards','connasse','conne','connes','salope','salopes','salaud','pute','putes','putain','enculé','enculés','encule','enculer','fdp','ntm','nique','niquer','nik','batard','bâtard','bâtards','batards','merde','merdique','pd','pédé','pede','tg','ta gueule','abruti','abrutie','débile','gogol','mongol','chienne','bouffon','couille','couilles','bite','chatte','nègre','negre','negro','bougnoule','youpin','tapette','gouine','pétasse','petasse','grognasse','enflure','raclure','fils de pute','va te faire','suce','sucer','cul'];
+const BADRX=new RegExp('(^|[^a-zà-ÿ0-9])('+BADW.map(w=>w.replace(/[.*+?^${}()|[\]\\]/g,'\\$&').replace(/ /g,'\\s+')).join('|')+')(?=$|[^a-zà-ÿ0-9])','gi');
+function chatClean(x){return String(x==null?'':x).replace(BADRX,(m,a,w)=>a+w[0]+'★'.repeat(Math.max(1,w.length-1)))}
+function BLK(){if(!Array.isArray(S.blocked))S.blocked=[];return S.blocked}
+{const pm=postMsg;postMsg=function(x,sys,gid){if(!sys)arguments[0]=chatClean(x);return pm.apply(this,arguments)}}
+{const ds=dmSend;dmSend=function(key,x){return ds.call(this,key,chatClean(x))}}
+for(const nm of ['rmsgHTML','msgHTML']){try{const f=window[nm];if(typeof f!=='function')continue;window[nm]=function(m){if(m&&m.w&&BLK().includes(m.w))return'';if(m&&m.x&&m.w!=='sys')m=Object.assign({},m,{x:chatClean(m.x)});return f.call(this,m)}}catch(e){}}
+try{rmsgHTML=window.rmsgHTML;msgHTML=window.msgHTML}catch(e){}
+{const dp=dmPush;dmPush=function(key,msg,n){if(String(key).startsWith('real:')&&BLK().includes(key.slice(5))&&msg&&!msg.m)return null;if(msg&&msg.x)msg=Object.assign({},msg,{x:chatClean(msg.x)});return dp.call(this,key,msg,n)}}
+/* --- bloquer / signaler un vrai joueur depuis son profil --- */
+{const pm=profileModal;profileModal=function(id){pm.apply(this,arguments);try{if(!String(id).startsWith('r:'))return;const pid=String(id).slice(2);const m=$('#ovl .modal');if(!m||m.querySelector('.modrow'))return;const bl=BLK().includes(pid);
+  m.insertAdjacentHTML('beforeend',`<div class="row modrow" style="gap:8px;margin-top:10px"><button class="btn sm" data-a="pblock" data-v="${esc(pid)}" style="flex:1">${bl?'✅ Débloquer':'🚫 Bloquer'}</button><button class="btn sm" data-a="preport" data-v="${esc(pid)}" style="flex:1">⚠️ Signaler</button></div>`)}catch(e){}}}
+document.addEventListener('click',async e=>{const b=e.target.closest('[data-a="pblock"],[data-a="preport"],[data-a="prsend"]');if(!b)return;e.preventDefault();e.stopPropagation();const pid=b.dataset.v,a=b.dataset.a;
+  if(a==='pblock'){const L=BLK(),i=L.indexOf(pid);if(i>=0){L.splice(i,1);toast('Joueur débloqué.')}else{L.push(pid);toast('Joueur bloqué : tu ne verras plus ses messages.')}save();closeModal();render();return}
+  if(a==='preport'){const d=NET.players&&NET.players[pid];modal(`<button class="x" data-a="close" aria-label="Fermer">×</button><div class="h">⚠️ Signaler ${esc(d&&d.n||'ce joueur')}</div><p class="sub">Dis-nous ce qui ne va pas. Le créateur du jeu verra ton signalement.</p>
+     <div class="list" style="gap:6px">${['Insultes ou harcèlement','Contenu choquant','Triche','Pseudo inapproprié','Autre'].map((r,i)=>`<label class="setm"><input type="radio" name="prr" value="${esc(r)}" ${i?'':'checked'}> <span>${r}</span></label>`).join('')}</div>
+     <textarea class="tx" id="prtx" rows="2" maxlength="300" placeholder="Détails (facultatif)" style="width:100%;margin-top:8px;box-sizing:border-box"></textarea><button class="btn p" data-a="prsend" data-v="${esc(pid)}" style="width:100%;margin-top:8px">Envoyer le signalement</button>`);return}
+  if(a==='prsend'){const r=(document.querySelector('input[name=prr]:checked')||{}).value||'Autre',tx=($('#prtx')||{}).value||'';try{if(NET.on&&NET.db){const d=NET.players&&NET.players[pid];const recent=(NET.wmsgs||[]).filter(m=>m.w===pid).slice(-5).map(m=>m.x);
+      await NET.db.collection('reports').add({by:NET.pid,byn:S.name||'',who:pid,n:d&&d.n||'',why:r,tx:String(tx).slice(0,300),msgs:recent,t:Date.now()})}toast('Merci, ton signalement a bien été envoyé.')}catch(er){toast("Le signalement n'a pas pu partir, réessaie plus tard.")}
+    if(!BLK().includes(pid)&&confirm('Veux-tu aussi bloquer ce joueur ?')){BLK().push(pid);save()}closeModal();render()}},true);
+/* --- inviter un ami + parrainage --- */
+const RDE_LINK=(typeof RDE_URL!=='undefined'?RDE_URL:'https://raptor4375.github.io/rde/');
+const REF_GIFT=300,REF_MAX=20;
+function inviteLink(){return RDE_LINK+(NET.pid?'?ref='+encodeURIComponent(NET.pid):'')}
+async function inviteShare(){const url=inviteLink();const text=`Viens jouer à Royaumes d'Éther avec moi ! Invoque des héros, affronte des boss et rejoins ma guilde. Avec mon lien, on gagne ${REF_GIFT} gemmes chacun 💎`;
+  try{if(navigator.share){await navigator.share({title:"Royaumes d'Éther",text,url});return}}catch(e){if(e&&e.name==='AbortError')return}
+  try{await navigator.clipboard.writeText(text+' '+url);toast('Lien d\'invitation copié ! Colle-le à tes amis.')}catch(e){modal(`<button class="x" data-a="close" aria-label="Fermer">×</button><div class="h">📤 Inviter un ami</div><p class="sub">Copie ce lien et envoie-le :</p><textarea class="tx xfcode" readonly rows="3">${esc(url)}</textarea>`)}}
+function inviteModal(){const n=S.refN||0;modal(`<button class="x" data-a="close" aria-label="Fermer">×</button><div class="h">📤 Inviter des amis</div>
+  <p class="sub">Envoie ton lien à tes amis. Quand un ami commence à jouer avec, <b>vous gagnez ${REF_GIFT} gemmes chacun</b> 💎 (jusqu'à ${REF_MAX} amis).</p>
+  <div class="invbox"><b class="num">${n}</b><span>ami${n>1?'s':''} invité${n>1?'s':''}</span></div>
+  <button class="btn pro" data-a="invgo" style="width:100%">📤 Partager mon lien</button>
+  <textarea class="tx xfcode" readonly rows="2" style="margin-top:8px">${esc(inviteLink())}</textarea>`)}
+document.addEventListener('click',e=>{const b=e.target.closest('[data-a="invite"],[data-a="invgo"]');if(!b)return;e.preventDefault();e.stopPropagation();if(b.dataset.a==='invite')inviteModal();else inviteShare()},true);
+{const sm=settingsModal;settingsModal=function(){sm.apply(this,arguments);try{const m=document.querySelector('#ovl .modal');if(m&&window.RDE_APP&&!m.querySelector('[data-a=invite]'))m.insertAdjacentHTML('afterbegin','<button class="btn pro" data-a="invite" style="width:100%;margin:0 0 10px">📤 Inviter des amis · +'+REF_GIFT+' 💎</button>')}catch(e){}}}
+if(window.RDE_APP){
+  /* on note qui a invité, si on arrive tout neuf avec ?ref= */
+  try{const r=new URLSearchParams(location.search).get('ref');if(r&&!S.name&&!S.max&&!localStorage.getItem(KEY+'-ref'))localStorage.setItem(KEY+'-ref',r);if(r)history.replaceState(null,'',location.pathname+location.hash)}catch(e){}
+  const refTick=async()=>{try{if(!NET.on||!NET.db||!NET.pid||!S.name)return;
+    const by=localStorage.getItem(KEY+'-ref');if(by&&!S.refDone&&by!==NET.pid&&!S.xferAt){S.refDone=1;save();try{await NET.db.doc('refs/'+NET.pid).set({by,n:S.name,t:Date.now(),c:false});mail({x:`🎁 Bienvenue ! Un ami t'a invité dans Royaumes d'Éther : voici ${REF_GIFT} gemmes pour bien démarrer.`,gems:REF_GIFT});save();toast('🎁 Cadeau de parrainage dans ta boîte aux lettres !')}catch(e){}}
+    if((S.refN||0)>=REF_MAX)return;const sn=await NET.db.collection('refs').where('by','==',NET.pid).get();
+    for(const d of sn.docs){const x=d.data();if(x.c||(S.refN||0)>=REF_MAX)continue;try{await NET.db.doc('refs/'+d.id).update({c:true});S.refN=(S.refN||0)+1;mail({x:`🤝 ${x.n||'Un ami'} a rejoint le royaume grâce à toi ! Merci : voici ${REF_GIFT} gemmes.`,gems:REF_GIFT});save();toast(`🤝 ${x.n||'Un ami'} a rejoint grâce à toi : +${REF_GIFT} gemmes en courrier !`);try{renderTop()}catch(e){}}catch(e){}}}catch(e){}};
+  setTimeout(refTick,12000);setInterval(refTick,600000)}
 
 /* ================= DÉMARRAGE ================= */
 (function init(){

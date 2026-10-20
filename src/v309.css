@@ -1,0 +1,2 @@
+.invbox{display:flex;align-items:baseline;justify-content:center;gap:6px;margin:6px 0 10px;padding:10px;border-radius:14px;background:rgba(255,216,74,.1);border:1px solid rgba(255,216,74,.4)}
+.invbox b{font-size:30px;color:#ffd84a}.invbox span{font-weight:800;color:#e8dcff}
