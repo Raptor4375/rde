@@ -13490,7 +13490,7 @@ async function xferExportModal(){modal(`<button class="x" data-a="close" aria-la
    <p class="sub">Ce code contient <b>tout ton compte</b> : héros, niveaux, gemmes, équipement, guilde, histoire, titres… Garde-le pour toi, ne le partage avec personne.</p>
    <ol class="xfol"><li>Touche <b>Copier le code</b>.</li><li>Ouvre la nouvelle appli : <b>${RDE_URL.replace('https://','')}</b></li><li>Choisis <b>« J'ai déjà un compte »</b> et colle le code.</li></ol>
    <textarea class="tx xfcode" id="xfcode" readonly rows="4" aria-label="Ton code de transfert">${esc(code)}</textarea>
-   <div class="row" style="gap:8px;margin-top:8px"><button class="btn p" data-a="xfcopy" style="flex:1">📋 Copier le code</button><button class="btn" data-a="xfdl">💾 Fichier</button></div>
+   <div class="row" style="gap:8px;margin-top:8px"><button class="btn p" data-a="xfcopy" style="flex:1">📋 Copier le code</button>${window.RDE_APP?'<button class="btn" data-a="xfdl">💾 Fichier</button>':''}</div>
    <p class="muted" style="font-size:12px;margin:8px 0 0">Le code est long, c'est normal (${fmt(code.length)} caractères). Il est valable à tout moment : refais-en un juste avant de transférer pour avoir ta progression la plus récente.</p>`);
   XF.code=code}
 const XF={code:''};
