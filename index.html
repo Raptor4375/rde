@@ -13479,9 +13479,15 @@ const RDE_URL='https://raptor4375.github.io/rde/';
 function xB64(buf){const u=new Uint8Array(buf);let s='';for(let i=0;i<u.length;i+=0x8000)s+=String.fromCharCode.apply(null,u.subarray(i,i+0x8000));return btoa(s)}
 function xUnB64(s){const b=atob(s),u=new Uint8Array(b.length);for(let i=0;i<b.length;i++)u[i]=b.charCodeAt(i);return u}
 async function xferMake(){let g=null;try{if(S.rgid&&NET.guilds&&NET.guilds[S.rgid])g={id:S.rgid,d:NET.guilds[S.rgid]}}catch(e){}
-  const js=JSON.stringify({v:1,pid:NET.pid||null,t:Date.now(),n:S.name||'',S,g});
-  try{const st=new Blob([js]).stream().pipeThrough(new CompressionStream('deflate-raw'));return'RDE1-'+xB64(await new Response(st).arrayBuffer())}catch(e){return'RDE0-'+btoa(unescape(encodeURIComponent(js)))}}
+  const js=JSON.stringify({v:2,pid:NET.pid||null,t:Date.now(),n:S.name||'',S:xferSlim(S),g});
+  let body;try{const st=new Blob([js]).stream().pipeThrough(new CompressionStream('deflate-raw'));body='Z'+xB64(await new Response(st).arrayBuffer())}catch(e){body='J'+btoa(unescape(encodeURIComponent(js)))}
+  return'RDE2-'+body.length+'-'+body}
+/* on retire ce qui se recrée tout seul (joueurs PNJ, vieilles lettres déjà lues) pour un code bien plus court */
+function xferSlim(S0){const o=JSON.parse(JSON.stringify(S0));try{if(o.world){o.world.players=[];o.world.news=(o.world.news||[]).slice(-8)}}catch(e){}
+  try{if(Array.isArray(o.letters))o.letters=o.letters.filter(x=>!x.claimed).slice(-5)}catch(e){}try{if(Array.isArray(o.mail))o.mail=o.mail.slice(-30)}catch(e){}return o}
 async function xferRead(code){code=String(code||'').replace(/\s+/g,'');
+  const m2=/^RDE2-(\d+)-(.*)$/.exec(code);if(m2){const n=+m2[1],body=m2[2];if(body.length<n){const er=new Error('court');er.got=body.length;er.need=n;throw er}const B2=body.slice(0,n);
+    if(B2[0]==='Z'){const u=xUnB64(B2.slice(1));const st=new Blob([u]).stream().pipeThrough(new DecompressionStream('deflate-raw'));return JSON.parse(await new Response(st).text())}return JSON.parse(decodeURIComponent(escape(atob(B2.slice(1)))))}
   if(code.startsWith('RDE1-')){const u=xUnB64(code.slice(5));const st=new Blob([u]).stream().pipeThrough(new DecompressionStream('deflate-raw'));return JSON.parse(await new Response(st).text())}
   if(code.startsWith('RDE0-'))return JSON.parse(decodeURIComponent(escape(atob(code.slice(5)))));throw new Error('format')}
 const xferPow=o=>{try{return Object.entries(o.S.heroes||{}).length}catch(e){return 0}};
@@ -13493,9 +13499,12 @@ async function xferExportModal(){modal(`<button class="x" data-a="close" aria-la
    <ol class="xfol"><li>Touche <b>Copier le code</b>.</li><li>Ouvre la nouvelle appli : <b>${RDE_URL.replace('https://','')}</b></li><li>Choisis <b>« J'ai déjà un compte »</b> et colle le code.</li></ol>
    <textarea class="tx xfcode" id="xfcode" readonly rows="4" aria-label="Ton code de transfert">${esc(code)}</textarea>
    <div class="row" style="gap:8px;margin-top:8px"><button class="btn p" data-a="xfcopy" style="flex:1">📋 Copier le code</button>${window.RDE_APP?'<button class="btn" data-a="xfdl">💾 Fichier</button>':''}</div>
+   ${code.length>3000?`<div class="xfparts"><div class="muted" style="font-size:12px">Si le code ne passe pas en entier, copie-le en plusieurs morceaux et colle-les <b>à la suite</b> dans la nouvelle appli :</div><div class="row" style="gap:6px;flex-wrap:wrap;margin-top:4px">${xferParts(code).map((_,i,a)=>`<button class="btn sm" data-a="xfpart" data-v="${i}">📋 Morceau ${i+1}/${a.length}</button>`).join('')}</div></div>`:''}
    <p class="muted" style="font-size:12px;margin:8px 0 0">Le code est long, c'est normal (${fmt(code.length)} caractères). Il est valable à tout moment : refais-en un juste avant de transférer pour avoir ta progression la plus récente.</p>`);
   XF.code=code}
 const XF={code:''};
+const xferParts=c=>{const n=Math.ceil(c.length/4000),L=[];for(let i=0;i<n;i++)L.push(c.slice(i*4000,(i+1)*4000));return L};
+document.addEventListener('click',async e=>{const b=e.target.closest('[data-a="xfpart"]');if(!b)return;e.preventDefault();e.stopPropagation();const i=+b.dataset.v,P=xferParts(XF.code);const t=P[i]||'';let ok=false;try{await navigator.clipboard.writeText(t);ok=true}catch(er){try{const x=document.createElement('textarea');x.value=t;x.style.position='fixed';x.style.opacity='0';document.body.appendChild(x);x.focus();x.select();ok=document.execCommand('copy');x.remove()}catch(y){}}toast(ok?`Morceau ${i+1}/${P.length} copié ! Colle-le dans la nouvelle appli${i<P.length-1?', puis reviens copier le suivant':''}.`:'Copie impossible ici : sélectionne le code à la main.');b.classList.add('done')},true);
 document.addEventListener('click',async e=>{const b=e.target.closest('[data-a="xfexp"],[data-a="xfcopy"],[data-a="xfdl"],[data-a="xfimp"],[data-a="xfgo"],[data-a="xfnew"]');if(!b)return;e.preventDefault();e.stopPropagation();const a=b.dataset.a;
   if(a==='xfexp')return xferExportModal();
   if(a==='xfcopy'){try{await navigator.clipboard.writeText(XF.code);toast('Code copié ! Colle-le dans la nouvelle appli.')}catch(er){const t=$('#xfcode');if(t){t.focus();t.select();try{document.execCommand('copy');toast('Code copié !')}catch(x){toast('Sélectionne le code et copie-le à la main.')}}}return}
@@ -13511,11 +13520,11 @@ function xferImportModal(){modal(`<button class="x" data-a="close" aria-label="F
   <button class="btn p" data-a="xfgo" style="width:100%;margin-top:10px">Récupérer mon compte</button><div class="muted" id="xfmsg" style="font-size:12.5px;margin-top:6px"></div>`);
   setTimeout(()=>{const f=$('#xffile');if(f)f.onchange=async()=>{try{const t=await f.files[0].text();$('#xfin').value=t.trim()}catch(e){}}},50)}
 async function xferImport(){const ta=$('#xfin'),msg=$('#xfmsg');const say=t=>{if(msg)msg.textContent=t};let o;
-  try{o=await xferRead(ta&&ta.value)}catch(e){say("❌ Ce code n'est pas valide. Vérifie que tu l'as copié en entier.");return}
+  try{o=await xferRead(ta&&ta.value)}catch(e){if(e&&e.need){say(`❌ Code incomplet : ${e.got.toLocaleString("fr-FR")} caractères reçus sur ${e.need.toLocaleString("fr-FR")}. Il manque la fin : recopie-le (ou colle la partie suivante à la suite).`);return}say("❌ Ce code n'est pas valide. Vérifie que tu l'as copié en entier.");return}
   if(!o||!o.S||!o.S.heroes){say('❌ Code vide ou abîmé.');return}
   if(S.name&&S.name!==o.n&&Object.keys(S.heroes).length>4&&!confirm(`Remplacer ta partie actuelle (${S.name}) par celle de ${o.n||'ce code'} ?`))return;
   say('⏳ Récupération en cours…');
-  const N=Object.assign(fresh(),o.S);N.opid=o.pid||null;N.xferAt=Date.now();N.xferAsk=1;N.ts=Date.now();
+  const N=Object.assign(fresh(),o.S);try{if(N.world&&(!N.world.players||!N.world.players.length))N.world.players=genWorld().players}catch(e){}N.opid=o.pid||null;N.xferAt=Date.now();N.xferAsk=1;N.ts=Date.now();
   try{const db=await window.claude.use('db');const u=await window.claude.use('user');const uid=u?await u.id():null;
     if(db&&uid&&N.opid){try{await db.doc('pidmap/'+N.opid).set({uid,t:Date.now()})}catch(e){say('⚠️ Ce compte a déjà été récupéré sur un autre appareil. On garde ta progression, avec une nouvelle identité en ligne.');N.opid=null}}
     if(db&&o.g&&o.g.id){try{const s=await db.doc('guilds/'+o.g.id).get();if(!s.exists)await db.doc('guilds/'+o.g.id).set(o.g.d)}catch(e){}}
