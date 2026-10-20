@@ -107,7 +107,18 @@ if(window.RDE_APP)setTimeout(()=>{try{if(S.xferAt&&!S.xferGift){S.xferGift=1;mai
 if(window.RDE_APP){const H=location.hash||'';if(H.startsWith('#rde=')){const c=decodeURIComponent(H.slice(5));try{history.replaceState(null,'',location.pathname+location.search)}catch(e){}
   const go=()=>{if(!BOOT.done||B){setTimeout(go,600);return}try{closeModal()}catch(e){}xferImportModal();setTimeout(()=>{const t=$('#xfin');if(t){t.value=c;const m=$('#xfmsg');if(m)m.textContent='📦 Code reçu !';xferImport()}},150)};
   S.xferAsk=1;setTimeout(go,800)}}
-/* --- appli : prévenir quand une nouvelle version est en ligne --- */
-if(window.RDE_APP&&window.RDE_V){const chk=async()=>{try{const r=await fetch('version.json?t='+Date.now(),{cache:'no-store'});const j=await r.json();
-  if(j&&j.v&&j.v!==window.RDE_V&&!document.querySelector('.updban')){const b=document.createElement('button');b.className='updban';b.innerHTML='✨ <b>Nouvelle mise à jour disponible !</b> Touche ici pour l\'installer';b.onclick=()=>{try{save()}catch(e){}location.reload()};document.body.appendChild(b)}}catch(e){}};
-  setTimeout(chk,8000);setInterval(chk,180000);document.addEventListener('visibilitychange',()=>{if(!document.hidden)chk()})}
+/* --- appli : maintenance pendant les mises à jour --- */
+function rdeMaint(on,msg,ver){let o=document.getElementById('rdemaint');if(!on){if(o)o.remove();return}
+  if(!o){o=document.createElement('div');o.id='rdemaint';o.setAttribute('role','alertdialog');document.body.appendChild(o)}
+  o.innerHTML=`<div class="rmbox"><div class="rmic">🛠️</div><div class="rmt">Maintenance</div><div class="rms">${msg||'Mise à jour en cours… Le jeu revient dans un instant avec du nouveau !'}</div><div class="rmbar"><i></i></div><div class="rmn">Ta progression est sauvegardée. Le jeu redémarre tout seul.</div><button class="btn sm" id="rmretry">🔄 Réessayer maintenant</button></div>`;
+  o.querySelector('#rmretry').onclick=()=>{try{save()}catch(e){}location.reload()}}
+if(window.RDE_APP&&window.RDE_V){let waitV=null;
+  const fresh=async v=>{try{const r=await fetch('index.html?t='+Date.now(),{cache:'no-store'});const t=await r.text();return t.indexOf("RDE_V='"+v+"'")>=0}catch(e){return false}};
+  const chk=async()=>{try{const r=await fetch('version.json?t='+Date.now(),{cache:'no-store'});const j=await r.json();if(!j)return;
+    if(j.maint){rdeMaint(true,j.msg);try{save()}catch(e){}return}
+    if(j.v&&j.v!==window.RDE_V){if(typeof B!=='undefined'&&B&&!B.done){waitV=j.v;return}
+      rdeMaint(true,'Mise à jour en cours… Le jeu revient dans un instant avec du nouveau !');try{save()}catch(e){}
+      if(await fresh(j.v)){setTimeout(()=>location.reload(),1500)}else{waitV=j.v}return}
+    rdeMaint(false)}catch(e){}};
+  setTimeout(chk,6000);setInterval(()=>{chk()},document.getElementById?60000:60000);setInterval(()=>{if(document.getElementById('rdemaint'))chk()},15000);
+  document.addEventListener('visibilitychange',()=>{if(!document.hidden)chk()})}
