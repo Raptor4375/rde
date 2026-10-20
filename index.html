@@ -47,7 +47,7 @@ window.claude={use:async k=>{if(k==='db'||k==='user'){try{const F=await window.R
 window.RDEF();
 })();
 </script>
-<script>window.RDE_V='20261020183427';if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));</script>
+<script>window.RDE_V='20261020220313';if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));</script>
 </head><body>
 <title>RDE · Royaumes d'Éther</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -13726,6 +13726,12 @@ if(window.RDE_APP){
     if((S.refN||0)>=REF_MAX)return;const sn=await NET.db.collection('refs').where('by','==',NET.pid).get();
     for(const d of sn.docs){const x=d.data();if(x.c||(S.refN||0)>=REF_MAX)continue;try{await NET.db.doc('refs/'+d.id).update({c:true});S.refN=(S.refN||0)+1;mail({x:`🤝 ${x.n||'Un ami'} a rejoint le royaume grâce à toi ! Merci : voici ${REF_GIFT} gemmes.`,gems:REF_GIFT});save();toast(`🤝 ${x.n||'Un ami'} a rejoint grâce à toi : +${REF_GIFT} gemmes en courrier !`);try{renderTop()}catch(e){}}catch(e){}}}catch(e){}};
   setTimeout(refTick,12000);setInterval(refTick,600000)}
+/* ================= chargement : Aléa avec son nouveau chara design ================= */
+/* l'écran de chargement était dessiné avant le nouveau look d'Aléa : on le redessine une fois tout chargé */
+(function(){try{if(typeof BT_BOOK==='undefined'||BOOT.done)return;const b=document.getElementById('boot');const r=b&&b.querySelector('.b2.bs');if(!r)return;
+  const st=r.querySelector('#b2start'),bts=r.querySelector('#bts'),bar=r.querySelector('.bt-bar i');const txt=bts?bts.textContent:'',w=bar?bar.style.width:'';
+  const tmp=document.createElement('div');tmp.innerHTML=btSceneSaga(BT_BOOK);const n=tmp.firstElementChild;if(!n)return;
+  if(st)n.appendChild(st);const nb=n.querySelector('#bts');if(nb&&txt)nb.textContent=txt;const nbar=n.querySelector('.bt-bar i');if(nbar&&w)nbar.style.width=w;r.replaceWith(n)}catch(e){console.warn('boot',e)}})();
 
 /* ================= DÉMARRAGE ================= */
 (function init(){
