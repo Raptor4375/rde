@@ -2437,6 +2437,7 @@ body.sgmode>*:not(#sgov):not(#sgcine):not(#ovl):not(#battle):not(#toast):not(.to
 .mvban{display:block;width:100%;margin:0 0 10px;padding:9px 12px;border-radius:14px;border:2px solid #ff4a6a;background:linear-gradient(90deg,rgba(255,74,106,.25),rgba(124,76,255,.25));color:#fff;font:800 13px var(--fb,'Nunito',sans-serif);text-align:left;cursor:pointer;animation:mvp 1.6s ease-in-out infinite}
 @keyframes mvp{50%{box-shadow:0 0 18px rgba(255,74,106,.6)}}
 .xfshort{margin:8px 0;padding:14px 8px;border-radius:16px;text-align:center;font:44px/1 'Lilita One',ui-monospace,monospace;letter-spacing:.12em;color:#ffd84a;background:rgba(0,0,0,.35);border:2px dashed #ffd84a;user-select:all}
+.xf1clic{display:block;width:100%;text-align:center;text-decoration:none;box-sizing:border-box;font-size:16px;padding:12px}
 </style>
 <div id="boot" role="status" aria-live="polite"><div class="bt-in"><div class="bt-logo" aria-hidden="true"><svg viewBox="0 0 120 120"><defs><linearGradient id="btg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8a6aff"/><stop offset="1" stop-color="#3a2a8a"/></linearGradient><linearGradient id="btgo" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff6c0"/><stop offset="1" stop-color="#e2a42c"/></linearGradient></defs><g class="bt-ring"><circle cx="60" cy="60" r="54" fill="none" stroke="#ffd84a" stroke-width="2" stroke-dasharray="4 9" opacity=".7"/><circle cx="60" cy="6" r="4" fill="#58e4d3"/><circle cx="114" cy="60" r="3" fill="#ffd84a"/><circle cx="60" cy="114" r="4" fill="#ff8ac0"/><circle cx="6" cy="60" r="3" fill="#fff"/></g><path d="M60 16L94 28L90 70Q84 92 60 104Q36 92 30 70L26 28Z" fill="url(#btg)" stroke="#140c24" stroke-width="3" stroke-linejoin="round"/><path d="M60 24L86 33L83 68Q78 86 60 96Q42 86 37 68L34 33Z" fill="none" stroke="url(#btgo)" stroke-width="3"/><path d="M60 38L69 56L60 82L51 56Z" fill="#58e4d3" stroke="#140c24" stroke-width="2.4" stroke-linejoin="round"/><path d="M60 38L60 82L51 56Z" fill="#b0fff4"/><path d="M60 30l2.4 5 5.4.6-4 3.7 1.1 5.3-4.9-2.7-4.9 2.7 1.1-5.3-4-3.7 5.4-.6z" fill="url(#btgo)" stroke="#140c24" stroke-width="1.2"/></svg></div><div class="bt-t">Royaumes<span>d'Éther</span></div><div class="bt-bar"><i></i></div><div class="bt-s" id="bts">Chargement…</div></div></div>
 
@@ -13508,7 +13509,8 @@ async function xferExportModal(){modal(`<button class="x" data-a="close" aria-la
    ${code.length>3000?`<div class="xfparts"><div class="muted" style="font-size:12px">Si le code ne passe pas en entier, copie-le en plusieurs morceaux et colle-les <b>à la suite</b> dans la nouvelle appli :</div><div class="row" style="gap:6px;flex-wrap:wrap;margin-top:4px">${xferParts(code).map((_,i,a)=>`<button class="btn sm" data-a="xfpart" data-v="${i}">📋 Morceau ${i+1}/${a.length}</button>`).join('')}</div></div>`:''}`;
   modal(`<button class="x" data-a="close" aria-label="Fermer">×</button><div class="h">📦 Transférer ma progression</div>
    <p class="sub">Ton code contient <b>tout ton compte</b> : héros, niveaux, gemmes, équipement, guilde, histoire, titres… Ne le donne à personne.</p>
-   <ol class="xfol"><li>Ouvre la nouvelle appli : <b>${RDE_URL.replace('https://','')}</b></li><li>Choisis <b>« J'ai déjà un compte »</b>.</li><li>Tape ${sh?'ce code':'le code'} et valide.</li></ol>
+   ${window.RDE_APP?'':`<a class="btn pro xf1clic" href="${RDE_URL}#rde=${encodeURIComponent(code)}" target="_blank" rel="noopener">🚀 Transférer en un clic</a><p class="muted" style="font-size:12px;margin:4px 0 10px;text-align:center">Ouvre la nouvelle appli et récupère ton compte tout seul. Si rien ne se passe, utilise le code ci-dessous.</p>`}
+   <ol class="xfol"><li>Ouvre la nouvelle appli : <b>${RDE_URL.replace('https://','')}</b></li><li>Choisis <b>« J'ai déjà un compte »</b>.</li><li>${sh?'Tape ce code':'Colle le code'} et valide.</li></ol>
    ${sh?`<div class="xfshort" aria-label="Ton code : ${sh}">${sh}</div><button class="btn p" data-a="xfcopys" style="width:100%">📋 Copier le code</button>
      <p class="muted" style="font-size:12px;margin:6px 0 0;text-align:center">Valable 24 heures et une seule fois. Refais-en un si besoin.</p>
      <details class="sgdet" style="margin-top:8px"><summary>Le code court ne marche pas ? Utilise le code long</summary>${long}</details>`
@@ -13577,6 +13579,11 @@ if(!window.RDE_APP){
 }
 /* --- dans l'appli : le cadeau de bienvenue après un transfert --- */
 if(window.RDE_APP)setTimeout(()=>{try{if(S.xferAt&&!S.xferGift){S.xferGift=1;mail({x:'🎁 Bienvenue dans RDE ! Merci d\'avoir transféré ton compte.',gems:500,shards:3});save();try{renderTop()}catch(e){}toast('🎁 Un cadeau de bienvenue t\'attend dans ta boîte aux lettres !')}}catch(e){}},5000);
+
+/* --- dans l'appli : transfert en un clic (le code arrive dans l'adresse, après le #, jamais envoyé au serveur) --- */
+if(window.RDE_APP){const H=location.hash||'';if(H.startsWith('#rde=')){const c=decodeURIComponent(H.slice(5));try{history.replaceState(null,'',location.pathname+location.search)}catch(e){}
+  const go=()=>{if(!BOOT.done||B){setTimeout(go,600);return}try{closeModal()}catch(e){}xferImportModal();setTimeout(()=>{const t=$('#xfin');if(t){t.value=c;const m=$('#xfmsg');if(m)m.textContent='📦 Code reçu !';xferImport()}},150)};
+  S.xferAsk=1;setTimeout(go,800)}}
 
 /* ================= DÉMARRAGE ================= */
 (function init(){
