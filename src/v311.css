@@ -6,3 +6,7 @@
 .langg{display:grid;grid-template-columns:1fr 1fr;gap:6px}
 .lgb{justify-content:flex-start;text-align:left;font-size:12px}
 .lgb.on{outline:2px solid var(--a,#7c5cff);font-weight:800}
+.mecbox{display:flex;gap:12px;align-items:center;padding:10px;border-radius:14px;background:rgba(255,184,74,.1);margin-top:8px}
+.mecav{position:relative;width:54px;height:54px;flex:none;border-radius:18%;overflow:visible}
+.mecav svg,.mecav img{width:100%;height:100%;border-radius:18%}
+.supbtn{background:linear-gradient(90deg,#ffd84a,#ff8ac0)!important;color:#2a0a1a!important;font-weight:800}
