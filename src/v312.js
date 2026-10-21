@@ -6,12 +6,13 @@ FRAMES.mecene='Mécène';try{FHINT.mecene='Soutenir le jeu (code Mécène)'}catc
 (function(){const st=document.createElement('style');st.textContent=`.fav.frm-mecene{--fd:#1a0a02;--gc:#ffb84a;animation:fpulse 2.6s ease-in-out infinite}
 .fav.frm-mecene::before{background:linear-gradient(160deg,rgba(255,255,255,.4),transparent 42%,rgba(0,0,0,.28)),conic-gradient(from var(--fa),#ffd84a,#8a4a1a,#fff0c0,#ff8ac0,#ffd84a,#6a3a12,#ffd84a);animation:fspin 5.5s linear infinite}`;document.head.appendChild(st)})();
 async function mecHash(c){const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(c));return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('').slice(0,32)}
-function supportModal(){const has=(S.evFrames||[]).includes('mecene');modal(`<button class="x" data-a="close" aria-label="Fermer">×</button><div class="h">☕ Soutenir le jeu</div>
+function supportModal(){const has=(S.evFrames||[]).includes('mecene');setTimeout(mecWall,50);modal(`<button class="x" data-a="close" aria-label="Fermer">×</button><div class="h">☕ Soutenir le jeu</div>
   <p class="sub">Royaumes d'Éther est <b>gratuit</b> et le restera. Si tu aimes le jeu, tu peux faire un petit don sur itch.io : ça aide à continuer les mises à jour 💜</p>
-  <div class="mecbox"><div class="fav frm-mecene mecav">${myAv()}</div><div><b>Cadre « Mécène »</b><br><span class="muted" style="font-size:12.5px">Après ton don, tu reçois un <b>code Mécène</b> par e-mail. Entre-le ici pour débloquer ce cadre exclusif.</span></div></div>
+  <div class="mecbox"><div class="fav frm-mecene mecav">${myAv()}</div><div><b>Pack Mécène</b><br><span class="muted" style="font-size:12.5px">Après ton don, tu reçois un <b>code Mécène</b> par e-mail. Entre-le ici pour débloquer :</span></div></div>
+  <div class="mecgift">${MEC_GIFTS.map(g=>'<span>'+g+'</span>').join('')}</div><div id="mecwall" class="mecwall"></div>
   <a class="btn pro" href="${ITCH_DON}" target="_blank" rel="noopener" style="width:100%;margin-top:10px;display:flex;justify-content:center;text-decoration:none">☕ Faire un don sur itch.io</a>
   ${has?'<p class="sub" style="text-align:center;margin-top:10px">✅ Tu es Mécène du royaume. Merci !</p>':`<div class="row" style="gap:6px;margin-top:10px"><input id="meccode" class="tx" data-noi18n placeholder="MECENE-XXXX-XXXX-XXXX" maxlength="30" style="flex:1;min-width:0;text-transform:uppercase"><button class="btn" data-a="mecok">Valider</button></div>`}
-  <p class="muted" style="font-size:11.5px;margin-top:10px">Le don est libre et ne donne aucun avantage en combat, seulement le cadre. Paiement géré par itch.io. Si tu es mineur, demande à un parent.</p>`)}
+  <p class="muted" style="font-size:11.5px;margin-top:10px">Le don est libre, même 1 € débloque tout le pack. Paiement géré par itch.io. Si tu es mineur, demande à un parent.</p>`)}
 document.addEventListener('click',async e=>{const b=e.target.closest('[data-a="support"],[data-a="mecok"]');if(!b)return;e.preventDefault();e.stopPropagation();
   if(b.dataset.a==='support'){supportModal();return}
   const c=String(($('#meccode')||{}).value||'').trim().toUpperCase().replace(/\s+/g,'');if(!c)return;b.disabled=true;
@@ -19,8 +20,30 @@ document.addEventListener('click',async e=>{const b=e.target.closest('[data-a="s
     if(!NET.on||!NET.db){toast('Connecte-toi à internet pour valider ton code.');b.disabled=false;return}
     const ref=NET.db.doc('mecene/'+h);const s=await ref.get();if(s.exists){const d=s.data();if(d&&d.pid!==NET.pid){toast('Ce code a déjà été utilisé.');b.disabled=false;return}}
     else await ref.set({pid:NET.pid,n:S.name||'',t:Date.now()});
-    unlockFrame('mecene');S.frame='mecene';NET.lastPush='';try{schedulePush()}catch(er){}save();closeModal();render();toast('💜 Merci ! Cadre « Mécène » débloqué et équipé.')}
+    mecReward()}
   catch(er){toast('Erreur, réessaie dans un instant.');b.disabled=false}},true);
 {const fl=frameList;frameList=function(){const L=fl.apply(this,arguments);return L.filter(f=>f!=='mecene'||frameUnlocked(f)).concat(!L.includes('mecene')&&frameUnlocked('mecene')?['mecene']:[])}}
 {const sm=settingsModal;settingsModal=function(){sm.apply(this,arguments);try{const m=document.querySelector('#ovl .modal');if(m&&!m.querySelector('[data-a=support]')){const lb=m.querySelector('.langbox');const h='<button class="btn supbtn" data-a="support" style="width:100%;margin:0 0 10px">☕ Soutenir le jeu · cadre Mécène</button>';if(lb)lb.insertAdjacentHTML('afterend',h);else m.insertAdjacentHTML('afterbegin',h)}}catch(e){}}}
 try{const P=PATCH.find(x=>x.v===30);if(P)P.items.push("☕ <b>Soutenir le jeu</b> : le jeu est maintenant sur itch.io ! Dans ⚙️ Paramètres, tu peux faire un petit don (totalement libre) et recevoir le cadre exclusif « Mécène » 💜")}catch(e){}
+
+/* --- le Pack Mécène --- */
+const MEC_GIFTS=['🖼️ Cadre animé « Mécène »','🏷️ Titre « Mécène du Royaume »','💎 3 000 gemmes','✦ 10 éclats légendaires',"🌟 3 éclats d'ultra-évolution",'🎟️ 10 tickets d\'invocation','💰 5 M d\'or','💜 Ton nom sur le Mur des Mécènes'];
+TITLES.push({k:'mecene',n:'Mécène du Royaume',c:'#ffb84a',d:'Soutenir le jeu (code Mécène)',ok:()=>frameUnlocked('mecene')});
+{const tc=ttChip;ttChip=function(k){const h=tc(k);return k==='mecene'?h.replace('class="ttchip"','class="ttchip ttmec"'):h}}
+function mecReward(){unlockFrame('mecene');S.frame='mecene';
+  if(!S.mecGift){S.mecGift=Date.now();mail({x:"💜 Merci, Mécène du Royaume ! Grâce à toi, le royaume continue de grandir. Voici ton cadeau.",gems:3000,shards:10,gold:5e6});S.ush=(S.ush||0)+3;INV().pt+=10}
+  S.titles=S.titles||[];if(!S.titles.includes('mecene'))S.titles.push('mecene');S.title='mecene';
+  NET.lastPush='';try{schedulePush()}catch(er){}save();try{renderTop()}catch(e){}
+  try{news(Date.now(),`💜 ${S.name||'Un joueur'} est devenu Mécène du Royaume !`)}catch(e){}
+  try{if(NET.on&&NET.db)postMsg(`💜 ${S.name||'Un joueur'} est devenu Mécène du Royaume ! Merci pour ton soutien !`,true)}catch(e){}
+  const conf=[...Array(40)].map((_,i)=>`<i style="left:${(i*37)%100}%;animation-delay:${(i%10)*.12}s;background:${['#ffd84a','#ff8ac0','#b07aff','#58e4ff','#fff'][i%5]}"></i>`).join('');
+  modal(`<div class="mecwin"><div class="mecconf">${conf}</div><div class="mecstar">💜</div><div class="mecttl">MERCI, MÉCÈNE !</div>
+   <div class="mecava"><div class="fav frm-mecene mecav">${myAv()}</div></div><div style="margin:6px 0 2px">${ttChip('mecene')}</div>
+   <p class="sub" style="text-align:center">Grâce à toi, Royaumes d'Éther peut continuer à grandir. Voici ton pack :</p>
+   <div class="mecgift">${MEC_GIFTS.map((g,i)=>`<span style="animation-delay:${.3+i*.12}s">${g}</span>`).join('')}</div>
+   <p class="muted" style="font-size:12px;text-align:center;margin-top:8px">Les gemmes, éclats et l'or t'attendent dans ta 📮 boîte aux lettres.</p>
+   <button class="btn pro" data-a="close" style="width:100%;margin-top:10px">Merci ! 💜</button></div>`);
+  try{UIS.legend&&UIS.legend()}catch(e){}}
+async function mecWall(){const el=$('#mecwall');if(!el)return;try{if(!NET.on||!NET.db||!NET.db.collection)return;const sn=await NET.db.collection('mecene').limit(60).get();const N=[...new Set(sn.docs.map(d=>d.data().n).filter(Boolean))];
+  if(!N.length){el.innerHTML='<div class="mwh">💜 Mur des Mécènes</div><span class="muted">Sois le premier !</span>';return}
+  el.innerHTML=`<div class="mwh">💜 Mur des Mécènes · ${N.length}</div>`+N.map(n=>`<b>${esc(n)}</b>`).join('')}catch(e){}}

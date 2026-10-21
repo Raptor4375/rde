@@ -10,3 +10,17 @@
 .mecav{position:relative;width:54px;height:54px;flex:none;border-radius:18%;overflow:visible}
 .mecav svg,.mecav img{width:100%;height:100%;border-radius:18%}
 .supbtn{background:linear-gradient(90deg,#ffd84a,#ff8ac0)!important;color:#2a0a1a!important;font-weight:800}
+.mecgift{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px}
+.mecgift span{font-size:11.5px;font-weight:700;padding:4px 9px;border-radius:99px;background:rgba(255,216,74,.13);border:1px solid rgba(255,216,74,.35);animation:mecin .5s both}
+@keyframes mecin{from{opacity:0;transform:translateY(8px) scale(.9)}to{opacity:1;transform:none}}
+.mecwall{margin-top:8px;font-size:12px;display:flex;flex-wrap:wrap;gap:4px 8px;align-items:center}.mecwall:empty{display:none}
+.mecwall .mwh{width:100%;font-weight:800;font-size:12.5px}.mecwall b{color:#ffd84a}
+.ttchip.ttmec{background:linear-gradient(90deg,#ffd84a,#ff8ac0,#b07aff,#ffd84a);background-size:300% 100%;animation:ttmec 3s linear infinite;box-shadow:0 0 8px rgba(255,138,192,.6)}
+@keyframes ttmec{to{background-position:300% 0}}
+.mecwin{position:relative;text-align:center;overflow:hidden}
+.mecconf{position:absolute;inset:0;pointer-events:none}.mecconf i{position:absolute;top:-10px;width:7px;height:11px;border-radius:2px;animation:mecfall 2.4s ease-in infinite}
+@keyframes mecfall{to{transform:translateY(560px) rotate(540deg);opacity:.2}}
+.mecstar{font-size:46px;animation:mecpop .7s cubic-bezier(.2,1.6,.4,1) both}
+@keyframes mecpop{from{transform:scale(0) rotate(-40deg)}to{transform:none}}
+.mecttl{font-weight:900;font-size:26px;letter-spacing:.04em;background:linear-gradient(90deg,#ffd84a,#ff8ac0,#b07aff);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 2px 8px rgba(255,138,192,.5))}
+.mecava{display:flex;justify-content:center;margin-top:10px}.mecava .mecav{width:84px;height:84px}
