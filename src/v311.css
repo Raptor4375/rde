@@ -1,0 +1,8 @@
+.trbtn{background:none;border:0;padding:0 4px;margin-left:2px;font-size:13px;opacity:.65;cursor:pointer;vertical-align:middle;color:inherit}
+.trbtn:hover{opacity:1}
+.dmb .trbtn{display:inline-block}
+.langbox{margin:4px 0 12px;padding:10px;border-radius:14px;background:rgba(124,92,255,.12)}
+.langh{font-weight:800;font-size:13px;margin-bottom:8px}
+.langg{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.lgb{justify-content:flex-start;text-align:left;font-size:12px}
+.lgb.on{outline:2px solid var(--a,#7c5cff);font-weight:800}

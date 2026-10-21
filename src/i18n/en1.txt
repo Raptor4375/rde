@@ -1,0 +1,520 @@
+! A rarity above Legendary (stats ×#). Its ultimate
+# % ATK to all ·
+# % ATK to one enemy and keeps # energy ·
+# % of the meta
+# % and weakens ·
+# % and stuns everyone ·
+# % defeated
+# %, +# energy and +# % ATK to the team ·
+# %, stuns, revives and heals the team. Sometimes Aléa
+# + title.
+# Warriors: +# % ATK for the whole team · #: # %
+# M HP left
+# Mages: +# % skill damage · #: # %
+# Supports: heals and shields +# % · #: # %
+# Tanks: the whole team takes −# % damage · #: # %
+# Marksmen: +# % speed for the whole team · #: # %
+# cards
+# cards of # % ·
+# matching cards.
+# cards in a row, mixed suits.
+# different classes: +# % HP and ATK
+# fighters
+# and
+# fragments
+# gems
+# chips
+# days
+# k / # k HP · Leaf Storm
+# k / # k HP · it keeps its wounds between your attacks
+# k power
+# k power ·
+# k wagered
+# k gold
+# k gold (grows with your progress).
+# k per bet. Winnings drop at the end of the round.
+# wagered
+# exclusive levels per faction
+# new monsters
+October #, #
+# gold
+# different pairs.
+# tiers
+# guild coins for the guild shop.
+# points
+# pts
+# pts · power # · gain ≈ +#
+# rare · # common
+# rare · # common
+# summon tickets
+# raid tickets, # arena tickets and # guild attack.
+# · semis
+# · final
+# · quarters
+# · winner
+# shard
+# ultra shard
+# legendary shard.
+# ultra shards
+# legendary shards
+#, Jack, Queen, King, Ace of the same suit: the perfect hand!
+#, gold and gear. The top # also wins
+#-#-# = JACKPOT
+#. Abyss of the Void
+#. Sunken City
+#. Ash Desert
+#. Sylvan Forest
+#. The Last Hand
+#. The Masked One's Hand
+#. The Masquerade Ball
+#. The Bridge of Stars
+#. The Return of the Raven
+#. The Broken Hourglasses
+#. Putrid Swamp
+#. Frozen Peaks
+#. Meadows of Awakening
+#. Celestial Ruins
+#. Throne of Chaos
+#. Ignis Volcano
+#th of # · # win · # loss
+#️⃣#️⃣ + other
+(# % chance to throw a #nd card).
+(CGI)
+(FRO)
+(GOB)
+(AI)
+(INS)
+(OPH)
+(TPI)
+(Tower, Pro Pass, premium pass, casino).
+(up to celestial) is shown on their profile and in the arena.
+(tier #),
+(Events → Sky War).
++ Put up for sale
++# % HP and ATK · with
++# % HP · with
++# % crit · with
++# % ATK for the whole team
++# % pass XP
++# % gold
++# % HP, ATK and DEF
++# % crit chance for Assassins
++# % skill damage
++# % stats
++# % speed · with
++# level ·
++# energy at the start
++# energy at the start · with
+, Pro Pass at #.
+, full screen, and play it
+, the only one who ever changed a written future, and
+, an AI, also plays in the kingdom. Write
+, to install on your phone, no Claude account needed:
+, ultra shards and Fortuna herself. Ends in # days.
+. Current bonus:
+. Ends in # days.
+. Fragments of this hero:
+. Win or lose, every chip wagered counts.
+. The hand decides the effect:
+. The threads of fate rewrite themselves.
+. Stuns make the difference.
+. Recommended power from # k to # k.
+. You'll be able to
+: Deals #% ATK to all enemies.
+: each star raises the chance of rolling a #.
+: hits the whole team and poisons it.
+: cards you didn't keep are replaced. You only get
+: you get # cards.
+: a sealed letter from the Grand Herald with the news and
+: sell and buy gear with other players.
+@Claude
+AAAA
+PVP ARENA
+ASSASSIN
+ATK
+Home, night, casino, podium, fights, bosses and events
+Buy
+Buy chips (#/# today)
+Buy and sell gear
+Kingdom news
+Opponents
+Affinities
+Face the
+Fight
+Add a #
+Add
+Add to « Main team »
+Akira_#
+Aléa
+Aléa Starry Dealer
+Aléa Chance Incarnate
+Aléa Master of Fate
+Aléa full body
+Aléa the Masked Gambler
+Aléa, the Masked Gambler
+Serious but chill vibe.
+Friends
+Friends · #
+Friends, hearts and requests
+Upgrade gear right from the hero's sheet
+Upgrade a piece of gear # times
+Upgrade the whole team in one tap
+Older notes
+Summon animation
+Fully remade animations
+Exclusive animations
+Announcement # of #
+Guild announcements
+Player announcements
+Anti-heal: all heals
+Raid lair
+Seasonal boss lair
+Gain preview
+Archdemon
+Silver
+Weapons
+Arena
+Ashka Ash Queen
+Assassin
+Assassin: +# % crit chance for Assassins
+Assassins +# %
+Assassins:
+Have a seat, Bearer. Here, I deal the cards.
+Astrée, the Star Weaver
+Tip: during Halloween,
+Guild attack
+Attack
+Attack a boss
+Basic attacks, impacts, interface
+Special attacks
+Reach stage #
+Reach Diamond rank in the arena
+Reach Legend rank
+Every night's program
+Resting
+None
+No curse (they start at floor #)
+Aurel of Silver
+Sticker #
+GG sticker
+GO! sticker
+GRR sticker
+LOL sticker
+THANKS sticker
+OOPS sticker
+RIP sticker
+WOW sticker
+♥ sticker
+Other candy
+With Plume and Aléa · #/# chapters · 💗 # · ⚔️ #
+Adventure
+Adventurer
+Have # friends
+BANNER OF THE WEEK · LEGENDARY
+PERMANENT BANNER · LEGENDARY
+Fortuna banner
+Bankruptcy
+Barbarossa
+Recommended base: a Tank up front and a Support.
+Bastien Lance-Iron
+Library
+Library
+War report
+Blackjack, roulette, slot machine
+Bors the Anvil
+Boss
+Guild boss
+Guild boss (week)
+Raid boss
+Raid bosses and records
+Seasonal boss
+Seasonal boss · autumn · level #
+World boss
+Single boss: single-target or multi-hit skills
+Much chattier bots
+Boots
+Reinforced boots
+Worn boots
+Shields
+Guild purse
+Shop
+Halloween shop (# candy)
+Mailbox
+Bram
+Bram the Guard
+Bram the Guard full body
+Brann Red-Anvil
+Arms crossed
+Three of a kind
+Bronze
+Bronze III
+Sound effects
+Brunhild Fortress
+Post office
+Redrawn buildings
+Builder
+Let's go!
+CAR
+CGI
+COMMON
+ULTIMATE SKILL · TRIGGERS AT # ENERGY
+Exclusive animated profile frame.
+Exclusive frame
+« Royal Table » frame
+« Ether Storm » frame
+Frames
+Calix the Astrologer
+Capital
+Ether Capital
+Four of a kind
+Hidden card
+High card
+Barracks
+Hero barracks
+Casino
+Fortuna's Casino
+Fortuna's Casino: counter (# chips)
+Helmet
+Runic helmet
+Worn helmet
+Cassian Rifleman
+Arcane Circle
+Raging Mushroom
+Champion of Chaos
+Change opponents
+Change my picture
+Change my profile picture
+Chaos
+Chapter #
+Chapter # · 🔒 level #
+Every hero has a voice and lines
+Every day at midnight (in
+Each ultra-evolution gives
+Celestial Charge
+Chimera
+Choose
+Choose your bet
+Choose your battlefield.
+Choose your bet
+Pick a mission below
+Choupette
+Ranking
+Tower ranking
+Hero ranking · Arena
+Hero ranking · Adventure
+Hero ranking · Guild boss
+Hero ranking · Raid · Gorgath
+Hero ranking · Raid · Ignir
+Hero ranking · Raid · Sylphéa
+Kingdom ranking
+Kingdom rankings
+Rankings, friends, chat, mail and achievements.
+Claude
+Claude joins the kingdom
+Claude ×#
+Celestial chest
+Expedition chest
+Gold chest
+Gear chest
+Guild chest
+Daily chest
+Legendary chest
+Rare chest
+Super rare chest
+Epic chest
+Paste the code and confirm.
+Collection
+Hero collection
+Ether Colossus
+Arena fights
+Long fights: heals and shields
+Fight
+Start the adventure
+Common
+Item comparer
+Build « Main team »
+The Dealer's counter
+Daily login
+Conqueror of the Void
+Conquer the Dungeon of Echoes
+Conquer the dungeon # times
+For gold
+For gems
+Fully redrawn hero bodies
+Corvin, the Faceless King
+Flush
+Shield Bash
+Poker Strike
+Mute all sound
+Crown
+Frost Fangs
+Starry Dealer
+Dealer
+Scarlet Crypt · ⏱️ # min ·
+Create this team for Arena
+Create this team for Adventure
+Create this team for Guild boss
+Create this team for Raid · Gorgath
+Create this team for Raid · Ignir
+Create this team for Raid · Sylphéa
+Create or edit your teams
+Heart of Light
+Blade Dance
+Dante_X
+Dante_X ×#
+Semi-finals
+Semi-finals · power # k · your odds ≈ # %
+Last numbers
+Diamond
+Diane
+Available!
+Available today
+Available this week
+Deal
+Deal · #
+Dungeon
+Dungeon of Echoes
+Dorn Rockbreaker
+Two pair
+Draconis
+Shadow Dragon
+Drakhar
+Drakhar the Wyrm
+Draven Bloodlance
+Drogo#
+Duplicate
+DEF
+From # h, for # days
+Unlocks the premium track:
+Unlock the Pro Pass ·
+Unlock Premium ·
+Beginners welcome, we have fun.
+Daily challenges
+Devouring
+EXCLUSIVE
+Efficiency by mode
+She poisons the whole team: shields and cleanse.
+Elyra Dawnsong
+Emojis and stickers
+Emperor Malgor
+Emperor Malgor (boss)
+Poisons the whole team. Shields help a lot.
+In progress
+Online · # k · The Ether Guardians
+Online · frame None
+# more today
+# more this week
+Mutual help and tips to progress.
+Reach the arena top #
+Send
+Send # hearts to your friends
+Send to all (#)
+E.g. The Mattress Knights
+Ezra
+CLOSED
+FRO
+Easy
+Weakness:
+Weakness: Warriors +# %
+Weakness: Mages +# %
+Weakness: Marksmen +# %
+World boss rift
+Make # donations to the guild village
+Do # summons
+Do # slot machine spins
+Roll #-#-# with Fortuna
+Talk to Bram the Guard
+Talk to Fortuna the Dealer
+Talk to Kaze Ghost-Blade
+Talk to Solaris the Sun King
+Talk to Valkyr the Valkyrie
+Place your bets
+Fen Bark
+Closes in # days
+Close
+Closed · opens at # h
+Proud
+Ends in
+Ends in # days (October # at midnight)
+Final
+Finish in the world boss top #
+Finish the story by banishing the Void
+Finish the story by saving Corvin
+Flash
+Found your guild
+Found ·
+Founded by real players like you and your friends.
+Fountain
+Forge
+Fusion forge
+Forge, inventory and trade.
+Forge a legendary item
+Fortuna
+Fortuna Jackpot
+Fortuna the Dealer
+Fortuna the Dealer full body
+Ultra-evolved Fortuna: the Celestial Roulette
+Hits random enemies # times (#% ATK per hit).
+Hits very hard in an area. You need sturdy tanks.
+Freya Quickshield
+Full house
+Fuse a piece of gear
+Funfair
+GUARDIAN
+GG
+GO!
+GOB
+GRR
+WARRIOR
+Win # fights
+Win # adventure fights
+Win # blackjack hands
+Win # poker hands
+Earn pass XP
+Win a weekly tournament
+Gloves
+Worn gloves
+Obsidian Guard
+Keep the good cards
+Gaia Mother-Root
+Gems: open the shop
+Gems, open the shop
+Goblin Raider
+Gorgath the Devourer
+Gorm Thickhide
+Ash Chasm · ⏱️ # h ·
+Grak Red-Axe
+Your guild's great hall
+Town square
+Free
+Grizzly
+Big hero step up
+Gros_Bill
+Grumm Wall
+Sky War (Angels)
+Sky War (Demons)
+Sky War: take the capital
+Warrior
+Warriors +# %
+Guild
+Competitive guild. Boss every day, mandatory.
+Chill guild, no pressure.
+Guilds
+Competitive guilds
+Player guilds
+Kingdom guilds
+Manage teams
+Halloween: # candy or top #
+Halloween invades the kingdom 🎃
+Hask Icebreaker
+Hilda Rampart
+Hero stories
+Creeping Horror
+Round of 16
+Hero of the week (Valkyr the Valkyrie)
+Other players' heroes
+Kingdom heroes
+Full-body heroes
+Ultra heroes in battle
+AI
+INS
