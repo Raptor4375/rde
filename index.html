@@ -47,7 +47,7 @@ window.claude={use:async k=>{if(k==='db'||k==='user'){try{const F=await window.R
 window.RDEF();
 })();
 </script>
-<script>window.RDE_V='20261022222753';if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));</script>
+<script>window.RDE_V='20261022223117';if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));</script>
 </head><body>
 <title>RDE · Royaumes d'Éther</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -13975,11 +13975,11 @@ const ASKRX=/\?|\b(comment|pourquoi|quel|quelle|quels|quelles|lequel|laquelle|c'
 {const db=dmBrain;dmBrain=function(raw){TIP_OK=/(galer|bloqu|conseil|aide|help|astuce)/i.test(String(raw||''));try{return db.apply(this,arguments)}finally{TIP_OK=false}}}
 
 /* ================= Marché d'Halloween : renouvelé chaque jour + éclats d'ultra ================= */
-HWS.push({k:'ush',n:"Éclat d'ultra-évolution",d:"Pour ultra-évoluer un légendaire ★★★.",c:40000,lim:2,ic:'🌟',give:()=>{S.ush=(S.ush||0)+1}});
+HWS.push({k:'ush',n:"25 éclats d'ultra-évolution",d:"De quoi ultra-évoluer un légendaire ★★★.",c:40000,lim:1,ic:'🌟',give:()=>{S.ush=(S.ush||0)+25}});
 {const it=HWS.find(x=>x.k==='leg');if(it)it.ic='👑'}
 {const ev=EV;EV=function(){const E=ev.apply(this,arguments);try{const d=today();if(E.shopD!==d){const keep={};if(E.shop&&E.shop.frame)keep.frame=E.shop.frame;E.shop=keep;E.shopD=d}}catch(e){}return E}}
 {const hs=hwShop;hwShop=function(){return hs.apply(this,arguments)+`<p class="muted" style="font-size:12.5px;margin:8px 0 0;text-align:center">🔄 Le marché se renouvelle <b>chaque jour à minuit</b> (sauf le cadre).</p>`}}
-try{const P=PATCH.find(x=>x.v===30);if(P)P.items.push("🎃 <b>Marché d'Halloween</b> : il se renouvelle maintenant chaque jour à minuit, et propose des <b>éclats d'ultra-évolution</b> (40 000 bonbons).")}catch(e){}
+try{const P=PATCH.find(x=>x.v===30);if(P)P.items.push("🎃 <b>Marché d'Halloween</b> : il se renouvelle maintenant chaque jour à minuit, et propose un pack de <b>25 éclats d'ultra-évolution</b> (40 000 bonbons).")}catch(e){}
 
 /* ================= DÉMARRAGE ================= */
 (function init(){
