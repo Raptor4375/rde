@@ -47,7 +47,7 @@ window.claude={use:async k=>{if(k==='db'||k==='user'){try{const F=await window.R
 window.RDEF();
 })();
 </script>
-<script>window.RDE_V='20261025202026';if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));</script>
+<script>window.RDE_V='20261025233012';if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));</script>
 </head><body>
 <title>RDE · Royaumes d'Éther</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -2520,19 +2520,19 @@ html.scrl *,html.scrl *::before,html.scrl *::after{animation-play-state:paused!i
 /* le vieux film : sépia, couleurs à peine visibles, grain, rayures, vignette, léger tremblement */
 #sgov.fbmode .sgbg,#sgov.fbmode .sgstage{filter:sepia(.78) saturate(.38) contrast(1.12) brightness(1.06);transition:filter .6s}
 #sgov .sgbg,#sgov .sgstage{transition:filter .6s}
-#sgov.fbmode::before{content:'';position:absolute;inset:-20px;z-index:3;pointer-events:none;opacity:.22;mix-blend-mode:multiply;
+#sgov.fbmode::before{content:'';position:absolute;inset:-20px;z-index:3;pointer-events:none;opacity:.16;will-change:transform;
  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .35 0 0 0 0 .28 0 0 0 0 .18 0 0 0 .9 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
  animation:fbgrain .5s steps(4) infinite}
 #sgov.fbmode::after{content:'';position:absolute;inset:0;z-index:3;pointer-events:none;
  background:linear-gradient(90deg,transparent 0 18%,rgba(255,250,230,.35) 18.2%,transparent 18.5%,transparent 63%,rgba(40,30,20,.35) 63.15%,transparent 63.4%),radial-gradient(ellipse at 50% 45%,transparent 45%,rgba(40,26,10,.75) 100%);
- animation:fbscratch 1.7s steps(6) infinite,fbflick .18s infinite alternate}
+ animation:fbscratch 1.7s steps(6) infinite}
 @keyframes fbgrain{0%{transform:translate(0,0)}25%{transform:translate(-8px,6px)}50%{transform:translate(6px,-4px)}75%{transform:translate(-4px,-8px)}100%{transform:translate(0,0)}}
 @keyframes fbscratch{0%{background-position:0 0,0 0}20%{background-position:-60px 0,0 0}40%{background-position:90px 0,0 0}60%{background-position:-20px 0,0 0}80%{background-position:140px 0,0 0}100%{background-position:30px 0,0 0}}
 @keyframes fbflick{from{opacity:.92}to{opacity:1}}
 #sgov.fbmode .sgbox{background:rgba(44,34,20,.92)!important;border-color:#c8a860!important;box-shadow:0 0 0 2px rgba(200,168,96,.4),0 10px 30px rgba(0,0,0,.5)}
 #sgov.fbmode .sgtext{color:#f4e8c8;font-style:italic}
 #sgov.fbmode .sgchip{background:rgba(60,46,26,.85);color:#f4e8c8}
-#sgov.fbmode .sgstage{animation:fbjit 4s infinite}
+
 @keyframes fbjit{0%,96%,100%{transform:none}97%{transform:translate(1px,-1px)}98%{transform:translate(-1px,1px)}}
 .fbtitle{position:absolute;inset:0;z-index:5;display:grid;place-items:center;pointer-events:none;background:rgba(30,20,8,.55);animation:fbt 2.6s ease forwards}
 .fbtitle span{font:34px/1.1 'Lilita One',Georgia,serif;color:#f4e8c8;letter-spacing:.04em;text-shadow:0 2px 0 #3a2a14,0 0 20px rgba(0,0,0,.6);padding:10px 22px;border-top:2px solid #c8a860;border-bottom:2px solid #c8a860;font-style:italic}
@@ -14589,13 +14589,17 @@ SAGA.push(
   outroA:[['roi',"Vous… vous vous souvenez de moi ? Du vrai moi ?"],
    ['plume',"Du garçon qui riait avec les hiboux. Du Porteur qui voulait protéger tout le monde. Oui, Éryndel."],
    ['narr',"La couronne de cendre se fend. La flamme volée s'échappe et rentre doucement dans le Cœur d'Éther, comme un oiseau qui rentre au nid."],
+   ['eryndel',"Ah… Sans la flamme, je sens les mille ans me rattraper. C'est elle qui me gardait en vie. Elle seule."],
+   ['plume',"Éryndel… tes mains…"],
+   ['narr',"Ses doigts deviennent de la cendre. Puis ses bras, sa couronne, son visage. Grain par grain, le vent emporte le Premier Porteur."],
    ['eryndel',"Merci, Plume. Merci, Porteur. Je n'avais pas peur de mourir… j'avais peur d'être oublié."],
-   ['narr',"Éryndel devient une lumière douce, qui monte vers le ciel. Une nouvelle étoile apparaît, juste à côté de la Seconde Étoile."]],
+   ['narr',"Il ne reste plus rien de lui sur le trône. Seulement, très haut dans le ciel, une petite lumière qui s'allume, juste à côté de la Seconde Étoile."]],
   outroB:[['narr',"La couronne de cendre éclate en mille morceaux. La flamme volée s'en échappe et file vers le Cœur d'Éther."],
-   ['roi',"Ma flamme… Sans elle, je… je redeviens… moi."],
+   ['roi',"Ma flamme… NON ! Rendez-la-moi ! Sans elle, mille ans vont… vont…"],
+   ['narr',"Sa peau grise se fendille comme du charbon. La flamme volée était la seule chose qui le maintenait en vie depuis mille ans."],
    ['eryndel',"Je suis désolé, Plume. Pour la tour. Pour Aldric. Pour tout."],
    ['plume',"Va en paix, Éryndel. Je raconterai ton histoire. C'était promis."],
-   ['narr',"Éryndel s'efface comme une braise qui s'endort. Là où il était assis, il ne reste qu'une petite plume grise."]]});
+   ['narr',"Le Roi de Cendre s'effondre en un tas de cendres froides. Le vent les disperse sur le désert. Là où il était assis, il ne reste qu'une petite plume grise."]]});
 (function(){const C=SAGA[19];const epi=[['narr',"Quelques jours plus tard, dans la Bibliothèque des Hiboux…"],['plume',"Porteur ! Viens vite ! Sous la statue du Grand Aldric… il y avait ÇA."],['narr',"Un œuf. Un œuf de hibou, tout chaud, gardé intact sous la pierre pendant mille ans."],['plume',"Je ne suis plus la dernière… Hou… Hou hou ! Je vais être une grande sœur !"],['narr',"Fin du troisième livre. Merci, Porteur !"]];C.outroA=C.outroA.concat(epi);C.outroB=C.outroB.concat(epi)})();
 SAGA_SCENE.push(11,6,3,8,9,10);
 LORE_CHARS.push({k:'eryndel',n:'Éryndel, le Premier Porteur',r:"Premier Porteur du Cœur d'Éther",ch:14,d:"Il y a mille ans, le Cœur l'a choisi parce qu'il voulait protéger les autres. Mais il a eu peur d'être oublié, et il a volé la flamme du Cœur."},
@@ -14922,6 +14926,26 @@ roiCinematic=function(done){let o=document.getElementById('sgcine');if(o)o.remov
    <button class="btn p cn-go">⚔️ Affronter le Roi de Cendre</button><button class="cn-skip">Passer ⏭</button>`;
   document.body.appendChild(o);try{const g=sfxBus(.35,6000);if(g){const t=AU.ctx.currentTime;try{SND.zap(g,t+1.2)}catch(e){}[2.9,3.3].forEach(d=>{try{SND.boom(g,t+d,1.3)}catch(e){}})}}catch(e){}
   const fin=()=>{o.remove();sagaMode(false);done&&done()};o.querySelector('.cn-go').onclick=e=>{e.stopPropagation();fin()};o.querySelector('.cn-skip').onclick=e=>{e.stopPropagation();fin()}};
+
+/* ================= fluidité : images de héros figées, vieux film plus léger, orchestre plus léger ================= */
+/* 1) Les héros dessinés en image (chargement, dialogues) : on retire leurs petites animations internes,
+      invisibles à cette taille mais coûteuses (décors des légendaires, horloges, braises…). */
+const BTIC=new Map();
+function svgStill(s){return String(s).replace(/<animate(Transform|Motion)?\b[^>]*\/>/g,'').replace(/<animate(Transform|Motion)?\b[^>]*>[\s\S]*?<\/animate(Transform|Motion)?>/g,'')}
+btImg=function(id,u){const k=id+'_'+(u||0);let v=BTIC.get(k);if(v)return v;try{v='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svgStill(heroBody(HEROES[id],u)))}catch(e){v=''}BTIC.set(k,v);return v};
+/* 2) Vieux film : pendant un souvenir, le décor et les personnages s'arrêtent de bouger (le filtre sépia n'a plus à
+      être recalculé à chaque image), et le grain ne se mélange plus avec un mode coûteux. */
+{const ss=sagaShow;sagaShow=function(){const r=ss.apply(this,arguments);try{const o=document.getElementById('sgov');if(o){const fb=o.classList.contains('fbmode');o.querySelectorAll('svg').forEach(s=>{try{if(fb)s.pauseAnimations();else s.unpauseAnimations()}catch(e){}})}}catch(e){}return r}}
+/* 3) Orchestre plus léger pour les téléphones (moins d'oscillateurs par note, même son général). */
+INS.strings=function(o,t,m,d,v){const c=AU.ctx,f=mtof(m),g=c.createGain(),lp=c.createBiquadFilter(),end=t+d+.6;lp.type='lowpass';lp.Q.value=.5;lp.frequency.setValueAtTime(1000,t);lp.frequency.linearRampToValueAtTime(2200,t+Math.min(.6,d));
+  for(const dt of[-10,10]){const s=c.createOscillator();s.type='sawtooth';s.frequency.value=f;s.detune.value=dt;s.connect(lp);s.start(t);s.stop(end)}
+  lp.connect(g);g.connect(o);const a=Math.min(.35,d*.4),pk=v*.075;g.gain.setValueAtTime(.0001,t);g.gain.linearRampToValueAtTime(pk,t+a);g.gain.setValueAtTime(pk,t+Math.max(a,d-.05));g.gain.linearRampToValueAtTime(.0001,end)};
+INS.spicc=function(o,t,m,d,v){const c=AU.ctx,f=mtof(m),g=c.createGain(),lp=c.createBiquadFilter(),s=c.createOscillator();lp.type='lowpass';lp.Q.value=1.2;lp.frequency.setValueAtTime(3200,t);lp.frequency.exponentialRampToValueAtTime(900,t+.15);
+  s.type='sawtooth';s.frequency.value=f;s.connect(lp);s.start(t);s.stop(t+.22);lp.connect(g);g.connect(o);g.gain.setValueAtTime(.0001,t);g.gain.linearRampToValueAtTime(v*.15,t+.008);g.gain.exponentialRampToValueAtTime(.0003,t+.2)};
+try{delete SONGC.roi}catch(e){}
+/* le chargement avait été dessiné avec les anciennes images animées : on le redessine avec les images figées */
+(function(){try{if(BOOT.done)return;const b=document.getElementById('boot');const rr=b&&b.querySelector('.b2.bs3');if(!rr)return;const st=rr.querySelector('#b2start'),bar=rr.querySelector('.bt-bar i'),w=bar?bar.style.width:'';
+  const tmp=document.createElement('div');tmp.innerHTML=btSceneSaga3();const n=tmp.firstElementChild;if(!n)return;if(st)n.appendChild(st);const nb=n.querySelector('.bt-bar i');if(nb&&w)nb.style.width=w;rr.replaceWith(n)}catch(e){}})();
 
 /* ================= DÉMARRAGE ================= */
 (function init(){

@@ -125,13 +125,17 @@ SAGA.push(
   outroA:[['roi',"Vous… vous vous souvenez de moi ? Du vrai moi ?"],
    ['plume',"Du garçon qui riait avec les hiboux. Du Porteur qui voulait protéger tout le monde. Oui, Éryndel."],
    ['narr',"La couronne de cendre se fend. La flamme volée s'échappe et rentre doucement dans le Cœur d'Éther, comme un oiseau qui rentre au nid."],
+   ['eryndel',"Ah… Sans la flamme, je sens les mille ans me rattraper. C'est elle qui me gardait en vie. Elle seule."],
+   ['plume',"Éryndel… tes mains…"],
+   ['narr',"Ses doigts deviennent de la cendre. Puis ses bras, sa couronne, son visage. Grain par grain, le vent emporte le Premier Porteur."],
    ['eryndel',"Merci, Plume. Merci, Porteur. Je n'avais pas peur de mourir… j'avais peur d'être oublié."],
-   ['narr',"Éryndel devient une lumière douce, qui monte vers le ciel. Une nouvelle étoile apparaît, juste à côté de la Seconde Étoile."]],
+   ['narr',"Il ne reste plus rien de lui sur le trône. Seulement, très haut dans le ciel, une petite lumière qui s'allume, juste à côté de la Seconde Étoile."]],
   outroB:[['narr',"La couronne de cendre éclate en mille morceaux. La flamme volée s'en échappe et file vers le Cœur d'Éther."],
-   ['roi',"Ma flamme… Sans elle, je… je redeviens… moi."],
+   ['roi',"Ma flamme… NON ! Rendez-la-moi ! Sans elle, mille ans vont… vont…"],
+   ['narr',"Sa peau grise se fendille comme du charbon. La flamme volée était la seule chose qui le maintenait en vie depuis mille ans."],
    ['eryndel',"Je suis désolé, Plume. Pour la tour. Pour Aldric. Pour tout."],
    ['plume',"Va en paix, Éryndel. Je raconterai ton histoire. C'était promis."],
-   ['narr',"Éryndel s'efface comme une braise qui s'endort. Là où il était assis, il ne reste qu'une petite plume grise."]]});
+   ['narr',"Le Roi de Cendre s'effondre en un tas de cendres froides. Le vent les disperse sur le désert. Là où il était assis, il ne reste qu'une petite plume grise."]]});
 (function(){const C=SAGA[19];const epi=[['narr',"Quelques jours plus tard, dans la Bibliothèque des Hiboux…"],['plume',"Porteur ! Viens vite ! Sous la statue du Grand Aldric… il y avait ÇA."],['narr',"Un œuf. Un œuf de hibou, tout chaud, gardé intact sous la pierre pendant mille ans."],['plume',"Je ne suis plus la dernière… Hou… Hou hou ! Je vais être une grande sœur !"],['narr',"Fin du troisième livre. Merci, Porteur !"]];C.outroA=C.outroA.concat(epi);C.outroB=C.outroB.concat(epi)})();
 SAGA_SCENE.push(11,6,3,8,9,10);
 LORE_CHARS.push({k:'eryndel',n:'Éryndel, le Premier Porteur',r:"Premier Porteur du Cœur d'Éther",ch:14,d:"Il y a mille ans, le Cœur l'a choisi parce qu'il voulait protéger les autres. Mais il a eu peur d'être oublié, et il a volé la flamme du Cœur."},
