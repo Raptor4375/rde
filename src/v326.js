@@ -4,7 +4,9 @@
    Le Roi de Cendre : armure d'obsidienne veinée de lave, ailes de plumes de hibou calcinées (les plumes des
    Gardiens qu'il a trahis), couronne de cendre en flammes, halo de runes, cape brûlée et l'épée de la Flamme volée. */
 Object.assign(ERY_LOOK,['#f2d2b6','#e8c060','#f4ead8','#d8a830','#c89a40','#7a4a20','bg:dawn back:cape+sword hair:bangs hat:circlet eyes:normal mouth:smile body:tunic ear:human']);
-Object.assign(ROI_LOOK,['#a8a09a','#2a2624','#1a1614','#3a302a','#4a1a0e','#ff6a1a','bg:ember back:cape+greatsword hb:long hair:wild face:soot eyes:glow mouth:neutral body:armor ear:human']);
+Object.assign(ROI_LOOK,['#a8a09a','#2a2624','#1a1614','#3a302a','#4a1a0e','#ff6a1a','bg:ember back:cape+greatsword hb:long hair:wild hat:ashcrown face:soot eyes:glow mouth:neutral body:armor ear:human']);
+HAT.ashcrown=L=>`<path d="M35 34L36 15L41.5 25L46 10L50 22L54 10L58.5 25L64 15L65 34Q50 37 35 34Z" fill="#14100e" stroke="#ff6a1a" stroke-width="1.1" stroke-linejoin="round"/><circle cx="50" cy="29" r="2.2" fill="#ff6a1a"><animate attributeName="fill" values="#ff6a1a;#fff2d0;#ff6a1a" dur="1.6s" repeatCount="indefinite"/></circle>`+
+  [[36,15],[46,10],[54,10],[64,15],[50,22]].map(([x,y],i)=>`<path d="M${x} ${y+1}q${i%2?2.6:-2.6} -6 0 -10q${i%2?-3.4:3.4} 5 0 10Z" fill="${i%2?'#ffb21a':'#ff6a1a'}"><animate attributeName="opacity" values=".45;1;.45" dur="${.8+i*.18}s" repeatCount="indefinite"/></path>`).join('');
 const ERYX={};try{for(const k of Object.keys(window.BODYC3||{}))if(/^20[12]_/.test(k))delete BODYC3[k];delete ERYC.eryndel;delete ERYC.roi}catch(e){}
 function eryFeathers(side,col,tip,burn){/* une aile de plumes de hibou, ancrée à l'épaule */
   const sx=side<0?(burn?48:52):(burn?112:108),dir=side;let s='';
@@ -31,14 +33,11 @@ function eryxBuild(k,base){let s=base;if(!s)return s;
       ${eryFeathers(-1,'#2a2420','#ff6a1a',1)}${eryFeathers(1,'#2a2420','#ff6a1a',1)}
       <path d="M46 210Q40 150 54 90L106 90Q120 150 114 210Z" fill="#1a1210" opacity=".55"/></g>`;
     /* la couronne de cendre, les veines de lave, la cape qui brûle, les braises */
-    const crown=`<g class="roicrown"><g><animateTransform attributeName="transform" type="translate" values="0 0;0 -1.5;0 0" dur="3s" repeatCount="indefinite"/>
-      <path d="M66 26L67 12L71 19L75 6L80 16L85 6L89 19L93 12L94 26Q80 30 66 26Z" fill="#14100e" stroke="#ff6a1a" stroke-width="1.2"/><circle cx="80" cy="22" r="2.2" fill="#ff6a1a"><animate attributeName="fill" values="#ff6a1a;#fff2d0;#ff6a1a" dur="1.6s" repeatCount="indefinite"/></circle>
-      ${[[67,12],[75,6],[85,6],[93,12],[80,16]].map(([x,y],i)=>`<path d="M${x} ${y+1}q${i%2?3:-3} -7 0 -12q${i%2?-4:4} 6 0 12Z" fill="${i%2?'#ffb21a':'#ff6a1a'}"><animate attributeName="opacity" values=".45;1;.45" dur="${.8+i*.18}s" repeatCount="indefinite"/></path>`).join('')}</g></g>`;
     const veins=`<g class="roiveins" fill="none" stroke-linecap="round"><path d="M80 74L76 86L82 96L78 108M70 80L64 92L68 104M90 80L96 92L92 104M74 118L80 126L86 118" stroke="#ff6a1a" stroke-width="1.3"><animate attributeName="stroke" values="#ff6a1a;#ffb21a;#ff6a1a" dur="1.8s" repeatCount="indefinite"/><animate attributeName="opacity" values=".55;1;.55" dur="1.8s" repeatCount="indefinite"/></path></g>`;
     const hem=`<g class="roihem">${[...Array(9)].map((_,i)=>`<path d="M${46+i*8.6} 206q${i%2?3:-3} -9 0 -16q${i%2?-4:4} 8 0 16Z" fill="${i%2?'#ffb21a':'#ff6a1a'}" opacity=".8"><animate attributeName="opacity" values=".3;.9;.3" dur="${.9+i*.13}s" repeatCount="indefinite"/></path>`).join('')}</g>`;
     const emb=[...Array(12)].map((_,i)=>`<circle r="${(1+i%3*.5).toFixed(1)}" fill="${i%3?'#ffb21a':'#ff6a1a'}"><animateMotion dur="${(3+i%4*.7).toFixed(1)}s" begin="${(-i*.4).toFixed(1)}s" repeatCount="indefinite" path="M${30+i*9} 220Q${40+(i*13)%80} 120 ${20+(i*17)%120} -8"/><animate attributeName="opacity" values="0;1;0" dur="${(3+i%4*.7).toFixed(1)}s" begin="${(-i*.4).toFixed(1)}s" repeatCount="indefinite"/></circle>`).join('');
     const a=s.indexOf('</defs>');if(a>=0)s=s.slice(0,a+7)+back+s.slice(a+7);
-    s=s.replace(/<\/svg>\s*$/,veins+hem+crown+emb+'</svg>')}
+    s=s.replace(/<\/svg>\s*$/,veins+hem+emb+'</svg>')}
   else{
     /* Éryndel jeune : cape de plumes blanches, pendentif du Cœur, lumière d'aube */
     const back=`<g class="erybk"><defs><radialGradient id="exH"><stop offset="0" stop-color="#fff2c0" stop-opacity=".6"/><stop offset="1" stop-color="#fff2c0" stop-opacity="0"/></radialGradient></defs><circle cx="80" cy="60" r="70" fill="url(#exH)"/>
