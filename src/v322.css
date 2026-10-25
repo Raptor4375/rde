@@ -1,0 +1,35 @@
+/* Coup de Poker en ultra */
+.pkm.ux .pkc{width:44px;height:63px}
+.pkm.ux .pkcards{gap:4px}
+.pkm.ux .pkf i{font-size:24px}.pkm.ux .pkf b{font-size:13px}
+.pkm.ux .pktt span{color:#fff}
+.pksub{font:900 9.5px var(--fb);letter-spacing:.14em;color:#ff9ae8;margin-top:2px}
+.pkm.ux1 .pkbox{background:radial-gradient(ellipse at 50% 40%,#1a4a8a,#0a1a4a 72%);box-shadow:0 0 0 5px #ffd84a,0 0 0 10px #1a2250,0 0 60px rgba(255,216,74,.45)}
+.pkm.ux2 .pkbox{background:radial-gradient(ellipse at 50% 40%,#6a1a8a,#2a0a4a 72%);box-shadow:0 0 0 5px #ffd84a,0 0 0 9px #ff5ad8,0 0 0 13px #2a0a4a,0 0 70px rgba(255,90,216,.55)}
+.pkm.ux3 .pkbox{background:radial-gradient(ellipse at 30% 30%,#ff5ad8 0,transparent 40%),radial-gradient(ellipse at 70% 70%,#5a8aff 0,transparent 45%),radial-gradient(ellipse at 50% 40%,#3a0a5a,#0a0418 75%);box-shadow:0 0 0 5px #ffd84a,0 0 0 9px #fff6c0,0 0 0 13px #ff5ad8,0 0 90px rgba(255,216,74,.7);animation:pkglow 1s ease-in-out infinite alternate}
+.pkc.burn{animation:pkburn calc(.6s/var(--sp)) ease-in forwards!important}
+@keyframes pkburn{to{transform:translateY(-70px) rotate(-40deg) scale(.6);opacity:0;filter:hue-rotate(60deg) brightness(2)}}
+.pkf.jk{background:linear-gradient(135deg,#ffd84a,#ff5ad8,#7a5aff,#58e4d3,#ffd84a);background-size:300% 300%;animation:mythbg 1.2s linear infinite;color:#140c24}
+.pkc.jkgo .pkin{animation:pkjk calc(.6s/var(--sp)) ease-in-out}
+@keyframes pkjk{0%{transform:scale(1)}40%{transform:scale(1.35) rotate(10deg);filter:brightness(2)}60%{transform:scaleX(0) scale(1.2)}100%{transform:none}}
+.pkres small{display:block;font:900 10px var(--fb);letter-spacing:.08em;color:#ffd84a;margin-top:2px;text-shadow:none}
+.pkallin{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) rotate(-12deg) scale(3);font:52px 'Lilita One',sans-serif;color:#ffd84a;-webkit-text-stroke:2px #140c24;text-shadow:0 0 30px #ff5ad8,0 6px 0 #d1263b;opacity:0;pointer-events:none}
+.pkm.allon .pkallin{animation:pkallin calc(.7s/var(--sp)) cubic-bezier(.2,1.5,.4,1) forwards}
+@keyframes pkallin{0%{opacity:0;transform:translate(-50%,-50%) rotate(-12deg) scale(3)}60%{opacity:1;transform:translate(-50%,-50%) rotate(-12deg) scale(.9)}100%{opacity:1;transform:translate(-50%,-50%) rotate(-12deg) scale(1)}}
+/* cut-in ultra */
+.alcut.alux1 .alw{background:linear-gradient(115deg,#1a2250 0 50%,transparent 50%)}
+.alcut.alux1 .alb{background:linear-gradient(115deg,transparent 50%,#0a0a20 50%)}
+.alcut.alux2 .alw{background:linear-gradient(115deg,#2a0a4a 0 50%,transparent 50%)}
+.alcut.alux2 .alb{background:linear-gradient(115deg,transparent 50%,#ff5ad8 50%)}
+.alcut.alux3 .alw{background:linear-gradient(115deg,#0a0418 0 50%,transparent 50%)}
+.alcut.alux3 .alb{background:linear-gradient(115deg,transparent 50%,#ffd84a 50%)}
+.alcut.alux .altxt b{color:#fff6c0;-webkit-text-stroke:1.5px #140c24;text-shadow:3px 3px 0 #ff5ad8,0 0 20px #ffd84a}
+.alcut.alux3 .altxt b{font-size:64px;color:#ffd84a;text-shadow:4px 4px 0 #d1263b,0 0 30px #ff5ad8}
+.alcut.alux .altxt small{color:#ffd84a}
+.alcut.alux .altxt em{font:800 11px var(--fb);color:#fff;font-style:normal;margin-top:6px;text-shadow:0 1px 3px #000}
+.alcut.alux .alfan span:nth-child(6){background:linear-gradient(135deg,#ffd84a,#ff5ad8,#7a5aff);color:#fff}
+.alcut .alstars{position:absolute;inset:0;background-image:radial-gradient(2px 2px at 20% 30%,#fff,transparent),radial-gradient(2px 2px at 70% 20%,#ffd84a,transparent),radial-gradient(1.5px 1.5px at 40% 70%,#fff,transparent),radial-gradient(2px 2px at 85% 60%,#ff9ae8,transparent),radial-gradient(1.5px 1.5px at 10% 80%,#fff,transparent);animation:alw calc(.35s/var(--sp)) ease-out both}
+.alcut.alux .alfig svg{filter:drop-shadow(0 0 22px rgba(255,216,74,.85))}
+.alcut.alux .alfan span{left:60px;animation-name:alfan7}
+@keyframes alfan7{from{transform:rotate(0) translateY(40px);opacity:0}to{transform:rotate(calc((var(--k) - 3)*13deg));opacity:1}}
+.pkm.ux .pktt{font-size:11.5px}

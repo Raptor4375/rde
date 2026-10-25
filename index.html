@@ -47,7 +47,7 @@ window.claude={use:async k=>{if(k==='db'||k==='user'){try{const F=await window.R
 window.RDEF();
 })();
 </script>
-<script>window.RDE_V='20261023110840';if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));</script>
+<script>window.RDE_V='20261025133213';if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));</script>
 </head><body>
 <title>RDE · Royaumes d'Éther</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -2481,6 +2481,41 @@ body.sgmode>*:not(#sgov):not(#sgcine):not(#ovl):not(#battle):not(#toast):not(.to
 .lobby>img.lbimg{position:absolute;inset:0;width:100%;height:100%;display:block;object-fit:cover;pointer-events:none;user-select:none;-webkit-user-drag:none}
 html.scrl .lobby>img.lbst+img.lbanim{visibility:hidden}
 html.scrl *,html.scrl *::before,html.scrl *::after{animation-play-state:paused!important}
+/* Coup de Poker en ultra */
+.pkm.ux .pkc{width:44px;height:63px}
+.pkm.ux .pkcards{gap:4px}
+.pkm.ux .pkf i{font-size:24px}.pkm.ux .pkf b{font-size:13px}
+.pkm.ux .pktt span{color:#fff}
+.pksub{font:900 9.5px var(--fb);letter-spacing:.14em;color:#ff9ae8;margin-top:2px}
+.pkm.ux1 .pkbox{background:radial-gradient(ellipse at 50% 40%,#1a4a8a,#0a1a4a 72%);box-shadow:0 0 0 5px #ffd84a,0 0 0 10px #1a2250,0 0 60px rgba(255,216,74,.45)}
+.pkm.ux2 .pkbox{background:radial-gradient(ellipse at 50% 40%,#6a1a8a,#2a0a4a 72%);box-shadow:0 0 0 5px #ffd84a,0 0 0 9px #ff5ad8,0 0 0 13px #2a0a4a,0 0 70px rgba(255,90,216,.55)}
+.pkm.ux3 .pkbox{background:radial-gradient(ellipse at 30% 30%,#ff5ad8 0,transparent 40%),radial-gradient(ellipse at 70% 70%,#5a8aff 0,transparent 45%),radial-gradient(ellipse at 50% 40%,#3a0a5a,#0a0418 75%);box-shadow:0 0 0 5px #ffd84a,0 0 0 9px #fff6c0,0 0 0 13px #ff5ad8,0 0 90px rgba(255,216,74,.7);animation:pkglow 1s ease-in-out infinite alternate}
+.pkc.burn{animation:pkburn calc(.6s/var(--sp)) ease-in forwards!important}
+@keyframes pkburn{to{transform:translateY(-70px) rotate(-40deg) scale(.6);opacity:0;filter:hue-rotate(60deg) brightness(2)}}
+.pkf.jk{background:linear-gradient(135deg,#ffd84a,#ff5ad8,#7a5aff,#58e4d3,#ffd84a);background-size:300% 300%;animation:mythbg 1.2s linear infinite;color:#140c24}
+.pkc.jkgo .pkin{animation:pkjk calc(.6s/var(--sp)) ease-in-out}
+@keyframes pkjk{0%{transform:scale(1)}40%{transform:scale(1.35) rotate(10deg);filter:brightness(2)}60%{transform:scaleX(0) scale(1.2)}100%{transform:none}}
+.pkres small{display:block;font:900 10px var(--fb);letter-spacing:.08em;color:#ffd84a;margin-top:2px;text-shadow:none}
+.pkallin{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) rotate(-12deg) scale(3);font:52px 'Lilita One',sans-serif;color:#ffd84a;-webkit-text-stroke:2px #140c24;text-shadow:0 0 30px #ff5ad8,0 6px 0 #d1263b;opacity:0;pointer-events:none}
+.pkm.allon .pkallin{animation:pkallin calc(.7s/var(--sp)) cubic-bezier(.2,1.5,.4,1) forwards}
+@keyframes pkallin{0%{opacity:0;transform:translate(-50%,-50%) rotate(-12deg) scale(3)}60%{opacity:1;transform:translate(-50%,-50%) rotate(-12deg) scale(.9)}100%{opacity:1;transform:translate(-50%,-50%) rotate(-12deg) scale(1)}}
+/* cut-in ultra */
+.alcut.alux1 .alw{background:linear-gradient(115deg,#1a2250 0 50%,transparent 50%)}
+.alcut.alux1 .alb{background:linear-gradient(115deg,transparent 50%,#0a0a20 50%)}
+.alcut.alux2 .alw{background:linear-gradient(115deg,#2a0a4a 0 50%,transparent 50%)}
+.alcut.alux2 .alb{background:linear-gradient(115deg,transparent 50%,#ff5ad8 50%)}
+.alcut.alux3 .alw{background:linear-gradient(115deg,#0a0418 0 50%,transparent 50%)}
+.alcut.alux3 .alb{background:linear-gradient(115deg,transparent 50%,#ffd84a 50%)}
+.alcut.alux .altxt b{color:#fff6c0;-webkit-text-stroke:1.5px #140c24;text-shadow:3px 3px 0 #ff5ad8,0 0 20px #ffd84a}
+.alcut.alux3 .altxt b{font-size:64px;color:#ffd84a;text-shadow:4px 4px 0 #d1263b,0 0 30px #ff5ad8}
+.alcut.alux .altxt small{color:#ffd84a}
+.alcut.alux .altxt em{font:800 11px var(--fb);color:#fff;font-style:normal;margin-top:6px;text-shadow:0 1px 3px #000}
+.alcut.alux .alfan span:nth-child(6){background:linear-gradient(135deg,#ffd84a,#ff5ad8,#7a5aff);color:#fff}
+.alcut .alstars{position:absolute;inset:0;background-image:radial-gradient(2px 2px at 20% 30%,#fff,transparent),radial-gradient(2px 2px at 70% 20%,#ffd84a,transparent),radial-gradient(1.5px 1.5px at 40% 70%,#fff,transparent),radial-gradient(2px 2px at 85% 60%,#ff9ae8,transparent),radial-gradient(1.5px 1.5px at 10% 80%,#fff,transparent);animation:alw calc(.35s/var(--sp)) ease-out both}
+.alcut.alux .alfig svg{filter:drop-shadow(0 0 22px rgba(255,216,74,.85))}
+.alcut.alux .alfan span{left:60px;animation-name:alfan7}
+@keyframes alfan7{from{transform:rotate(0) translateY(40px);opacity:0}to{transform:rotate(calc((var(--k) - 3)*13deg));opacity:1}}
+.pkm.ux .pktt{font-size:11.5px}
 </style>
 <div id="boot" role="status" aria-live="polite"><div class="bt-in"><div class="bt-logo" aria-hidden="true"><svg viewBox="0 0 120 120"><defs><linearGradient id="btg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8a6aff"/><stop offset="1" stop-color="#3a2a8a"/></linearGradient><linearGradient id="btgo" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff6c0"/><stop offset="1" stop-color="#e2a42c"/></linearGradient></defs><g class="bt-ring"><circle cx="60" cy="60" r="54" fill="none" stroke="#ffd84a" stroke-width="2" stroke-dasharray="4 9" opacity=".7"/><circle cx="60" cy="6" r="4" fill="#58e4d3"/><circle cx="114" cy="60" r="3" fill="#ffd84a"/><circle cx="60" cy="114" r="4" fill="#ff8ac0"/><circle cx="6" cy="60" r="3" fill="#fff"/></g><path d="M60 16L94 28L90 70Q84 92 60 104Q36 92 30 70L26 28Z" fill="url(#btg)" stroke="#140c24" stroke-width="3" stroke-linejoin="round"/><path d="M60 24L86 33L83 68Q78 86 60 96Q42 86 37 68L34 33Z" fill="none" stroke="url(#btgo)" stroke-width="3"/><path d="M60 38L69 56L60 82L51 56Z" fill="#58e4d3" stroke="#140c24" stroke-width="2.4" stroke-linejoin="round"/><path d="M60 38L60 82L51 56Z" fill="#b0fff4"/><path d="M60 30l2.4 5 5.4.6-4 3.7 1.1 5.3-4.9-2.7-4.9 2.7 1.1-5.3-4-3.7 5.4-.6z" fill="url(#btgo)" stroke="#140c24" stroke-width="1.2"/></svg></div><div class="bt-t">Royaumes<span>d'Éther</span></div><div class="bt-bar"><i></i></div><div class="bt-s" id="bts">Chargement…</div></div></div>
 
@@ -7724,7 +7759,7 @@ setInterval(()=>{try{mkBotTick()}catch(e){}},60000);
 setTimeout(()=>{try{mkBotTick()}catch(e){}},5000);
 
 /* ================= V17 : Tour de l'Infini, ultra-évolutions, Pass Pro, notes de mise à jour ================= */
-const GAME_V=30;
+const GAME_V=31;
 const USH='<svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><defs><linearGradient id="ushg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff7ae0"/><stop offset=".5" stop-color="#9a7aff"/><stop offset="1" stop-color="#58e4ff"/></linearGradient></defs><path d="M12 1.8L19.5 8.5L12 22.2L4.5 8.5Z" fill="url(#ushg)" stroke="#1a0a3a" stroke-width="1.3" stroke-linejoin="round"/><path d="M4.5 8.5H19.5M12 1.8L9 8.5L12 22.2L15 8.5Z" fill="none" stroke="#fff" stroke-width=".8" opacity=".75"/></svg>';
 const ROM=['','I','II','III'];
 
@@ -14068,6 +14103,234 @@ const LGA={56:['rake',78],57:['sun',86],59:['root',88],60:['maul',70],61:['wspea
    return t}catch(e){return s}}}
 (function(){try{for(const C of [window.BODYC3,typeof BODYC!=='undefined'?BODYC:null,typeof BODYC2!=='undefined'?BODYC2:null])if(C)Object.keys(C).forEach(k=>{const i=+k.split('_')[0];if(LGB[i])delete C[k]})}catch(e){}})();
 try{const P=PATCH.find(x=>x.v===30);if(P)P.items.push("👑 <b>Tous les légendaires</b> ont un nouveau look : un décor qui les représente (roulette de Fortuna, soleil de Solaris, arbre de Gaïa, montagnes de Titanor, runes de Valkyr, éclipse de Nyx, constellation d'Orion, ailes de Séraphine, œil de dragon de Drakhar, tourbillon de Léviathane) et une <b>arme signature</b>.")}catch(e){}
+
+/* ================= Ultra-évolutions : une forme unique par légendaire ================= */
+/* Avant, les légendaires se partageaient 4 formes (Céleste, Abyssale, Solaire, Astrale) : ailes d'ange,
+   yeux bleus… tout le monde se ressemblait. Chaque légendaire a maintenant SA forme, dans ses couleurs,
+   avec des accessoires qui lui ressemblent (et pas d'ailes d'ange pour ceux qui n'en ont pas besoin).
+   w : ce qu'on ajoute dans le dos (null = rien de plus), hat : le couvre-chef en forme II et III (null = on garde le sien),
+   h3 : la couleur des cheveux en forme III. */
+const UTH_H={
+ 56:{n:'Grande Croupière',m:'#150a10',s:'#ffd84a',a:'#d1263b',e:'#ffd84a',bg:'cards',w:null,hat:null,fx:'stars',c:'#ffd84a',c2:'#d1263b',h3:'#ff4a3a'},
+ 57:{n:'Astre Suprême',m:'#ff6a10',s:'#fff2a0',a:'#ff2a10',e:'#fff6c0',bg:'sun',w:null,hat:'suncrown',fx:'embers',c:'#ffd84a',c2:'#ff5a1a',h3:'#fff6c0'},
+ 58:{n:'Seigneur des Âges',m:'#2a1240',s:'#c9a24a',a:'#ffd84a',e:'#ffd84a',bg:'clock',w:null,hat:null,fx:'clockeye',c:'#ffd84a',c2:'#8a5aff',h3:'#f0e8ff'},
+ 59:{n:'Forêt Éternelle',m:'#24501a',s:'#a8e04a',a:'#ff8ac0',e:'#c8ff6a',bg:'flowers',w:'vines',hat:'antlers',fx:'vines',c:'#a8e04a',c2:'#ff8ac0',h3:'#7ad04a'},
+ 60:{n:'Cœur de Lave',m:'#3a302a',s:'#d0a050',a:'#ff6a1a',e:'#ffb21a',bg:'ember',w:'heavy-spike',hat:'crystals',fx:'embers',c:'#ff8a2a',c2:'#ffd84a',h3:'#ff6a1a'},
+ 61:{n:'Reine du Valhalla',m:'#2a2c3a',s:'#ffd84a',a:'#d1263b',e:'#ffd84a',bg:'storm',w:null,hat:null,fx:null,c:'#ffd84a',c2:'#d1263b',h3:'#fff0a0'},
+ 62:{n:"Impératrice de l'Éclipse",m:'#120820',s:'#b07aff',a:'#ff3a8a',e:'#ff4a8a',bg:'shadow',w:'wings-black',hat:'crown-black',fx:'stars',c:'#b07aff',c2:'#ff3a8a',h3:'#d8c0ff'},
+ 63:{n:'Chasseur Céleste',m:'#151a36',s:'#ffd84a',a:'#fff6dc',e:'#ffd84a',bg:'star',w:'cape',hat:null,fx:'constellation',c:'#ffd84a',c2:'#ff9a5a',h3:'#ffe9a0'},
+ 64:{n:'Aurore Sacrée',m:'#fff6ea',s:'#ffd84a',a:'#ff8ac0',e:'#ffd84a',bg:'dawn',w:null,hat:'halo',fx:'runes',c:'#ffd84a',c2:'#ff8ac0',h3:'#ffd8f0'},
+ 65:{n:'Wyrm Ancestral',m:'#2a0606',s:'#ff6a1a',a:'#ffd84a',e:'#ffd84a',bg:'flame',w:null,hat:'horns',fx:'embers',c:'#ff6a1a',c2:'#ffd84a',h3:'#ff6a1a'},
+ 66:{n:'Reine des Abysses',m:'#06302c',s:'#12a088',a:'#ffd84a',e:'#ffd84a',bg:'wave',w:null,hat:'shells',fx:'scales',c:'#2ad0b0',c2:'#ffd84a',h3:'#2ad0b0'}};
+{const ut=uthOf;uthOf=function(h){if(h&&UTH_H[h.i])return UTH_H[h.i];return ut.apply(this,arguments)}}
+{const ul=ultraLook;ultraLook=function(a,u,h){const T=h&&UTH_H[h.i];if(!T)return ul.apply(this,arguments);
+  const o={};a[6].split(' ').forEach(t=>{const i=t.indexOf(':');if(i>0)o[t.slice(0,i)]=t.slice(i+1)});
+  o.bg=T.bg;let back=o.back?o.back.split('+'):[];if(T.w){if(/^wings/.test(T.w))back=back.filter(x=>!/^wings/.test(x));if(!back.includes(T.w))back.unshift(T.w)}if(back.length)o.back=back.join('+');
+  const face=o.face?o.face.split(','):[];const head=o.head||'human';
+  if((head==='human'||head==='orc'||head==='spirit')&&!face.includes('blindfold')&&o.eyes!=='slit')o.eyes='glow';
+  if(u>=2){if(T.fx&&!face.includes(T.fx))face.push(T.fx);if(T.hat&&!/helm/.test(o.hat||''))o.hat=T.hat}
+  if(face.length)o.face=face.join(',');
+  return[a[0],u>=3?(T.h3||T.s):a[1],T.m,T.s,T.a,T.e,Object.entries(o).map(([k,v])=>k+':'+v).join(' ')]}}
+/* on vide les dessins et portraits ultra déjà en cache */
+(function(){try{for(const C of [window.BODYC3,typeof BODYC!=='undefined'?BODYC:null,typeof BODYC2!=='undefined'?BODYC2:null])if(C)Object.keys(C).forEach(k=>{const [i,u]=k.split('_');if(UTH_H[+i]&&+u>0)delete C[k]});
+  for(const k of Object.keys(PCACHE))if(/^U\d+_(\d+)$/.test(k)&&UTH_H[+k.split('_')[1]])delete PCACHE[k]}catch(e){}})();
+
+/* ================= Décors des légendaires (et d'Aléa), version soignée ================= */
+/* Chaque décor est unique et grandit avec les ultra-évolutions (comme la roulette de Fortuna qui gagne des cases). */
+const BX={
+ P:(cx,cy,r,deg)=>[cx+Math.cos(deg*Math.PI/180)*r,cy+Math.sin(deg*Math.PI/180)*r],
+ f:n=>(+n).toFixed(1),
+ spin:(cx,cy,dur,rev)=>`<animateTransform attributeName="transform" type="rotate" from="${rev?360:0} ${cx} ${cy}" to="${rev?0:360} ${cx} ${cy}" dur="${dur}s" repeatCount="indefinite"/>`,
+ bob:(dy,dur,b=0)=>`<animateTransform attributeName="transform" type="translate" values="0 0;0 ${-dy};0 0" dur="${dur}s" begin="${b}s" repeatCount="indefinite"/>`,
+ tw:(dur,b=0,lo=.25)=>`<animate attributeName="opacity" values="${lo};1;${lo}" dur="${dur}s" begin="${b}s" repeatCount="indefinite"/>`,
+ star4:(x,y,r,c)=>`<path d="M${x} ${y-r}L${x+r*.28} ${y-r*.28}L${x+r} ${y}L${x+r*.28} ${y+r*.28}L${x} ${y+r}L${x-r*.28} ${y+r*.28}L${x-r} ${y}L${x-r*.28} ${y-r*.28}Z" fill="${c}"/>`,
+ glow:(id,c,o=.7)=>`<radialGradient id="${id}"><stop offset="0" stop-color="${c}" stop-opacity="${o}"/><stop offset="1" stop-color="${c}" stop-opacity="0"/></radialGradient>`};
+const LGB2={
+/* ---------- Fortuna : la roulette qui gagne des cases à chaque forme ---------- */
+56:u=>{const n=[18,24,30,37][u],R=60,cx=80,cy=84,f=BX.f,id='lb56'+u;let w='';
+  for(let k=0;k<n;k++){const a0=k*360/n-90,a1=(k+1)*360/n-90,[x0,y0]=BX.P(cx,cy,R,a0),[x1,y1]=BX.P(cx,cy,R,a1),[xi0,yi0]=BX.P(cx,cy,R*.62,a0),[xi1,yi1]=BX.P(cx,cy,R*.62,a1);
+    const col=k===0?'#1f8a4a':k%2?'#c01f34':'#151015';w+=`<path d="M${f(xi0)} ${f(yi0)}L${f(x0)} ${f(y0)}A${R} ${R} 0 0 1 ${f(x1)} ${f(y1)}L${f(xi1)} ${f(yi1)}A${R*.62} ${R*.62} 0 0 0 ${f(xi0)} ${f(yi0)}Z" fill="${col}" stroke="#ffd84a" stroke-width=".5"/>`;
+    const [tx,ty]=BX.P(cx,cy,R*.82,(a0+a1)/2);w+=`<text x="${f(tx)}" y="${f(ty+1.6)}" font-size="${n>30?3.6:4.4}" font-weight="700" text-anchor="middle" fill="#fff" transform="rotate(${f((a0+a1)/2+90)} ${f(tx)} ${f(ty)})">${k}</text>`}
+  const studs=[...Array(u>=2?24:16)].map((_,k)=>{const [x,y]=BX.P(cx,cy,R+5,k*360/(u>=2?24:16));return`<circle cx="${f(x)}" cy="${f(y)}" r="1.5" fill="#fff6c0">${u>=3?BX.tw(1.2,k*.05):''}</circle>`}).join('');
+  const cone=[...Array(8)].map((_,k)=>{const [x,y]=BX.P(cx,cy,R*.5,k*45);return`<path d="M${cx} ${cy}L${f(x)} ${f(y)}" stroke="#ffd84a" stroke-width="1.4"/>`}).join('');
+  return`<defs><radialGradient id="${id}h"><stop offset="0" stop-color="#e8b84a"/><stop offset="1" stop-color="#7a4a10"/></radialGradient></defs><g opacity=".62">
+   <circle cx="${cx}" cy="${cy}" r="${R+9}" fill="#3a1a0a" stroke="#ffd84a" stroke-width="2.2"/>${u>=2?`<circle cx="${cx}" cy="${cy}" r="${R+14}" fill="none" stroke="#ffd84a" stroke-width="1" stroke-dasharray="3 3">${BX.spin(cx,cy,20,1)}</circle>`:''}${studs}
+   <g>${w}<circle cx="${cx}" cy="${cy}" r="${R*.62}" fill="url(#${id}h)" stroke="#ffd84a" stroke-width="1.6"/>${cone}<circle cx="${cx}" cy="${cy}" r="5" fill="#ffd84a" stroke="#7a4a10"/>${BX.spin(cx,cy,[26,20,15,11][u])}</g>
+   <g><circle cx="${cx}" cy="${cy-R+3}" r="2.6" fill="#fff"/>${BX.spin(cx,cy,[3,2.6,2.2,1.8][u],1)}</g></g>`},
+/* ---------- Solaris : le soleil, sa couronne et ses planètes ---------- */
+57:u=>{const cx=80,cy=74,id='lb57'+u,f=BX.f;const fl=[...Array(12)].map((_,k)=>{const a=k*30,[x1,y1]=BX.P(cx,cy,30,a-8),[x2,y2]=BX.P(cx,cy,48+(k%3)*6+u*4,a),[x3,y3]=BX.P(cx,cy,30,a+8);return`<path d="M${f(x1)} ${f(y1)}Q${f(x2)} ${f(y2)} ${f(x3)} ${f(y3)}" fill="url(#${id}f)"><animate attributeName="opacity" values=".55;1;.55" dur="${2+k%4*.5}s" repeatCount="indefinite"/></path>`}).join('');
+  const orb=(rx,ry,dur,r,c,b)=>`<ellipse cx="${cx}" cy="${cy}" rx="${rx}" ry="${ry}" fill="none" stroke="#ffd84a" stroke-width=".5" opacity=".6"/><g><circle r="${r}" fill="${c}" stroke="#fff6c0" stroke-width=".6"/><animateMotion dur="${dur}s" begin="${b}s" repeatCount="indefinite" path="M${cx-rx} ${cy}a${rx} ${ry} 0 1 0 ${rx*2} 0a${rx} ${ry} 0 1 0 -${rx*2} 0"/></g>`;
+  const planets=[[64,18,9,3.4,'#ff8a3a',0],[72,24,13,2.6,'#5ad0ff',-4],[58,30,7,2.2,'#d0a0ff',-2],[78,14,16,3,'#ffd84a',-7]].slice(0,u+1).map(p=>orb(...p)).join('');
+  return`<defs><radialGradient id="${id}c"><stop offset="0" stop-color="#fff"/><stop offset=".35" stop-color="#fff2a0"/><stop offset=".75" stop-color="#ffb21a"/><stop offset="1" stop-color="#ff5a10"/></radialGradient>
+   <linearGradient id="${id}f" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffd84a"/><stop offset="1" stop-color="#ff5a10"/></linearGradient>${BX.glow(id+'g','#ffb21a',.8)}</defs>
+   <g opacity=".72"><circle cx="${cx}" cy="${cy}" r="${84+u*6}" fill="url(#${id}g)"/>${planets}<g>${fl}${BX.spin(cx,cy,40)}</g>
+   <circle cx="${cx}" cy="${cy}" r="32" fill="url(#${id}c)"><animate attributeName="r" values="31;34;31" dur="3s" repeatCount="indefinite"/></circle>${u>=3?`<circle cx="${cx}" cy="${cy}" r="40" fill="none" stroke="#fff6c0" stroke-width="1.2" stroke-dasharray="1 4">${BX.spin(cx,cy,12,1)}</circle>`:''}</g>`},
+/* ---------- Gaïa : l'arbre de vie ---------- */
+59:u=>{const id='lb59'+u;const canopy=[[80,30,34],[48,44,24],[112,44,24],[60,22,20],[100,22,20],[30,66,16],[130,66,16]];
+  const blos=[[44,40],[118,38],[70,16],[96,30],[30,62],[132,60],[58,58],[104,60],[80,8],[20,80],[140,82]].slice(0,4+u*2);
+  const petals=[...Array(3+u*2)].map((_,k)=>`<g><path d="M0 0Q3 -3 6 0Q3 3 0 0Z" fill="#ff9ad0"/><animateMotion dur="${6+k}s" begin="${-k*1.7}s" repeatCount="indefinite" path="M${20+k*23%120} -6Q${40+k*17%100} 60 ${10+k*31%140} 150"/><animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="3s" repeatCount="indefinite" additive="sum"/></g>`).join('');
+  return`<defs><linearGradient id="${id}t" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#3a2410"/><stop offset=".5" stop-color="#6a4420"/><stop offset="1" stop-color="#3a2410"/></linearGradient>
+   <radialGradient id="${id}l" cx="40%" cy="35%"><stop offset="0" stop-color="#9ae06a"/><stop offset="1" stop-color="#2a6a2a"/></radialGradient>${BX.glow(id+'g','#c8ff6a',.5)}</defs>
+   <g opacity=".72"><circle cx="80" cy="60" r="${70+u*8}" fill="url(#${id}g)"/>
+   <path d="M66 236Q70 150 72 110Q60 84 38 64M94 236Q90 150 88 110Q100 84 122 64M76 120Q78 80 80 40M84 110Q96 90 104 60M76 110Q64 90 58 58" stroke="url(#${id}t)" stroke-width="7" fill="none" stroke-linecap="round"/>
+   <path d="M66 226Q40 222 22 234M94 226Q120 222 140 234M72 230Q60 236 46 236" stroke="#4a2c14" stroke-width="4" fill="none" stroke-linecap="round"/>
+   ${canopy.map(([x,y,r],k)=>`<circle cx="${x}" cy="${y}" r="${r}" fill="url(#${id}l)" opacity="${.85-k*.05}"/>`).join('')}
+   ${[[38,64,40],[122,64,40],[58,58,30],[104,60,30]].map(([x,y,l],k)=>`<path d="M${x} ${y}q${k%2?3:-3} ${l/2} 0 ${l}" stroke="#4a9a3a" stroke-width="1.6" fill="none"><animateTransform attributeName="transform" type="rotate" values="-4 ${x} ${y};4 ${x} ${y};-4 ${x} ${y}" dur="${3+k}s" repeatCount="indefinite"/></path>`).join('')}
+   ${blos.map(([x,y],k)=>`<g>${[0,72,144,216,288].map(a=>`<ellipse cx="${x}" cy="${y-3}" rx="1.8" ry="3.2" fill="${u>=3&&k%2?'#ffd84a':'#ff9ad0'}" transform="rotate(${a} ${x} ${y})"/>`).join('')}<circle cx="${x}" cy="${y}" r="1.6" fill="#fff6c0"/>${BX.tw(2.4,k*.3,.6)}</g>`).join('')}
+   ${u>=2?`<g opacity=".8">${[...Array(10)].map((_,k)=>{const [x,y]=BX.P(80,84,78,k*36);return`<path d="M${BX.f(x)} ${BX.f(y)}q4 -6 0 -12q-4 6 0 12Z" fill="#9ae06a"/>`}).join('')}${BX.spin(80,84,40)}</g>`:''}
+   ${u>=3?[...Array(8)].map((_,k)=>`<circle r="1.4" fill="#e8ff7a"><animateMotion dur="${4+k%3}s" begin="${-k}s" repeatCount="indefinite" path="M${20+k*16} ${40+k%3*30}q10 -10 20 0t20 0"/>${BX.tw(1.5,k*.2,.2)}</circle>`).join(''):''}${petals}</g>`},
+/* ---------- Titanor : le volcan et les rochers flottants ---------- */
+60:u=>{const id='lb60'+u;const rocks=[[22,110,7],[140,100,8],[34,40,5],[128,34,6],[150,160,5],[10,170,6]].slice(0,3+u);
+  return`<defs><linearGradient id="${id}m" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6a625a"/><stop offset=".75" stop-color="#3a3430" stop-opacity=".8"/><stop offset="1" stop-color="#2a2420" stop-opacity="0"/></linearGradient>
+   <linearGradient id="${id}b" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4a4038"/><stop offset=".7" stop-color="#2a2420" stop-opacity=".7"/><stop offset="1" stop-color="#1a1410" stop-opacity="0"/></linearGradient>${BX.glow(id+'l','#ff6a1a',.8)}</defs>
+   <g opacity=".75"><path d="M-4 200L20 120L38 140L56 96L70 110L80 70L90 108L104 92L122 138L140 112L164 200Z" fill="url(#${id}b)"/>
+   <path d="M30 210L64 90L80 52L96 90L130 210Z" fill="url(#${id}m)" stroke="#8a8278" stroke-width="1"/>
+   <path d="M72 70L80 52L88 70L84 66L80 72L76 66Z" fill="${u>=1?'#ff8a2a':'#f4f0ea'}"/>
+   ${u>=1?`<circle cx="80" cy="50" r="${18+u*6}" fill="url(#${id}l)"><animate attributeName="r" values="${16+u*6};${22+u*6};${16+u*6}" dur="2.4s" repeatCount="indefinite"/></circle>
+     <path d="M80 70Q76 100 72 130Q70 150 66 170M80 70Q86 104 90 140" stroke="#ff6a1a" stroke-width="${1.4+u*.6}" fill="none" stroke-linecap="round"><animate attributeName="stroke-opacity" values=".5;1;.5" dur="1.8s" repeatCount="indefinite"/></path>`:''}
+   ${u>=2?[...Array(6)].map((_,k)=>`<circle r="${1.6+k%2}" fill="#ff9a3a"><animateMotion dur="${2+k*.4}s" begin="${-k*.5}s" repeatCount="indefinite" path="M${80+(k-3)*3} 52q${(k-3)*6} -30 ${(k-3)*14} -10"/>${BX.tw(1,k*.2,0)}</circle>`).join(''):''}
+   ${rocks.map(([x,y,r],k)=>`<g>${BX.bob(5,3+k*.6,-k)}<path d="M${x-r} ${y}L${x-r*.4} ${y-r}L${x+r*.7} ${y-r*.7}L${x+r} ${y+r*.2}L${x+r*.2} ${y+r}L${x-r*.7} ${y+r*.7}Z" fill="#7a7068" stroke="${u>=2?'#ff8a2a':'#5a5048'}" stroke-width=".9"/>${u>=3?`<path d="M${x-r*.4} ${y-r*.2}L${x+r*.3} ${y+r*.3}" stroke="#ffd84a" stroke-width=".8"/>`:''}</g>`).join('')}
+   ${u>=3?`<circle cx="80" cy="96" r="76" fill="none" stroke="#ff8a2a" stroke-width="1" stroke-dasharray="6 4" opacity=".7">${BX.spin(80,96,30)}</circle>`:''}</g>`},
+/* ---------- Valkyr : le bouclier viking, l'orage et le Bifröst ---------- */
+61:u=>{const id='lb61'+u,cx=80,cy=74,R=50,f=BX.f;
+  const planks=[-40,-24,-8,8,24,40].map(x=>`<rect x="${cx+x-8}" y="${cy-R}" width="16" height="${R*2}" fill="${(x/16)%2?'#7a4a24':'#8a5a2c'}"/>`).join('');
+  const runes='ᚠᚢᚦᚨᚱᚲᚷᚹᚺᚾᛁᛃ'.split('').map((r,k)=>{const [x,y]=BX.P(cx,cy,R-5,k*30-90);return`<text x="${f(x)}" y="${f(y+2.4)}" font-size="6.5" text-anchor="middle" fill="#ffd84a">${r}</text>`}).join('');
+  const bolt=(x,b)=>`<path d="M${x} 0L${x-6} 18L${x+2} 18L${x-5} 40" stroke="#fff6c0" stroke-width="1.6" fill="none" opacity="0"><animate attributeName="opacity" values="0;0;1;0;1;0" keyTimes="0;.8;.84;.88;.92;1" dur="5s" begin="${b}s" repeatCount="indefinite"/></path>`;
+  return`<defs><clipPath id="${id}c"><circle cx="${cx}" cy="${cy}" r="${R}"/></clipPath>${BX.glow(id+'g','#9ab0ff',.45)}<radialGradient id="${id}s"><stop offset="0" stop-color="#e8e8e8"/><stop offset="1" stop-color="#6a6a70"/></radialGradient></defs>
+   <g opacity=".72">${u>=3?`<g opacity=".55"><path d="M-4 150A84 84 0 0 1 164 150" stroke-width="6" fill="none" stroke="#ff5a5a"/><path d="M2 150A78 78 0 0 1 158 150" stroke-width="6" fill="none" stroke="#ffd84a"/><path d="M8 150A72 72 0 0 1 152 150" stroke-width="6" fill="none" stroke="#5ad07a"/><path d="M14 150A66 66 0 0 1 146 150" stroke-width="6" fill="none" stroke="#5aa0ff"/></g>`:''}
+   <ellipse cx="34" cy="22" rx="30" ry="12" fill="#3a4050"/><ellipse cx="126" cy="18" rx="32" ry="12" fill="#3a4050"/><ellipse cx="80" cy="10" rx="26" ry="10" fill="#4a5060"/>${bolt(30,0)}${bolt(132,2.4)}${u>=1?bolt(84,1.2):''}
+   <circle cx="${cx}" cy="${cy}" r="${R+8}" fill="url(#${id}g)"/>
+   ${[[-1,0],[1,0]].map(([s])=>`<g transform="rotate(${s*38} ${cx} ${cy})"><rect x="${cx-1.4}" y="${cy-R-26}" width="2.8" height="${R*2+52}" fill="#5a3a1a"/><path d="M${cx} ${cy-R-36}L${cx+5} ${cy-R-24}L${cx} ${cy-R-20}L${cx-5} ${cy-R-24}Z" fill="#d8dce8"/></g>`).join('')}
+   <g clip-path="url(#${id}c)">${planks}</g><circle cx="${cx}" cy="${cy}" r="${R}" fill="none" stroke="#5a5a62" stroke-width="5"/>${[...Array(16)].map((_,k)=>{const [x,y]=BX.P(cx,cy,R,k*22.5);return`<circle cx="${f(x)}" cy="${f(y)}" r="1.3" fill="#d8d8e0"/>`}).join('')}
+   ${runes}<circle cx="${cx}" cy="${cy}" r="11" fill="url(#${id}s)" stroke="#3a3a40" stroke-width="1.4"/>
+   ${u>=2?`<g transform="translate(${cx} ${cy}) scale(.32)" fill="none" stroke="#ffd84a" stroke-width="5">${[0,120,240].map(a=>`<path d="M0 -40L34 20L-34 20Z" transform="rotate(${a}) translate(0 10)"/>`).join('')}<animate attributeName="opacity" values=".5;1;.5" dur="2.6s" repeatCount="indefinite"/></g>`:''}</g>`},
+/* ---------- Nyx : l'éclipse ---------- */
+62:u=>{const id='lb62'+u,cx=80,cy=70,blood=u>=3;const bats=[...Array(2+u)].map((_,k)=>`<g><path d="M0 0Q-4 -4 -8 -1Q-6 0 -6 2Q-3 0 0 2Q3 0 6 2Q6 0 8 -1Q4 -4 0 0Z" fill="#0a0614"/><animateMotion dur="${7+k*2}s" begin="${-k*2}s" repeatCount="indefinite" path="M-10 ${30+k*24}Q80 ${k*20} 170 ${40+k*18}"/></g>`).join('');
+  const phases=u>=2?[...Array(8)].map((_,k)=>{const [x,y]=BX.P(cx,cy,64,k*45-90);const s=k/8;return`<g><circle cx="${BX.f(x)}" cy="${BX.f(y)}" r="5" fill="#d8d0ff"/><circle cx="${BX.f(x+(s<.5?-1:1)*10*(1-Math.abs(s*2-1)))}" cy="${BX.f(y)}" r="5" fill="#0a0614"/></g>`}).join(''):'';
+  return`<defs><radialGradient id="${id}k"><stop offset=".6" stop-color="${blood?'#ff2a4a':'#d8c8ff'}" stop-opacity=".9"/><stop offset=".75" stop-color="${blood?'#ff6a3a':'#b07aff'}" stop-opacity=".55"/><stop offset="1" stop-color="${blood?'#7a0a1a':'#3a1a7a'}" stop-opacity="0"/></radialGradient>${BX.glow(id+'g','#4a2a8a',.6)}</defs>
+   <g opacity=".78"><circle cx="${cx}" cy="${cy}" r="90" fill="url(#${id}g)"/>
+   ${[[18,20],[140,30],[24,120],[146,128],[60,8],[110,12],[8,70],[154,80]].map(([x,y],k)=>BX.star4(x,y,1.6+k%2,'#fff').replace('/>',`>${BX.tw(2+k%3*.6,k*.3)}</path>`)).join('')}
+   <circle cx="${cx}" cy="${cy}" r="${46+u*3}" fill="url(#${id}k)"><animate attributeName="r" values="${45+u*3};${50+u*3};${45+u*3}" dur="4s" repeatCount="indefinite"/></circle>
+   <circle cx="${cx}" cy="${cy}" r="30" fill="#07040e"/><path d="M${cx-30} ${cy}A30 30 0 0 1 ${cx+30} ${cy}" stroke="${blood?'#ff8a8a':'#fff'}" stroke-width="1.2" fill="none" opacity=".6"/>
+   ${phases?`<g>${phases}${BX.spin(cx,cy,60)}</g>`:''}${bats}</g>`},
+/* ---------- Orion : la constellation d'Orion dans une nébuleuse ---------- */
+63:u=>{const id='lb63'+u;const S=[[44,22,'#ffb07a',3.4],[116,26,'#fff',2.6],[70,74,'#fff',2.2],[80,70,'#fff',2.2],[90,66,'#fff',2.2],[50,128,'#fff',2.4],[118,124,'#a8d0ff',3.6],[80,8,'#fff',1.8]];
+  const L=[[0,2],[1,4],[2,3],[3,4],[2,5],[4,6],[0,7],[1,7]];
+  return`<defs><radialGradient id="${id}n" cx="40%" cy="40%"><stop offset="0" stop-color="#7a3a9a" stop-opacity=".7"/><stop offset=".5" stop-color="#2a3a8a" stop-opacity=".45"/><stop offset="1" stop-color="#0a0a2a" stop-opacity="0"/></radialGradient>
+   <radialGradient id="${id}n2" cx="70%" cy="60%"><stop offset="0" stop-color="#ff7a9a" stop-opacity=".4"/><stop offset="1" stop-color="#ff7a9a" stop-opacity="0"/></radialGradient></defs>
+   <g opacity=".8"><ellipse cx="72" cy="70" rx="86" ry="70" fill="url(#${id}n)"/><ellipse cx="100" cy="96" rx="50" ry="40" fill="url(#${id}n2)"/>
+   ${[...Array(24)].map((_,k)=>`<circle cx="${(k*41)%160}" cy="${(k*67)%170}" r="${.5+k%3*.3}" fill="#fff">${BX.tw(2+k%4,k*.2,.2)}</circle>`).join('')}
+   ${L.map(([a,b])=>`<line x1="${S[a][0]}" y1="${S[a][1]}" x2="${S[b][0]}" y2="${S[b][1]}" stroke="#c8d8ff" stroke-width=".7" stroke-dasharray="2 2" opacity=".8"/>`).join('')}
+   ${S.map(([x,y,c,r],k)=>`<g>${BX.star4(x,y,r*1.9,c)}<circle cx="${x}" cy="${y}" r="${r*.6}" fill="#fff"/>${BX.tw(2.2+k%3*.5,k*.25,.5)}</g>`).join('')}
+   <g opacity="0"><path d="M150 10L110 40" stroke="#fff" stroke-width="1.2" stroke-linecap="round"/><animate attributeName="opacity" values="0;0;1;0" keyTimes="0;.85;.9;1" dur="6s" repeatCount="indefinite"/><animateTransform attributeName="transform" type="translate" values="0 0;0 0;-30 22" keyTimes="0;.85;1" dur="6s" repeatCount="indefinite"/></g>
+   ${u>=2?`<g fill="none" stroke="#ffd84a" stroke-width=".9" opacity=".75"><ellipse cx="80" cy="84" rx="74" ry="22"/><ellipse cx="80" cy="84" rx="74" ry="22" transform="rotate(60 80 84)"/><ellipse cx="80" cy="84" rx="74" ry="22" transform="rotate(-60 80 84)"/>${BX.spin(80,84,50)}</g>`:''}
+   ${u>=3?`<circle cx="80" cy="84" r="78" fill="none" stroke="#ffd84a" stroke-width="2"/>${[...Array(12)].map((_,k)=>{const [x,y]=BX.P(80,84,78,k*30);return`<circle cx="${BX.f(x)}" cy="${BX.f(y)}" r="2" fill="#ffd84a"/>`}).join('')}`:''}</g>`},
+/* ---------- Séraphine : la rosace de cathédrale ---------- */
+64:u=>{const id='lb64'+u,cx=80,cy=74,f=BX.f;const cols=['#ff5a7a','#ffd84a','#5ad0a0','#7a8aff','#ff9ad0','#ffb21a'];
+  const ring=(r1,r2,n,off,op)=>[...Array(n)].map((_,k)=>{const a0=k*360/n+off,a1=(k+1)*360/n+off,am=(a0+a1)/2,[x0,y0]=BX.P(cx,cy,r1,a0),[x1,y1]=BX.P(cx,cy,r1,a1),[xm,ym]=BX.P(cx,cy,r2,am);
+    return`<path d="M${f(x0)} ${f(y0)}Q${f(BX.P(cx,cy,r2,a0)[0])} ${f(BX.P(cx,cy,r2,a0)[1])} ${f(xm)} ${f(ym)}Q${f(BX.P(cx,cy,r2,a1)[0])} ${f(BX.P(cx,cy,r2,a1)[1])} ${f(x1)} ${f(y1)}Z" fill="${cols[k%cols.length]}" opacity="${op}" stroke="#3a2a1a" stroke-width="1.6"/>`}).join('');
+  return`<defs>${BX.glow(id+'g','#fff2c0',.8)}<linearGradient id="${id}b" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff6d0" stop-opacity=".7"/><stop offset="1" stop-color="#fff6d0" stop-opacity="0"/></linearGradient></defs>
+   <g opacity=".7"><path d="M14 236V70Q14 6 80 -6Q146 6 146 70V236" fill="#2a2030" stroke="#c8a860" stroke-width="2.4"/><circle cx="${cx}" cy="${cy}" r="58" fill="url(#${id}g)"/>
+   <circle cx="${cx}" cy="${cy}" r="${u>=2?56:50}" fill="#3a2a1a"/>${u>=2?ring(44,56,24,0,.85):''}${ring(18,48,12,15,.9)}${ring(6,20,6,0,.95)}<circle cx="${cx}" cy="${cy}" r="6" fill="#ffd84a" stroke="#3a2a1a" stroke-width="1.4"/>
+   ${[...Array(5)].map((_,k)=>`<path d="M${cx-30+k*15} ${cy+30}L${cx-50+k*25} 236L${cx-34+k*25} 236Z" fill="url(#${id}b)">${BX.tw(3+k*.4,k*.5,.3)}</path>`).join('')}
+   ${u>=3?`<circle cx="${cx}" cy="${cy}" r="62" fill="none" stroke="#ffd84a" stroke-width="2.4"><animate attributeName="stroke-opacity" values=".4;1;.4" dur="2s" repeatCount="indefinite"/></circle>`:''}</g>`},
+/* ---------- Drakhar : l'œil du dragon ---------- */
+65:u=>{const id='lb65'+u,cx=80,cy=66,gold=u>=3;const scales=[...Array(7)].map((_,r)=>[...Array(10)].map((_,c)=>`<path d="M${c*18-4+(r%2)*9} ${120+r*14}q9 -10 18 0" fill="none" stroke="#5a1408" stroke-width="2"/>`).join('')).join('');
+  const embers=[...Array(6+u*3)].map((_,k)=>`<circle r="${1+k%3*.5}" fill="${k%2?'#ffd84a':'#ff6a1a'}"><animateMotion dur="${3+k%4}s" begin="${-k*.6}s" repeatCount="indefinite" path="M${(k*29)%160} 236Q${(k*47)%160} 140 ${(k*13)%160} 20"/>${BX.tw(1.4,k*.2,0)}</circle>`).join('');
+  return`<defs><radialGradient id="${id}i"><stop offset="0" stop-color="${gold?'#fff6c0':'#ffe08a'}"/><stop offset=".6" stop-color="${gold?'#ffd84a':'#ff8a1a'}"/><stop offset="1" stop-color="${gold?'#c87a10':'#a01a08'}"/></radialGradient>${BX.glow(id+'g','#ff4a1a',.6)}</defs>
+   <mask id="${id}m"><ellipse cx="80" cy="150" rx="84" ry="70" fill="url(#${id}mg)"/></mask><radialGradient id="${id}mg"><stop offset=".55" stop-color="#fff"/><stop offset="1" stop-color="#000"/></radialGradient>
+   <g opacity=".75"><g mask="url(#${id}m)"><rect x="-4" y="80" width="168" height="160" fill="#2a0804"/>${scales}</g><circle cx="${cx}" cy="${cy}" r="86" fill="url(#${id}g)"/>
+   <path d="M${cx-74} ${cy}Q${cx} ${cy-58} ${cx+74} ${cy}Q${cx} ${cy+58} ${cx-74} ${cy}Z" fill="#1a0402" stroke="#5a1408" stroke-width="4"/>
+   <g><ellipse cx="${cx}" cy="${cy}" rx="40" ry="40" fill="url(#${id}i)"/>${[...Array(16)].map((_,k)=>{const [x,y]=BX.P(cx,cy,38,k*22.5);return`<line x1="${cx}" y1="${cy}" x2="${BX.f(x)}" y2="${BX.f(y)}" stroke="#7a2a08" stroke-width=".7" opacity=".6"/>`}).join('')}
+    <ellipse cx="${cx}" cy="${cy}" rx="7" ry="34" fill="#0a0200"><animate attributeName="rx" values="7;3;7;7" keyTimes="0;.3;.6;1" dur="5s" repeatCount="indefinite"/></ellipse><ellipse cx="${cx-12}" cy="${cy-14}" rx="5" ry="3" fill="#fff" opacity=".6"/>
+    <animateTransform attributeName="transform" type="translate" values="0 0;-6 0;-6 0;5 0;0 0" keyTimes="0;.2;.5;.7;1" dur="7s" repeatCount="indefinite"/></g>
+   <path d="M${cx-74} ${cy}Q${cx} ${cy-58} ${cx+74} ${cy}" fill="none" stroke="#3a0a04" stroke-width="7"/>
+   ${u>=2?`<circle cx="${cx}" cy="${cy}" r="${64+u*4}" fill="none" stroke="#ff6a1a" stroke-width="3" stroke-dasharray="10 6">${BX.spin(cx,cy,14)}</circle>`:''}${embers}</g>`},
+/* ---------- Léviathane : les abysses et le serpent de mer ---------- */
+66:u=>{const id='lb66'+u;const bub=[...Array(6+u*2)].map((_,k)=>`<circle r="${1+k%3}" fill="none" stroke="#a8fff0" stroke-width=".6"><animateMotion dur="${4+k%3}s" begin="${-k*.7}s" repeatCount="indefinite" path="M${(k*37)%160} 236Q${(k*23)%160+10} 120 ${(k*37)%160} -10"/></circle>`).join('');
+  return`<defs><linearGradient id="${id}w" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1a8a8a" stop-opacity=".7"/><stop offset=".6" stop-color="#063a40" stop-opacity=".8"/><stop offset="1" stop-color="#021418" stop-opacity=".9"/></linearGradient>
+   <radialGradient id="${id}v" cx="50%" cy="45%"><stop offset="0" stop-color="#1a8a8a" stop-opacity=".75"/><stop offset=".65" stop-color="#063a40" stop-opacity=".7"/><stop offset="1" stop-color="#021418" stop-opacity="0"/></radialGradient>
+   <linearGradient id="${id}r" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c8fff6" stop-opacity=".45"/><stop offset="1" stop-color="#c8fff6" stop-opacity="0"/></linearGradient>
+   <linearGradient id="${id}s" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#0a4a4a"/><stop offset=".5" stop-color="#1a8a7a"/><stop offset="1" stop-color="#0a4a4a"/></linearGradient></defs>
+   <g opacity=".78"><ellipse cx="80" cy="100" rx="86" ry="120" fill="url(#${id}v)"/>
+   ${[[30,0],[70,8],[118,-4]].map(([x,o],k)=>`<path d="M${x} -8L${x+o-14} 180L${x+o+14} 180Z" fill="url(#${id}r)">${BX.tw(4+k,k,.3)}</path>`).join('')}
+   <path d="M-6 150Q20 100 50 130Q80 160 110 120Q130 92 150 60Q160 44 172 50" stroke="url(#${id}s)" stroke-width="16" fill="none" stroke-linecap="round" opacity=".85"/>
+   <path d="M-6 150Q20 100 50 130Q80 160 110 120Q130 92 150 60Q160 44 172 50" stroke="#2ad0b0" stroke-width="2" fill="none" stroke-dasharray="3 5" opacity=".7"/>
+   ${[[44,122],[78,150],[112,116],[140,74]].map(([x,y])=>`<path d="M${x} ${y-6}l-5 -8l9 3Z" fill="#12a088"/>`).join('')}
+   ${[0,1,2].map(k=>`<ellipse cx="80" cy="96" rx="${70-k*18}" ry="${18-k*4}" fill="none" stroke="#58e4d3" stroke-width="1.4" stroke-dasharray="14 8" opacity=".6">${BX.spin(80,96,6+k*3,k%2)}</ellipse>`).join('')}
+   ${u>=2?[[24,60],[136,140],[30,190]].map(([x,y],k)=>`<g><path d="M${x} ${y}q6 -10 10 -14" stroke="#58e4d3" stroke-width=".8" fill="none"/><circle cx="${x+10}" cy="${y-14}" r="2.4" fill="#ffd84a">${BX.tw(1.6,k*.4,.3)}</circle></g>`).join(''):''}
+   ${u>=3?`<g transform="translate(80 40)" opacity=".85"><path d="M0 -22V18M-10 -12V-20M10 -12V-20M-10 -12Q0 -2 10 -12" stroke="#ffd84a" stroke-width="2.4" fill="none" stroke-linecap="round"/>${BX.tw(2.2)}</g>`:''}${bub}</g>`}};
+for(const k in LGB2)LGB[k]=LGB2[k];
+/* ---------- Aléa (mythique) : la table du destin ---------- */
+function aleaBG(u){const G='#ffd84a',P='#ff5ad8',id='lbal'+u,f=BX.f;
+  const card=(x,y,rot,v,s,red,sc=1)=>`<g transform="translate(${x} ${y}) rotate(${rot}) scale(${sc})"><rect x="-10" y="-14" width="20" height="28" rx="2.6" fill="#fbf6ff" stroke="${G}" stroke-width="1.2"/><text x="-6.5" y="-6" font-size="6" font-weight="700" fill="${red?'#d1263b':'#140c24'}">${v}</text><text y="6" font-size="11" text-anchor="middle" fill="${red?'#d1263b':'#140c24'}">${s}</text></g>`;
+  const fanN=u>=1?7:5,fan=[...Array(fanN)].map((_,k)=>{const a=-60+k*120/(fanN-1);const [x,y]=BX.P(80,98,62,a-90);return card(f(x),f(y),f(a),['10','V','D','R','A','A','R'][k],['♠','♠','♠','♠','♠','♥','♥'][k],k>=5,1.25)}).join('');
+  const threads=[...Array(5+u*2)].map((_,k)=>`<path d="M80 98Q${(k*53)%160} ${(k*37)%80} ${(k*71)%170-5} ${k%2?-8:236}" stroke="${G}" stroke-width=".6" fill="none" stroke-dasharray="2 4" opacity=".7"><animate attributeName="stroke-dashoffset" values="0;-24" dur="${2+k%3}s" repeatCount="indefinite"/></path>`).join('');
+  const suits=['♠','♥','♣','♦'].map((s,k)=>{const [x,y]=BX.P(80,90,u>=2?84:74,k*90-45);return`<text x="${f(x)}" y="${f(y+5)}" font-size="16" text-anchor="middle" fill="${k%2?P:G}" opacity=".8">${s}</text>`}).join('');
+  return`<defs><radialGradient id="${id}g"><stop offset="0" stop-color="${u>=3?'#ff5ad8':'#7a3aff'}" stop-opacity=".55"/><stop offset="1" stop-color="#1a0a3a" stop-opacity="0"/></radialGradient></defs>
+   <g class="albg" opacity=".8"><circle cx="80" cy="92" r="92" fill="url(#${id}g)"/>${threads}<g>${suits}${BX.spin(80,90,40)}</g>${u>=2?'':`<g>${fan}${BX.bob(2,4)}</g>`}
+   ${u>=1&&u<2?`<ellipse cx="80" cy="214" rx="70" ry="14" fill="#0a4a2a" stroke="${G}" stroke-width="2"/>`:''}</g>`}
+/* sur Aléa ultra II et III, la roulette (trop proche de Fortuna) devient la Roue du Destin : un cercle de cartes */
+function aleaWheel(u){const G='#ffd84a';const n=u>=3?16:12;return`<g transform="translate(80 92)" opacity=".75"><g>${[...Array(n)].map((_,k)=>`<g transform="rotate(${k*360/n}) translate(0 -60)"><rect x="-7" y="-10" width="14" height="20" rx="2" fill="#2a0a4a" stroke="${G}" stroke-width="1"/><path d="M0 -6L3 0L0 6L-3 0Z" fill="${k%2?'#ff5ad8':G}"/></g>`).join('')}<circle r="46" fill="none" stroke="${G}" stroke-width="1.4" stroke-dasharray="2 3"/><circle r="22" fill="#140c24" stroke="${G}" stroke-width="2"/><text y="6" font-size="18" text-anchor="middle" fill="${G}">🂠</text><animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="24s" repeatCount="indefinite"/></g></g>`}
+{const hb=heroBody;heroBody=function(h,u=0){const s=hb.apply(this,arguments);try{if(!h||h.i!==ALEA||typeof s!=='string'||s.indexOf('albg')>=0)return s;let t=s;
+   if(u>=2){const key='<g transform="translate(80 92)" opacity=".6">';if(t.indexOf(key)>=0){let ok;[t,ok]=kaiGRemove(t,key);if(ok)t=t.replace('@@W@@',aleaWheel(u))}}
+   const a=t.indexOf('</defs>');if(a<0)return s;return t.slice(0,a+7)+aleaBG(u||0)+t.slice(a+7)}catch(e){return s}}}
+(function(){try{for(const C of [window.BODYC3,typeof BODYC!=='undefined'?BODYC:null,typeof BODYC2!=='undefined'?BODYC2:null])if(C)Object.keys(C).forEach(k=>{const i=+k.split('_')[0];if(LGB2[i]||i===ALEA)delete C[k]})}catch(e){}})();
+
+/* ================= Aléa : un Coup de Poker qui monte en puissance avec ses ultra-évolutions ================= */
+/* Forme I « Croupier Étoilé »   : DOUBLE DONNE, 7 cartes distribuées, elle garde les 5 meilleures. Dégâts +15 %.
+   Forme II « Maître du Destin » : + JOKER, 40 % de chances qu'un Joker améliore la main d'un rang. Dégâts +30 %.
+   Forme III « Le Hasard Incarné » : + ALL-IN, jamais moins qu'un Brelan, et un coup final « ALL-IN » sur tous les ennemis. Dégâts +50 %. */
+const PK_ORD=['hc','p1','p2','p3','st','fl','fh','p4','rf'];
+const ALU={x:0,MUL:[1,1.15,1.3,1.5],T:['','DOUBLE DONNE','JOKER DU DESTIN','ALL-IN'],D:['','7 cartes, elle garde les 5 meilleures','le Joker améliore la main','tapis ! jamais moins qu\'un brelan']};
+function pkNamed(k){const H=pkMake(k);H.name=PK_H[k].n;H.tier=PK_H[k].t;return H}
+{const pd=pkDeal;pkDeal=function(u){const x=(u&&u.hid===ALEA&&u.ux)||0;let H=pd.apply(this,arguments);if(!x)return H;
+  if(x>=1){const H2=pd.apply(this,arguments);if(PK_ORD.indexOf(H2.k)>PK_ORD.indexOf(H.k))H=H2;
+    H.burn=[0,1].map(()=>({v:ri(2,14),s:pick(PK_SU)}))}
+  if(x>=3&&PK_ORD.indexOf(H.k)<PK_ORD.indexOf('p3')){const b=H.burn;H=pkNamed('p3');H.burn=b;H.floor=1}
+  if(x>=2&&H.k!=='rf'&&Math.random()<.4){const b=H.burn,from=H.name;H=pkNamed(PK_ORD[PK_ORD.indexOf(H.k)+1]);H.burn=b;H.jk=Math.floor(Math.random()*5);H.from=from}
+  if(x>=3)H.allin=1;H.ux=x;return H}}
+/* --- l'écran des cartes en forme ultra --- */
+function pkShowU(H){return new Promise(res=>{const host=document.querySelector('#battle .bw');if(!host)return res();const sp=S.speed||1,x=H.ux||1,T=t=>t/sp;
+  const disp=H.cards.map((c,i)=>({c,i})),all=[...disp];if(H.burn)H.burn.forEach((c,j)=>all.splice(j?6:2,0,{c,burn:1}));
+  const m=document.createElement('div');m.className=`pkm ux ux${x} t${H.tier}`;m.style.setProperty('--sp',sp);
+  m.innerHTML=`<div class="pkbox"><div class="pktt">🃏 Coup de Poker · <span>${esc(ALEA_UN[x]||'')}</span></div><div class="pksub">${ALU.T.slice(1,x+1).join(' · ')}</div>
+   <div class="pkcards">${all.map((d,i)=>{const jk=!d.burn&&H.jk===d.i;return`<div class="pkc${d.burn?' brn':''}${jk?' jkc':''}" style="--i:${i}"><div class="pkin"><div class="pkb"></div><div class="pkf ${jk?'jk':PK_RED(d.c.s)?'red':''}">${jk?'<b>★</b><i>🃏</i><em>★</em>':pkFace(d.c)}</div></div></div>`}).join('')}</div>
+   <div class="pkrw">✦ ${x>=2&&H.jk!=null?'JOKER !':'DOUBLE DONNE'} ✦</div><div class="pkres"></div><div class="pkallin">ALL-IN</div></div>`;
+  host.style.position='relative';host.appendChild(m);const el=[...m.querySelectorAll('.pkc')];
+  el.forEach((c,i)=>{setTimeout(()=>{c.classList.add('pkfl');try{cSnd.card()}catch(e){}},T(380+i*140));setTimeout(()=>c.classList.add('pkup'),T(380+i*140+160))});
+  let t=380+el.length*140+200;
+  if(H.burn){setTimeout(()=>{el.forEach(c=>{if(c.classList.contains('brn'))c.classList.add('burn')});m.classList.add('rwon');try{UIS.coin(true)}catch(e){}},T(t));t+=650;
+    setTimeout(()=>{el.forEach(c=>{if(c.classList.contains('brn'))c.style.display='none'})},T(t));m.classList.remove('rwon')}
+  if(H.jk!=null){const jc=m.querySelector('.jkc');setTimeout(()=>{m.querySelector('.pkrw').textContent='✦ JOKER ! ✦';m.classList.remove('rwon');void m.offsetWidth;m.classList.add('rwon');if(jc)jc.classList.add('jkgo');try{cSnd.jack()}catch(e){}},T(t+80));
+    setTimeout(()=>{if(!jc)return;const f=jc.querySelector('.pkf'),real=H.cards[H.jk];f.className='pkf '+(PK_RED(real.s)?'red':'');f.innerHTML=pkFace(real)},T(t+620));t+=1000}
+  setTimeout(()=>{const keep=el.filter(c=>!c.classList.contains('brn'));H.hl.forEach(i=>keep[i]&&keep[i].classList.add('pkhl'));const r=m.querySelector('.pkres');r.innerHTML=esc(H.name)+(H.from?`<small>${esc(H.from)} → ${esc(H.name)}</small>`:'');r.classList.add('on');if(H.tier>=3){try{cSnd.jack()}catch(e){}}},T(t));
+  if(H.allin){setTimeout(()=>{m.classList.add('allon');try{cSnd.jack()}catch(e){}},T(t+700));t+=700}
+  setTimeout(()=>{m.classList.add('out');setTimeout(()=>{m.remove();res()},T(260))},T(t+(H.tier>=3||H.allin?1300:1000)))})}
+{const ps=pkShow;pkShow=function(H){if(H&&H.ux)return pkShowU(H);return ps.apply(this,arguments)}}
+/* --- l'entrée en scène (cut-in) en forme ultra --- */
+{const ac=alCutIn;alCutIn=async function(u){const x=(u&&u.ux)||0;if(!x)return ac.apply(this,arguments);
+  const bt=document.getElementById('battle');if(!bt||B.skip||(typeof REDUCED!=='undefined'&&REDUCED))return;const sp=S.speed||1;
+  const d=document.createElement('div');d.className='alcut alux alux'+x+(u.side===1?' foe':'');d.style.setProperty('--sp',sp);
+  const n=x>=1?7:5,fan=[...Array(n)].map((_,i)=>`<span style="--k:${i};--n:${n}">${['A','R','D','V','10','🃏','A'][i]}<i>${['♠','♠','♠','♠','♠','★','♥'][i]}</i></span>`).join('');
+  let fig='';try{fig=heroBody(HEROES[ALEA],x)}catch(e){fig=aleaSVG()}
+  d.innerHTML=`<div class="alw"></div><div class="alb"></div>${x>=3?'<div class="alstars"></div>':''}<div class="alline"></div><div class="alfan">${fan}</div><div class="alfig">${fig}</div>
+   <div class="altxt"><small>✦ ULTIME MYTHIQUE · FORME ${['','I','II','III'][x]} ✦</small><b>${x>=3?'ALL-IN':x>=2?'JOKER<br>DU DESTIN':'DOUBLE<br>DONNE'}</b><em>${esc(ALU.D[x])}</em></div>`;
+  bt.appendChild(d);try{smSnd('rumble')}catch(e){}await wait((x>=3?1650:1450)/sp);d.classList.add('out');await wait(220/sp);d.remove()}}
+/* --- dégâts renforcés et coup final ALL-IN --- */
+{const ap=aleaPoker;aleaPoker=async function(u){const x=(u&&u.ux)||0;if(!x)return ap.apply(this,arguments);
+  const sc0=u.scale;u.scale=(sc0||1)*ALU.MUL[x];let r;try{r=await ap.apply(this,arguments)}finally{u.scale=sc0}
+  if(x>=3&&B&&!B.done){const foes=alive(1-u.side);if(foes.length){B.pend=B.skip?null:[];const sc=(sc0||1)*ALU.MUL[x];
+    log(`💰 <b>ALL-IN !</b> ${u.name} pousse tous ses jetons : coup final sur tous les ennemis.`,'cs');
+    if(!B.skip&&!(typeof REDUCED!=='undefined'&&REDUCED)){try{fxSetup();const W=FXS.w||innerWidth,Hh=FXS.h||innerHeight;textPop(W/2,Hh*.32,'💰 ALL-IN !','#ffd84a',34,1100);
+      for(let i=0;i<30;i++)fxWait(i*22).then(()=>shapes(Math.random()*W,-10,'coin',['#ffd84a','#fff6c0'],1,2,7,90,.3));await fxWait(380)}catch(e){}}
+    foes.forEach(t=>deal(u,t,180*sc,{sk:1}));if(!B.skip&&!(typeof REDUCED!=='undefined'&&REDUCED)){try{foes.forEach(t=>{const b=uc(t);pillarFx(b.x,b.y,'#ffd84a',600,44,170);shapes(b.x,b.y,'coin',['#ffd84a'],10,6,6,70,.25)});flash('#ffd84a',220,.5);shake(2);await fxWait(420)}catch(e){}}
+    flushFloats()}}
+  return r}}
+{const pf=pkFx;pkFx=async function(u,H){const x=(u&&u.ux)||0;if(x>=1&&!(typeof REDUCED!=='undefined'&&REDUCED)){try{const a=uc(u);magicCircle(a.x,a.y,x>=3?['#ffd84a','#ff5ad8','#fff']:['#ffd84a','#c07aff'],70+x*12,900);if(x>=2)glowPulse(a.x,a.y,'#ffd84a',600,50)}catch(e){}}return pf.apply(this,arguments)}}
+/* la fiche d'Aléa explique ce que change chaque forme */
+{const hm=heroModal;heroModal=function(id){const r=hm.apply(this,arguments);try{if(+id===ALEA){const m=$('#ovl .modal');const sk=m&&m.querySelector('.alpas');if(sk&&!m.querySelector('.alux3d'))sk.insertAdjacentHTML('afterend',`<div class="skill alux3d"><div class="sn">🃏 Le Coup de Poker en ultra-évolution</div><div style="margin-top:4px;font-size:12.5px;line-height:1.45">✦ <b>Croupier Étoilé</b> : Double donne (7 cartes, les 5 meilleures gardées), dégâts +15 %.<br>✦✦ <b>Maître du Destin</b> : + Joker (40 % de chances d'améliorer la main d'un rang), dégâts +30 %.<br>✦✦✦ <b>Le Hasard Incarné</b> : + All-in (jamais moins qu'un Brelan, puis coup final sur tous les ennemis), dégâts +50 %.</div></div>`)}}catch(e){}return r}}
+try{PATCH.unshift({v:31,d:'25 octobre 2026',t:'Les ultra-évolutions se réveillent',items:["👑 <b>Chaque légendaire a sa propre ultra-évolution</b> : ses couleurs, sa couronne, ses accessoires (bois de cerf pour Gaïa, cornes pour Drakhar, couronne noire pour Nyx, coquillages pour Léviathane…). Fini les ailes d'ange et les yeux bleus pour tout le monde.","🎨 <b>Décors refaits</b> pour tous les légendaires, et ils grandissent à chaque forme ultra : la roulette de Fortuna gagne des cases, Solaris gagne des planètes, le volcan de Titanor entre en éruption, l'éclipse de Nyx devient rouge sang, le Bifröst apparaît derrière Valkyr…","🃏 <b>Aléa a enfin son décor</b> (la Table du Destin) et sa roulette devient la Roue du Destin, un cercle de cartes.","🃏 <b>Le Coup de Poker d'Aléa évolue</b> : Croupier Étoilé = <b>Double donne</b> (7 cartes, les 5 meilleures gardées, +15 %), Maître du Destin = <b>Joker</b> qui améliore la main (+30 %), Le Hasard Incarné = <b>All-in</b> (jamais moins qu'un Brelan + coup final sur tous les ennemis, +50 %). Nouvelle entrée en scène pour chaque forme."]})}catch(e){}
 
 /* ================= DÉMARRAGE ================= */
 (function init(){
