@@ -65,3 +65,32 @@ body.fbbattle #battle .bw,body.fbbattle #battle>*:first-child{filter:sepia(.75) 
 .bs3fall i.ash{width:5px;height:5px;border-radius:50%;background:#d8ccc0}
 .bs3fall i.emb{width:4px;height:4px;border-radius:50%;background:#ffb21a;box-shadow:0 0 6px #ff6a1a}
 .bsfilm{position:absolute;inset:0;pointer-events:none;opacity:.12;background:linear-gradient(90deg,transparent 0 22%,rgba(255,250,230,.6) 22.2%,transparent 22.5%,transparent 71%,rgba(40,30,20,.5) 71.15%,transparent 71.4%);animation:fbscratch 2s steps(6) infinite}
+/* attaque du Roi de Cendre */
+.roicut{position:absolute;inset:0;z-index:60;pointer-events:none;overflow:hidden;--sp:1;background:#0a0402;animation:rcuin calc(2.1s/var(--sp)) ease forwards}
+@keyframes rcuin{0%{opacity:0}8%{opacity:1}88%{opacity:1}100%{opacity:0}}
+.roicut .rcu-l,.roicut .rcu-r{position:absolute;top:0;bottom:0;width:58%;overflow:hidden}
+.roicut .rcu-l{left:0;clip-path:polygon(0 0,100% 0,72% 100%,0 100%);background:radial-gradient(ellipse at 40% 45%,#e8dcc0,#6a5a3a 85%);filter:sepia(.85) saturate(.35);animation:rcul calc(2.1s/var(--sp)) cubic-bezier(.2,.8,.3,1) both}
+.roicut .rcu-r{right:0;clip-path:polygon(28% 0,100% 0,100% 100%,0 100%);background:radial-gradient(ellipse at 60% 50%,#ff8a3a,#3a0e04 75%);animation:rcur calc(2.1s/var(--sp)) cubic-bezier(.2,.8,.3,1) both}
+@keyframes rcul{0%{transform:translateX(-100%)}18%{transform:none}100%{transform:translateX(-4%)}}
+@keyframes rcur{0%,12%{transform:translateX(100%)}30%{transform:none}100%{transform:translateX(3%)}}
+.roicut .rcu-fig{position:absolute;bottom:14%;width:96%;left:2%}
+.roicut .rcu-r .rcu-fig{left:auto;right:2%;filter:drop-shadow(0 0 22px #ff6a1a)}
+.roicut .rcu-fig svg{width:100%;height:auto}
+.roicut .rcu-film{position:absolute;inset:0;opacity:.35;background:linear-gradient(90deg,transparent 0 30%,rgba(255,250,230,.8) 30.3%,transparent 30.6%,transparent 66%,rgba(40,30,20,.7) 66.2%,transparent 66.5%);animation:fbscratch .9s steps(5) infinite}
+.roicut .rcu-era{position:absolute;top:10%;left:6%;font:900 11px var(--fb);letter-spacing:.2em;color:#3a2a14;background:rgba(244,232,200,.8);padding:3px 8px;border-radius:4px}
+.roicut .rcu-era.now{left:auto;right:6%;color:#fff2d0;background:rgba(255,106,26,.75)}
+.roicut .rcu-split{position:absolute;left:50%;top:-10%;bottom:-10%;width:8px;margin-left:-4px;background:linear-gradient(#fff2d0,#ffb21a,#ff6a1a);transform:rotate(14deg);box-shadow:0 0 30px #ff6a1a,0 0 60px #ffb21a;animation:rcus calc(2.1s/var(--sp)) ease both}
+@keyframes rcus{0%,25%{opacity:0;transform:rotate(14deg) scaleY(0)}35%{opacity:1;transform:rotate(14deg) scaleY(1)}100%{opacity:1;transform:rotate(14deg) scaleY(1)}}
+.roicut .rcu-ash i{position:absolute;left:var(--x);top:-8px;width:5px;height:5px;border-radius:50%;background:#c8bcb0;animation:rcash 1.4s var(--l) linear infinite}
+.roicut .rcu-ash i:nth-child(3n){background:#ff8a3a;box-shadow:0 0 6px #ff6a1a}
+.roicut .rcu-txt{position:absolute;left:0;right:0;bottom:5%;text-align:center;display:flex;flex-direction:column;align-items:center;animation:rcut calc(2.1s/var(--sp)) ease both}
+@keyframes rcut{0%,30%{opacity:0;transform:scale(1.6)}42%{opacity:1;transform:scale(.96)}50%,100%{opacity:1;transform:scale(1)}}
+.roicut .rcu-txt small{font:900 11px var(--fb);letter-spacing:.18em;color:#ffd8a0;text-shadow:0 1px 3px #000}
+.roicut .rcu-txt b{font:44px/.95 'Lilita One',sans-serif;color:#fff2d0;-webkit-text-stroke:1.5px #3a0e04;text-shadow:0 4px 0 #ff6a1a,0 0 30px #ff6a1a,0 0 60px #ffb21a}
+.roimem{position:absolute;inset:0;z-index:59;pointer-events:none;display:flex;flex-direction:column;align-items:center;justify-content:center;background:radial-gradient(ellipse,#f4e8c8 0,#8a7a5a 70%,#2a2010 100%);filter:sepia(.9) saturate(.3);animation:rmin 1.3s ease forwards}
+@keyframes rmin{0%{opacity:0}15%{opacity:.92}80%{opacity:.85}100%{opacity:0}}
+.roimem .rm-fig{width:min(46vw,200px);animation:rmfig 1.3s ease forwards}
+.roimem .rm-fig svg{width:100%;height:auto}
+@keyframes rmfig{from{transform:scale(.9)}to{transform:scale(1.06)}}
+.roimem b{margin-top:8px;font:italic 800 14px Georgia,serif;color:#3a2a14;text-align:center;padding:0 16px}
+.roimem .rm-film{position:absolute;inset:0;opacity:.45;background:linear-gradient(90deg,transparent 0 24%,rgba(255,250,230,.9) 24.3%,transparent 24.6%,transparent 70%,rgba(40,30,20,.8) 70.2%,transparent 70.5%);animation:fbscratch .6s steps(4) infinite}

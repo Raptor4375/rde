@@ -230,10 +230,10 @@ function sgBg3(c){const cfg=SAGA[c],[a,b,d]=cfg.bg,R=rng(c*131+7),f=n=>(+n).toFi
 /* --- le vieux film (flash-back) --- */
 {const ss=sagaShow;sagaShow=function(){const o=document.getElementById('sgov'),L=SGP.lines&&SGP.lines[SGP.i];
   if(o&&L&&!Array.isArray(L)&&L.fb!==undefined){o.classList.toggle('fbmode',!!L.fb);o.querySelectorAll('.sgl,.sgr').forEach(x=>{x.innerHTML='';delete x.dataset.w});if(L.fb&&L.t){const old=o.querySelector('.fbtitle');if(old)old.remove();o.insertAdjacentHTML('beforeend',`<div class="fbtitle"><span>${esc(L.t)}</span></div>`);setTimeout(()=>{const t=o.querySelector('.fbtitle');if(t)t.remove()},2600)}
-    try{musicWant(L.fb?'menu':(SGP.ch>=19?'corvin':'dungeon'))}catch(e){}SGP.i++;return sagaShow()}
+    try{musicWant(L.fb?'menu':(SGP.ch>=19?'roi':'dungeon'))}catch(e){}SGP.i++;return sagaShow()}
   return ss.apply(this,arguments)}}
 {const so=sagaOpen;sagaOpen=function(c,part){try{const cfg=SAGA[c];if(cfg&&cfg.fin3&&part==='outro')cfg.outro=SG().ch[c]==='brv'?cfg.outroB:cfg.outroA}catch(e){}
-  const r=so.apply(this,arguments);try{const o=document.getElementById('sgov');if(o&&c>=14){o.classList.add('bk3');if(SAGA[c].fbBattle&&part==='outro')o.classList.add('fbmode')}if(c>=14)musicWant(c===19?'corvin':'dungeon')}catch(e){}return r}}
+  const r=so.apply(this,arguments);try{const o=document.getElementById('sgov');if(o&&c>=14){o.classList.add('bk3');if(SAGA[c].fbBattle&&part==='outro')o.classList.add('fbmode')}if(c>=14)musicWant(c===19?'roi':'dungeon')}catch(e){}return r}}
 /* --- combats du Livre III (calés sur le mode Normal) --- */
 {const eb=evBattle;evBattle=function(){const c=SGX.go?SGX.ch:-1;const r=eb.apply(this,arguments);try{if(c>=14&&r&&r.foes){const cfg=SAGA[c],k=c-14,ns=Math.min(100,cfg.req+6),m=nRec(ns)/recPow(100);const g=Math.pow(GROW,99)*2.1;
    r.foes.forEach((u,i)=>{if(i===r.foes.length-1)return;u.max=Math.round(u.max*m*1.1);u.hp=u.max;u.atk=Math.round(u.atk*Math.pow(m,.85))});
@@ -251,7 +251,7 @@ function roiCinematic(done){let o=document.getElementById('sgcine');if(o)o.remov
    <button class="btn p cn-go">⚔️ Affronter le Roi de Cendre</button><button class="cn-skip">Passer ⏭</button>`;
   document.body.appendChild(o);try{const g=sfxBus(.35,6000);if(g){const t=AU.ctx.currentTime;[0,2.4,3.2].forEach(d=>{try{SND.boom(g,t+d)}catch(e){}})}}catch(e){}
   const fin=()=>{o.remove();done&&done()};o.querySelector('.cn-go').onclick=e=>{e.stopPropagation();fin()};o.querySelector('.cn-skip').onclick=e=>{e.stopPropagation();fin()}}
-{const pe=sagaPartEnd;sagaPartEnd=function(){const c=SGP.ch;if(SGP.part==='intro'&&SAGA[c]&&SAGA[c].fin3&&!B){sagaClose();sagaMode(true);try{musicWant('corvin')}catch(e){}roiCinematic(()=>sagaBattle(c));return}return pe.apply(this,arguments)}}
+{const pe=sagaPartEnd;sagaPartEnd=function(){const c=SGP.ch;if(SGP.part==='intro'&&SAGA[c]&&SAGA[c].fin3&&!B){sagaClose();sagaMode(true);try{musicWant('roi')}catch(e){}roiCinematic(()=>sagaBattle(c));return}return pe.apply(this,arguments)}}
 /* --- récompenses du Livre III --- */
 const SAGA_RW3=[[300,2,0,0],[320,2,2,0],[340,2,0,2],[360,3,3,0],[380,3,0,3],[800,5,5,5]];
 TITLES.push({k:'echos3',n:'Gardien des Échos',c:'#ffb05a',d:'Terminer le Livre III du mode histoire',ok:()=>!!SG().done[19]});
