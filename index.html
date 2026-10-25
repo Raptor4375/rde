@@ -47,7 +47,7 @@ window.claude={use:async k=>{if(k==='db'||k==='user'){try{const F=await window.R
 window.RDEF();
 })();
 </script>
-<script>window.RDE_V='20261025194740';if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));</script>
+<script>window.RDE_V='20261025202026';if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));</script>
 </head><body>
 <title>RDE · Royaumes d'Éther</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -2612,6 +2612,41 @@ body.fbbattle #battle .bw,body.fbbattle #battle>*:first-child{filter:sepia(.75) 
 @keyframes rmfig{from{transform:scale(.9)}to{transform:scale(1.06)}}
 .roimem b{margin-top:8px;font:italic 800 14px Georgia,serif;color:#3a2a14;text-align:center;padding:0 16px}
 .roimem .rm-film{position:absolute;inset:0;opacity:.45;background:linear-gradient(90deg,transparent 0 24%,rgba(255,250,230,.9) 24.3%,transparent 24.6%,transparent 70%,rgba(40,30,20,.8) 70.2%,transparent 70.5%);animation:fbscratch .6s steps(4) infinite}
+/* transition : le souvenir qui brûle */
+@property --br{syntax:'<length-percentage>';inherits:true;initial-value:0%}
+#sgcine.roiburn{position:fixed;inset:0;z-index:100002;overflow:hidden;background:#000;--br:0%;animation:rbr 4.6s cubic-bezier(.5,0,.6,1) forwards}
+@keyframes rbr{0%,26%{--br:0%}30%{--br:3%}62%{--br:60%}76%{--br:150%}100%{--br:150%}}
+.roiburn .rb-now,.roiburn .rb-past{position:absolute;inset:0}
+.roiburn .rb-sky{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 35%,#ff7a2a 0,#7a2a0a 35%,#1a0604 72%,#050202 100%)}
+.roiburn .rb-fig{position:absolute;left:50%;bottom:6%;width:min(78vw,360px);transform:translateX(-50%)}
+.roiburn .rb-fig svg{width:100%;height:auto}
+.roiburn .rb-now .rb-fig{filter:drop-shadow(0 0 30px #ff6a1a);animation:rbking 4.6s ease forwards}
+@keyframes rbking{0%,60%{transform:translateX(-50%) scale(1.06)}100%{transform:translateX(-50%) scale(1)}}
+.roiburn .rb-eyes{position:absolute;inset:0;pointer-events:none}
+.roiburn .rb-past{-webkit-mask:radial-gradient(circle at 50% 22%,transparent var(--br),#000 calc(var(--br) + 1.5%));mask:radial-gradient(circle at 50% 22%,transparent var(--br),#000 calc(var(--br) + 1.5%))}
+.roiburn .rb-paper{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 40%,#f4e8c8,#c8b48a 60%,#6a5634 100%);filter:sepia(.4)}
+.roiburn .rb-past .rb-fig{filter:sepia(.9) saturate(.35) contrast(1.05);animation:rbyoung 4.6s ease forwards}
+@keyframes rbyoung{0%{transform:translateX(-50%) scale(1)}30%{transform:translateX(-50%) scale(1.04)}100%{transform:translateX(-50%) scale(1.06)}}
+.roiburn .rb-cap{position:absolute;left:0;right:0;top:12%;text-align:center;font:italic 30px Georgia,serif;color:#3a2a14;text-shadow:0 1px 0 #fff6dc;animation:rbcap 4.6s ease forwards}
+@keyframes rbcap{0%{opacity:0}10%,26%{opacity:1}34%{opacity:0}100%{opacity:0}}
+.roiburn .rb-scr{position:absolute;inset:0;opacity:.35;background:linear-gradient(90deg,transparent 0 28%,rgba(60,40,20,.7) 28.2%,transparent 28.5%,transparent 70%,rgba(255,250,230,.8) 70.2%,transparent 70.5%);animation:fbscratch 1s steps(5) infinite}
+/* le bord qui brûle : une couronne de feu qui suit le trou */
+.roiburn .rb-edge{position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle at 50% 22%,transparent calc(var(--br) - .2%),#fff2c0 var(--br),#ffb21a calc(var(--br) + .5%),#ff4a10 calc(var(--br) + 1.2%),#3a1408 calc(var(--br) + 2.2%),rgba(40,20,8,.6) calc(var(--br) + 3.4%),transparent calc(var(--br) + 5%));filter:blur(.6px) drop-shadow(0 0 8px #ff6a1a);mix-blend-mode:screen}
+.roiburn .rb-emb i{position:absolute;left:50%;top:22%;width:var(--sz);height:var(--sz);border-radius:50%;background:#ffb21a;box-shadow:0 0 8px #ff6a1a;opacity:0;animation:rbemb 2.2s var(--dl) ease-out forwards}
+@keyframes rbemb{0%{opacity:0;transform:translate(0,0)}10%{opacity:1}100%{opacity:0;transform:translate(var(--dx),var(--dy))}}
+.roiburn .rb-ash i{position:absolute;left:var(--x);top:-10px;width:5px;height:5px;border-radius:50%;background:#c8bcb0;opacity:0;animation:rbash var(--d) var(--l) linear infinite;animation-delay:calc(var(--l) + 3s)}
+.roiburn .rb-ash i:nth-child(3n){background:#ff8a3a}
+@keyframes rbash{0%{opacity:.9;transform:translate(0,0)}100%{opacity:.2;transform:translate(24px,110vh)}}
+.roiburn .rb-shock{position:absolute;left:50%;top:22%;width:20px;height:20px;margin:-10px 0 0 -10px;border-radius:50%;border:4px solid #ffd8a0;opacity:0;animation:rbsh 4.6s ease-out forwards}
+@keyframes rbsh{0%,74%{opacity:0;transform:scale(0)}76%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(70)}}
+.roiburn .rb-title{position:absolute;left:0;right:0;top:7%;text-align:center;display:flex;flex-direction:column;align-items:center;opacity:0;animation:rbt 4.6s ease forwards}
+@keyframes rbt{0%,78%{opacity:0;transform:translateY(-14px) scale(1.2)}88%,100%{opacity:1;transform:none}}
+.roiburn .rb-title small{font:900 12px var(--fb);letter-spacing:.18em;color:#ffb05a}
+.roiburn .rb-title b{font:54px/1 'Lilita One',sans-serif;color:#fff2d0;text-shadow:0 3px 0 #ff6a1a,0 0 26px #ff6a1a}
+.roiburn .rb-title span{font:900 16px var(--fb);color:#ff8a3a;letter-spacing:.08em}
+.roiburn .rb-title em{font-size:13px;color:#f4e8c8;margin-top:8px}
+.roiburn .cn-go{position:absolute;left:50%;bottom:4%;transform:translateX(-50%);opacity:0;animation:rbt 5s ease forwards}
+.roiburn .cn-skip{position:absolute;right:12px;top:12px;z-index:3;background:rgba(0,0,0,.4);color:#fff;border:1px solid rgba(255,255,255,.3);border-radius:99px;padding:6px 12px;font:800 12px var(--fb)}
 </style>
 <div id="boot" role="status" aria-live="polite"><div class="bt-in"><div class="bt-logo" aria-hidden="true"><svg viewBox="0 0 120 120"><defs><linearGradient id="btg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8a6aff"/><stop offset="1" stop-color="#3a2a8a"/></linearGradient><linearGradient id="btgo" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff6c0"/><stop offset="1" stop-color="#e2a42c"/></linearGradient></defs><g class="bt-ring"><circle cx="60" cy="60" r="54" fill="none" stroke="#ffd84a" stroke-width="2" stroke-dasharray="4 9" opacity=".7"/><circle cx="60" cy="6" r="4" fill="#58e4d3"/><circle cx="114" cy="60" r="3" fill="#ffd84a"/><circle cx="60" cy="114" r="4" fill="#ff8ac0"/><circle cx="6" cy="60" r="3" fill="#fff"/></g><path d="M60 16L94 28L90 70Q84 92 60 104Q36 92 30 70L26 28Z" fill="url(#btg)" stroke="#140c24" stroke-width="3" stroke-linejoin="round"/><path d="M60 24L86 33L83 68Q78 86 60 96Q42 86 37 68L34 33Z" fill="none" stroke="url(#btgo)" stroke-width="3"/><path d="M60 38L69 56L60 82L51 56Z" fill="#58e4d3" stroke="#140c24" stroke-width="2.4" stroke-linejoin="round"/><path d="M60 38L60 82L51 56Z" fill="#b0fff4"/><path d="M60 30l2.4 5 5.4.6-4 3.7 1.1 5.3-4.9-2.7-4.9 2.7 1.1-5.3-4-3.7 5.4-.6z" fill="url(#btgo)" stroke="#140c24" stroke-width="1.2"/></svg></div><div class="bt-t">Royaumes<span>d'Éther</span></div><div class="bt-bar"><i></i></div><div class="bt-s" id="bts">Chargement…</div></div></div>
 
@@ -14868,6 +14903,25 @@ try{const P=PATCH.find(x=>x.v===32);if(P)P.items.push("👑 <b>Le Premier Porteu
 
 /* l'écran de chargement a été dessiné avant ce nouveau look : on le redessine */
 (function(){try{if(BOOT.done)return;const b=document.getElementById('boot');const rr=b&&b.querySelector('.b2.bs3');if(!rr)return;const m=rr.querySelector('.bsmem');if(m)m.innerHTML=(eryBody('eryndel')||'').replace('<svg','<svg class="loresvg hb"')}catch(e){}})();
+
+/* ================= Livre III : correctifs + nouvelle transition du Roi de Cendre ================= */
+/* 1) Le retour dans le passé ne change plus la musique (la musique du chapitre continue). */
+{const ss=sagaShow;sagaShow=function(){const L=SGP.lines&&SGP.lines[SGP.i];if(L&&!Array.isArray(L)&&L.fb!==undefined){const mw=musicWant;musicWant=function(){};try{return ss.apply(this,arguments)}finally{musicWant=mw}}return ss.apply(this,arguments)}}
+/* 2) Écran vide après le combat final : on ressort toujours du mode « histoire plein écran » quand il n'y a plus rien à afficher. */
+{const cb=closeBattle;closeBattle=function(){const r=cb.apply(this,arguments);try{if(!document.getElementById('sgov')&&!document.getElementById('sgcine'))sagaMode(false)}catch(e){}return r}}
+setInterval(()=>{try{if(document.body.classList.contains('sgmode')&&!B&&!document.getElementById('sgov')&&!document.getElementById('sgcine')&&!document.querySelector('#battle'))sagaMode(false)}catch(e){}},1500);
+/* 3) La transition : le souvenir du jeune Éryndel (en vieux film) prend feu et se consume,
+      et derrière, il y a le Roi de Cendre. Ce n'est pas une transformation : c'est le passé qui brûle. */
+roiCinematic=function(done){let o=document.getElementById('sgcine');if(o)o.remove();o=document.createElement('div');o.id='sgcine';o.className='roiburn';o.setAttribute('role','dialog');o.setAttribute('aria-label','Cinématique');
+  const y=(eryBody('eryndel')||'').replace('<svg','<svg class="loresvg hb"'),k=(eryBody('roi')||'').replace('<svg','<svg class="loresvg hb"');
+  const R=rng(31);const emb=[...Array(34)].map(()=>{const a=R()*6.283,d=18+R()*40;return`<i style="--dx:${(Math.cos(a)*d).toFixed(0)}vmin;--dy:${(Math.sin(a)*d-20).toFixed(0)}vmin;--dl:${(1.3+R()*1.6).toFixed(2)}s;--sz:${(2+R()*4).toFixed(1)}px"></i>`}).join('');
+  o.innerHTML=`<div class="rb-now"><div class="rb-sky"></div><div class="rb-fig">${k}</div><div class="rb-eyes"><i></i><i></i></div></div>
+   <div class="rb-past"><div class="rb-paper"></div><div class="rb-fig">${y}</div><div class="rb-cap">Il y a mille ans…</div><div class="rb-scr"></div></div><div class="rb-edge"></div>
+   <div class="rb-emb">${emb}</div><div class="rb-ash">${[...Array(26)].map((_,i)=>`<i style="--x:${(i*37)%100}%;--d:${(2+(i%5)*.5).toFixed(1)}s;--l:${(-(i%7)*.5).toFixed(1)}s"></i>`).join('')}</div><div class="rb-shock"></div>
+   <div class="rb-title"><small>LE PASSÉ PART EN CENDRES</small><b>ÉRYNDEL</b><span>le Roi de Cendre</span><em>« Le Premier Porteur contre le dernier ! »</em></div>
+   <button class="btn p cn-go">⚔️ Affronter le Roi de Cendre</button><button class="cn-skip">Passer ⏭</button>`;
+  document.body.appendChild(o);try{const g=sfxBus(.35,6000);if(g){const t=AU.ctx.currentTime;try{SND.zap(g,t+1.2)}catch(e){}[2.9,3.3].forEach(d=>{try{SND.boom(g,t+d,1.3)}catch(e){}})}}catch(e){}
+  const fin=()=>{o.remove();sagaMode(false);done&&done()};o.querySelector('.cn-go').onclick=e=>{e.stopPropagation();fin()};o.querySelector('.cn-skip').onclick=e=>{e.stopPropagation();fin()}};
 
 /* ================= DÉMARRAGE ================= */
 (function init(){
