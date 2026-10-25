@@ -49,3 +49,19 @@ body.fbbattle #battle .bw,body.fbbattle #battle>*:first-child{filter:sepia(.75) 
 @keyframes rct{0%,66%{opacity:0;transform:translateY(-10px)}78%,100%{opacity:1;transform:none}}
 .roicine .cn-go{position:absolute;left:50%;bottom:4%;transform:translateX(-50%);opacity:0;animation:rct 4.4s ease forwards}
 .roicine .cn-skip{position:absolute;right:12px;top:12px;background:rgba(0,0,0,.4);color:#fff;border:1px solid rgba(255,255,255,.3);border-radius:99px;padding:6px 12px;font:800 12px var(--fb)}
+/* chargement du Livre III */
+.bs3 .bssky{background:linear-gradient(180deg,#1a0e0a 0%,#4a2414 30%,#a0501e 58%,#ffb06a 80%,#ffe0b0 100%)}
+.bs3 .b2title{text-shadow:0 3px 0 #5a2a0e,0 0 26px rgba(255,140,60,.8)}
+.bs3 .bssub{color:#fff0d8}
+.bs3 .b3glow{background:radial-gradient(ellipse,rgba(255,176,90,.55),transparent 70%)!important}
+.bsmem{position:absolute;left:50%;top:17%;width:min(30vw,128px);transform:translateX(-50%);opacity:.34;filter:sepia(.9) saturate(.3) brightness(1.15);animation:bsmem 6s ease-in-out infinite}
+.bsmem svg{width:100%;height:auto}
+@keyframes bsmem{0%,100%{opacity:.22;transform:translateX(-50%) translateY(0)}50%{opacity:.4;transform:translateX(-50%) translateY(-6px)}}
+.bscrown{position:absolute;left:50%;top:29%;width:min(38vw,160px);transform:translate(-50%,-50%);animation:b3float 6s ease-in-out infinite}
+.bstower{position:absolute;right:6%;bottom:40%;width:min(12vw,50px);opacity:.8}
+.bsowl{position:absolute;width:30px;opacity:.75;animation:bsowl 14s linear infinite}
+.bsowl.o0{top:14%;animation-delay:-2s}.bsowl.o1{top:20%;animation-delay:-7s;width:22px}.bsowl.o2{top:9%;animation-delay:-11s;width:18px}
+@keyframes bsowl{from{left:-10%}to{left:110%}}
+.bs3fall i.ash{width:5px;height:5px;border-radius:50%;background:#d8ccc0}
+.bs3fall i.emb{width:4px;height:4px;border-radius:50%;background:#ffb21a;box-shadow:0 0 6px #ff6a1a}
+.bsfilm{position:absolute;inset:0;pointer-events:none;opacity:.12;background:linear-gradient(90deg,transparent 0 22%,rgba(255,250,230,.6) 22.2%,transparent 22.5%,transparent 71%,rgba(40,30,20,.5) 71.15%,transparent 71.4%);animation:fbscratch 2s steps(6) infinite}

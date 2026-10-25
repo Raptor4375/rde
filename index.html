@@ -47,7 +47,7 @@ window.claude={use:async k=>{if(k==='db'||k==='user'){try{const F=await window.R
 window.RDEF();
 })();
 </script>
-<script>window.RDE_V='20261025183939';if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));</script>
+<script>window.RDE_V='20261025190040';if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));</script>
 </head><body>
 <title>RDE · Royaumes d'Éther</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -2567,6 +2567,22 @@ body.fbbattle #battle .bw,body.fbbattle #battle>*:first-child{filter:sepia(.75) 
 @keyframes rct{0%,66%{opacity:0;transform:translateY(-10px)}78%,100%{opacity:1;transform:none}}
 .roicine .cn-go{position:absolute;left:50%;bottom:4%;transform:translateX(-50%);opacity:0;animation:rct 4.4s ease forwards}
 .roicine .cn-skip{position:absolute;right:12px;top:12px;background:rgba(0,0,0,.4);color:#fff;border:1px solid rgba(255,255,255,.3);border-radius:99px;padding:6px 12px;font:800 12px var(--fb)}
+/* chargement du Livre III */
+.bs3 .bssky{background:linear-gradient(180deg,#1a0e0a 0%,#4a2414 30%,#a0501e 58%,#ffb06a 80%,#ffe0b0 100%)}
+.bs3 .b2title{text-shadow:0 3px 0 #5a2a0e,0 0 26px rgba(255,140,60,.8)}
+.bs3 .bssub{color:#fff0d8}
+.bs3 .b3glow{background:radial-gradient(ellipse,rgba(255,176,90,.55),transparent 70%)!important}
+.bsmem{position:absolute;left:50%;top:17%;width:min(30vw,128px);transform:translateX(-50%);opacity:.34;filter:sepia(.9) saturate(.3) brightness(1.15);animation:bsmem 6s ease-in-out infinite}
+.bsmem svg{width:100%;height:auto}
+@keyframes bsmem{0%,100%{opacity:.22;transform:translateX(-50%) translateY(0)}50%{opacity:.4;transform:translateX(-50%) translateY(-6px)}}
+.bscrown{position:absolute;left:50%;top:29%;width:min(38vw,160px);transform:translate(-50%,-50%);animation:b3float 6s ease-in-out infinite}
+.bstower{position:absolute;right:6%;bottom:40%;width:min(12vw,50px);opacity:.8}
+.bsowl{position:absolute;width:30px;opacity:.75;animation:bsowl 14s linear infinite}
+.bsowl.o0{top:14%;animation-delay:-2s}.bsowl.o1{top:20%;animation-delay:-7s;width:22px}.bsowl.o2{top:9%;animation-delay:-11s;width:18px}
+@keyframes bsowl{from{left:-10%}to{left:110%}}
+.bs3fall i.ash{width:5px;height:5px;border-radius:50%;background:#d8ccc0}
+.bs3fall i.emb{width:4px;height:4px;border-radius:50%;background:#ffb21a;box-shadow:0 0 6px #ff6a1a}
+.bsfilm{position:absolute;inset:0;pointer-events:none;opacity:.12;background:linear-gradient(90deg,transparent 0 22%,rgba(255,250,230,.6) 22.2%,transparent 22.5%,transparent 71%,rgba(40,30,20,.5) 71.15%,transparent 71.4%);animation:fbscratch 2s steps(6) infinite}
 </style>
 <div id="boot" role="status" aria-live="polite"><div class="bt-in"><div class="bt-logo" aria-hidden="true"><svg viewBox="0 0 120 120"><defs><linearGradient id="btg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8a6aff"/><stop offset="1" stop-color="#3a2a8a"/></linearGradient><linearGradient id="btgo" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff6c0"/><stop offset="1" stop-color="#e2a42c"/></linearGradient></defs><g class="bt-ring"><circle cx="60" cy="60" r="54" fill="none" stroke="#ffd84a" stroke-width="2" stroke-dasharray="4 9" opacity=".7"/><circle cx="60" cy="6" r="4" fill="#58e4d3"/><circle cx="114" cy="60" r="3" fill="#ffd84a"/><circle cx="60" cy="114" r="4" fill="#ff8ac0"/><circle cx="6" cy="60" r="3" fill="#fff"/></g><path d="M60 16L94 28L90 70Q84 92 60 104Q36 92 30 70L26 28Z" fill="url(#btg)" stroke="#140c24" stroke-width="3" stroke-linejoin="round"/><path d="M60 24L86 33L83 68Q78 86 60 96Q42 86 37 68L34 33Z" fill="none" stroke="url(#btgo)" stroke-width="3"/><path d="M60 38L69 56L60 82L51 56Z" fill="#58e4d3" stroke="#140c24" stroke-width="2.4" stroke-linejoin="round"/><path d="M60 38L60 82L51 56Z" fill="#b0fff4"/><path d="M60 30l2.4 5 5.4.6-4 3.7 1.1 5.3-4.9-2.7-4.9 2.7 1.1-5.3-4-3.7 5.4-.6z" fill="url(#btgo)" stroke="#140c24" stroke-width="1.2"/></svg></div><div class="bt-t">Royaumes<span>d'Éther</span></div><div class="bt-bar"><i></i></div><div class="bt-s" id="bts">Chargement…</div></div></div>
 
@@ -14657,6 +14673,30 @@ TITLES.push({k:'echos3',n:'Gardien des Échos',c:'#ffb05a',d:'Terminer le Livre 
    <div class="sgfrags sm bk3">${BK3SYM.map((x,i)=>`<i class="${G.done[14+i]?'on':''}">${x}</i>`).join('')}</div></div></div>${main}
    <details class="sgdet"><summary>👥 Personnages rencontrés</summary>${loreCharsHTML()}</details><details class="sgdet"><summary>Tous les chapitres</summary><div class="sglist">${items}</div></details></div>`}}
 try{PATCH.unshift({v:32,d:'25 octobre 2026',t:"Livre III : l'Écho du Premier Porteur",items:["🦉 <b>Nouveau : le Livre III du mode histoire</b>, « L'Écho du Premier Porteur » : 6 chapitres (15 à 20), débloqués avec le <b>mode Normal</b> (étapes 5, 15, 30, 45, 60 et 75).","🎞️ Des <b>retours dans le passé</b>, il y a mille ans, qui s'affichent comme un vieux film animé (sépia, grain, rayures). Un chapitre entier, combat compris, se passe dans le passé !","👑 6 nouveaux boss, dont le <b>Roi de Cendre</b> avec sa cinématique, deux fins possibles, le secret de Plume… et une surprise à la fin.","🏷️ Récompenses : gemmes, éclats légendaires, tickets, <b>éclats d'ultra-évolution</b> et le titre « Gardien des Échos »."]})}catch(e){}
+
+/* ================= chargement aux couleurs du Livre III (prioritaire) ================= */
+function btSceneSaga3(){const R=rng(Date.now()%7919);const r=(a,b)=>a+R()*(b-a);
+  let stars='';for(let k=0;k<18;k++)stars+=`<i style="left:${r(0,100).toFixed(1)}%;top:${r(0,40).toFixed(1)}%;animation-delay:${r(0,4).toFixed(1)}s;width:${r(1.5,3).toFixed(1)}px;height:${r(1.5,3).toFixed(1)}px"></i>`;
+  let fall='';for(let k=0;k<12;k++)fall+=`<i class="${k%3?'ash':'emb'}" style="left:${r(2,96).toFixed(1)}%;animation-delay:${r(0,9).toFixed(1)}s;animation-duration:${r(7,12).toFixed(1)}s"></i>`;
+  const T=[[65,0],[57,0],[58,0],[47,0],[59,0]];const party=T.map(([id,u],i)=>`<div class="b3h q${i}"><i class="b3glow"></i><img src="${btImg(id,u)}" alt=""></div>`).join('');
+  let mem='';try{mem=(eryBody('eryndel')||'').replace('<svg','<svg class="loresvg hb"')}catch(e){}
+  const owls=[0,1,2].map(i=>`<svg class="bsowl o${i}" viewBox="0 0 40 20" aria-hidden="true"><path d="M20 12Q14 2 2 6Q10 8 14 14Q17 12 20 14Q23 12 26 14Q30 8 38 6Q26 2 20 12Z" fill="#3a2a1a"/></svg>`).join('');
+  const sky=`<div class="bsmem">${mem}</div><svg class="bscrown" viewBox="-60 -50 120 70" aria-hidden="true"><defs><radialGradient id="bscg"><stop offset="0" stop-color="#ffd8a0" stop-opacity=".9"/><stop offset="1" stop-color="#ff6a1a" stop-opacity="0"/></radialGradient></defs><circle r="44" cy="-6" fill="url(#bscg)"><animate attributeName="r" values="38;48;38" dur="3.6s" repeatCount="indefinite"/></circle>
+    ${[-28,-14,0,14,28].map((x,i)=>`<path d="M${x} -8q${i%2?5:-5} -18 0 -30q${i%2?-7:7} 14 0 30Z" fill="${i%2?'#ffb21a':'#ff6a1a'}"><animate attributeName="opacity" values=".5;1;.5" dur="${1+i*.2}s" repeatCount="indefinite"/></path>`).join('')}
+    <path d="M-34 4L-30 -12L-20 -2L-10 -16L0 -4L10 -16L20 -2L30 -12L34 4Z" fill="#1a1410" stroke="#ff6a1a" stroke-width="1.6"/></svg>
+    <svg class="bstower" viewBox="0 0 60 160" aria-hidden="true"><path d="M18 160V40L30 18L42 40V160Z" fill="#e8dcc0" opacity=".85"/><path d="M14 44H46L30 14Z" fill="#c8b48a"/><rect x="26" y="60" width="8" height="12" rx="4" fill="#ffd8a0"><animate attributeName="opacity" values=".5;1;.5" dur="2.4s" repeatCount="indefinite"/></rect><rect x="26" y="96" width="8" height="12" rx="4" fill="#ffd8a0" opacity=".7"/></svg>${owls}`;
+  return`<div class="b2 b3 bs bs3"><div class="bssky"></div><div class="bsstars">${stars}</div>${sky}
+   <svg class="b3hills" viewBox="0 0 400 200" preserveAspectRatio="none" aria-hidden="true"><path d="M0 120Q100 92 200 114T400 108V200H0Z" fill="#4a2a1a"/><path d="M0 160Q120 134 220 152T400 146V200H0Z" fill="#2a1410"/></svg>
+   <div class="bsfall bs3fall">${fall}</div><div class="b3party">${party}</div><div class="bsplume">${plumeSVG('happy')}</div><div class="bsfilm"></div>
+   <div class="b2top"><div class="b2title">Royaumes<span>d'Éther</span></div><div class="b3sub bsbook">🦉 Livre III · L'Écho du Premier Porteur</div><div class="bssub">Il y a mille ans, une flamme a été volée…</div></div>
+   <div class="b2bot"><div class="bt-bar"><i></i></div><div class="bt-s" id="bts">Le Cœur d'Éther se souvient…</div><div class="b2tap" id="b2tap" hidden>Touche pour entrer dans le royaume</div><div class="b2snd" id="b2snd">🔊 Touche l'écran pour le son</div></div></div>`}
+{const bs=btSceneSaga;btSceneSaga=function(bk){if(bk===3)return btSceneSaga3();return bs.apply(this,arguments)}}
+try{BTIPS.length=0;["Le Cœur d'Éther se souvient…","Une plume noircie tombe du ciel…","Plume : « Hou… Ce rythme, je le connais. »","Quelque part, une couronne de cendre s'allume…","Le Grand Aldric veille sur la bibliothèque…","Astuce : le Livre III se débloque avec le mode Normal.","Astuce : certains chapitres se passent il y a mille ans !"].forEach(t=>BTIPS.push(t))}catch(e){}
+(function(){try{if(BOOT.done)return;const b=document.getElementById('boot');const rr=b&&b.querySelector('.b2');if(!rr)return;
+  const st=rr.querySelector('#b2start'),bar=rr.querySelector('.bt-bar i');const w=bar?bar.style.width:'';
+  const tmp=document.createElement('div');tmp.innerHTML=btSceneSaga3();const n=tmp.firstElementChild;if(!n)return;if(st)n.appendChild(st);const nbar=n.querySelector('.bt-bar i');if(nbar&&w)nbar.style.width=w;rr.replaceWith(n)}catch(e){console.warn('boot3',e)}})();
+try{SONGS.boot=SONGS.menu;delete SONGC.boot}catch(e){}
+try{const P=PATCH.find(x=>x.v===32);if(P)P.items.push("🌅 <b>Nouvel écran de chargement</b> aux couleurs du Livre III : le souvenir d'Éryndel, la couronne de cendre, la tour des hiboux et les cendres qui tombent.")}catch(e){}
 
 /* ================= DÉMARRAGE ================= */
 (function init(){
