@@ -1,0 +1,51 @@
+/* ===== Livre III ===== */
+/* le vieux film : sépia, couleurs à peine visibles, grain, rayures, vignette, léger tremblement */
+#sgov.fbmode .sgbg,#sgov.fbmode .sgstage{filter:sepia(.78) saturate(.38) contrast(1.12) brightness(1.06);transition:filter .6s}
+#sgov .sgbg,#sgov .sgstage{transition:filter .6s}
+#sgov.fbmode::before{content:'';position:absolute;inset:-20px;z-index:3;pointer-events:none;opacity:.22;mix-blend-mode:multiply;
+ background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .35 0 0 0 0 .28 0 0 0 0 .18 0 0 0 .9 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+ animation:fbgrain .5s steps(4) infinite}
+#sgov.fbmode::after{content:'';position:absolute;inset:0;z-index:3;pointer-events:none;
+ background:linear-gradient(90deg,transparent 0 18%,rgba(255,250,230,.35) 18.2%,transparent 18.5%,transparent 63%,rgba(40,30,20,.35) 63.15%,transparent 63.4%),radial-gradient(ellipse at 50% 45%,transparent 45%,rgba(40,26,10,.75) 100%);
+ animation:fbscratch 1.7s steps(6) infinite,fbflick .18s infinite alternate}
+@keyframes fbgrain{0%{transform:translate(0,0)}25%{transform:translate(-8px,6px)}50%{transform:translate(6px,-4px)}75%{transform:translate(-4px,-8px)}100%{transform:translate(0,0)}}
+@keyframes fbscratch{0%{background-position:0 0,0 0}20%{background-position:-60px 0,0 0}40%{background-position:90px 0,0 0}60%{background-position:-20px 0,0 0}80%{background-position:140px 0,0 0}100%{background-position:30px 0,0 0}}
+@keyframes fbflick{from{opacity:.92}to{opacity:1}}
+#sgov.fbmode .sgbox{background:rgba(44,34,20,.92)!important;border-color:#c8a860!important;box-shadow:0 0 0 2px rgba(200,168,96,.4),0 10px 30px rgba(0,0,0,.5)}
+#sgov.fbmode .sgtext{color:#f4e8c8;font-style:italic}
+#sgov.fbmode .sgchip{background:rgba(60,46,26,.85);color:#f4e8c8}
+#sgov.fbmode .sgstage{animation:fbjit 4s infinite}
+@keyframes fbjit{0%,96%,100%{transform:none}97%{transform:translate(1px,-1px)}98%{transform:translate(-1px,1px)}}
+.fbtitle{position:absolute;inset:0;z-index:5;display:grid;place-items:center;pointer-events:none;background:rgba(30,20,8,.55);animation:fbt 2.6s ease forwards}
+.fbtitle span{font:34px/1.1 'Lilita One',Georgia,serif;color:#f4e8c8;letter-spacing:.04em;text-shadow:0 2px 0 #3a2a14,0 0 20px rgba(0,0,0,.6);padding:10px 22px;border-top:2px solid #c8a860;border-bottom:2px solid #c8a860;font-style:italic}
+@keyframes fbt{0%{opacity:0}15%,75%{opacity:1}100%{opacity:0}}
+body.fbbattle #battle .bw,body.fbbattle #battle>*:first-child{filter:sepia(.75) saturate(.4) contrast(1.1)}
+/* le Grand Aldric : un vieux hibou couleur de pierre et de miel */
+.sgfig.aldric svg{width:100%;height:auto}
+/* le livre III dans la carte du mode histoire */
+.sgcard.bk3{background:linear-gradient(160deg,rgba(255,176,90,.16),rgba(60,40,20,.25)),var(--card,#1a1430);border-color:rgba(255,176,90,.45)}
+.sgfrags.bk3 i{filter:grayscale(1);opacity:.45}.sgfrags.bk3 i.on{filter:none;opacity:1}
+.bk3b{background:linear-gradient(90deg,#ffb05a,#e8c870,#ff8a5a)!important;color:#2a1408!important}
+.sgrw.bk3 .sgfrag{filter:drop-shadow(0 0 16px #ffb05a)}
+/* cinématique du Roi de Cendre */
+#sgcine.roicine{position:fixed;inset:0;z-index:100002;overflow:hidden;background:#0a0604}
+.roicine .rc-bg{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 40%,#5a2a10,#0a0604 70%);animation:rcbg 4s ease forwards}
+@keyframes rcbg{0%{filter:sepia(1) saturate(.3)}55%{filter:sepia(1) saturate(.3)}70%{filter:none}100%{filter:none}}
+.roicine .rc-old,.roicine .rc-new{position:absolute;left:50%;bottom:8%;width:min(62vw,300px);transform:translateX(-50%)}
+.roicine .rc-old{filter:sepia(.85) saturate(.3);animation:rcold 4s ease forwards}
+.roicine .rc-new{opacity:0;animation:rcnew 4s ease forwards;filter:drop-shadow(0 0 26px #ff6a1a)}
+@keyframes rcold{0%{opacity:0}15%{opacity:1}55%{opacity:1;transform:translateX(-50%) scale(1)}65%{opacity:0;transform:translateX(-50%) scale(1.15)}100%{opacity:0}}
+@keyframes rcnew{0%,60%{opacity:0;transform:translateX(-50%) scale(.9)}72%{opacity:1;transform:translateX(-50%) scale(1.08)}100%{opacity:1;transform:translateX(-50%) scale(1)}}
+.roicine .rc-flash{position:absolute;inset:0;background:#ffb05a;opacity:0;animation:rcfl 4s ease forwards}
+@keyframes rcfl{0%,58%{opacity:0}63%{opacity:.95}80%{opacity:0}100%{opacity:0}}
+.roicine .rc-ash i{position:absolute;left:var(--x);top:-10px;width:5px;height:5px;border-radius:50%;background:#c8bcb0;animation:rcash var(--d) var(--l) linear infinite}
+.roicine .rc-ash i:nth-child(3n){background:#ff8a3a}
+@keyframes rcash{to{transform:translate(20px,110vh);opacity:.2}}
+.roicine .rc-title{position:absolute;left:0;right:0;top:9%;text-align:center;display:flex;flex-direction:column;align-items:center;opacity:0;animation:rct 4s ease forwards}
+.roicine .rc-title small{font:900 12px var(--fb);letter-spacing:.16em;color:#ffb05a}
+.roicine .rc-title b{font:52px/1 'Lilita One',sans-serif;color:#fff2d0;text-shadow:0 3px 0 #ff6a1a,0 0 24px #ff6a1a}
+.roicine .rc-title span{font:900 16px var(--fb);color:#ff8a3a;letter-spacing:.08em}
+.roicine .rc-title em{font-size:13px;color:#f4e8c8;margin-top:8px}
+@keyframes rct{0%,66%{opacity:0;transform:translateY(-10px)}78%,100%{opacity:1;transform:none}}
+.roicine .cn-go{position:absolute;left:50%;bottom:4%;transform:translateX(-50%);opacity:0;animation:rct 4.4s ease forwards}
+.roicine .cn-skip{position:absolute;right:12px;top:12px;background:rgba(0,0,0,.4);color:#fff;border:1px solid rgba(255,255,255,.3);border-radius:99px;padding:6px 12px;font:800 12px var(--fb)}
