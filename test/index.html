@@ -2741,6 +2741,19 @@ html.scrl .nfxn{animation-play-state:paused}
 .skblk .skrow{display:flex;align-items:center;gap:10px;margin-top:6px}
 .skblk .skp{width:46px;height:46px;border-radius:10px;overflow:hidden;flex:none;box-shadow:0 0 0 2px #ff6a1a}
 .skblk .skp svg{width:100%;height:100%;display:block}.skblk small{display:block;font-size:11.5px;color:var(--muted)}
+#ovl .modal .pbgart .pbgfx{position:absolute;inset:0;overflow:hidden}
+.pbgfx i{position:absolute;bottom:-6px;width:4px;height:4px;border-radius:50%;background:#ffb21a;box-shadow:0 0 6px #ff6a1a;opacity:0;transform:translate3d(0,0,0) scale(var(--s));animation:pbgem var(--d) linear infinite;animation-delay:var(--l);will-change:transform,opacity}
+.pbgfx i:nth-child(3n){background:#c8bcb0;box-shadow:none}
+@keyframes pbgem{0%{transform:translate3d(0,0,0) scale(var(--s));opacity:0}15%{opacity:.95}100%{transform:translate3d(14px,-150px,0) scale(var(--s));opacity:0}}
+.pbgfx .pbgglow{position:absolute;right:12%;top:18%;width:90px;height:90px;border-radius:50%;background:radial-gradient(circle,rgba(255,180,74,.55),rgba(255,90,20,0) 70%);animation:pbgglow 3s ease-in-out infinite;will-change:opacity}
+@keyframes pbgglow{50%{opacity:.45}}
+html.scrl .pbgfx *{animation-play-state:paused}
+@media(prefers-reduced-motion:reduce){.pbgfx *{animation:none!important}}
+.pbgpick{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:8px 0;padding:8px;border-radius:12px;background:rgba(10,6,24,.55);border:1px solid rgba(255,255,255,.08)}
+.pbgpick .pbgl{font-size:12.5px;font-weight:800}
+.pbgc{display:flex;flex-direction:column;align-items:center;gap:2px;background:none;border:2px solid transparent;border-radius:10px;padding:3px;color:inherit;cursor:pointer}
+.pbgc.on{border-color:#ffd84a}.pbgc small{font-size:10.5px;color:var(--muted)}
+.pbgmini.base{background:linear-gradient(135deg,#2a1a5a,#120c26)}
 </style>
 <div id="boot" role="status" aria-live="polite"><div class="bt-in"><div class="bt-logo" aria-hidden="true"><svg viewBox="0 0 120 120"><defs><linearGradient id="btg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8a6aff"/><stop offset="1" stop-color="#3a2a8a"/></linearGradient><linearGradient id="btgo" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff6c0"/><stop offset="1" stop-color="#e2a42c"/></linearGradient></defs><g class="bt-ring"><circle cx="60" cy="60" r="54" fill="none" stroke="#ffd84a" stroke-width="2" stroke-dasharray="4 9" opacity=".7"/><circle cx="60" cy="6" r="4" fill="#58e4d3"/><circle cx="114" cy="60" r="3" fill="#ffd84a"/><circle cx="60" cy="114" r="4" fill="#ff8ac0"/><circle cx="6" cy="60" r="3" fill="#fff"/></g><path d="M60 16L94 28L90 70Q84 92 60 104Q36 92 30 70L26 28Z" fill="url(#btg)" stroke="#140c24" stroke-width="3" stroke-linejoin="round"/><path d="M60 24L86 33L83 68Q78 86 60 96Q42 86 37 68L34 33Z" fill="none" stroke="url(#btgo)" stroke-width="3"/><path d="M60 38L69 56L60 82L51 56Z" fill="#58e4d3" stroke="#140c24" stroke-width="2.4" stroke-linejoin="round"/><path d="M60 38L60 82L51 56Z" fill="#b0fff4"/><path d="M60 30l2.4 5 5.4.6-4 3.7 1.1 5.3-4.9-2.7-4.9 2.7 1.1-5.3-4-3.7 5.4-.6z" fill="url(#btgo)" stroke="#140c24" stroke-width="1.2"/></svg></div><div class="bt-t">Royaumes<span>d'Éther</span></div><div class="bt-bar"><i></i></div><div class="bt-s" id="bts">Chargement…</div></div></div>
 
@@ -15550,7 +15563,7 @@ try{PATCH.unshift({v:36,d:'27 octobre 2026',t:'Le nouveau Pass de combat',items:
 /* Un skin = un « héros virtuel » (identifiant 400+) avec son propre look, son ultra-thème, son décor et son arme.
    Équiper un skin remplace le dessin du héros partout (cartes, combat, ultra-évolutions).
    SKIN_GO : date d'ouverture dans la version publique. La version Claude (tests) l'a toujours. */
-let SKIN_GO=Infinity;
+let SKIN_GO=Date.UTC(2026,9,27,7,10);
 let skinOn=()=>!window.RDE_APP||Date.now()>=SKIN_GO;
 const SKTEST=()=>!window.RDE_APP;
 const SKINS={
@@ -15571,7 +15584,8 @@ function dkcBG(u){const id='dkc'+u;let o=`<defs><radialGradient id="${id}s" cx="
   return o+'</g>'}
 function dkcFX(u){let o='';
   /* veines de lave sur l'armure */
-  const veins=`<g fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M70 76L74 88L68 98L73 112M90 76L86 90L92 100L87 114M80 84L80 96L76 106M62 86L66 96M98 86L94 96" stroke="#ff6a1a" stroke-width="${1.1+u*.2}" opacity=".9"><animate attributeName="stroke" values="#ff6a1a;#ffd84a;#ff6a1a" dur="${2.4-u*.35}s" repeatCount="indefinite"/></path><path d="M70 76L74 88L68 98L73 112M90 76L86 90L92 100L87 114M80 84L80 96L76 106" stroke="#fff2c0" stroke-width=".6" opacity=".8"/></g>`;
+  const VL='M70 76L73 88L68 98L72 112M63 86L67 96',VR='M90 76L87 88L92 98L88 112M97 86L93 96',VC='M80 84V106';
+  const veins=`<g fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="${VL}${VR}${VC}" stroke="#ff6a1a" stroke-width="${1.1+u*.2}" opacity=".9"><animate attributeName="stroke" values="#ff6a1a;#ffd84a;#ff6a1a" dur="${2.4-u*.35}s" repeatCount="indefinite"/></path><path d="${VL}${VR}${VC}" stroke="#fff2c0" stroke-width=".5" opacity=".75"/></g>`;;
   o+=`<g opacity=".95">${veins}</g>`;
   /* cœur de braise dans la poitrine */
   o+=`<circle cx="80" cy="92" r="${2.4+u*.5}" fill="#fff2c0" opacity=".95"><animate attributeName="opacity" values=".6;1;.6" dur="1.6s" repeatCount="indefinite"/></circle><circle cx="80" cy="92" r="${6+u}" fill="#ff6a1a" opacity=".22"/>`;
@@ -15680,6 +15694,26 @@ function unlockFrameQ(f){S.evFrames=S.evFrames||[];if(!S.evFrames.includes(f))S.
   const hd=m.querySelector('.hd');(hd||m.firstElementChild).insertAdjacentHTML('afterend',`<div class="skill skblk"><div class="sn">👗 Apparences</div>${items}</div>`)}catch(e){}return r}}
 /* --- PATCH --- */
 try{const P=PATCH.find(x=>x.v===36);if(P&&skinOn())P.items.splice(4,0,"💎 <b>Exclusivités du Pass Pro</b> : un fond de profil (palier 15), un avatar (palier 30), un <b>effet de pseudo</b> en braise (palier 45) et l'apparence <b>« Drakhar des Cendres »</b> (palier 60), avec ses 4 formes ultra.","👗 <b>Nouveau : le Dressing</b> dans la Caserne : porte tes apparences, choisis ton fond de profil et l'effet de ton pseudo. Le <b>Catalogue</b> montre toutes les exclusivités de chaque saison.")}catch(e){}
+/* ================= Profil : choisir son fond + fond des Cendres animé · maintenance programmée ================= */
+PBG.cendres.fx=1;
+function pbgFx(k){if(!PBG[k]||!PBG[k].fx)return'';return`<div class="pbgfx">${[...Array(12)].map((_,i)=>`<i style="left:${(i*8.3+3).toFixed(1)}%;--d:${(2.6+(i%4)*.7).toFixed(1)}s;--l:${(-(i*.53)).toFixed(2)}s;--s:${(.6+(i%3)*.35).toFixed(2)}"></i>`).join('')}<b class="pbgglow"></b></div>`}
+{const pm=profileModal;profileModal=function(id){const r=pm.apply(this,arguments);try{if(!skinOn())return r;const m=document.querySelector('#ovl .modal');if(!m)return r;
+  const pa=m.querySelector('.pbgart');if(pa&&!pa.querySelector('.pbgfx')){const k=id==='me'?S.pbg:((NET.players&&NET.players[String(id).replace(/^r:/,'')])||{}).pbg;pa.insertAdjacentHTML('beforeend',pbgFx(k))}
+  if(id==='me'&&!m.querySelector('.pbgpick')){const own=(S.pbgs||[]).filter(k=>PBG[k]);const cur=own.includes(S.pbg)?S.pbg:'';
+    const html=`<div class="pbgpick"><span class="pbgl">🖼️ Fond</span><button class="pbgc ${!cur?'on':''}" data-a="pbgme" data-v=""><span class="pbgmini base"></span><small>De base</small></button>${own.map(k=>`<button class="pbgc ${cur===k?'on':''}" data-a="pbgme" data-v="${k}"><span class="pbgmini"><svg viewBox="0 0 400 200" preserveAspectRatio="xMidYMid slice">${PBG[k].art()}</svg></span><small>${esc(PBG[k].n.replace(/^Fond « |»$/g,''))}</small></button>`).join('')}${own.length?'':'<small class="muted" style="font-size:11.5px">Les fonds exclusifs s\'obtiennent dans le Pass Pro.</small>'}</div>`;
+    const anchor=m.querySelector('.row')||m.querySelector('.h')||m.firstElementChild;anchor.insertAdjacentHTML('afterend',html)}}catch(e){}return r}}
+document.addEventListener('click',e=>{const b=e.target.closest('[data-a="pbgme"]');if(!b)return;e.preventDefault();e.stopPropagation();S.pbg=b.dataset.v||'';save();NET.lastPush='';try{schedulePush()}catch(er){}closeModal();profileModal('me')},true);
+/* ---- maintenance programmée : 27/10 de 7h30 à 8h10 (heure de Paris) ---- */
+const MNT=[{a:Date.UTC(2026,9,27,6,30),b:Date.UTC(2026,9,27,7,10),msg:"🔥 <b>La saison des Cendres arrive !</b><br>On prépare le nouveau Pass de combat, le Dressing et les apparences exclusives.<br><br>Retour à <b>8h10</b> pile. Ta progression est sauvegardée, à tout de suite !"}];
+const mntNow=()=>{const t=Date.now();return MNT.find(m=>t>=m.a&&t<m.b)||null};
+if(window.RDE_APP&&!window.RDE_SKTEST){let was=false;
+  const rm0=rdeMaint;rdeMaint=function(on,msg){const m=mntNow();if(m&&!on)return;return rm0.apply(this,arguments)};
+  const tick=()=>{const m=mntNow();if(m){if(!was){try{save()}catch(e){}}was=true;rm0(true,m.msg);const o=document.getElementById('rdemaint');if(o){const left=Math.max(0,m.b-Date.now());const n=o.querySelector('.rmn');if(n)n.innerHTML=`Retour dans <b>${Math.floor(left/60000)} min ${String(Math.floor(left/1000)%60).padStart(2,'0')} s</b> · ta progression est sauvegardée.`;const bt=o.querySelector('#rmretry');if(bt)bt.style.display='none'}}
+    else if(was){was=false;rm0(false);setTimeout(()=>location.reload(),800)}};
+  tick();setInterval(tick,1000);
+  /* pendant la maintenance : on ne sauvegarde plus rien en ligne */
+  {const cs=typeof cloudSave==='function'?cloudSave:null;if(cs)cloudSave=async function(){if(mntNow())return;return cs.apply(this,arguments)}}
+  {const pm=pushMe;pushMe=async function(){if(mntNow())return;return pm.apply(this,arguments)}}}
 
 /* ================= DÉMARRAGE ================= */
 (function init(){

@@ -3,7 +3,7 @@
 /* Un skin = un « héros virtuel » (identifiant 400+) avec son propre look, son ultra-thème, son décor et son arme.
    Équiper un skin remplace le dessin du héros partout (cartes, combat, ultra-évolutions).
    SKIN_GO : date d'ouverture dans la version publique. La version Claude (tests) l'a toujours. */
-let SKIN_GO=Infinity;
+let SKIN_GO=Date.UTC(2026,9,27,7,10);
 let skinOn=()=>!window.RDE_APP||Date.now()>=SKIN_GO;
 const SKTEST=()=>!window.RDE_APP;
 const SKINS={
@@ -24,7 +24,8 @@ function dkcBG(u){const id='dkc'+u;let o=`<defs><radialGradient id="${id}s" cx="
   return o+'</g>'}
 function dkcFX(u){let o='';
   /* veines de lave sur l'armure */
-  const veins=`<g fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M70 76L74 88L68 98L73 112M90 76L86 90L92 100L87 114M80 84L80 96L76 106M62 86L66 96M98 86L94 96" stroke="#ff6a1a" stroke-width="${1.1+u*.2}" opacity=".9"><animate attributeName="stroke" values="#ff6a1a;#ffd84a;#ff6a1a" dur="${2.4-u*.35}s" repeatCount="indefinite"/></path><path d="M70 76L74 88L68 98L73 112M90 76L86 90L92 100L87 114M80 84L80 96L76 106" stroke="#fff2c0" stroke-width=".6" opacity=".8"/></g>`;
+  const VL='M70 76L73 88L68 98L72 112M63 86L67 96',VR='M90 76L87 88L92 98L88 112M97 86L93 96',VC='M80 84V106';
+  const veins=`<g fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="${VL}${VR}${VC}" stroke="#ff6a1a" stroke-width="${1.1+u*.2}" opacity=".9"><animate attributeName="stroke" values="#ff6a1a;#ffd84a;#ff6a1a" dur="${2.4-u*.35}s" repeatCount="indefinite"/></path><path d="${VL}${VR}${VC}" stroke="#fff2c0" stroke-width=".5" opacity=".75"/></g>`;;
   o+=`<g opacity=".95">${veins}</g>`;
   /* cœur de braise dans la poitrine */
   o+=`<circle cx="80" cy="92" r="${2.4+u*.5}" fill="#fff2c0" opacity=".95"><animate attributeName="opacity" values=".6;1;.6" dur="1.6s" repeatCount="indefinite"/></circle><circle cx="80" cy="92" r="${6+u}" fill="#ff6a1a" opacity=".22"/>`;

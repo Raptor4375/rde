@@ -1,0 +1,13 @@
+#ovl .modal .pbgart .pbgfx{position:absolute;inset:0;overflow:hidden}
+.pbgfx i{position:absolute;bottom:-6px;width:4px;height:4px;border-radius:50%;background:#ffb21a;box-shadow:0 0 6px #ff6a1a;opacity:0;transform:translate3d(0,0,0) scale(var(--s));animation:pbgem var(--d) linear infinite;animation-delay:var(--l);will-change:transform,opacity}
+.pbgfx i:nth-child(3n){background:#c8bcb0;box-shadow:none}
+@keyframes pbgem{0%{transform:translate3d(0,0,0) scale(var(--s));opacity:0}15%{opacity:.95}100%{transform:translate3d(14px,-150px,0) scale(var(--s));opacity:0}}
+.pbgfx .pbgglow{position:absolute;right:12%;top:18%;width:90px;height:90px;border-radius:50%;background:radial-gradient(circle,rgba(255,180,74,.55),rgba(255,90,20,0) 70%);animation:pbgglow 3s ease-in-out infinite;will-change:opacity}
+@keyframes pbgglow{50%{opacity:.45}}
+html.scrl .pbgfx *{animation-play-state:paused}
+@media(prefers-reduced-motion:reduce){.pbgfx *{animation:none!important}}
+.pbgpick{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:8px 0;padding:8px;border-radius:12px;background:rgba(10,6,24,.55);border:1px solid rgba(255,255,255,.08)}
+.pbgpick .pbgl{font-size:12.5px;font-weight:800}
+.pbgc{display:flex;flex-direction:column;align-items:center;gap:2px;background:none;border:2px solid transparent;border-radius:10px;padding:3px;color:inherit;cursor:pointer}
+.pbgc.on{border-color:#ffd84a}.pbgc small{font-size:10.5px;color:var(--muted)}
+.pbgmini.base{background:linear-gradient(135deg,#2a1a5a,#120c26)}
