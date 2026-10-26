@@ -33,3 +33,5 @@ self.addEventListener('fetch',e=>{{const r=e.request;if(r.method!=='GET')return;
 """)
 open(D+'/version.json','w').write(json.dumps({'v':V}))
 print('app ok',len(out),V)
+
+import subprocess;subprocess.run(['python3','/home/claude/w/app/buildcg.py'])
