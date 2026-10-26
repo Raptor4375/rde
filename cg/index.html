@@ -15056,6 +15056,9 @@ try{PATCH.unshift({v:33,d:'26 octobre 2026',t:'Bannières limitées',items:["⏳
    - Bannières d'événement / nouveau héros : 2 semaines max (BANS de v329), 50/50 puis garanti.
      Pour en ajouter une : EVB.ev_nom={h:<index du héros>,start:'AAAA-MM-JJ',n:'Titre',d:'Description'} */
 const STD_MR=.5,STD_MP=120;
+/* réparation : un compteur légendaire abîmé (bug du 26/10) revient dans les clous */
+function pityFix(){try{if(!(S.pity>=0&&S.pity<60)){S.pity=S.pity<-1e8?Math.max(0,Math.min(59,Math.round(S.pity+1e9))):0;save()}if(S.stdm!=null&&!(S.stdm>=0&&S.stdm<120)){S.stdm=0;save()}}catch(e){}}
+setTimeout(pityFix,1500);setInterval(pityFix,30000);
 const EVB={};
 for(const k in EVB)BANS[k]={n:EVB[k].n,start:EVB[k].start};
 const evOpen=()=>Object.keys(EVB).filter(k=>banOpen(k));
@@ -15077,7 +15080,8 @@ function givePulled(h){const ow=S.heroes[h.i];if(!ow){S.heroes[h.i]={l:1,e:0,f:0
   const o2=Object.assign({},o,{pay:'none',ban:'wk',leg:false,minR:extra?0:(o.minR!=null?o.minR:(n===10?2:0))});
   const rr=rollR,p0=S.pity,before=UI.last;
   rollR=function(){let r,g=0;do{r=rr()}while(r>=4&&g++<50);return r>=4?3:r};S.pity=-1e9;
-  let res;try{res=px.call(this,rest,o2)}finally{rollR=rr;S.pity=p0}
+  let res;try{res=px.call(this,rest,o2)}finally{rollR=rr;S.pity=p0;save()}
+  if(!extra){try{render()}catch(e){}}
   if(!extra)return res;
   if(UI.last===before||!Array.isArray(UI.last))UI.last=[];
   let leg=null,myth=null;
