@@ -3,7 +3,7 @@ src=open('/home/claude/rde/index.html').read()
 cg=open('/home/claude/w/cg/cg.js').read()
 out=src
 out=re.sub(r'<link rel="manifest"[^>]*>','',out,count=1)
-out=re.sub(r"<script>window\.RDE_V='(\d+)';if\('serviceWorker'[^<]*</script>",r"<script>window.RDE_V='\1';</script>",out,count=1)
+out=re.sub(r"<script>window\.RDE_V='(\d+)';if\('serviceWorker'[^<]*</script>",r"",out,count=1)
 assert 'serviceWorker' not in out[:20000]
 out=out.replace('</head>','<script src="https://sdk.crazygames.com/crazygames-sdk-v3.js"></script>\n</head>',1)
 assert out.rstrip().endswith('</html>') or '</body>' in out
