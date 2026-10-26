@@ -24,3 +24,11 @@
 @media (min-width:900px) and (min-aspect-ratio:5/4) and (max-height:760px){
   .tab{padding:6px 4px!important;font-size:10px!important}
 }
+/* écrans en largeur : les personnages des cinématiques sont dimensionnés sur la hauteur, plus jamais coupés en deux */
+@media (min-aspect-ratio:1/1){
+  .roicut .rcu-fig{width:auto;height:74vh;bottom:12%;left:44%;transform:translateX(-50%)}
+  .roicut .rcu-r .rcu-fig{left:58%;right:auto}
+  .roicut .rcu-fig svg{height:100%;width:auto}
+  .alcut .alfig{width:auto;max-width:none;height:min(78vh,420px);right:4%;bottom:0}
+  .alcut .alfig svg{height:100%;width:auto}
+}
