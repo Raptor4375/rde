@@ -21,3 +21,15 @@ try{const am=accModal;accModal=function(){const r=am.apply(this,arguments);try{c
 try{const nm=nameModal;nameModal=function(){if(!S.xferAsk){S.xferAsk=1;try{save()}catch(e){}}const r=nm.apply(this,arguments);
   try{const m=document.querySelector('#ovl .modal');if(m&&!m.querySelector('[data-a=accfind]'))m.insertAdjacentHTML('beforeend','<button class="btn" data-a="accfind" style="width:100%;margin-top:10px">🔑 J\'ai déjà un compte (code de compte)</button>')}catch(e){}return r}}catch(e){}
 })();
+/* --- sauvegarde liée au compte CrazyGames (module Data du SDK) --- */
+(function(){const DK='rde-save',TK=KEY+'-cgT';let last=0,pend=null;
+  const ls=(k,v)=>{try{if(v===undefined)return localStorage.getItem(k);localStorage.setItem(k,String(v))}catch(e){return null}};
+  function put(){try{const sdk=window.CrazyGames&&window.CrazyGames.SDK;if(!sdk||!sdk.data||!S||!S.name)return;const t=Date.now();
+    sdk.data.setItem(DK,JSON.stringify({t,s:JSON.stringify(typeof xferSlim==='function'?xferSlim(S):S)}));ls(TK,t);last=t}catch(e){}}
+  const sv=save;save=function(){const r=sv.apply(this,arguments);if(Date.now()-last>20000)put();else if(!pend)pend=setTimeout(()=>{pend=null;put()},20000);return r};
+  document.addEventListener('visibilitychange',()=>{if(document.hidden)put()});
+  setTimeout(async()=>{try{const sdk=window.CrazyGames&&window.CrazyGames.SDK;if(!sdk)return;try{await sdk.init()}catch(e){}if(!sdk.data)return;
+    const raw=sdk.data.getItem(DK);if(!raw){put();return}const o=JSON.parse(raw);if(!o||!o.s)return;const mine=+ls(TK)||0;
+    const local=(()=>{try{return JSON.parse(localStorage.getItem(KEY)||'null')}catch(e){return null}})();
+    if(!local||!local.name||o.t>mine+60000){const N=JSON.parse(o.s);if(N&&N.heroes){localStorage.setItem(KEY,JSON.stringify(N));ls(TK,o.t);location.reload()}}else put()}catch(e){}},2500);
+})();
