@@ -40,4 +40,12 @@ import subprocess;subprocess.run(['python3','/home/claude/w/app/buildcg.py'])
 t=open('/home/claude/w/royaumes.html').read()
 assert t.count("const KEY='royaumes-ether-v1'")==1
 t=t.replace("const KEY='royaumes-ether-v1'","const KEY='royaumes-ether-TEST'").replace('<head>','<head><script>window.RDE_SKTEST=true;window.TUTO_OFF=false;</script>',1)
+TU=r'''<script>setTimeout(function(){try{const P=PASS();if(!P.pro||P.xp<PCUM[60]){P.pro=true;P.prem=true;P.xp=Math.max(P.xp,NEWP(P.s)?PCUM[60]:pLV(P.s)*pXPL(P.s));save()}}catch(e){}try{if(S.tstAll)return;S.tstAll=1;
+for(const h of HEROES){if(h.i>=200)continue;S.heroes[h.i]={l:100,e:3,f:0,u:h.r>=4?3:0,aw:h.r===4?10:0}}
+S.gems=999999;S.gold=99999999;S.shards=999;S.ush=999;INV().pt=500;
+for(const s of NSEAS){unlockFrameQ(s.k);ptGive(s.tk)}for(const sk in SEASON_COS)for(const t in SEASON_COS[sk])cosGive(t,SEASON_COS[sk][t][1]);
+S.skinEq={65:'dk_cendres'};S.nfx='cendres';S.pbg='cendres';skRefresh(65);
+try{const P=PASS();P.pro=true;P.prem=true;P.xp=Math.max(P.xp,PCUM[60])}catch(e){}
+S.tuto=S.tuto||2;S.team=[65,56,61,62,67].filter(i=>S.heroes[i]);TPX.t=0;save();render();toast('🧪 Tout est débloqué (version de test)')}catch(e){console.warn(e)}},2500)</script>'''
+t=t.replace('</body>',TU+'</body>',1)
 os.makedirs(D+'/test',exist_ok=True);open(D+'/test/index.html','w').write(t);print('test ok')
