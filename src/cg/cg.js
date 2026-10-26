@@ -4,9 +4,9 @@ window.RDE_CG=true;
 /* --- SDK CrazyGames : on prévient quand le joueur est en jeu --- */
 let sdk=null,ready=null,inGame=false;
 ready=(async()=>{try{if(window.CrazyGames&&window.CrazyGames.SDK){await window.CrazyGames.SDK.init();sdk=window.CrazyGames.SDK}}catch(e){sdk=null}return sdk})();
-const gStart=()=>{if(inGame)return;inGame=true;ready.then(s=>{try{s&&s.game.gameplayStart()}catch(e){}})};
+const gStart=()=>{if(inGame)return;inGame=true;ready.then(s=>{try{if(s&&loading){loading=false;s.game.loadingStop()}}catch(e){}try{s&&s.game.gameplayStart()}catch(e){}})};
 const gStop=()=>{if(!inGame)return;inGame=false;ready.then(s=>{try{s&&s.game.gameplayStop()}catch(e){}})};
-try{ready.then(s=>{try{if(s&&s.game&&s.game.loadingStop)s.game.loadingStop()}catch(e){}})}catch(e){}
+let loading=false;try{ready.then(s=>{try{if(s&&!inGame&&s.game.loadingStart){s.game.loadingStart();loading=true}}catch(e){}})}catch(e){}
 try{if(typeof btEnter==='function'){const be=btEnter;btEnter=function(){const r=be.apply(this,arguments);gStart();return r}}}catch(e){}
 document.addEventListener('visibilitychange',()=>{if(document.hidden)gStop();else if(!document.getElementById('boot')||document.getElementById('boot').style.display==='none')gStart()});
 setTimeout(()=>{try{if(!document.querySelector('#boot:not([style*="none"])'))gStart()}catch(e){}},15000);
