@@ -1,0 +1,24 @@
+#itov{position:fixed;inset:0;z-index:100001;pointer-events:none}
+#itov.hid{display:none}
+#itov .ithole{position:fixed;border-radius:14px;box-shadow:0 0 0 9999px rgba(8,4,20,.62),0 0 0 3px #ffd84a,0 0 22px 6px rgba(255,216,74,.55);transition:all .25s ease;animation:itpulse 1.4s ease-in-out infinite}
+#itov.free .ithole{box-shadow:0 0 0 9999px rgba(8,4,20,.62)}
+@keyframes itpulse{50%{box-shadow:0 0 0 9999px rgba(8,4,20,.62),0 0 0 5px #ffd84a,0 0 34px 10px rgba(255,216,74,.7)}}
+#itov .itarr{position:fixed;font-size:40px;transform:translateX(-50%);filter:drop-shadow(0 3px 6px #000);animation:itbob .8s ease-in-out infinite alternate}
+#itov .itarr.dn{transform:translateX(-50%) rotate(180deg)}
+@keyframes itbob{to{margin-top:8px}}
+#itov .itbox{position:fixed;left:50%;transform:translateX(-50%);width:min(92vw,440px);display:flex;align-items:flex-end;gap:8px;pointer-events:auto}
+#itov .itbox.mid{top:50%;transform:translate(-50%,-50%)}
+#itov .itbox.bot{bottom:calc(84px + env(safe-area-inset-bottom,0px))}
+#itov .itbox.top{top:calc(14px + env(safe-area-inset-top,0px))}
+#itov .itmasc{width:74px;flex:none;filter:drop-shadow(0 4px 10px #000)}
+#itov .itmasc svg{width:100%;height:auto}
+#itov .itbub{flex:1;background:linear-gradient(180deg,#2a1a5a,#170f33);border:2px solid #ffd84a;border-radius:16px;padding:12px 14px;box-shadow:0 10px 30px -8px #000;color:#fff}
+#itov .itt{font:700 17px var(--fb,sans-serif);color:#ffd84a;margin-bottom:4px}
+#itov .itx{font-size:14px;line-height:1.45}
+#itov .itbt{display:flex;align-items:center;gap:8px;margin-top:10px}
+#itov .itbt .btn{flex:1}
+#itov .itskip{background:none;border:0;color:#b8a8e0;font-size:12px;text-decoration:underline;cursor:pointer;padding:4px}
+#itov .itn{margin-left:auto;font-size:11px;color:#8a7ab8}
+#itov .tuloop{display:flex;flex-wrap:wrap;gap:4px;align-items:center;margin:4px 0 8px;font-size:12px}
+#itov .tuloop span{background:rgba(255,255,255,.08);border-radius:8px;padding:3px 6px}
+@media (min-width:900px) and (min-aspect-ratio:5/4){#itov .itbox.bot{bottom:24px}}
