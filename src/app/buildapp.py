@@ -35,3 +35,9 @@ open(D+'/version.json','w').write(json.dumps({'v':V}))
 print('app ok',len(out),V)
 
 import subprocess;subprocess.run(['python3','/home/claude/w/app/buildcg.py'])
+
+# version de test (hors ligne, sauvegarde séparée) : /rde/test/
+t=open('/home/claude/w/royaumes.html').read()
+assert t.count("const KEY='royaumes-ether-v1'")==1
+t=t.replace("const KEY='royaumes-ether-v1'","const KEY='royaumes-ether-TEST'").replace('<head>','<head><script>window.RDE_SKTEST=true;window.TUTO_OFF=false;</script>',1)
+os.makedirs(D+'/test',exist_ok=True);open(D+'/test/index.html','w').write(t);print('test ok')

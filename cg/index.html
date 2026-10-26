@@ -2742,6 +2742,56 @@ html.scrl .stdsky i{animation-play-state:paused}
 .pwq .pwqn{font-size:13px;font-weight:700}
 .pwq .pwqi.done{opacity:.55}
 .pwq .pwqi .btn{white-space:nowrap}
+/* effets de pseudo */
+.nfxn.nfx-cendres{background:linear-gradient(90deg,#ff5a14,#ffd84a,#fff2c0,#ffd84a,#ff5a14);background-size:220% 100%;-webkit-background-clip:text;background-clip:text;color:transparent!important;-webkit-text-fill-color:transparent;text-shadow:none;filter:drop-shadow(0 0 4px rgba(255,106,26,.75));animation:nfxc 2.6s linear infinite;font-weight:900}
+@keyframes nfxc{to{background-position:-220% 0}}
+html.scrl .nfxn{animation-play-state:paused}
+.pnfx{display:inline-block;font-weight:900;font-size:14px}
+/* récompenses dans la piste */
+.pcell .pskin{width:38px;height:38px;border-radius:10px;overflow:hidden;display:block;box-shadow:0 0 0 2px #ff6a1a,0 0 12px rgba(255,106,26,.6)}
+.pcell .pskin svg{width:100%;height:100%;display:block}
+.pbgmini{display:block;width:56px;height:30px;border-radius:7px;overflow:hidden;border:1px solid rgba(255,255,255,.2)}
+.pbgmini svg{width:100%;height:100%;display:block}.pbgmini.none{background:repeating-linear-gradient(45deg,#1a1430 0 6px,#221a3a 6px 12px)}
+.pcell .pbgmini{width:42px;height:24px}
+/* fond de profil */
+#ovl .modal.haspbg{position:relative;overflow:hidden}
+#ovl .modal .pbgart{position:absolute;left:0;right:0;top:0;height:150px;z-index:0;pointer-events:none;-webkit-mask:linear-gradient(#000 40%,transparent);mask:linear-gradient(#000 40%,transparent);opacity:.9}
+#ovl .modal .pbgart svg{width:100%;height:100%}
+#ovl .modal.haspbg>*:not(.pbgart){position:relative;z-index:1}
+/* dressing */
+.dskin{display:grid;grid-template-columns:150px minmax(0,1fr);gap:12px;align-items:center;background:linear-gradient(135deg,#2a0a06,#120a14 60%);border:2px solid rgba(255,106,26,.45);border-radius:18px;padding:10px;box-shadow:0 10px 30px -14px #000}
+.dskin.on{border-color:#ffd84a;box-shadow:0 0 0 1px #ffd84a,0 0 24px -6px rgba(255,216,74,.6)}
+.dsfig svg{width:100%;height:auto;display:block}
+.dsforms{display:flex;gap:6px;margin-top:8px}
+.dsforms>div{display:flex;flex-direction:column;align-items:center;gap:2px;opacity:.6}
+.dsforms>div.on{opacity:1}
+.dsforms span{width:44px;height:44px;border-radius:9px;overflow:hidden;display:block;border:1px solid rgba(255,255,255,.18)}
+.dsforms>div.on span{border-color:#ffd84a;box-shadow:0 0 8px rgba(255,216,74,.6)}
+.dsforms span svg{width:100%;height:100%;display:block}.dsforms small{font-size:10px;color:var(--muted)}
+@media(max-width:480px){.dskin{grid-template-columns:110px minmax(0,1fr)}}
+.dgrid{display:flex;flex-wrap:wrap;gap:8px}
+.dopt{display:flex;flex-direction:column;align-items:center;gap:4px;background:rgba(255,255,255,.04);border:2px solid transparent;border-radius:12px;padding:8px;cursor:pointer;color:inherit;min-width:84px}
+.dopt.on{border-color:#ffd84a;background:rgba(255,216,74,.08)}.dopt small{font-size:11px;color:var(--muted)}
+/* catalogue */
+.catsea{position:relative;overflow:hidden;padding:0!important;border-color:color-mix(in srgb,var(--pc) 55%,transparent)!important}
+.catsea .catbg{position:absolute;inset:0 0 auto 0;height:96px;opacity:.85;-webkit-mask:linear-gradient(#000 30%,transparent);mask:linear-gradient(#000 30%,transparent)}
+.catsea .catbg svg{width:100%;height:100%}
+.catsea .cathd{position:relative;padding:14px 14px 6px;display:flex;flex-direction:column;gap:2px}
+.catsea .cathd b{font-size:17px;text-shadow:0 2px 6px #000}.catsea .cathd small{font-size:12px;color:#e8e0ff;text-shadow:0 1px 4px #000}
+.catsea .catl{position:relative;padding:4px 10px 10px;display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:6px}
+.cati{display:flex;align-items:center;gap:10px;background:rgba(10,6,24,.72);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:8px}
+.cati.own{border-color:rgba(122,208,122,.55)}
+.cati .catart{width:64px;display:flex;justify-content:center;flex:none}
+.cati .catt{flex:1;min-width:0;display:flex;flex-direction:column}.cati .catt b{font-size:13px}.cati .catt small{font-size:11.5px;color:var(--muted)}
+.cati .cok{color:#7ad07a;font-style:normal;font-weight:900}.cati .clk{font-style:normal;opacity:.6}
+.cfr{width:40px;height:40px;display:block;border-radius:10px}
+.cttl{font-size:9px;max-width:62px;font-weight:800;color:var(--tc);border:1px solid var(--tc);border-radius:99px;padding:2px 6px;text-align:center;line-height:1.2}
+.cav{width:44px;height:44px;border-radius:10px;overflow:hidden;display:block}.cav.big{width:50px;height:50px;box-shadow:0 0 0 2px #ff6a1a}
+.cav svg{width:100%;height:100%;display:block}
+/* fiche du héros */
+.skblk .skrow{display:flex;align-items:center;gap:10px;margin-top:6px}
+.skblk .skp{width:46px;height:46px;border-radius:10px;overflow:hidden;flex:none;box-shadow:0 0 0 2px #ff6a1a}
+.skblk .skp svg{width:100%;height:100%;display:block}.skblk small{display:block;font-size:11.5px;color:var(--muted)}
 </style>
 <div id="boot" role="status" aria-live="polite"><div class="bt-in"><div class="bt-logo" aria-hidden="true"><svg viewBox="0 0 120 120"><defs><linearGradient id="btg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8a6aff"/><stop offset="1" stop-color="#3a2a8a"/></linearGradient><linearGradient id="btgo" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff6c0"/><stop offset="1" stop-color="#e2a42c"/></linearGradient></defs><g class="bt-ring"><circle cx="60" cy="60" r="54" fill="none" stroke="#ffd84a" stroke-width="2" stroke-dasharray="4 9" opacity=".7"/><circle cx="60" cy="6" r="4" fill="#58e4d3"/><circle cx="114" cy="60" r="3" fill="#ffd84a"/><circle cx="60" cy="114" r="4" fill="#ff8ac0"/><circle cx="6" cy="60" r="3" fill="#fff"/></g><path d="M60 16L94 28L90 70Q84 92 60 104Q36 92 30 70L26 28Z" fill="url(#btg)" stroke="#140c24" stroke-width="3" stroke-linejoin="round"/><path d="M60 24L86 33L83 68Q78 86 60 96Q42 86 37 68L34 33Z" fill="none" stroke="url(#btgo)" stroke-width="3"/><path d="M60 38L69 56L60 82L51 56Z" fill="#58e4d3" stroke="#140c24" stroke-width="2.4" stroke-linejoin="round"/><path d="M60 38L60 82L51 56Z" fill="#b0fff4"/><path d="M60 30l2.4 5 5.4.6-4 3.7 1.1 5.3-4.9-2.7-4.9 2.7 1.1-5.3-4-3.7 5.4-.6z" fill="url(#btgo)" stroke="#140c24" stroke-width="1.2"/></svg></div><div class="bt-t">Royaumes<span>d'Éther</span></div><div class="bt-bar"><i></i></div><div class="bt-s" id="bts">Chargement…</div></div></div>
 
@@ -15546,6 +15596,141 @@ const NART={
   <div class="card"><div class="h3">Gagner de l'XP de pass</div><div class="pxp">${[['📅','Connexion du jour',80],['⚔️',`Victoire d'aventure (${PWIN_MAX} par jour · ${wd}/${PWIN_MAX} aujourd'hui)`,25],['🐉','Attaque de boss (raid, guilde, event)',45],['🗼','Nouvel étage de la tour (gardien : +70)',25],['🛡️','Pointage de guilde',40],['🏟️',"Combat d'arène",20],['✨','Invocation (par tirage)',12],['🔨',"Fusion d'équipement",15],['📈','Niveau de héros ou amélioration',4],['🎯','Quêtes de la semaine','400 à 600']].map(([i,n,x])=>`<div><span>${i} ${n}</span><b>+${x}</b></div>`).join('')}</div>
    <p class="muted" style="font-size:12px;margin:8px 0 0">Les paliers coûtent de plus en plus cher : ${PXC(1)} XP au début, ${PXC(M)} XP à la fin. Un nouveau pass tous les 14 jours, avec son thème, son cadre et son titre.</p></div>`}}
 try{PATCH.unshift({v:36,d:'27 octobre 2026',t:'Le nouveau Pass de combat',items:["🎟️ <b>Nouveau pass dès le 27 octobre à 8h10</b> : « 🔥 Les Cendres du Premier Porteur ». Un nouveau pass à thème <b>tous les 14 jours</b>.","📈 <b>60 paliers</b> au lieu de 30, de plus en plus chers : il faut jouer toute la saison pour aller au bout.","🎯 <b>Quêtes de la semaine</b> : 4 grosses quêtes (boss, aventure, arène, invocations) qui donnent jusqu'à 600 XP chacune.","🏷️ Au palier 60 : un <b>titre exclusif</b> à la saison (gratuit) et un <b>légendaire au choix</b> (Premium). Le <b>cadre exclusif</b> est au palier 30 Premium.","⚔️ Les victoires d'aventure donnent de l'XP de pass jusqu'à 30 par jour.","⏰ Le pass actuel se termine le 27 octobre à 8h10 : les récompenses non récupérées te seront envoyées automatiquement."]})}catch(e){}
+
+/* ================= APPARENCES (skins) · DRESSING · CATALOGUE DES EXCLUSIVITÉS ================= */
+/* Un skin = un « héros virtuel » (identifiant 400+) avec son propre look, son ultra-thème, son décor et son arme.
+   Équiper un skin remplace le dessin du héros partout (cartes, combat, ultra-évolutions).
+   SKIN_GO : date d'ouverture dans la version publique. La version Claude (tests) l'a toujours. */
+let SKIN_GO=Infinity;
+let skinOn=()=>!window.RDE_APP||Date.now()>=SKIN_GO;
+const SKTEST=()=>!window.RDE_APP;
+const SKINS={
+ dk_cendres:{n:'Drakhar des Cendres',hero:65,vid:400,season:'p_cendres',how:"Pass Pro « Les Cendres du Premier Porteur » : palier 60",
+  d:"Le dernier wyrm qui a vu brûler la flamme du Premier Porteur. Ses écailles sont devenues de l'obsidienne, et la braise coule encore dans ses veines.",
+  look:['#3a3330','#120c0c','#0f0b0c','#2a201e','#ff6a1a','#fff2c0','bg:flame back:wings-dragon head:dragon eyes:slit mouth:none body:scale ear:none'],
+  uth:{n:'Dragon de Cendre',m:'#0a0707',s:'#2a1c18',a:'#ff6a1a',e:'#ffffff',bg:'flame',w:null,hat:null,fx:'embers',c:'#ff6a1a',c2:'#c8bcb0',h3:'#ff4a10'},
+  forms:['Drakhar des Cendres','Braise Éveillée','Couronne de Cendre','Inferno Ancestral']}};
+const SKV={};for(const k in SKINS)SKV[SKINS[k].vid]=k;
+/* --- pièces dessinées du skin (repère du corps : viewBox 0 -8 160 244, tête ≈ 80,32) --- */
+function dkcBG(u){const id='dkc'+u;let o=`<defs><radialGradient id="${id}s" cx="50%" cy="30%" r="70%"><stop offset="0" stop-color="#ff7a2a" stop-opacity="${.32+u*.08}"/><stop offset=".55" stop-color="#5a0e04" stop-opacity=".3"/><stop offset="1" stop-color="#0a0202" stop-opacity="0"/></radialGradient></defs>`;
+  o+=`<g opacity=".9"><ellipse cx="80" cy="96" rx="78" ry="110" fill="url(#${id}s)"/>`;
+  /* le crâne du dragon ancien, en cendres, derrière */
+  o+=`<g opacity="${.35+u*.12}" transform="translate(80 70)"><path d="M-70 -6Q-60 -46 -20 -50Q0 -64 20 -50Q60 -46 70 -6Q52 -18 38 -14Q30 6 0 10Q-30 6 -38 -14Q-52 -18 -70 -6Z" fill="#1a0806" stroke="#5a1a0a" stroke-width="2"/><path d="M-30 -24Q-20 -34 -10 -24Q-20 -18 -30 -24ZM30 -24Q20 -34 10 -24Q20 -18 30 -24Z" fill="#ff6a1a"><animate attributeName="opacity" values=".4;1;.4" dur="3s" repeatCount="indefinite"/></path><path d="M-56 -30L-74 -66L-44 -42ZM56 -30L74 -66L44 -42Z" fill="#1a0806" stroke="#5a1a0a" stroke-width="1.6"/></g>`;
+  if(u>=1)o+=`<circle cx="80" cy="70" r="${70+u*6}" fill="none" stroke="#ff6a1a" stroke-width="1.6" stroke-dasharray="3 7" opacity=".7"><animateTransform attributeName="transform" type="rotate" from="0 80 70" to="360 80 70" dur="26s" repeatCount="indefinite"/></circle>`;
+  if(u>=2)o+=[...Array(10)].map((_,k)=>{const a=k*36*Math.PI/180,x=80+Math.cos(a)*86,y=70+Math.sin(a)*86;return`<path d="M${x.toFixed(1)} ${y.toFixed(1)}q-5 -9 0 -17q5 8 0 17z" fill="${k%2?'#ffb21a':'#ff5a14'}" opacity=".85"><animate attributeName="opacity" values=".3;.95;.3" dur="${1.2+k%3*.4}s" repeatCount="indefinite"/></path>`}).join('');
+  o+=[...Array(12+u*6)].map((_,k)=>`<circle r="${(.8+k%3*.5).toFixed(1)}" fill="${k%3?'#ffb21a':'#c8bcb0'}" opacity=".85"><animateMotion dur="${3+k%5}s" begin="${-k*.45}s" repeatCount="indefinite" path="M${(k*23)%160} 236Q${(k*41)%160} 120 ${(k*17)%160} -8"/></circle>`).join('');
+  return o+'</g>'}
+function dkcFX(u){let o='';
+  /* veines de lave sur l'armure */
+  const veins=`<g fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M70 76L74 88L68 98L73 112M90 76L86 90L92 100L87 114M80 84L80 96L76 106M62 86L66 96M98 86L94 96" stroke="#ff6a1a" stroke-width="${1.1+u*.2}" opacity=".9"><animate attributeName="stroke" values="#ff6a1a;#ffd84a;#ff6a1a" dur="${2.4-u*.35}s" repeatCount="indefinite"/></path><path d="M70 76L74 88L68 98L73 112M90 76L86 90L92 100L87 114M80 84L80 96L76 106" stroke="#fff2c0" stroke-width=".6" opacity=".8"/></g>`;
+  o+=`<g opacity=".95">${veins}</g>`;
+  /* cœur de braise dans la poitrine */
+  o+=`<circle cx="80" cy="92" r="${2.4+u*.5}" fill="#fff2c0" opacity=".95"><animate attributeName="opacity" values=".6;1;.6" dur="1.6s" repeatCount="indefinite"/></circle><circle cx="80" cy="92" r="${6+u}" fill="#ff6a1a" opacity=".22"/>`;
+  /* couronne de cendre (forme II+) */
+  if(u>=2)o+=`<g transform="translate(80 19) scale(.66)"><path d="M-17 6L-14 -8L-8 0L-4 -14L0 -3L4 -14L8 0L14 -8L17 6Q0 10 -17 6Z" fill="#100a08" stroke="#ff6a1a" stroke-width="1.1" stroke-linejoin="round"/>${[[-14,-8],[-4,-14],[4,-14],[14,-8]].map(([x,y],i)=>`<path d="M${x} ${y}q${i%2?2.4:-2.4} -6 0 -10q${i%2?-3:3} 5 0 10Z" fill="${i%2?'#ffd84a':'#ff6a1a'}"><animate attributeName="opacity" values=".45;1;.45" dur="${.8+i*.2}s" repeatCount="indefinite"/></path>`).join('')}</g>`;
+  /* ailes de feu (forme III) */
+  if(u>=3)o=`<g opacity=".8">${[1,-1].map(sx=>`<path transform="translate(80 70) scale(${sx} 1)" d="M10 -4Q46 -52 78 -40Q64 -30 66 -16Q52 -22 50 -8Q40 -14 36 2Q26 -2 10 8Z" fill="#ff5a14" opacity=".4"><animate attributeName="opacity" values=".25;.55;.25" dur="1.4s" repeatCount="indefinite"/></path><path transform="translate(80 70) scale(${sx} 1)" d="M14 -2Q44 -38 70 -34Q58 -26 58 -16Q46 -18 44 -8Q36 -10 32 2Z" fill="#ffd84a" opacity=".3"/>`).join('')}</g>`+o;
+  /* braises qui montent */
+  o+=[...Array(6+u*3)].map((_,k)=>`<circle cx="${50+(k*19)%60}" cy="200" r="${(1+k%2*.6).toFixed(1)}" fill="${k%2?'#ffd84a':'#ff6a1a'}"><animate attributeName="cy" values="210;${40+k%4*10}" dur="${2.4+k%3*.7}s" begin="${-k*.5}s" repeatCount="indefinite"/><animate attributeName="opacity" values="1;0" dur="${2.4+k%3*.7}s" begin="${-k*.5}s" repeatCount="indefinite"/></circle>`).join('');
+  return`<g class="skfx">${o}</g>`}
+LGW.ashaxe=L=>`<rect x="-1.9" y="-${L-4}" width="3.8" height="${L+6}" rx="1.4" fill="#120c0a" stroke="#3a2a24" stroke-width=".5"/>${[0,1,2].map(k=>`<rect x="-2.2" y="-${L-14-k*14}" width="4.4" height="2" fill="#ff6a1a" opacity=".8"/>`).join('')}<path d="M1 -${L+6}Q26 -${L+4} 28 -${L-16}Q16 -${L-9} 1 -${L-14}Z" fill="#1a1210" stroke="#ff6a1a" stroke-width="1.4"/><path d="M4 -${L+3}Q22 -${L+1} 24 -${L-12}" fill="none" stroke="#ffd84a" stroke-width="1.2"><animate attributeName="stroke-opacity" values=".4;1;.4" dur="1.4s" repeatCount="indefinite"/></path><path d="M-1 -${L+6}Q-16 -${L+1} -17 -${L-11}Q-9 -${L-8} -1 -${L-12}Z" fill="#14100e" stroke="#ff6a1a" stroke-width="1.1"/><circle cx="0" cy="-${L+7}" r="2.6" fill="#ffd84a"/>`;
+/* enregistrement du héros virtuel */
+for(const k in SKINS){const s=SKINS[k];LOOKS[s.vid]=s.look;try{UTH_H[s.vid]=s.uth}catch(e){}}
+try{LGB[400]=u=>dkcBG(u);LGA[400]=['ashaxe',80]}catch(e){}
+const SKFX={400:dkcFX};
+function vHero(sk){const s=SKINS[sk],H=HEROES[s.hero];return Object.assign({},H,{i:s.vid,n:s.n})}
+{const po=poseOf;poseOf=function(h){if(h&&SKV[h.i]!=null)return po(HEROES[SKINS[SKV[h.i]].hero]);return po.apply(this,arguments)}}
+/* --- possession et équipement --- */
+function skOwned(k){return(S.skins||[]).includes(k)}
+function skEq(hid){const k=S.skinEq&&S.skinEq[hid];return k&&SKINS[k]&&skOwned(k)&&skinOn()?k:null}
+function skRefresh(hid){try{for(const C of [window.BODYC3,typeof BODYC!=='undefined'?BODYC:null,typeof BODYC2!=='undefined'?BODYC2:null,typeof PCACHE!=='undefined'?PCACHE:null,typeof PIMG!=='undefined'?PIMG:null])if(C)for(const key of Object.keys(C))if(new RegExp('(^|[^0-9])'+hid+'(_|$)').test(key))delete C[key];if(typeof BTIC!=='undefined')for(const key of [...BTIC.keys()])if(key.startsWith(hid+'_'))BTIC.delete(key)}catch(e){}}
+function skGive(k){S.skins=S.skins||[];if(!S.skins.includes(k)){S.skins.push(k);try{toast(`👗 Nouvelle apparence : ${SKINS[k].n}`)}catch(e){}}}
+function skWear(hid,k){S.skinEq=S.skinEq||{};if(k&&(!SKINS[k]||SKINS[k].hero!==hid||!skOwned(k)))return;if(k)S.skinEq[hid]=k;else delete S.skinEq[hid];skRefresh(hid);save();render()}
+/* --- le dessin : si un skin est porté, on dessine le héros virtuel --- */
+{const hb=heroBody;heroBody=function(h,u=0){const k=h&&skEq(h.i);if(!k)return hb.apply(this,arguments);const v=vHero(k);let s=hb.call(this,v,u);
+  try{const f=SKFX[v.i];if(f&&s.indexOf('skfx')<0){const z=s.lastIndexOf('</svg>');s=s.slice(0,z)+f(u||0)+s.slice(z)}}catch(e){}return s}}
+const skU=hid=>{const o=S.heroes&&S.heroes[hid];return o&&HEROES[hid].r>=4?Math.min(3,o.u||0):0};
+{const pr=portrait;portrait=function(h){const k=h&&skEq(h.i);if(!k)return pr.apply(this,arguments);const v=vHero(k);const had=S.heroes[v.i];S.heroes[v.i]=S.heroes[h.i];try{return pr.call(this,v)}finally{if(had)S.heroes[v.i]=had;else delete S.heroes[v.i]}}}
+{const pu=portraitU;portraitU=function(h,u){const k=h&&skEq(h.i);if(!k)return pu.apply(this,arguments);return pu.call(this,vHero(k),u)}}
+
+/* ================= Récompenses exclusives du Pass Pro + Dressing + Catalogue ================= */
+window.RDE_SKTEST=window.RDE_SKTEST||/[?&]sktest\b/.test(location.search)||/\/test\/?$/.test(location.pathname);
+const skinOn2=()=>!window.RDE_APP||window.RDE_SKTEST||Date.now()>=SKIN_GO;
+skinOn=skinOn2;
+/* --- les cosmétiques de saison --- */
+const NFX={cendres:{n:'Pseudo de braise',season:'p_cendres',how:"Pass Pro « Les Cendres du Premier Porteur » : palier 45"}};
+const PBG={cendres:{n:'Fond « Cendres »',season:'p_cendres',art:()=>NART.p_cendres(),how:"Pass Pro « Les Cendres du Premier Porteur » : palier 15"}};
+if(skinOn())AVX.dk_cendres_av={n:'Drakhar des Cendres',how:"Pass Pro « Les Cendres du Premier Porteur » : palier 30",art:()=>{try{const v=vHero('dk_cendres');return portraitU(v,2)}catch(e){return''}},hide:()=>!skinOn()};
+const SEASON_COS={p_cendres:{bg:[15,'cendres'],av:[30,'dk_cendres_av'],nfx:[45,'cendres'],skin:[60,'dk_cendres']}};
+function cosGive(t,k){if(t==='bg'){S.pbgs=S.pbgs||[];if(!S.pbgs.includes(k)){S.pbgs.push(k);toast(`🖼️ Nouveau fond de profil : ${PBG[k].n}`)}}
+  else if(t==='av')avGive(k);else if(t==='nfx'){S.nfxs=S.nfxs||[];if(!S.nfxs.includes(k)){S.nfxs.push(k);toast(`✨ Nouvel effet de pseudo : ${NFX[k].n}`)}}else if(t==='skin')skGive(k)}
+const COSN={bg:k=>PBG[k].n,av:k=>'Avatar « '+(AVX[k]?AVX[k].n:'')+' »',nfx:k=>NFX[k].n,skin:k=>'Apparence « '+SKINS[k].n+' »'};
+const COSIC={bg:'🖼️',av:'🧑‍🎤',nfx:'✨',skin:'👗'};
+{const pr0=proRw;proRw=function(L,si){const r=pr0.apply(this,arguments);if(!skinOn())return r;try{const s=passSeason(si),C=SEASON_COS[s&&s.k];if(!C)return r;
+  for(const t in C){const [lv,k]=C[t];if(lv===L){const base=r.g;const nm=COSN[t](k);
+    const art=t==='skin'?`<span class="pskin">${portraitU(vHero(k),3)}</span>`:t==='av'?`<span class="pskin">${AVX[k].art()}</span>`:t==='bg'?`<span class="pbgmini"><svg viewBox="0 0 400 200" preserveAspectRatio="xMidYMid slice">${PBG[k].art()}</svg></span>`:`<span class="pnfx nfx-${k}">Abc</span>`;
+    return Object.assign({},r,{ic:art,n:`${nm} + ${r.n}`,cos:[t,k],g:()=>{cosGive(t,k);return base()}})}}}catch(e){}return r}}
+/* ce qui a déjà été récupéré avant l'ouverture des exclusivités est rattrapé */
+function cosRetro(){if(!skinOn())return;try{const P=S.pass;if(!P||!P.pro)return;const s=passSeason(P.s),C=SEASON_COS[s&&s.k];if(!C)return;for(const t in C){const [lv,k]=C[t];if((P.cr||{})[lv])cosGive(t,k)}}catch(e){}}
+setTimeout(cosRetro,4000);setInterval(cosRetro,60000);
+/* --- effet de pseudo et fond de profil : partagés avec les autres joueurs --- */
+{const pm=pushMe;pushMe=async function(){const db=NET&&NET.db;if(!db||typeof db.doc!=='function')return pm.apply(this,arguments);const od=db.doc;
+  db.doc=function(p){const r=od.apply(db,arguments);try{if(p==='players/'+NET.pid&&r&&r.set){const os=r.set;r.set=o=>os.call(r,Object.assign({},o,{nfx:S.nfx||'',pbg:S.pbg||''}))}}catch(e){}return r};
+  try{return await pm.apply(this,arguments)}finally{db.doc=od}}}
+function nfxOf(v){if(!skinOn())return'';if(v==='me')return(S.nfxs||[]).includes(S.nfx)?S.nfx:'';try{const d=NET.players&&NET.players[v];return d&&NFX[d.nfx]?d.nfx:''}catch(e){return''}}
+function nfxPaint(){try{document.querySelectorAll('[data-a="prof"]').forEach(b=>{const k=nfxOf(b.dataset.v);const cur=b.dataset.nfx||'';if(k===cur)return;if(cur)b.classList.remove('nfx-'+cur,'nfxn');if(k)b.classList.add('nfx-'+k,'nfxn');b.dataset.nfx=k});
+  const pw=document.getElementById('pw');if(pw){const k=nfxOf('me');pw.classList.toggle('nfxn',!!k);pw.className=pw.className.replace(/\bnfx-\w+/g,'').trim()+(k?' nfx-'+k:'')}}catch(e){}}
+{let t=0;new MutationObserver(()=>{if(t)return;t=setTimeout(()=>{t=0;nfxPaint()},120)}).observe(document.documentElement,{childList:true,subtree:true})}
+{const pm=profileModal;profileModal=function(id){const r=pm.apply(this,arguments);try{if(!skinOn())return r;const k=id==='me'?((S.pbgs||[]).includes(S.pbg)?S.pbg:''):(NET.players&&NET.players[String(id).replace(/^r:/,'')]||{}).pbg;
+  if(k&&PBG[k]){const m=document.querySelector('#ovl .modal');if(m&&!m.querySelector('.pbgart')){m.classList.add('haspbg');m.insertAdjacentHTML('afterbegin',`<div class="pbgart"><svg viewBox="0 0 400 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true">${PBG[k].art()}</svg></div>`)}}}catch(e){}return r}}
+/* --- DRESSING (Caserne) --- */
+{const pl=LOBS.heros.places;LOBS.heros.places=function(){const P=pl.apply(this,arguments);if(!skinOn())return P;
+  const pos={col:[66,206,.86],teams:[166,202,.92],meta:[350,206,.76]};for(const p of P)if(pos[p.k]){[p.x,p.y,p.s]=pos[p.k]}
+  P.splice(2,0,{k:'dress',ic:'👗',n:'Dressing',sn:'Dressing',d:'Apparences, avatars et exclusivités',b:()=>LB.house({wall:'#f0d0e8',roof:'#8a3a8a',w:62}),x:262,y:208,s:.9,bw:80,bh:68,badge:()=>{const n=(S.skins||[]).filter(k=>!(S.skinSeen||[]).includes(k)).length;return n||0}});return P}}
+UI.dv=UI.dv||'dress';
+function cosCard(art,name,sub,btn){return`<div class="dcard">${art}<div class="dct"><b>${name}</b><small>${sub}</small></div>${btn||''}</div>`}
+function dressPage(){const dv=UI.dv||'dress';const seg=`<div class="seg" role="tablist">${[['dress','👗 Dressing'],['cat','📖 Catalogue']].map(([k,n])=>`<button role="tab" aria-selected="${dv===k}" class="${dv===k?'on':''}" data-a="dv" data-v="${k}">${n}</button>`).join('')}</div>`;
+  S.skinSeen=[...(S.skins||[])];return`${seg}${dv==='cat'?catPage():wardrobe()}`}
+function wardrobe(){const own=(S.skins||[]).filter(k=>SKINS[k]);
+  const skins=own.length?own.map(k=>{const s=SKINS[k],hid=s.hero,on=skEq(hid)===k,u=skU(hid),has=!!S.heroes[hid];
+    return`<div class="dskin ${on?'on':''}"><div class="dsfig">${heroBody(vHero(k),u)}</div><div class="dsinfo"><span class="tag" style="--rc:#ff6a1a">APPARENCE EXCLUSIVE</span><div class="h3" style="margin:4px 0 2px">${esc(s.n)}</div><div class="muted" style="font-size:12.5px">${esc(HEROES[hid].n)} · forme ultra ${u?['','I','II','III'][u]+' : '+esc(s.forms[u]):'de base'}</div><p style="font-size:12.5px;margin:6px 0 8px">${esc(s.d)}</p>
+     ${has?`<div class="row" style="gap:6px">${on?`<button class="btn sm" data-a="skwear" data-v="${hid}" data-k="">Remettre l'original</button><span class="tag" style="--rc:#7ad07a">✓ PORTÉE</span>`:`<button class="btn p sm" data-a="skwear" data-v="${hid}" data-k="${k}">👗 Porter</button>`}</div>`:`<div class="muted" style="font-size:12px">🔒 Il te faut ${esc(HEROES[hid].n)} pour la porter.</div>`}
+     <div class="dsforms">${[0,1,2,3].map(x=>`<div class="${x===u?'on':''}"><span>${x?portraitU(vHero(k),x):portrait(vHero(k))}</span><small>${x?'Ultra '+['','I','II','III'][x]:'Base'}</small></div>`).join('')}</div></div></div>`}).join(''):`<div class="card"><p class="muted" style="margin:0">Tu n'as pas encore d'apparence. Les apparences exclusives s'obtiennent dans le <b>Pass Pro</b> (palier 60). Regarde le catalogue 📖.</p></div>`;
+  const bgs=(S.pbgs||[]).filter(k=>PBG[k]),fx=(S.nfxs||[]).filter(k=>NFX[k]);
+  const bgsH=`<div class="card"><div class="h3">🖼️ Fond de profil</div><div class="dgrid"><button class="dopt ${!S.pbg?'on':''}" data-a="pbgset" data-v=""><span class="pbgmini none"></span><small>Aucun</small></button>${bgs.map(k=>`<button class="dopt ${S.pbg===k?'on':''}" data-a="pbgset" data-v="${k}"><span class="pbgmini"><svg viewBox="0 0 400 200" preserveAspectRatio="xMidYMid slice">${PBG[k].art()}</svg></span><small>${esc(PBG[k].n)}</small></button>`).join('')}</div></div>`;
+  const fxH=`<div class="card"><div class="h3">✨ Effet de pseudo</div><div class="dgrid"><button class="dopt ${!S.nfx?'on':''}" data-a="nfxset" data-v=""><span class="pnfx">${esc(S.name||'Voyageur')}</span><small>Normal</small></button>${fx.map(k=>`<button class="dopt ${S.nfx===k?'on':''}" data-a="nfxset" data-v="${k}"><span class="pnfx nfx-${k} nfxn">${esc(S.name||'Voyageur')}</span><small>${esc(NFX[k].n)}</small></button>`).join('')}</div><p class="muted" style="font-size:12px;margin:6px 0 0">Visible par les autres joueurs dans le tchat et les classements.</p></div>`;
+  const avH=`<div class="card row" style="justify-content:space-between"><div><div class="h3" style="margin:0">🧑‍🎤 Avatar</div><div class="muted" style="font-size:12.5px">Les avatars exclusifs se choisissent avec ta photo de profil.</div></div><button class="btn sm" data-a="dravs">Choisir</button></div>`;
+  return`<div class="stack">${skins}${avH}${bgsH}${fxH}</div>`}
+function catPage(){const seasons=NSEAS.map((s,i)=>({s,i:i+2}));
+  const ok=v=>v?'<i class="cok">✓</i>':'<i class="clk">🔒</i>';
+  const rows=seasons.map(({s,i})=>{const C=SEASON_COS[s.k]||{},fr=(S.evFrames||[]).includes(s.k),tt=(S.ptit||[]).includes(s.tk),cur=passIdx()===i,st=passStartAt(i),fut=Date.now()<st;
+    const items=[[`<span class="fav frm-${s.k} cfr" style="${rv(4)}">${myAv()}</span>`,`Cadre « ${esc(s.n)} »`,'Pass Premium · palier 30',fr],[`<span class="cttl" style="--tc:${s.tc}">${esc(s.tn)}</span>`,'Titre de saison','Pass gratuit · palier 60',tt]];
+    if(C.bg)items.push([`<span class="pbgmini"><svg viewBox="0 0 400 200" preserveAspectRatio="xMidYMid slice">${PBG[C.bg[1]].art()}</svg></span>`,PBG[C.bg[1]].n,'Pass Pro · palier '+C.bg[0],(S.pbgs||[]).includes(C.bg[1])]);
+    if(C.av&&AVX[C.av[1]])items.push([`<span class="cav">${AVX[C.av[1]].art()}</span>`,'Avatar « '+esc(AVX[C.av[1]].n)+' »','Pass Pro · palier '+C.av[0],(S.avs||[]).includes(C.av[1])]);
+    if(C.nfx)items.push([`<span class="pnfx nfx-${C.nfx[1]} nfxn">${esc(S.name||'Pseudo')}</span>`,NFX[C.nfx[1]].n,'Pass Pro · palier '+C.nfx[0],(S.nfxs||[]).includes(C.nfx[1])]);
+    if(C.skin)items.push([`<span class="cav big">${portraitU(vHero(C.skin[1]),3)}</span>`,'Apparence « '+esc(SKINS[C.skin[1]].n)+' »','Pass Pro · palier '+C.skin[0],skOwned(C.skin[1])]);
+    return`<div class="card catsea" style="--pc:${s.c};--pc2:${s.c2}"><div class="catbg">${seasonArt(s)}</div><div class="cathd"><b>${s.ic} ${esc(s.n)}</b><small>${cur?'🟢 En cours':fut?'Du '+new Date(st).toLocaleDateString('fr-FR',{day:'numeric',month:'short'})+' au '+new Date(passEndAt(i)).toLocaleDateString('fr-FR',{day:'numeric',month:'short'}):'Terminé · ne revient pas'}</small></div>
+     <div class="catl">${items.map(([a,n,h,o])=>`<div class="cati ${o?'own':''}"><div class="catart">${a}</div><div class="catt"><b>${n}</b><small>${h}</small></div>${ok(o)}</div>`).join('')}${C.skin?'':'<div class="muted" style="font-size:12px;padding:4px 2px">Exclusivités Pro de cette saison : bientôt dévoilées.</div>'}</div></div>`}).join('');
+  const test=SKTEST()||window.RDE_SKTEST?`<div class="card" style="border-style:dashed"><div class="h3" style="margin:0 0 4px">🧪 Mode test</div><p class="muted" style="font-size:12.5px;margin:0 0 8px">Uniquement dans la version de test : débloque toutes les exclusivités pour les essayer.</p><div class="row" style="gap:6px"><button class="btn p sm" data-a="sktestall">Tout débloquer</button><button class="btn sm" data-a="sktestreset">Tout retirer</button></div></div>`:'';
+  return`<div class="stack"><div><div class="h">📖 Catalogue des exclusivités</div><p class="sub">Tout ce qu'on ne peut avoir que pendant une saison. Une fois la saison finie, ça ne revient pas.</p></div>${test}${rows}</div>`}
+{const ph=pHeros;pHeros=function(){if(skinOn()&&inZone('heros')&&UI.lz.heros==='dress')return`<div class="stack">${zoneBar('heros','dress')}${dressPage()}</div>`;return ph.apply(this,arguments)}}
+document.addEventListener('click',e=>{const b=e.target.closest('[data-a]');if(!b)return;const a=b.dataset.a,v=b.dataset.v;
+  if(!['dv','skwear','pbgset','nfxset','dravs','sktestall','sktestreset','skhero'].includes(a))return;e.preventDefault();e.stopPropagation();
+  if(a==='dv'){UI.dv=v;render();return}
+  if(a==='skwear'){skWear(+v,b.dataset.k||null);try{UIS.evolve()}catch(er){}if(b.closest('#ovl'))heroModal(+v);return}
+  if(a==='pbgset'){S.pbg=v||'';save();render();return}
+  if(a==='nfxset'){S.nfx=v||'';save();render();return}
+  if(a==='dravs'){try{avModal()}catch(er){}return}
+  if(a==='skhero'){TAB='heros';UI.lz.heros='dress';UI.hv='dress';UI.dv='dress';closeModal();render();scrollTo(0,0);return}
+  if(a==='sktestall'){for(const s of NSEAS){unlockFrameQ(s.k);ptGive(s.tk)}for(const sk in SEASON_COS)for(const t in SEASON_COS[sk])cosGive(t,SEASON_COS[sk][t][1]);S.heroes[65]=S.heroes[65]||{l:1,e:0,f:0};save();render();return}
+  if(a==='sktestreset'){S.skins=[];S.skinEq={};S.pbgs=[];S.pbg='';S.nfxs=[];S.nfx='';S.avs=(S.avs||[]).filter(k=>!AVX[k]||!/_av$/.test(k));S.ptit=[];S.evFrames=(S.evFrames||[]).filter(f=>!NSEAS.some(s=>s.k===f));skRefresh(65);save();render();return}},true);
+function unlockFrameQ(f){S.evFrames=S.evFrames||[];if(!S.evFrames.includes(f))S.evFrames.push(f)}
+/* --- la fiche du héros : bloc « Apparence » --- */
+{const hm=heroModal;heroModal=function(id){const r=hm.apply(this,arguments);try{if(!skinOn())return r;const L=Object.keys(SKINS).filter(k=>SKINS[k].hero===+id);if(!L.length)return r;const m=document.querySelector('#ovl .modal');if(!m||m.querySelector('.skblk'))return r;
+  const items=L.map(k=>{const s=SKINS[k],own=skOwned(k),on=skEq(+id)===k;return`<div class="skrow"><span class="skp">${portraitU(vHero(k),Math.max(1,skU(+id)))}</span><div style="flex:1;min-width:0"><b>${esc(s.n)}</b><small>${own?(on?'✓ Portée':'Dans ton dressing'):'🔒 '+esc(s.how)}</small></div>${own?(on?`<button class="btn sm" data-a="skwear" data-v="${id}" data-k="">Original</button>`:`<button class="btn p sm" data-a="skwear" data-v="${id}" data-k="${k}">Porter</button>`):`<button class="btn sm" data-a="skhero">Voir</button>`}</div>`}).join('');
+  const hd=m.querySelector('.hd');(hd||m.firstElementChild).insertAdjacentHTML('afterend',`<div class="skill skblk"><div class="sn">👗 Apparences</div>${items}</div>`)}catch(e){}return r}}
+/* --- PATCH --- */
+try{const P=PATCH.find(x=>x.v===36);if(P&&skinOn())P.items.splice(4,0,"💎 <b>Exclusivités du Pass Pro</b> : un fond de profil (palier 15), un avatar (palier 30), un <b>effet de pseudo</b> en braise (palier 45) et l'apparence <b>« Drakhar des Cendres »</b> (palier 60), avec ses 4 formes ultra.","👗 <b>Nouveau : le Dressing</b> dans la Caserne : porte tes apparences, choisis ton fond de profil et l'effet de ton pseudo. Le <b>Catalogue</b> montre toutes les exclusivités de chaque saison.")}catch(e){}
 
 /* ================= DÉMARRAGE ================= */
 (function init(){
