@@ -1,0 +1,15 @@
+.banner.stdban{position:relative;border-color:#ffd84a;background:radial-gradient(120% 90% at 85% 40%,#3b2a6e 0%,#1a1440 45%,#0c0a1e 100%)}
+.stdban .tx{position:relative;z-index:1}
+.stdsky{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.stdsky i{position:absolute;left:var(--x);top:var(--y);width:3px;height:3px;border-radius:50%;background:#fff6c0;box-shadow:0 0 6px #ffd84a;opacity:.25;animation:stdtw 3.2s var(--d) ease-in-out infinite}
+@keyframes stdtw{50%{opacity:.95;transform:scale(1.6)}}
+html.scrl .stdsky i{animation-play-state:paused}
+.stdtag{--rc:#ffd84a;background:linear-gradient(90deg,#ffd84a33,#c07aff33)!important;color:#ffe9a0!important;border-color:#ffd84a88!important}
+.stdpt{position:relative;z-index:1}
+.stdp{position:absolute;width:84%;top:50%;border-radius:14px;overflow:hidden;box-shadow:0 6px 18px #0008;border:2px solid #ffffff22}
+.stdp.p0{left:-14%;transform:translateY(-58%) rotate(-9deg)}
+.stdp.p2{right:-14%;transform:translateY(-42%) rotate(9deg)}
+.stdp.p1{left:8%;transform:translateY(-50%) scale(1.08);z-index:2;border-color:#ffd84a}
+.stdp.my{box-shadow:0 0 18px #ff5ad8aa,0 6px 18px #0008}
+.stdchip.on{background:linear-gradient(90deg,#ffd84a,#c07aff);color:#1a1030}
+.banner.evban{border-color:#ff9a3c}
