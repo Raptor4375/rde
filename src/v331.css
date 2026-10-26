@@ -1,0 +1,6 @@
+.roiburn.rbcv{animation:none;background:#e8d8b0}
+.roiburn.rbcv .rb-cv{position:absolute;inset:0;width:100%;height:100%;display:block}
+.roiburn.rbcv:not(.go) *{animation-play-state:paused!important}
+.roiburn.rbcv .rb-emb i,.roiburn.rbcv .rb-ash i{will-change:transform,opacity}
+.roiburn.rbcv .rb-nowc{position:absolute;inset:0;width:100%;height:100%;display:block;transform-origin:50% 94%;will-change:transform;animation:rbnow 4.6s ease forwards}
+@keyframes rbnow{0%,60%{transform:scale(1.06)}100%{transform:scale(1)}}
