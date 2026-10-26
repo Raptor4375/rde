@@ -1,0 +1,8 @@
+.pban.v2 .pshow{display:flex;flex-direction:column;align-items:center;gap:4px}
+.pttl2{font-size:11px;font-weight:800;color:var(--tc);background:rgba(0,0,0,.45);border:1px solid color-mix(in srgb,var(--tc) 60%,transparent);border-radius:99px;padding:2px 8px;text-align:center;max-width:150px;line-height:1.25}
+.pwq .pwqi{display:flex;align-items:center;gap:10px;padding:8px 0;border-top:1px solid rgba(255,255,255,.06)}
+.pwq .pwqi:first-of-type{border-top:0}
+.pwq .pwqic{font-size:22px;width:30px;text-align:center}
+.pwq .pwqn{font-size:13px;font-weight:700}
+.pwq .pwqi.done{opacity:.55}
+.pwq .pwqi .btn{white-space:nowrap}
