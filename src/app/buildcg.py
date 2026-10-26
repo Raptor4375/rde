@@ -11,6 +11,7 @@ i=out.rfind('</body>')
 out=(out[:i]+'<script>'+cg+'</script>'+out[i:]) if i>0 else out+'<script>'+cg+'</script>'
 os.makedirs('/home/claude/w/cg/build',exist_ok=True)
 open('/home/claude/w/cg/build/index.html','w').write(out)
-with zipfile.ZipFile('/home/claude/w/cg/rde-crazygames.zip','w',zipfile.ZIP_DEFLATED) as z:z.write('/home/claude/w/cg/build/index.html','index.html')
+with zipfile.ZipFile('/home/claude/w/cg/rde-crazygames.zip','w',zipfile.ZIP_DEFLATED) as z:z.write('/home/claude/w/cg/build/index.html','index.html');z.write('/home/claude/rde/version.json','version.json')
 os.makedirs('/home/claude/rde/cg',exist_ok=True);open('/home/claude/rde/cg/index.html','w').write(out)
+import shutil;shutil.copy('/home/claude/rde/version.json','/home/claude/rde/cg/version.json')
 print('cg ok',len(out),os.path.getsize('/home/claude/w/cg/rde-crazygames.zip'))
