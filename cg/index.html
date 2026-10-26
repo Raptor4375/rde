@@ -15378,13 +15378,15 @@ const st=document.createElement('style');st.textContent='[data-a="support"],[dat
 try{const bad=/itch|github|appli RDE|nouvelle appli|déménag|version Claude|ancienne version|Soutenir le jeu|Mécène|installer/i;
   for(const P of PATCH){if(Array.isArray(P.items))P.items=P.items.filter(x=>!bad.test(String(x)))}
   for(let i=PATCH.length-1;i>=0;i--)if(!PATCH[i].items||!PATCH[i].items.length)PATCH.splice(i,1)}catch(e){}
+/* politique de confidentialité aussi dans les paramètres */
+try{const sm2=settingsModal;settingsModal=function(){const r=sm2.apply(this,arguments);try{const m=document.querySelector('#ovl .modal');if(m&&!m.querySelector('.cgpriv'))m.insertAdjacentHTML('beforeend','<p class="muted cgpriv" style="font-size:12px;text-align:center;margin-top:10px"><a href="https://raptor4375.github.io/rde/legal/privacy.html" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline">Politique de confidentialité</a></p>')}catch(e){}return r}}catch(e){}
 /* le tuto attend que le pseudo soit choisi */
 try{const ts=tuStart;tuStart=function(force){if(!force&&!S.name)return;return ts.apply(this,arguments)}}catch(e){}
 /* --- compte : texte sans lien externe --- */
 try{const am=accModal;accModal=function(){const r=am.apply(this,arguments);try{const li=document.querySelector('#ovl .modal .xfol li');if(li)li.innerHTML="Sur ton autre appareil, ouvre <b>Royaumes d'Éther</b>."}catch(e){}return r}}catch(e){}
 /* --- premier lancement : choix du pseudo + « j'ai un code de compte » --- */
 try{const nm=nameModal;nameModal=function(){if(!S.xferAsk){S.xferAsk=1;try{save()}catch(e){}}const r=nm.apply(this,arguments);
-  try{const m=document.querySelector('#ovl .modal');if(m&&!m.querySelector('[data-a=accfind]'))m.insertAdjacentHTML('beforeend','<button class="btn" data-a="accfind" style="width:100%;margin-top:10px">🔑 J\'ai déjà un compte (code de compte)</button>')}catch(e){}return r}}catch(e){}
+  try{const m=document.querySelector('#ovl .modal');if(m&&!m.querySelector('[data-a=accfind]'))m.insertAdjacentHTML('beforeend','<button class="btn" data-a="accfind" style="width:100%;margin-top:10px">🔑 J\'ai déjà un compte (code de compte)</button><p class="muted" style="font-size:11.5px;margin:10px 0 0;text-align:center">En jouant, tu acceptes notre <a href="https://raptor4375.github.io/rde/legal/privacy.html" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline">politique de confidentialité</a>.</p>')}catch(e){}return r}}catch(e){}
 })();
 /* --- sauvegarde liée au compte CrazyGames (module Data du SDK) --- */
 (function(){const DK='rde-save',TK=KEY+'-cgT';let last=0,pend=null;
