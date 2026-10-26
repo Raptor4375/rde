@@ -47,7 +47,7 @@ window.claude={use:async k=>{if(k==='db'||k==='user'){try{const F=await window.R
 window.RDEF();
 })();
 </script>
-<script>window.RDE_V='20261026084044';if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));</script>
+<script>window.RDE_V='20261026084746';if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));</script>
 </head><body>
 <title>RDE · Royaumes d'Éther</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -15234,41 +15234,54 @@ if(window.RDE_APP){
 function accIntro(){modal(`<button class="x" data-a="close" aria-label="Fermer">×</button><div class="h">🔑 Nouveau : ton code de compte</div><p class="sub">Tu peux maintenant jouer avec <b>la même partie</b> sur ton téléphone et ton ordinateur. Ton code :</p><div class="accode">${accFmt(S.acct)}</div><p class="muted" style="font-size:12.5px">Sur l'autre appareil : ⚙️ Paramètres → 🔑 Retrouver mon compte. Tu retrouveras ce code à tout moment dans les paramètres.</p><button class="btn p" data-a="close" style="width:100%">Compris !</button>`)}
 try{PATCH.unshift({v:35,d:'26 octobre 2026',t:'Un compte pour PC et téléphone',items:["🔑 <b>Ton code de compte</b> : dans ⚙️ Paramètres → 🔑 Mon compte. Avec ce code, tu joues avec <b>la même partie</b> sur ton téléphone et ton ordinateur.","📱💻 Sur un autre appareil : ⚙️ Paramètres → <b>🔑 Retrouver mon compte</b>, tape ton code, et ta partie arrive. Ensuite elle se <b>synchronise toute seule</b> entre tes appareils.","🔄 Si tu as joué des deux côtés sans connexion, le jeu te demande quelle partie garder.","💻 <b>Format ordinateur</b> : sur un grand écran, le menu passe à gauche, les décors tiennent dans l'écran et le journal de combat est à droite."]})}catch(e){}
 
-/* ================= Progression des bots comme de vrais joueurs ================= */
-/* Avant : l'élite visait 1,2 à 2,1 fois la puissance du meilleur vrai joueur, et tout le monde continuait
-   de grimper de 2 à 3 % par jour pour toujours. Maintenant chaque bot est un « joueur » avec :
-   - un niveau d'investissement fixe (occasionnel, régulier, investi, acharné, légende) = un plafond,
-   - une carrière : il progresse vite au début, puis de plus en plus lentement, et finit par plafonner,
-   - rien n'est calculé à partir de TA puissance. Les bots déjà trop hauts ne redescendent pas : ils arrêtent de monter. */
-function botCeil(u){
-  if(u<.45)return 6000+Math.pow(u/.45,1.3)*39000;          // occasionnels : 6 k à 45 k
-  if(u<.75)return 45000+(u-.45)/.30*65000;                  // réguliers : 45 k à 110 k
-  if(u<.92)return 110000+(u-.75)/.17*80000;                 // investis : 110 k à 190 k
-  if(u<.985)return 190000+(u-.92)/.065*50000;               // acharnés : 190 k à 240 k
-  return 240000+(u-.985)/.015*35000}                        // légendes : 240 k à 275 k
+/* ================= Progression des bots comme de vrais joueurs (sans payer) ================= */
+/* La puissance d'un bot dépend de ce qu'un vrai joueur GRATUIT peut gagner :
+   - le jeu a ouvert le 1er octobre 2026, personne ne peut avoir joué plus longtemps que ça,
+   - PF2P(jours) = ce qu'un joueur qui fait TOUT chaque jour peut atteindre :
+       vite au début (niveaux, étapes, évolutions, équipement), puis très lentement
+       (ultra-évolutions, éveil avec les doublons, 5e héros : il faut des mois de gemmes et d'éclats),
+   - chaque bot a un profil (occasionnel → légende) = la part de ce maximum qu'il atteint,
+   - chaque bot a commencé à jouer à une date différente (les nouveaux arrivent encore).
+   Les bots qui avaient une puissance impossible redescendent à un niveau logique. */
 const BOT_P0=1100;
-function botCareer(b,t){const u=botU(b);const c=b.c34||(b.c34=Math.round(botCeil(u)));
-  if(!b.tau34){const a=clamp(b.act||.2,.04,.5),v=((Math.floor(u*1e6)%97)/97-.5)*14;b.tau34=Math.max(12,Math.round(18+(.45-a)*120+v))}
-  if(!b.j34){const pw=Math.max(BOT_P0,b.pw||BOT_P0);
-    if(pw<c*.985){const days=-b.tau34*Math.log(1-(pw-BOT_P0)/(c-BOT_P0));b.j34=Math.round(t-days*864e5)}
-    else{b.j34=Math.round(t-b.tau34*10*864e5);if(pw>c)b.fz34=Math.round(pw)}}
-  const d=Math.max(0,(t-b.j34)/864e5);return{c,tgt:BOT_P0+(c-BOT_P0)*(1-Math.exp(-d/b.tau34))}}
+const RDE_LAUNCH=Date.UTC(2026,9,1);
+const PF2P=d=>1100+76000*(1-Math.exp(-d/10))+220000*(1-Math.exp(-d/365));
+const hash01=(s,salt)=>{s=String(s)+'#'+salt;let h=2166136261;for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619)}return((h>>>0)%10007)/10007};
+function botEff(u){                                    /* part du maximum gratuit atteinte selon le profil */
+  if(u<.45)return .18+u/.45*.32;                       // occasionnels : 18 à 50 %
+  if(u<.75)return .50+(u-.45)/.30*.25;                 // réguliers : 50 à 75 %
+  if(u<.92)return .75+(u-.75)/.17*.15;                 // investis : 75 à 90 %
+  if(u<.985)return .90+(u-.92)/.065*.08;               // acharnés : 90 à 98 %
+  return .98+(u-.985)/.015*.04}                        // légendes : 98 à 102 % (le meilleur possible sans payer)
+function botCareer(b,t){const id=b.n||b.id||'';
+  if(b.e35==null)b.e35=+botEff(botU(b)).toFixed(3);
+  if(!b.j35){const lim=Math.max(RDE_LAUNCH,t-1);const j=b.joined&&b.joined>RDE_LAUNCH&&b.joined<=t?b.joined:RDE_LAUNCH+hash01(id,'start')*.85*(lim-RDE_LAUNCH);b.j35=Math.round(Math.min(j,t))}
+  const d=Math.max(0,(t-b.j35)/864e5);
+  /* les occasionnels finissent par lâcher (ils jouent de moins en moins) */
+  const quit=b.e35<.5?Math.min(1,.4+hash01(id,'q')*.9):1;
+  return{tgt:Math.max(BOT_P0,PF2P(d*quit)*b.e35),d}}
 growPw=function(b,t){
   const dk=dayKey(t);if(b.dk!==dk){b.dk=dk;b.pwY=b.pw}
-  const {tgt}=botCareer(b,t),allow=Math.max(tgt,b.fz34||0);
+  const {tgt}=botCareer(b,t);
   let pw=b.pw||BOT_P0;
-  if(pw<tgt)pw+=(tgt-pw)*(.12+.2*Math.random());
-  if(pw>allow)pw=allow;                                      /* absorbe les « coups de chance » d'invocation au-delà de la carrière */
+  if(pw>tgt*1.04){pw=tgt*(1+Math.random()*.03);if(b.pwY&&b.pwY>pw)b.pwY=pw}   /* puissance impossible : retour à un niveau logique */
+  else if(pw<tgt)pw+=(tgt-pw)*(.12+.2*Math.random());
   pw=Math.round(pw);
   try{
     if(!Array.isArray(b.raid))b.raid=[0,0,0];
+    const rmax=Math.round(pw*effK(pw,K_RAID)*(b.skill||1)*1.1);
+    for(let i=0;i<3;i++)if(b.raid[i]>rmax*1.15)b.raid[i]=Math.round(rmax*(.95+Math.random()*.1));
     if(Math.random()<.12){const i=ri(0,2),tg=Math.round(pw*effK(pw,K_RAID)*(b.skill||1)*(.9+Math.random()*.2));if(b.raid[i]<tg)b.raid[i]=Math.round(b.raid[i]+(tg-b.raid[i])*(.3+Math.random()*.35))}
-    const bk=Math.floor(Math.log2(Math.max(1000,pw)));if(b.tb==null)b.tb=bk;else if(bk>b.tb){b.tb=bk;if(Math.random()<.7)b.team=genTeam2(pw,b)}
+    const bk=Math.floor(Math.log2(Math.max(1000,pw)));if(b.tb==null||bk<b.tb-1){b.tb=bk;b.team=genTeam2(pw,b)}else if(bk>b.tb){b.tb=bk;if(Math.random()<.7)b.team=genTeam2(pw,b)}
+    if(b.st!=null){const st=stFor(pw);if(st<b.st)b.st=st}
   }catch(e){}
   return pw};
 /* arène : le classement d'un bot dépend de SA puissance et de son talent, plus du meilleur joueur */
 arTgt=function(b){const u=botU(b);return clamp(Math.round(arDef(b.pw)+(u-.5)*160+((b.skill||1)-1)*200),600,2400)};
-try{PATCH.unshift({v:35.1,d:'26 octobre 2026',t:'Des rivaux qui progressent comme de vrais joueurs',items:["📈 <b>Les autres joueurs du royaume progressent maintenant comme de vrais joueurs</b> : vite au début, puis de plus en plus lentement, jusqu'à leur plafond. Fini la montée à l'infini.","🏆 Chacun a son niveau : occasionnels, réguliers, investis, acharnés… et quelques légendes. Leur puissance ne dépend plus de la tienne.","⚔️ Pareil pour l'arène et les records de raid : plus de rivaux qui se calent toujours juste au-dessus de toi."]})}catch(e){}
+{const ad=arDrift;arDrift=function(b){const r=ad.apply(this,arguments);try{const tg=arTgt(b);if(b.ar!=null&&b.ar>tg+150)b.ar=tg+ri(0,60)}catch(e){}return r}}
+/* le monde local (hors ligne) se remet à niveau tout de suite au chargement */
+setTimeout(()=>{try{const t=Date.now();if(S.world&&Array.isArray(S.world.players)){for(const p of S.world.players){p.pw=growPw(p,t);arDrift(p)}save()}}catch(e){}},3000);
+try{PATCH.unshift({v:35.1,d:'26 octobre 2026',t:'Des rivaux logiques',items:["📈 <b>Les autres joueurs du royaume progressent comme de vrais joueurs gratuits</b> : ils ne peuvent pas avoir plus que ce que le jeu donne depuis son ouverture. Vite au début, puis lentement (ultras, éveils et 5e héros demandent des mois).","📉 Les joueurs qui avaient une puissance impossible sont <b>redescendus à un niveau logique</b>.","🏆 Chacun a son profil (occasionnel, régulier, investi, acharné, légende) et sa date d'arrivée. Leur puissance ne dépend plus de la tienne, ni en arène ni en raid."]})}catch(e){}
 
 /* ================= DÉMARRAGE ================= */
 (function init(){
