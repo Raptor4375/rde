@@ -5,7 +5,7 @@ out=src
 out=re.sub(r'<link rel="manifest"[^>]*>','',out,count=1)
 out=re.sub(r"<script>window\.RDE_V='(\d+)';if\('serviceWorker'[^<]*</script>",r"",out,count=1)
 assert 'serviceWorker' not in out[:20000]
-out=out.replace('</head>','<script src="https://sdk.crazygames.com/crazygames-sdk-v3.js"></script>\n</head>',1)
+out=out.replace('</head>','<script>window.RDE_CG=true;</script><script src="https://sdk.crazygames.com/crazygames-sdk-v3.js"></script>\n</head>',1)
 assert out.rstrip().endswith('</html>') or '</body>' in out
 i=out.rfind('</body>')
 out=(out[:i]+'<script>'+cg+'</script>'+out[i:]) if i>0 else out+'<script>'+cg+'</script>'

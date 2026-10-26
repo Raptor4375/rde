@@ -15706,7 +15706,7 @@ document.addEventListener('click',e=>{const b=e.target.closest('[data-a="pbgme"]
 /* ---- maintenance programmée : 27/10 de 7h30 à 8h10 (heure de Paris) ---- */
 const MNT=[{a:Date.UTC(2026,9,27,6,30),b:Date.UTC(2026,9,27,7,10),msg:"🔥 <b>La saison des Cendres arrive !</b><br>On prépare le nouveau Pass de combat, le Dressing et les apparences exclusives.<br><br>Retour à <b>8h10</b> pile. Ta progression est sauvegardée, à tout de suite !"}];
 const mntNow=()=>{const t=Date.now();return MNT.find(m=>t>=m.a&&t<m.b)||null};
-if(window.RDE_APP&&!window.RDE_SKTEST){let was=false;
+if(window.RDE_APP&&!window.RDE_SKTEST&&!window.RDE_CG){let was=false;
   const rm0=rdeMaint;rdeMaint=function(on,msg){const m=mntNow();if(m&&!on)return;return rm0.apply(this,arguments)};
   const tick=()=>{const m=mntNow();if(m){if(!was){try{save()}catch(e){}}was=true;rm0(true,m.msg);const o=document.getElementById('rdemaint');if(o){const left=Math.max(0,m.b-Date.now());const n=o.querySelector('.rmn');if(n)n.innerHTML=`Retour dans <b>${Math.floor(left/60000)} min ${String(Math.floor(left/1000)%60).padStart(2,'0')} s</b> · ta progression est sauvegardée.`;const bt=o.querySelector('#rmretry');if(bt)bt.style.display='none'}}
     else if(was){was=false;rm0(false);setTimeout(()=>location.reload(),800)}};
