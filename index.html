@@ -47,7 +47,7 @@ window.claude={use:async k=>{if(k==='db'||k==='user'){try{const F=await window.R
 window.RDEF();
 })();
 </script>
-<script>window.RDE_V='20261026090506';if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));</script>
+<script>window.RDE_V='20261026093240';if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));</script>
 </head><body>
 <title>RDE · Royaumes d'Éther</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -15259,7 +15259,13 @@ function botCareer(b,t){const id=b.n||b.id||'';
   const d=Math.max(0,(t-b.j35)/864e5);
   /* les occasionnels finissent par lâcher (ils jouent de moins en moins) */
   const quit=b.e35<.5?Math.min(1,.4+hash01(id,'q')*.9):1;
-  return{tgt:Math.max(BOT_P0,PF2P(d*quit)*b.e35),d}}
+  /* la chance aux invocations (doublons, légendaires tôt) et les économes qui gardent leurs gemmes puis invoquent d'un coup */
+  const L=botLuck(id),dq=d*quit,sv=hash01(id,'sv')<.22,per=8+Math.floor(hash01(id,'per')*10);
+  const ds=sv?Math.floor(dq/per)*per+(dq%per>per-1?dq%per:0):dq;
+  const fast=1100+76000*(1-Math.exp(-dq/10)),slow=220000*(1-Math.exp(-ds/365));
+  return{tgt:Math.max(BOT_P0,(fast*(1+(L-1)*.35)+slow*L*(sv?1.08:1))*b.e35),d}}
+/* chance : la plupart entre 0,9 et 1,1, quelques chanceux jusqu'à 1,45 */
+function botLuck(id){const a=hash01(id,'l1'),c=hash01(id,'l2'),z=(a+c+hash01(id,'l3')-1.5)/.5;let L=1+z*.07;if(hash01(id,'jack')>.94)L+=.15+hash01(id,'j2')*.25;return clamp(L,.85,1.45)}
 growPw=function(b,t){
   const dk=dayKey(t);if(b.dk!==dk){b.dk=dk;b.pwY=b.pw}
   const {tgt}=botCareer(b,t);
