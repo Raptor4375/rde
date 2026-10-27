@@ -4,9 +4,18 @@ window.RDE_CG=true;
 /* --- SDK CrazyGames : on prévient quand le joueur est en jeu --- */
 let sdk=null,ready=null,inGame=false;
 ready=(async()=>{try{if(window.CrazyGames&&window.CrazyGames.SDK){await window.CrazyGames.SDK.init();sdk=window.CrazyGames.SDK}}catch(e){sdk=null}return sdk})();
-const gStart=()=>{if(inGame)return;inGame=true;ready.then(s=>{try{s&&s.game.gameplayStart()}catch(e){}})};
+const gStart=()=>{try{ldStop()}catch(e){}if(inGame)return;inGame=true;ready.then(s=>{try{s&&s.game.gameplayStart()}catch(e){}})};
 const gStop=()=>{if(!inGame)return;inGame=false;ready.then(s=>{try{s&&s.game.gameplayStop()}catch(e){}})};
 window.__cgReady=ready;
+/* chargement : on prévient CrazyGames du début et de la fin du chargement */
+let ldOn=false;ready.then(s=>{try{if(s&&!(typeof BOOT!=='undefined'&&BOOT.done)){s.game.loadingStart();ldOn=true}}catch(e){}});
+const ldStop=()=>{if(!ldOn)return;ldOn=false;ready.then(s=>{try{s&&s.game.loadingStop()}catch(e){}})};
+/* son : on respecte le bouton « couper le son » de CrazyGames */
+window.CGMUTE=false;
+let cgPrev=null;const cgMuteApply=()=>{try{if(typeof AU!=='undefined'&&AU.master&&AU.ctx){const t=AU.ctx.currentTime,g=AU.master.gain;if(window.CGMUTE){if(cgPrev==null&&g.value>0)cgPrev=g.value;g.cancelScheduledValues(t);g.setValueAtTime(0,t)}else{g.cancelScheduledValues(t);g.setValueAtTime(cgPrev==null?(g.value||1):cgPrev,t);cgPrev=null}}}catch(e){}};
+try{const aa=auApply;auApply=function(){const r=aa.apply(this,arguments);try{if(window.CGMUTE&&AU.master){AU.master.gain.cancelScheduledValues(AU.ctx.currentTime);AU.master.gain.setValueAtTime(0,AU.ctx.currentTime)}}catch(e){}return r}}catch(e){}
+ready.then(s=>{try{if(!s)return;const st=s.game.settings||{};window.CGMUTE=!!st.muteAudio;cgMuteApply();s.game.addSettingsChangeListener(n=>{try{window.CGMUTE=!!(n&&n.muteAudio);cgMuteApply()}catch(e){}})}catch(e){}});
+setInterval(()=>{if(window.CGMUTE)cgMuteApply()},2000);
 try{if(typeof btEnter==='function'){const be=btEnter;btEnter=function(){const r=be.apply(this,arguments);gStart();return r}}}catch(e){}
 /* sur CrazyGames : pas d'écran « touche pour entrer », on entre dès que le jeu est prêt */
 {const t0=Date.now();const iv=setInterval(()=>{try{if(typeof BOOT==='undefined'){return}if(BOOT.done){clearInterval(iv);gStart();return}if((typeof BT2!=='undefined'&&BT2.ready)||Date.now()-t0>12000){clearInterval(iv);btEnter()}}catch(e){}},150)}
