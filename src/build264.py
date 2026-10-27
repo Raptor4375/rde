@@ -50,6 +50,10 @@ n2=src.count('].r===4');src=src.replace('].r===4','].r>=4');n3=src.count('h.r!==
 for _k in ['ach','monde','rank']:
   _a="TAB='top';UI.soc='%s'"%_k
   assert src.count(_a)==1,_k;src=src.replace(_a,"TAB='top';UI.soc='%s';UI.lz=UI.lz||{};UI.lz.top='%s'"%(_k,_k))
+
+_a="${rankList('pw').findIndex(x=>me?x.me:x.id===p.id)+1}e</b>";assert src.count(_a)==2;src=src.replace(_a,"${ordE(rankList('pw').findIndex(x=>me?x.me:x.id===p.id)+1)}</b>")
+_a="${arRank}e</b>";assert src.count(_a)==1;src=src.replace(_a,"${ordE(arRank)}</b>")
+_a="${fmt(p.gw)}";assert src.count(_a)==2;src=src.replace(_a,"${fmt(p.gw||0)}")
 open('royaumes.html','w').write(src)
 open('chk.js','w').write(src[src.index('<script>')+8:src.rindex('</script>')])
 a=src.index('<style>');b=src.index('</style>')+8;open('prod.html','w').write(src[:a]+src[b:])

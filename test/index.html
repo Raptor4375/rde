@@ -3843,7 +3843,7 @@ function profileModal(id){
   <div class="muted">${real?'<i class="rtag">JOUEUR RÉEL</i> · ':''}Niveau de compte ${acctLvl(p.pw)} · ${gl?esc(gl)+' · '+(g?role(p,g):rd?((me?rd.leader===NET.pid:rd.leader===p.pid)?'Chef':'Membre'):''):'Sans guilde'}${p.pers?' · '+PERS_N[p.pers]:''}</div>
   <div class="muted" style="font-size:12.5px"><span class="ol ${me||(real?Date.now()-p.last<30*60000:online(p))?'':'off'}"></span>${me?'En ligne':(real?Date.now()-p.last<30*60000:online(p))?'En ligne':'Vu '+ago(p.last)}</div></div></div>
   ${me?`<form class="row" data-f="rename" style="margin-top:10px"><label for="pname" class="vh">Pseudo</label><input class="tx" id="pname" maxlength="18" value="${esc(S.name||'')}" placeholder="Ton pseudo"><button class="btn g" type="submit">Renommer</button></form>`:''}
-  <div class="stats" style="margin-top:12px"><div class="stat"><span>Puissance</span><b>${fmt(p.pw)}</b>${dltOf(p)>0?`<small class="up">▲ +${fmt(dltOf(p))} aujourd'hui</small>`:''}</div><div class="stat"><span>Étape max</span><b>${p.st||0}</b></div><div class="stat"><span>Rang puissance</span><b>${rankList('pw').findIndex(x=>me?x.me:x.id===p.id)+1}e</b></div><div class="stat"><span>Boss de guilde</span><b>${fmt(p.gw)}</b></div></div>
+  <div class="stats" style="margin-top:12px"><div class="stat"><span>Puissance</span><b>${fmt(p.pw)}</b>${dltOf(p)>0?`<small class="up">▲ +${fmt(dltOf(p))} aujourd'hui</small>`:''}</div><div class="stat"><span>Étape max</span><b>${p.st||0}</b></div><div class="stat"><span>Rang puissance</span><b>${ordE(rankList('pw').findIndex(x=>me?x.me:x.id===p.id)+1)}</b></div><div class="stat"><span>Boss de guilde</span><b>${fmt(p.gw||0)}</b></div></div>
   <div class="h3" style="margin-top:14px">Équipe</div>
   <div class="pteam">${team.map(t=>{const h=HEROES[t.id];return`<div class="ptile" style="${rv(h.r)}"><div class="pt">${portraitFor(me?{me:1}:p,h,t)}</div><div class="pl">Nv ${t.l}${t.e?' '+'★'.repeat(t.e):''}</div><div class="pn">${h.n}</div></div>`}).join('')}</div>
   <div class="h3" style="margin-top:14px">Records de raid</div>
@@ -5063,11 +5063,11 @@ function profileModal(id){
   <div class="muted">${real?'<i class="rtag">JOUEUR RÉEL</i> · ':''}Niveau de compte ${acctLvl(p.pw)} · ${gl?esc(gl):'Sans guilde'}${roleTxt?` · <i class="rb rb-${prole||'mem'}">${roleTxt}</i>`:''}${p.pers?' · '+PERS_N[p.pers]:''}</div>
   <div class="muted" style="font-size:12.5px"><span class="ol ${on?'':'off'}"></span>${on?'En ligne':'Vu '+ago(p.last)} · cadre ${FRAMES[frameOf(p)]}</div></div></div>
   ${me?`<form class="row" data-f="rename" style="margin-top:10px"><label for="pname" class="vh">Pseudo</label><input class="tx" id="pname" maxlength="18" value="${esc(S.name||'')}" placeholder="Ton pseudo"><button class="btn g" type="submit">Renommer</button><button type="button" class="btn" data-a="goach">Succès et cadres</button>${amChef()?'<button type="button" class="btn" data-a="tagedit">Modifier la guilde</button>':''}</form>`:''}
-  <div class="stats" style="margin-top:12px"><div class="stat"><span>Puissance</span><b>${fmt(p.pw)}</b>${dltOf(p)>0?`<small class="up">▲ +${fmt(dltOf(p))} aujourd'hui</small>`:''}</div><div class="stat"><span>Rang</span><b>${rankList('pw').findIndex(x=>me?x.me:x.id===p.id)+1}e</b></div><div class="stat"><span>Arène</span><b>${arOf(p)} · ${arRank}e</b></div><div class="stat"><span>Étape max</span><b>${p.st||0}</b></div></div>
+  <div class="stats" style="margin-top:12px"><div class="stat"><span>Puissance</span><b>${fmt(p.pw)}</b>${dltOf(p)>0?`<small class="up">▲ +${fmt(dltOf(p))} aujourd'hui</small>`:''}</div><div class="stat"><span>Rang</span><b>${ordE(rankList('pw').findIndex(x=>me?x.me:x.id===p.id)+1)}</b></div><div class="stat"><span>Arène</span><b>${arOf(p)} · ${ordE(arRank)}</b></div><div class="stat"><span>Étape max</span><b>${p.st||0}</b></div></div>
   <div class="h3" style="margin-top:14px">Équipe</div>
   <div class="pteam">${team.map(t=>{const h=HEROES[t.id];return`<div class="ptile" style="${rv(h.r)}"><div class="pt">${portraitFor(me?{me:1}:p,h,t)}</div><div class="pl">Nv ${t.l}${t.e?' '+'★'.repeat(t.e):''}</div><div class="pn">${h.n}</div></div>`}).join('')}</div>
   <div class="h3" style="margin-top:14px">Records</div>
-  <div class="list" style="gap:0">${RAIDS.map((r,i)=>`<div class="mrow" style="cursor:default"><span></span><span>${r.n}</span><b class="num">${fmt(p.raid[i])}</b></div>`).join('')}<div class="mrow" style="cursor:default"><span></span><span>Boss de guilde (semaine)</span><b class="num">${fmt(p.gw)}</b></div></div>
+  <div class="list" style="gap:0">${RAIDS.map((r,i)=>`<div class="mrow" style="cursor:default"><span></span><span>${r.n}</span><b class="num">${fmt(p.raid[i])}</b></div>`).join('')}<div class="mrow" style="cursor:default"><span></span><span>Boss de guilde (semaine)</span><b class="num">${fmt(p.gw||0)}</b></div></div>
   ${acts?`<div class="row" style="margin-top:12px">${acts}</div>`:''}`);
 }
 
@@ -16242,6 +16242,15 @@ const I18N_PROPER=new Set([...HEROES.map(h=>h&&h.n).filter(Boolean),"Ordre du Ph
 try{Object.assign(I18N_EN,{"Je suis nouveau":"I'm new","🆕 Je suis nouveau":"🆕 I'm new","Bienvenue dans RDE !":"Welcome to RDE!","Le royaume est prêt !":"The kingdom is ready!","Le royaume est prêt":"The kingdom is ready","Éryndel en pied":"Éryndel, full body"})}catch(e){}
 if(window.RDE_CG){const nm=nameModal;nameModal=function(){try{if(!S.xferAsk){S.xferAsk=1;save()}}catch(e){}return nm.apply(this,arguments)}}
 try{I18N_RULES.push([/^(🏆 )?Succès débloqué : (.+)$/,(m)=>(m[1]||'')+'Achievement unlocked: '+tr(m[2])])}catch(e){}
+/* rangs : 1e en français, 1st en anglais… */
+function ordE(n){n=Number(n);if(!(n>0))return '—';if(typeof LANG==='undefined'||LANG==='fr')return n+'e';if(LANG==='en'){const t=n%100;return n+((t>10&&t<14)?'th':(['th','st','nd','rd'][n%10]||'th'))}return '#'+n}
+try{I18N_RULES.push([/^🏷️ Nouveau titre : « (.+) » !$/,(m)=>'🏷️ New title: “'+tr(m[1])+'”!'])}catch(e){}
+/* profil et salle des trophées : beaucoup moins d'animations en même temps (ça faisait ramer les téléphones) */
+(function(){const st=document.createElement('style');st.id='v357css';st.textContent=`
+.frames .frm-pick:not(.sel) .fav,.frames .frm-pick:not(.sel) .fav::before,.frames .frm-pick:not(.sel) .fav::after{animation:none!important}
+body:has(#ovl .modal) #main *,body:has(#ovl .modal) #main *::before,body:has(#ovl .modal) #main *::after{animation-play-state:paused!important}
+#ovl .modal{overscroll-behavior:contain;-webkit-overflow-scrolling:touch;touch-action:pan-y}
+`;document.head.appendChild(st)})();
 
 /* ================= DÉMARRAGE ================= */
 (function init(){
