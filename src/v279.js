@@ -18,7 +18,7 @@ function btScene3(){const se=(function(){try{return seasonNow()}catch(e){return'
    <svg class="b3hills" viewBox="0 0 400 200" preserveAspectRatio="none" aria-hidden="true"><path d="M0 70Q60 30 130 60T260 50T400 60V200H0Z" fill="#8a7ab8" opacity=".55"/><path d="M0 110Q80 70 170 100T330 90T400 96V200H0Z" fill="${HC[2]}"/><path d="M0 140Q100 104 200 128T400 120V200H0Z" fill="${HC[1]}"/><path d="M0 170Q120 140 220 160T400 152V200H0Z" fill="${HC[0]}"/></svg>
    <div class="b2motes b3motes">${motes}</div><div class="b3fall">${fall}</div>
    <div class="b3party">${hs}</div>
-   <div class="b2top"><div class="b2title">Royaumes<span>d'Éther</span></div><div class="b3sub">✦ Ton aventure t'attend ✦</div></div>
+   <div class="b2top"><div class="b2title">${(function(){try{return String(localStorage.getItem('rde-lang')||navigator.language||'fr').slice(0,2).toLowerCase()}catch(e){return'fr'}})()==='fr'?"Royaumes<span>d'Éther</span>":'Realms<span>of Ether</span>'}</div><div class="b3sub">✦ Ton aventure t'attend ✦</div></div>
    <div class="b2bot"><div class="bt-bar"><i></i></div><div class="bt-s" id="bts">Le royaume se réveille…</div><div class="b2tap" id="b2tap" hidden>Touche pour entrer dans le royaume</div><div class="b2snd" id="b2snd">🔊 Touche l'écran pour le son</div></div>
   </div>`}
 try{BTIPS.length=0;BTIPS.push('Le royaume se réveille…','Les héros se rassemblent…','Astuce : envoie tes héros en expédition depuis la Capitale.','Astuce : le boss de saison change à chaque saison.','Astuce : fais une équipe par mode de jeu.','Astuce : fusionne tes doublons pour monter en étoiles.','Les ultra-évolutions sont réservées aux plus patients…')}catch(e){}

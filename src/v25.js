@@ -21,7 +21,7 @@ function btScene(){
    <div class="b2army cel">${cel}</div><div class="b2army obs">${obs}</div>
    <div class="b2orb l"></div><div class="b2orb d"></div><div class="b2orb l l2"></div><div class="b2orb d d2"></div>
    <div class="b2clash"><i></i><b></b></div>
-   <div class="b2top"><div class="b2title">Royaumes<span>d'Éther</span></div><div class="b2vs"><b class="c">CÉLESTES</b><em>⚔</em><b class="o">OBSCURS</b></div></div>
+   <div class="b2top"><div class="b2title">${(function(){try{return String(localStorage.getItem('rde-lang')||navigator.language||'fr').slice(0,2).toLowerCase()}catch(e){return'fr'}})()==='fr'?"Royaumes<span>d'Éther</span>":'Realms<span>of Ether</span>'}</div><div class="b2vs"><b class="c">CÉLESTES</b><em>⚔</em><b class="o">OBSCURS</b></div></div>
    <div class="b2bot"><div class="bt-bar"><i></i></div><div class="bt-s" id="bts">Les Célestes défendent les portes du royaume…</div><div class="b2tap" id="b2tap" hidden>Touche pour entrer dans la bataille</div><div class="b2snd" id="b2snd">🔊 Touche l'écran pour le son</div></div>
   </div>`}
 (function(){try{const b=document.getElementById('boot');if(!b||BOOT.done)return;b.classList.add('v2');b.innerHTML=btScene();clearInterval(BOOT.iv);let i=0;BOOT.iv=setInterval(()=>{i=(i+1)%BTIPS.length;const el=document.getElementById('bts');if(el&&!BT2.ready)el.textContent=BTIPS[i]},1500);

@@ -15,7 +15,7 @@ function rbLayers(W,H,dpr,king,young){const mk=()=>{const c=document.createEleme
   const[pc,px]=mk();g=px.createRadialGradient(W/2,H*.4,0,W/2,H*.4,Math.max(W,H)*.75);g.addColorStop(0,'#f4e8c8');g.addColorStop(.6,'#c8b48a');g.addColorStop(1,'#6a5634');px.fillStyle=g;px.fillRect(0,0,W,H);
   const py=place(young);if(py){const[t,tx]=mk();tx.drawImage(young,...py);try{const d=tx.getImageData(0,0,t.width,t.height),a=d.data;for(let i=0;i<a.length;i+=4){if(!a[i+3])continue;const l=a[i]*.3+a[i+1]*.59+a[i+2]*.11;a[i]=Math.min(255,l*1.07+18);a[i+1]=Math.min(255,l*.93+8);a[i+2]=Math.min(255,l*.72)}tx.putImageData(d,0,0)}catch(e){}
     px.save();px.setTransform(1,0,0,1,0,0);px.drawImage(t,0,0);px.restore()}
-  px.font='italic 30px Georgia,serif';px.textAlign='center';px.fillStyle='#fff6dc';px.fillText('Il y a mille ans…',W/2,H*.12+31);px.fillStyle='#3a2a14';px.fillText('Il y a mille ans…',W/2,H*.12+30);
+  px.font='italic 30px Georgia,serif';px.textAlign='center';px.fillStyle='#fff6dc';px.fillText(tr('Il y a mille ans…'),W/2,H*.12+31);px.fillStyle='#3a2a14';px.fillText(tr('Il y a mille ans…'),W/2,H*.12+30);
   return{nc,pc}}
 /* rayon du trou (même courbe que l'ancienne animation) */
 function rbR(p){const k=[[0,0],[.26,0],[.30,.03],[.62,.60],[.76,1.5],[1,1.5]];for(let i=1;i<k.length;i++)if(p<=k[i][0]){const[a,ra]=k[i-1],[b,rb]=k[i];const u=(p-a)/(b-a||1),e=u<.5?2*u*u:1-Math.pow(-2*u+2,2)/2;return ra+(rb-ra)*e}return 1.5}
