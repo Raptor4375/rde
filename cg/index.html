@@ -15997,7 +15997,7 @@ async function motSend(x){const gid=S.rgid;if(!gid||!NET.on||!NET.canWrite)retur
 /* l'effet sur la progression des membres de la guilde */
 let MOTG=null;
 {const bs=botSimGuild;botSimGuild=async function(gid){const m=motOf(gid);MOTG=m;try{return await bs.apply(this,arguments)}finally{MOTG=null}}}
-{const bc=botCareer;botCareer=function(b,t){const r=bc.apply(this,arguments);try{if(MOTG){const top=realTopPw();const boost=1+.04*MOTG.lv;const cap=top>0?top*(1+.02*MOTG.lv):Infinity;r.tgt=Math.min(cap,Math.max(r.tgt,r.tgt*boost))}}catch(e){}return r}}
+{const bc=botCareer;botCareer=function(b,t){const r=bc.apply(this,arguments);try{if(MOTG){const top=realTopPw();const boost=1+.04*MOTG.lv;const L=botLuck(b.n||b.id||''),cap=top>0?top*(L>=1.05?1+.02*MOTG.lv:.99):Infinity;r.tgt=Math.min(cap,Math.max(r.tgt,r.tgt*boost))}}catch(e){}return r}}
 {const gp=growPw;growPw=function(b,t){if(!MOTG)return gp.apply(this,arguments);const y=b.pwY;const r=gp.apply(this,arguments);try{const base=b.pwY||y||b.pw;const cap=Math.round(base*1.06);return Math.min(r,cap)}catch(e){return r}}}
 /* le badge sur la page de la guilde */
 {const pg=typeof pGuild==='function'?pGuild:null;if(pg)pGuild=function(){const h=pg.apply(this,arguments);try{const m=motOf(S.rgid);if(m)return h.replace('<div class="stack">',`<div class="stack"><div class="card motc">💪 <b>Guilde motivée</b>${m.lv>1?` · jour ${m.lv}`:''} : les membres jouent plus jusqu'à ${new Date(m.t+24*36e5).toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'})}. Encourage-les chaque jour pour garder la série !</div>`)}catch(e){}return h}}
