@@ -1,0 +1,9 @@
+/* ================= Format ordinateur : plus rien de trop grand ================= */
+@media (min-width:900px) and (min-aspect-ratio:5/4){
+  .lobby{max-width:calc((100vh - 380px) * 400 / 240)}
+  .dggate,.gwmap{height:auto;max-height:62vh;width:100%;margin-inline:auto}
+  .dgmap{height:auto;max-height:calc(100vh - 150px);width:100%;margin-inline:auto}
+  #ovl .modal{max-height:calc(100vh - 40px)}
+  .hvstage.v2 .hvbody{height:min(34vh,300px)}
+  .hvstage.v2{padding-top:84px}
+}
