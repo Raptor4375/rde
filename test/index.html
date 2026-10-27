@@ -3843,7 +3843,7 @@ function profileModal(id){
   <div class="muted">${real?'<i class="rtag">JOUEUR RÉEL</i> · ':''}Niveau de compte ${acctLvl(p.pw)} · ${gl?esc(gl)+' · '+(g?role(p,g):rd?((me?rd.leader===NET.pid:rd.leader===p.pid)?'Chef':'Membre'):''):'Sans guilde'}${p.pers?' · '+PERS_N[p.pers]:''}</div>
   <div class="muted" style="font-size:12.5px"><span class="ol ${me||(real?Date.now()-p.last<30*60000:online(p))?'':'off'}"></span>${me?'En ligne':(real?Date.now()-p.last<30*60000:online(p))?'En ligne':'Vu '+ago(p.last)}</div></div></div>
   ${me?`<form class="row" data-f="rename" style="margin-top:10px"><label for="pname" class="vh">Pseudo</label><input class="tx" id="pname" maxlength="18" value="${esc(S.name||'')}" placeholder="Ton pseudo"><button class="btn g" type="submit">Renommer</button></form>`:''}
-  <div class="stats" style="margin-top:12px"><div class="stat"><span>Puissance</span><b>${fmt(p.pw)}</b>${dltOf(p)>0?`<small class="up">▲ +${fmt(dltOf(p))} aujourd'hui</small>`:''}</div><div class="stat"><span>Étape max</span><b>${p.st||0}</b></div><div class="stat"><span>Rang puissance</span><b>${ordE(rankList('pw').findIndex(x=>me?x.me:x.id===p.id)+1)}</b></div><div class="stat"><span>Boss de guilde</span><b>${fmt(p.gw||0)}</b></div></div>
+  <div class="stats" style="margin-top:12px"><div class="stat"><span>Puissance</span><b>${fmt(p.pw)}</b>${dltOf(p)>0?`<small class="up">▲ +${fmt(dltOf(p))} aujourd'hui</small>`:''}</div><div class="stat"><span>Étape max</span><b>${p.st||0}</b></div><div class="stat"><span>Rang puissance</span><b>${ordE(rankList('pw').findIndex(x=>me?x.me:x.id===p.id)+1)}</b></div><div class="stat"><span>Boss de guilde</span><b>${fmt(Number(p.gw)||0)}</b></div></div>
   <div class="h3" style="margin-top:14px">Équipe</div>
   <div class="pteam">${team.map(t=>{const h=HEROES[t.id];return`<div class="ptile" style="${rv(h.r)}"><div class="pt">${portraitFor(me?{me:1}:p,h,t)}</div><div class="pl">Nv ${t.l}${t.e?' '+'★'.repeat(t.e):''}</div><div class="pn">${h.n}</div></div>`}).join('')}</div>
   <div class="h3" style="margin-top:14px">Records de raid</div>
@@ -5062,12 +5062,12 @@ function profileModal(id){
   <div class="phd"><div class="pav fav frm-${frameOf(p)}">${avatarOf(p)}</div><div style="min-width:0"><div class="h" style="margin:0">${nmT(p)}${!me&&isFriend(p)?' <i class="rtag" style="background:#ff8ab0">AMI</i>':''}</div>
   <div class="muted">${real?'<i class="rtag">JOUEUR RÉEL</i> · ':''}Niveau de compte ${acctLvl(p.pw)} · ${gl?esc(gl):'Sans guilde'}${roleTxt?` · <i class="rb rb-${prole||'mem'}">${roleTxt}</i>`:''}${p.pers?' · '+PERS_N[p.pers]:''}</div>
   <div class="muted" style="font-size:12.5px"><span class="ol ${on?'':'off'}"></span>${on?'En ligne':'Vu '+ago(p.last)} · cadre ${FRAMES[frameOf(p)]}</div></div></div>
-  ${me?`<form class="row" data-f="rename" style="margin-top:10px"><label for="pname" class="vh">Pseudo</label><input class="tx" id="pname" maxlength="18" value="${esc(S.name||'')}" placeholder="Ton pseudo"><button class="btn g" type="submit">Renommer</button><button type="button" class="btn" data-a="goach">Succès et cadres</button>${amChef()?'<button type="button" class="btn" data-a="tagedit">Modifier la guilde</button>':''}</form>`:''}
+  ${me?`<form class="row" data-f="rename" style="margin-top:10px"><label for="pname" class="vh">Pseudo</label><input class="tx" id="pname" maxlength="18" value="${esc(S.name||'')}" placeholder="Ton pseudo"><button class="btn g" type="submit">Renommer</button><button type="button" class="btn" data-a="goach">Succès et cadres</button><button type="button" class="btn" data-a="gott">Titres</button>${amChef()?'<button type="button" class="btn" data-a="tagedit">Modifier la guilde</button>':''}</form>`:''}
   <div class="stats" style="margin-top:12px"><div class="stat"><span>Puissance</span><b>${fmt(p.pw)}</b>${dltOf(p)>0?`<small class="up">▲ +${fmt(dltOf(p))} aujourd'hui</small>`:''}</div><div class="stat"><span>Rang</span><b>${ordE(rankList('pw').findIndex(x=>me?x.me:x.id===p.id)+1)}</b></div><div class="stat"><span>Arène</span><b>${arOf(p)} · ${ordE(arRank)}</b></div><div class="stat"><span>Étape max</span><b>${p.st||0}</b></div></div>
   <div class="h3" style="margin-top:14px">Équipe</div>
   <div class="pteam">${team.map(t=>{const h=HEROES[t.id];return`<div class="ptile" style="${rv(h.r)}"><div class="pt">${portraitFor(me?{me:1}:p,h,t)}</div><div class="pl">Nv ${t.l}${t.e?' '+'★'.repeat(t.e):''}</div><div class="pn">${h.n}</div></div>`}).join('')}</div>
   <div class="h3" style="margin-top:14px">Records</div>
-  <div class="list" style="gap:0">${RAIDS.map((r,i)=>`<div class="mrow" style="cursor:default"><span></span><span>${r.n}</span><b class="num">${fmt(p.raid[i])}</b></div>`).join('')}<div class="mrow" style="cursor:default"><span></span><span>Boss de guilde (semaine)</span><b class="num">${fmt(p.gw||0)}</b></div></div>
+  <div class="list" style="gap:0">${RAIDS.map((r,i)=>`<div class="mrow" style="cursor:default"><span></span><span>${r.n}</span><b class="num">${fmt(p.raid[i])}</b></div>`).join('')}<div class="mrow" style="cursor:default"><span></span><span>Boss de guilde (semaine)</span><b class="num">${fmt(Number(p.gw)||0)}</b></div></div>
   ${acts?`<div class="row" style="margin-top:12px">${acts}</div>`:''}`);
 }
 
@@ -12843,7 +12843,7 @@ for(const nm of ['msgHTML','rmsgHTML']){try{const f=window[nm];if(typeof f!=='fu
 {const pm=profileModal;profileModal=function(id){pm.apply(this,arguments);try{const m=$('#ovl .modal');if(!m)return;const h=m.querySelector('.phd .h')||m.querySelector('.h');let k=null;const me=id==='me';
    if(me)k=S.title&&S.title!=='voyageur'?S.title:null;else{const p=rowById(id);if(p)k=ttFor(p.real?p.pid:(p.bid?'b:'+p.bid:p.id))}
    if(k&&h&&!m.querySelector('.ttchip'))h.insertAdjacentHTML('afterend',`<div style="margin:2px 0 6px">${ttChip(k)}</div>`);
-   if(me&&!m.querySelector('.ttsel')){ttCheck();const own=S.titles||['voyageur'];m.insertAdjacentHTML('beforeend',`<div class="ttsel"><div class="h3" style="margin:0 0 6px">🏷️ Mes titres · ${own.length}/${TITLES.length}</div><div class="ttlist">${TITLES.map(t=>{const ok=own.includes(t.k);return`<button class="ttb ${S.title===t.k?'on':''}" style="--tc:${t.c}" data-a="ttpick" data-v="${t.k}" ${ok?'':'disabled'}><b>${ok?esc(t.n):'🔒 '+esc(t.n)}</b><small>${esc(t.d)}</small></button>`}).join('')}</div></div>`)}}catch(e){}}}
+   if(false&&me&&!m.querySelector('.ttsel')){ttCheck();const own=S.titles||['voyageur'];m.insertAdjacentHTML('beforeend',`<div class="ttsel"><div class="h3" style="margin:0 0 6px">🏷️ Mes titres · ${own.length}/${TITLES.length}</div><div class="ttlist">${TITLES.map(t=>{const ok=own.includes(t.k);return`<button class="ttb ${S.title===t.k?'on':''}" style="--tc:${t.c}" data-a="ttpick" data-v="${t.k}" ${ok?'':'disabled'}><b>${ok?esc(t.n):'🔒 '+esc(t.n)}</b><small>${esc(t.d)}</small></button>`}).join('')}</div></div>`)}}catch(e){}}}
 document.addEventListener('click',e=>{const t=e.target.closest('[data-a="ttpick"]');if(!t)return;e.preventDefault();e.stopPropagation();S.title=t.dataset.v;save();NET.lastPush='';try{schedulePush()}catch(er){}toast(`🏷️ Titre affiché : « ${ttOf(S.title).n} »`);profileModal('me')},true);
 
 /* ================= tournoi de la semaine ================= */
@@ -16250,7 +16250,28 @@ try{I18N_RULES.push([/^🏷️ Nouveau titre : « (.+) » !$/,(m)=>'🏷️ New 
 .frames .frm-pick:not(.sel) .fav,.frames .frm-pick:not(.sel) .fav::before,.frames .frm-pick:not(.sel) .fav::after{animation:none!important}
 body:has(#ovl .modal) #main *,body:has(#ovl .modal) #main *::before,body:has(#ovl .modal) #main *::after{animation-play-state:paused!important}
 #ovl .modal{overscroll-behavior:contain;-webkit-overflow-scrolling:touch;touch-action:pan-y}
+#ovl .modal.haspbg{overflow-x:hidden!important;overflow-y:auto!important}
+.frames .frm-pick{content-visibility:auto;contain-intrinsic-size:auto 120px}
+.list>.card.q{content-visibility:auto;contain-intrinsic-size:auto 96px}
+.list>.card.q .bar *,.list>.card.q .bar *::before,.list>.card.q .bar *::after,.list>.card.q .bar::after{animation:none!important}
+.ttpage .ttlist{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
 `;document.head.appendChild(st)})();
+
+/* titres : un onglet à part dans la Salle des trophées (comme Succès), plus dans le profil */
+try{Object.assign(I18N_EN,{"Titres":"Titles","🏷️ Titres":"🏷️ Titles","Choisis le titre affiché sous ton pseudo (profil, classements, tchat).":"Choose the title shown under your name (profile, rankings, chat).","Titre affiché":"Displayed title"})}catch(e){}
+function ttPage(){try{ttCheck()}catch(e){}const own=S.titles||['voyageur'];
+  return`<div class="card ttpage"><div class="h3" style="margin:0 0 4px">🏷️ Titres · ${own.length}/${TITLES.length}</div><div class="muted" style="font-size:12.5px;margin-bottom:10px">Choisis le titre affiché sous ton pseudo (profil, classements, tchat).</div><div class="ttlist">${TITLES.map(t=>{const ok=own.includes(t.k);return`<button class="ttb ${S.title===t.k?'on':''}" style="--tc:${t.c}" data-a="ttpick" data-v="${t.k}" ${ok?'':'disabled'}><b>${ok?esc(t.n):'🔒 '+esc(t.n)}</b><small>${esc(t.d)}</small></button>`}).join('')}</div></div>`}
+{const ps=pSocial;pSocial=function(){const soc=UI.soc;let h;
+  if(soc==='tt'){UI.soc='ach';try{h=ps.apply(this,arguments)}finally{UI.soc='tt'}
+    const a=h.indexOf('class="seg"'),e=h.indexOf('</div>',a)+6;h=h.slice(0,e)+ttPage()+'</div>';
+    h=h.replace(/aria-selected="true" class="on"/g,'aria-selected="false" class=""')}
+  else h=ps.apply(this,arguments);
+  const a=h.indexOf('class="seg"');if(a>=0){const e=h.indexOf('</div>',a);h=h.slice(0,e)+`<button role="tab" aria-selected="${soc==='tt'}" class="${soc==='tt'?'on':''}" data-a="soc" data-v="tt">Titres</button>`+h.slice(e)}
+  return h}}
+window.addEventListener('click',e=>{const t=e.target.closest('[data-a="ttpick"],[data-a="gott"]');if(!t)return;
+  if(t.dataset.a==='gott'){e.preventDefault();e.stopImmediatePropagation();closeModal();TAB='top';UI.soc='tt';UI.lz=UI.lz||{};UI.lz.top='ach';render();window.scrollTo(0,0);return}
+  if(!t.closest('#main'))return;e.preventDefault();e.stopImmediatePropagation();S.title=t.dataset.v;save();NET.lastPush='';try{schedulePush()}catch(er){}
+  toast((LANG==='fr'?'🏷️ Titre affiché : ':'🏷️ Displayed title: ')+'« '+tr(ttOf(S.title).n)+' »');render()},true);
 
 /* ================= DÉMARRAGE ================= */
 (function init(){

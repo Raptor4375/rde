@@ -53,7 +53,10 @@ for _k in ['ach','monde','rank']:
 
 _a="${rankList('pw').findIndex(x=>me?x.me:x.id===p.id)+1}e</b>";assert src.count(_a)==2;src=src.replace(_a,"${ordE(rankList('pw').findIndex(x=>me?x.me:x.id===p.id)+1)}</b>")
 _a="${arRank}e</b>";assert src.count(_a)==1;src=src.replace(_a,"${ordE(arRank)}</b>")
-_a="${fmt(p.gw)}";assert src.count(_a)==2;src=src.replace(_a,"${fmt(p.gw||0)}")
+_a="${fmt(p.gw)}";assert src.count(_a)==2;src=src.replace(_a,"${fmt(Number(p.gw)||0)}")
+
+_a='if(me&&!m.querySelector(\'.ttsel\')){';assert src.count(_a)==1;src=src.replace(_a,'if(false&&me&&!m.querySelector(\'.ttsel\')){')
+_a='data-a="goach">Succès et cadres</button>';assert src.count(_a)==1;src=src.replace(_a,_a+'<button type="button" class="btn" data-a="gott">Titres</button>')
 open('royaumes.html','w').write(src)
 open('chk.js','w').write(src[src.index('<script>')+8:src.rindex('</script>')])
 a=src.index('<style>');b=src.index('</style>')+8;open('prod.html','w').write(src[:a]+src[b:])
