@@ -7,3 +7,8 @@
   .hvstage.v2 .hvbody{height:min(34vh,300px)}
   .hvstage.v2{padding-top:84px}
 }
+/* combats sur PC : tous les ennemis sur une ligne, cartes dimensionnées sur la hauteur de l'écran */
+@media (min-width:900px) and (min-aspect-ratio:5/4){
+  #battle .side{grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:minmax(0,calc((100vh - 220px) / 3.4));justify-content:center}
+  #battle .side.one{grid-auto-columns:minmax(0,min(200px,calc((100vh - 220px) / 3.4)))}
+}
