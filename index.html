@@ -47,7 +47,7 @@ window.claude={use:async k=>{if(k==='db'||k==='user'){try{const F=await window.R
 window.RDEF();
 })();
 </script>
-<script>window.RDE_V='20261027134319';if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));</script>
+<script>window.RDE_V='20261027134955';if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));</script>
 </head><body>
 <title>RDE · Royaumes d'Éther</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -2842,6 +2842,13 @@ html.scrl .pbgfx *{animation-play-state:paused}
 @media (min-width:900px) and (min-aspect-ratio:5/4){
   #battle .side{grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:minmax(0,calc((100vh - 220px) / 3.4));justify-content:center}
   #battle .side.one{grid-auto-columns:minmax(0,min(200px,calc((100vh - 220px) / 3.4)))}
+}
+/* règle générale PC : aucune carte ni illustration ne dépasse la hauteur de l'écran */
+@media (min-width:900px) and (min-aspect-ratio:5/4){
+  #main svg.avmap{height:auto;max-height:62vh;width:100%;margin-inline:auto;display:block}
+  #main svg:not(.hvscene):not(.bgart):not(.scsvg){max-height:68vh}
+  #main img{max-height:68vh;object-fit:contain}
+  #ovl .modal svg:not(.hvscene){max-height:60vh}
 }
 .tab{position:relative}
 .tab.tlock{opacity:.42;filter:grayscale(.6)}
