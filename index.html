@@ -47,7 +47,7 @@ window.claude={use:async k=>{if(k==='db'||k==='user'){try{const F=await window.R
 window.RDEF();
 })();
 </script>
-<script>window.RDE_V='20261027102629';if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));</script>
+<script>window.RDE_V='20261027104129';if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));</script>
 </head><body>
 <title>RDE · Royaumes d'Éther</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -16126,6 +16126,10 @@ function gwChatTick(){try{if(!gwActive()||!NET.on||!NET.canWrite||document.hidde
   if(Math.random()<.08){const pool=botRows().filter(b=>Date.now()-b.last<36e5*6);if(pool.length){const b=pick(pool);postBotMsg('world',{id:b.bid,n:b.n},pick(GWW))}}}catch(e){}}
 setTimeout(()=>{gwChatTick();setInterval(gwChatTick,(7+Math.random()*5)*60000)},90000);
 try{const P=PATCH.find(x=>x.v===36.1)||PATCH[0];if(P)P.items.push("📣 Pendant la Guerre des Guildes, rappelle-la dans le tchat de guilde (« posez vos équipes dans les royaumes », « n'oubliez pas la guerre »…) : les membres répondent et vont poser leurs équipes. Une fois par jour.")}catch(e){}
+/* ================= V36.7 : classement plus fluide + Tour réaliste ================= */
+/* 1) la liste des bots n'est recalculée qu'une fois toutes les 1,5 s (avant : 4 fois par affichage) */
+{const br=botRows;let c=null,ct=0,cg=null,cp=null;botRows=function(){const n=Date.now();if(!c||cg!==NET.guilds||cp!==NET.players||n-ct>1500){c=br.apply(this,arguments);cg=NET.guilds;cp=NET.players;ct=n}return c.map(r=>Object.assign({},r))}}
+{const fr=freeRows;let c=null,ct=0,cp=null;freeRows=function(){const n=Date.now();if(!c||cp!==NET.players||n-ct>1500){c=fr.apply(this,arguments);cp=NET.players;ct=n}return c.map(r=>Object.assign({},r))}}
 
 /* ================= DÉMARRAGE ================= */
 (function init(){
