@@ -9,8 +9,8 @@ const SKTEST=()=>!window.RDE_APP;
 const SKINS={
  dk_cendres:{n:'Drakhar des Cendres',hero:65,vid:400,season:'p_cendres',how:"Pass Pro « Les Cendres du Premier Porteur » : palier 60",
   d:"Le dernier wyrm qui a vu brûler la flamme du Premier Porteur. Ses écailles sont devenues de l'obsidienne, et la braise coule encore dans ses veines.",
-  look:['#3a3330','#120c0c','#0f0b0c','#2a201e','#ff6a1a','#fff2c0','bg:flame back:wings-dragon head:dragon eyes:slit mouth:none body:scale ear:none'],
-  uth:{n:'Dragon de Cendre',m:'#0a0707',s:'#2a1c18',a:'#ff6a1a',e:'#ffffff',bg:'flame',w:null,hat:null,fx:'embers',hat:'ashcrown',c:'#ff6a1a',c2:'#c8bcb0',h3:'#ff4a10'},
+  look:['#3a3330','#120c0c','#0f0b0c','#2a201e','#ff6a1a','#ffb21a','bg:flame back:wings-dragon head:wyrm eyes:slit mouth:none body:scale ear:none'],
+  uth:{n:'Dragon de Cendre',m:'#0a0707',s:'#2a1c18',a:'#ff6a1a',e:'#ffd84a',bg:'flame',w:null,hat:null,fx:'embers',hat:'ashcrown',c:'#ff6a1a',c2:'#c8bcb0',h3:'#ff4a10'},
   forms:['Drakhar des Cendres','Braise Éveillée','Couronne de Cendre','Inferno Ancestral']}};
 const SKV={};for(const k in SKINS)SKV[SKINS[k].vid]=k;
 /* --- pièces dessinées du skin (repère du corps : viewBox 0 -8 160 244, tête ≈ 80,32) --- */
@@ -29,16 +29,25 @@ function dkcFX(u){let o='';
   o+=`<g opacity=".95">${veins}</g>`;
   /* cœur de braise dans la poitrine */
   o+=`<circle cx="80" cy="92" r="${2.4+u*.5}" fill="#fff2c0" opacity=".95"><animate attributeName="opacity" values=".6;1;.6" dur="1.6s" repeatCount="indefinite"/></circle><circle cx="80" cy="92" r="${6+u}" fill="#ff6a1a" opacity=".22"/>`;
-  /* ailes de feu (forme III) */
-  if(u>=3)o=`<g opacity=".8">${[1,-1].map(sx=>`<path transform="translate(80 70) scale(${sx} 1)" d="M10 -4Q46 -52 78 -40Q64 -30 66 -16Q52 -22 50 -8Q40 -14 36 2Q26 -2 10 8Z" fill="#ff5a14" opacity=".4"><animate attributeName="opacity" values=".25;.55;.25" dur="1.4s" repeatCount="indefinite"/></path><path transform="translate(80 70) scale(${sx} 1)" d="M14 -2Q44 -38 70 -34Q58 -26 58 -16Q46 -18 44 -8Q36 -10 32 2Z" fill="#ffd84a" opacity=".3"/>`).join('')}</g>`+o;
   /* braises qui montent */
   o+=[...Array(6+u*3)].map((_,k)=>`<circle cx="${50+(k*19)%60}" cy="200" r="${(1+k%2*.6).toFixed(1)}" fill="${k%2?'#ffd84a':'#ff6a1a'}"><animate attributeName="cy" values="210;${40+k%4*10}" dur="${2.4+k%3*.7}s" begin="${-k*.5}s" repeatCount="indefinite"/><animate attributeName="opacity" values="1;0" dur="${2.4+k%3*.7}s" begin="${-k*.5}s" repeatCount="indefinite"/></circle>`).join('');
   return`<g class="skfx">${o}</g>`}
+function dkcBack(u){if(u<3)return'';return `<g opacity=".8">${[1,-1].map(sx=>`<path transform="translate(80 70) scale(${sx} 1)" d="M10 -4Q46 -52 78 -40Q64 -30 66 -16Q52 -22 50 -8Q40 -14 36 2Q26 -2 10 8Z" fill="#ff5a14" opacity=".4"><animate attributeName="opacity" values=".25;.55;.25" dur="1.4s" repeatCount="indefinite"/></path><path transform="translate(80 70) scale(${sx} 1)" d="M14 -2Q44 -38 70 -34Q58 -26 58 -16Q46 -18 44 -8Q36 -10 32 2Z" fill="#ffd84a" opacity=".3"/>`).join('')}</g>`;}
 LGW.ashaxe=L=>`<rect x="-1.9" y="-${L-4}" width="3.8" height="${L+6}" rx="1.4" fill="#120c0a" stroke="#3a2a24" stroke-width=".5"/>${[0,1,2].map(k=>`<rect x="-2.2" y="-${L-14-k*14}" width="4.4" height="2" fill="#ff6a1a" opacity=".8"/>`).join('')}<path d="M1 -${L+6}Q26 -${L+4} 28 -${L-16}Q16 -${L-9} 1 -${L-14}Z" fill="#1a1210" stroke="#ff6a1a" stroke-width="1.4"/><path d="M4 -${L+3}Q22 -${L+1} 24 -${L-12}" fill="none" stroke="#ffd84a" stroke-width="1.2"><animate attributeName="stroke-opacity" values=".4;1;.4" dur="1.4s" repeatCount="indefinite"/></path><path d="M-1 -${L+6}Q-16 -${L+1} -17 -${L-11}Q-9 -${L-8} -1 -${L-12}Z" fill="#14100e" stroke="#ff6a1a" stroke-width="1.1"/><circle cx="0" cy="-${L+7}" r="2.6" fill="#ffd84a"/>`;
+/* une vraie tête de dragon : museau allongé, arcades lourdes, cornes en arrière, crocs et naseaux de braise */
+HEAD.wyrm=L=>{const sk=L.sk,dk=shade(sk,-.45),lt=shade(sk,.16);
+  return MIR(Pa('M39 33Q31 18 22 9Q30 14 36 22Q38 27 41 31Z',L.s)+Pa('M36 46L23 44L35 53Z',L.s)+Pa('M38.5 55L28 61L40 59.5Z',dk))
+   +Pa('M34 42Q35 28 50 25Q65 28 66 42L64 50L60 56L57.5 65Q54.5 71.5 50 72.5Q45.5 71.5 42.5 65L40 56L36 50Z',sk)
+   +Pa('M41.5 52.5Q50 49.5 58.5 52.5L55.5 63.5Q50 66.5 44.5 63.5Z',lt)
+   +SL('M50 27L50 37',L.s,1.3)+SL('M46 30.5L50 28.5L54 30.5',L.s,.9)
+   +MIR(Pa('M36 40.5L47.5 43.4L47 45.8L35.6 43.4Z',dk))
+   +MIR(SL('M45.6 62.4L48.2 60.8',L.a,1.2))
+   +SL('M43.5 66.5Q50 70.5 56.5 66.5',dk,.9)
+   +MIR(Pa('M44.2 66.6L45.4 71.2L46.6 67.6Z','#f4ead8'))}
 /* enregistrement du héros virtuel */
 for(const k in SKINS){const s=SKINS[k];LOOKS[s.vid]=s.look;try{UTH_H[s.vid]=s.uth}catch(e){}}
 try{LGB[400]=u=>dkcBG(u);LGA[400]=['ashaxe',80]}catch(e){}
-const SKFX={400:dkcFX};
+const SKFX={400:dkcFX},SKFXB={400:dkcBack};
 function vHero(sk){const s=SKINS[sk],H=HEROES[s.hero];return Object.assign({},H,{i:s.vid,n:s.n})}
 {const po=poseOf;poseOf=function(h){if(h&&SKV[h.i]!=null)return po(HEROES[SKINS[SKV[h.i]].hero]);return po.apply(this,arguments)}}
 /* --- possession et équipement --- */
@@ -49,7 +58,8 @@ function skGive(k){S.skins=S.skins||[];if(!S.skins.includes(k)){S.skins.push(k);
 function skWear(hid,k){S.skinEq=S.skinEq||{};if(k&&(!SKINS[k]||SKINS[k].hero!==hid||!skOwned(k)))return;if(k)S.skinEq[hid]=k;else delete S.skinEq[hid];skRefresh(hid);save();render()}
 /* --- le dessin : si un skin est porté, on dessine le héros virtuel --- */
 {const hb=heroBody;heroBody=function(h,u=0){const k=h&&skEq(h.i);if(!k)return hb.apply(this,arguments);const v=vHero(k);let s=hb.call(this,v,u);
-  try{const f=SKFX[v.i];if(f&&s.indexOf('skfx')<0){const z=s.lastIndexOf('</svg>');const rm=/<g transform="(rotate\([-\d.]+ 80 220\))"/.exec(s);s=s.slice(0,z)+(rm?`<g transform="${rm[1]}">${f(u||0)}</g>`:f(u||0))+s.slice(z)}}catch(e){}return s}}
+  try{const f=SKFX[v.i];if(f&&s.indexOf('skfx')<0){const z=s.lastIndexOf('</svg>');const rm=/<g transform="(rotate\([-\d.]+ 80 220\))"/.exec(s);s=s.slice(0,z)+(rm?`<g transform="${rm[1]}">${f(u||0)}</g>`:f(u||0))+s.slice(z);
+    const bk=SKFXB[v.i]&&SKFXB[v.i](u||0);if(bk&&rm){const i0=s.indexOf(rm[0]);s=s.slice(0,i0)+`<g transform="${rm[1]}">${bk}</g>`+s.slice(i0)}}}catch(e){}return s}}
 const skU=hid=>{const o=S.heroes&&S.heroes[hid];return o&&HEROES[hid].r>=4?Math.min(3,o.u||0):0};
 {const pr=portrait;portrait=function(h){const k=h&&skEq(h.i);if(!k)return pr.apply(this,arguments);const v=vHero(k);const had=S.heroes[v.i];S.heroes[v.i]=S.heroes[h.i];try{return pr.call(this,v)}finally{if(had)S.heroes[v.i]=had;else delete S.heroes[v.i]}}}
 {const pu=portraitU;portraitU=function(h,u){const k=h&&skEq(h.i);if(!k)return pu.apply(this,arguments);return pu.call(this,vHero(k),u)}}
