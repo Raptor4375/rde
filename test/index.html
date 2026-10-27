@@ -9484,7 +9484,7 @@ function nBattle(n){nInit();if(!nOpen())return toast('Termine les 100 étapes fa
     if(n>S.nmax){S.nmax=n;S.nstage=Math.min(100,n+1);const gm=boss?150:30;S.gems+=gm;extra.push(GEM+gm+' gemmes (1re victoire Normal)');if(boss){S.shards+=2;extra.push(SHARD+'2 éclats légendaires');try{news(Date.now(),`${S.name||'Voyageur'} a vaincu ${(typeof NWORLDS!=="undefined"?NWORLDS[w-1].b[0]:WORLDS[w-1].b)} en mode Normal (étape ${n}).`);react('gg',{},2)}catch(e){}}}
     const it=dropItem(rollRarity(Math.min(10,w+3),boss?2.5:1.4));extra.push(itemChip(it));
     if(n===100)extra.push('👑 Mode Normal terminé ! Tu es une légende du royaume.')}
-  else extra.push(`Puissance conseillée en Normal : ${fmt(nRec(n))}.`);
+  else extra.push(`Puissance conseillée en Normal : ${fmt(nRecD(n))}.`);
   save();
   try{const rw=$('#battle .result .rw');if(rw)rw.insertAdjacentHTML('beforeend',extra.map(x=>`<span>${x}</span>`).join(''));const ns=$('#battle .result [data-a="nextstage"]');if(ns&&(res!==true||n>=100))ns.remove();const h=$('#battle .result .h');if(h)h.insertAdjacentHTML('beforeend','<small class="nmtag">MODE NORMAL</small>')}catch(e){}}}
 document.addEventListener('click',e=>{const t=e.target.closest('[data-a]');if(!t||!B||!B.normal)return;const a=t.dataset.a;
@@ -9495,14 +9495,14 @@ function diffSw(d){const o=d==='n'?'e':'n';const lk=!nOpen();
   <button class="dfa" data-a="diff" data-v="${o}" aria-label="Changer de difficulté">›</button></div>`}
 function pAdvN(sw){nInit();const lock=!nOpen();const cw=Math.max(1,Math.min(10,Math.ceil(S.nstage/10)));const w=Math.min(UI.nworld??cw,cw);const Wd=WORLDS[w-1];
   let nodes='';for(let k=1;k<=10;k++){const s=(w-1)*10+k,done=s<=S.nmax,cur=s===S.nstage&&S.nmax<100,lk=lock||s>S.nstage;nodes+=`<button class="node ${done?'done':''} ${cur?'now':''} ${lk?'lock':''} ${k===10?'boss':''}" data-a="nstage" data-v="${s}" ${lk?'disabled':''} aria-label="Étape ${s} normale">${s}</button>`}
-  const tp=idsPower(teamIdsFor('pve')),rp=nRec(S.nstage),fin=S.nmax>=100;
+  const tp=idsPower(teamIdsFor('pve')),rp=nRecD(S.nstage),fin=S.nmax>=100;
   return`<div class="stack nmpage">
   <div class="card row" style="justify-content:space-between"><div><div class="h3" style="margin:0">Coffre d'expédition</div><div class="muted">Tes héros rapportent ${idleRate()} or/min, même hors ligne (8 h max).</div></div><button class="btn p" data-a="idle">${GOLD} Récolter ${fmt(idleGold())}</button></div>
   ${sw}
   <div class="worlds">${WORLDS.map((x,i)=>`<button class="chip ${w===i+1?'on':''}" data-a="nworld" data-v="${i+1}" ${i+1>cw||lock?'disabled':''}>${i+1}. ${x.n}</button>`).join('')}</div>
   <div class="wbanner sc nmban">${sceneHTML(w,12)}<div class="wtx"><span class="nmbadge">NORMAL</span>
     <div class="h">Monde ${w} · ${Wd.n}</div>
-    <p>Étapes ${(w-1)*10+1} à ${w*10} en Normal. Le boss <b>${Wd.b}</b> est enragé. Puissance conseillée de ${fmt(nRec((w-1)*10+1))} à ${fmt(nRec(w*10))}.</p>
+    <p>Étapes ${(w-1)*10+1} à ${w*10} en Normal. Le boss <b>${Wd.b}</b> est enragé. Puissance conseillée de ${fmt(nRecD((w-1)*10+1))} à ${fmt(nRecD(w*10))}.</p>
     <div class="bestiary">${[...Wd.m,Wd.b].map((n,i)=>`<span class="bst ${i===5?'boss':''}" title="${esc(n)}">${monArt(n,Wd.h,i===5)}</span>`).join('')}</div></div>${lock?`<div class="nmlock"><b>🔒 Mode Normal verrouillé</b><span>Termine les 100 étapes du mode Facile (tu es à l'étape ${Math.min(100,S.stage)}).</span></div>`:''}</div>
   <div class="path">${nodes}</div>
   <div class="card stack"><div class="row" style="justify-content:space-between"><div><div class="h3" style="margin:0">Ton équipe d'aventure</div><div class="muted">Puissance ${fmt(tp)}</div></div>${teamStrip(teamIdsFor('pve'))}</div>${teamPick('pve')}
@@ -10206,14 +10206,14 @@ function nScene(w,n){const W=NWORLDS[w-1];return sceneHTML(W.sc,n).replace('clas
 /* page du mode Normal avec les nouveaux mondes */
 function pAdvN(sw){nInit();const lock=!nOpen();const cw=Math.max(1,Math.min(10,Math.ceil(S.nstage/10)));const w=Math.min(UI.nworld??cw,cw);const Wd=NWORLDS[w-1];
   let nodes='';for(let k=1;k<=10;k++){const s=(w-1)*10+k,done=s<=S.nmax,cur=s===S.nstage&&S.nmax<100,lk=lock||s>S.nstage;nodes+=`<button class="node ${done?'done':''} ${cur?'now':''} ${lk?'lock':''} ${k===10?'boss':''}" data-a="nstage" data-v="${s}" ${lk?'disabled':''} aria-label="Étape ${s} normale">${s}</button>`}
-  const tp=idsPower(teamIdsFor('pve')),rp=nRec(S.nstage),fin=S.nmax>=100;
+  const tp=idsPower(teamIdsFor('pve')),rp=nRecD(S.nstage),fin=S.nmax>=100;
   return`<div class="stack nmpage">
   <div class="card row" style="justify-content:space-between"><div><div class="h3" style="margin:0">Coffre d'expédition</div><div class="muted">Tes héros rapportent ${idleRate()} or/min, même hors ligne (8 h max).</div></div><button class="btn p" data-a="idle">${GOLD} Récolter ${fmt(idleGold())}</button></div>
   ${sw}
   <div class="worlds">${NWORLDS.map((x,i)=>`<button class="chip ${w===i+1?'on':''}" data-a="nworld" data-v="${i+1}" ${i+1>cw||lock?'disabled':''}>${i+1}. ${x.n}</button>`).join('')}</div>
   <div class="wbanner sc nmban">${nScene(w,12)}<div class="wtx"><span class="nmbadge">NORMAL · MONDE INÉDIT</span>
     <div class="h">Monde ${w} · ${Wd.n}</div>
-    <p>Étapes ${(w-1)*10+1} à ${w*10} en Normal. Boss du monde : <b>${Wd.b[0]}</b>. Puissance conseillée de ${fmt(nRec((w-1)*10+1))} à ${fmt(nRec(w*10))}.</p>
+    <p>Étapes ${(w-1)*10+1} à ${w*10} en Normal. Boss du monde : <b>${Wd.b[0]}</b>. Puissance conseillée de ${fmt(nRecD((w-1)*10+1))} à ${fmt(nRecD(w*10))}.</p>
     <div class="bestiary">${[...Wd.m,Wd.b].map((x,i)=>`<span class="bst ${i===5?'boss':''}" title="${esc(x[0])}${i===5?' (boss)':''}">${nmonArt(x[0],Wd.h,i===5)}</span>`).join('')}</div></div>${lock?`<div class="nmlock"><b>🔒 Mode Normal verrouillé</b><span>Termine les 100 étapes du mode Facile (tu es à l'étape ${Math.min(100,S.stage)}).</span></div>`:''}</div>
   <div class="path">${nodes}</div>
   <div class="card stack"><div class="row" style="justify-content:space-between"><div><div class="h3" style="margin:0">Ton équipe d'aventure</div><div class="muted">Puissance ${fmt(tp)}</div></div>${teamStrip(teamIdsFor('pve'))}</div>${teamPick('pve')}
@@ -16080,6 +16080,16 @@ try{const P=PATCH.find(x=>x.v===36.1)||PATCH[0];if(P)P.items.push("📣 Pendant 
 /* 1) la liste des bots n'est recalculée qu'une fois toutes les 1,5 s (avant : 4 fois par affichage) */
 {const br=botRows;let c=null,ct=0,cg=null,cp=null;botRows=function(){const n=Date.now();if(!c||cg!==NET.guilds||cp!==NET.players||n-ct>1500){c=br.apply(this,arguments);cg=NET.guilds;cp=NET.players;ct=n}return c.map(r=>Object.assign({},r))}}
 {const fr=freeRows;let c=null,ct=0,cp=null;freeRows=function(){const n=Date.now();if(!c||cp!==NET.players||n-ct>1500){c=fr.apply(this,arguments);cp=NET.players;ct=n}return c.map(r=>Object.assign({},r))}}
+/* 2) Tour de l'Infini : après l'étage 80, la difficulté monte doucement (≈ +2 % par étage) au lieu d'exploser */
+{const g0=twG;twG=function(f){return f<=80?g0(f):g0(80)*Math.pow(1.019,f-80)}}
+/* puissance conseillée = mesurée sur de vrais combats simulés (≈ 80 % de victoires) */
+const lerpT=(T,x)=>{if(x<=T[0][0])return T[0][1];for(let i=1;i<T.length;i++)if(x<=T[i][0]){const [a,va]=T[i-1],[b,vb]=T[i];return va*Math.pow(vb/va,(x-a)/(b-a))}const [a,va]=T[T.length-2],[b,vb]=T[T.length-1];return vb*Math.pow(vb/va,(x-b)/(b-a))};
+const TWT=[[1,900],[20,5000],[40,11000],[60,22000],[70,42000],[80,72000],[90,76000],[100,86000],[110,118000],[120,140000],[135,165000],[150,213000],[175,328000],[200,580000]];
+const twRecOld=twRec;TWE.clear();twEst=function(p){const k=(p.id||p.n)+':'+Math.round(p.pw/400);if(TWE.has(k))return TWE.get(k);const h=(roseH(p.id||p.n)%1000)/1000,target=p.pw*(.7+.55*h);let lo=0,hi=400;while(lo<hi){const m=(lo+hi+1)>>1;if(twRecOld(m)<=target)lo=m;else hi=m-1}TWE.set(k,lo);return lo};
+twRec=function(f){return Math.round(lerpT(TWT,f)*1.25/1000)*1000};
+const NMT=[[1,24000],[25,45000],[50,80000],[75,92000],[90,118000],[100,128000]];
+function nRecD(n){return Math.round(lerpT(NMT,n)*1.25/1000)*1000}
+try{const P=PATCH.find(x=>x.v===36.1)||PATCH[0];if(P)P.items.push("🗼 <b>Tour de l'Infini</b> : après l'étage 80, la difficulté monte doucement au lieu d'exploser. La <b>puissance conseillée</b> (Tour et mode Normal) est maintenant mesurée sur de vrais combats : elle correspond enfin à ce qu'il faut vraiment.","⚡ Le classement s'ouvre plus vite.")}catch(e){}
 
 /* ================= DÉMARRAGE ================= */
 (function init(){

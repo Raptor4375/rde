@@ -8,6 +8,7 @@ assert src.count('st=PASS_EPOCH+(i-1)*PASS_LEN')==2;src=src.replace('st=PASS_EPO
 a="(function(){let n=0,g=null;const tick=()=>{if(BOOT.done)return;try{"
 assert src.count(a)==1;src=src.replace(a,"(function(){let n=0,g=null;const tick=()=>{if(true)return;try{")
 m='/* ================= DÉMARRAGE ================= */';assert src.count(m)==1;src=src.replace(m,js+'\n'+m)
+src=src.replace('rp=nRec(S.nstage)','rp=nRecD(S.nstage)').replace('fmt(nRec(','fmt(nRecD(')
 x='écris @pseudo pour mentionner</span></div>';assert src.count(x)==1;src=src.replace(x,x+'<div class="clban">🤖 <b>Claude</b>, une IA, joue aussi dans le royaume. Écris <b>@Claude</b> pour lui poser une question !</div>')
 a='AV_END=new Date(2026,9,22,13,0).getTime()';assert src.count(a)==1;src=src.replace(a,'AV_END=new Date(2026,9,18,13,0).getTime()')
 a='AV_HIDE=new Date(2026,9,26,0,0).getTime()';assert src.count(a)==1;src=src.replace(a,'AV_HIDE=new Date(2099,0,1,0,0).getTime()')
