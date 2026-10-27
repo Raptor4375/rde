@@ -15979,6 +15979,8 @@ setTimeout(()=>{try{GH.t=0;const t=Date.now();if(S.world&&Array.isArray(S.world.
 /* 2) l'éveil (doublons fusionnés) s'affiche en petit sur les héros : +1, +2… */
 {const ht=heroTile;heroTile=function(h){let s=ht.apply(this,arguments);try{const o=h&&S.heroes[h.i];const a=o&&o.aw||0;if(a>0)s=s.replace(/(<span class="lv">Nv \d+)(<\/span>)/,`$1<b class="awp">+${Math.min(10,a)}</b>$2`)}catch(e){}return s}}
 {const hm=heroModal;heroModal=function(id){const r=hm.apply(this,arguments);try{const a=(S.heroes[id]||{}).aw||0;if(a>0){const m=document.querySelector('#ovl .modal');const hh=m&&m.querySelector('.hd .h, .hd h2, .h');if(hh&&!hh.querySelector('.awp'))hh.insertAdjacentHTML('beforeend',` <b class="awp big">+${Math.min(10,a)}</b>`)}}catch(e){}return r}}
+/* 3) personne ne monte en flèche en une nuit : +4 % maximum par jour (comme un vrai joueur actif), +2 % pour les occasionnels */
+{const gp=growPw;growPw=function(b,t){const before=b.pw||0;const r=gp.apply(this,arguments);try{const y=b.pwY||before;if(y>0&&r>y){const u=botU(b),mx=u<.45?.02:u<.75?.03:.04;const cap=Math.round(y*(1+mx));if(r>cap)return Math.max(before>cap?cap:before,cap)}}catch(e){}return r}}
 
 /* ================= DÉMARRAGE ================= */
 (function init(){
