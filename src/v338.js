@@ -10,7 +10,7 @@ const SKINS={
  dk_cendres:{n:'Drakhar des Cendres',hero:65,vid:400,season:'p_cendres',how:"Pass Pro « Les Cendres du Premier Porteur » : palier 60",
   d:"Le dernier wyrm qui a vu brûler la flamme du Premier Porteur. Ses écailles sont devenues de l'obsidienne, et la braise coule encore dans ses veines.",
   look:['#3a3330','#120c0c','#0f0b0c','#2a201e','#ff6a1a','#fff2c0','bg:flame back:wings-dragon head:dragon eyes:slit mouth:none body:scale ear:none'],
-  uth:{n:'Dragon de Cendre',m:'#0a0707',s:'#2a1c18',a:'#ff6a1a',e:'#ffffff',bg:'flame',w:null,hat:null,fx:'embers',c:'#ff6a1a',c2:'#c8bcb0',h3:'#ff4a10'},
+  uth:{n:'Dragon de Cendre',m:'#0a0707',s:'#2a1c18',a:'#ff6a1a',e:'#ffffff',bg:'flame',w:null,hat:null,fx:'embers',hat:'ashcrown',c:'#ff6a1a',c2:'#c8bcb0',h3:'#ff4a10'},
   forms:['Drakhar des Cendres','Braise Éveillée','Couronne de Cendre','Inferno Ancestral']}};
 const SKV={};for(const k in SKINS)SKV[SKINS[k].vid]=k;
 /* --- pièces dessinées du skin (repère du corps : viewBox 0 -8 160 244, tête ≈ 80,32) --- */
@@ -29,8 +29,6 @@ function dkcFX(u){let o='';
   o+=`<g opacity=".95">${veins}</g>`;
   /* cœur de braise dans la poitrine */
   o+=`<circle cx="80" cy="92" r="${2.4+u*.5}" fill="#fff2c0" opacity=".95"><animate attributeName="opacity" values=".6;1;.6" dur="1.6s" repeatCount="indefinite"/></circle><circle cx="80" cy="92" r="${6+u}" fill="#ff6a1a" opacity=".22"/>`;
-  /* couronne de cendre (forme II+) */
-  if(u>=2)o+=`<g transform="translate(80 19) scale(.66)"><path d="M-17 6L-14 -8L-8 0L-4 -14L0 -3L4 -14L8 0L14 -8L17 6Q0 10 -17 6Z" fill="#100a08" stroke="#ff6a1a" stroke-width="1.1" stroke-linejoin="round"/>${[[-14,-8],[-4,-14],[4,-14],[14,-8]].map(([x,y],i)=>`<path d="M${x} ${y}q${i%2?2.4:-2.4} -6 0 -10q${i%2?-3:3} 5 0 10Z" fill="${i%2?'#ffd84a':'#ff6a1a'}"><animate attributeName="opacity" values=".45;1;.45" dur="${.8+i*.2}s" repeatCount="indefinite"/></path>`).join('')}</g>`;
   /* ailes de feu (forme III) */
   if(u>=3)o=`<g opacity=".8">${[1,-1].map(sx=>`<path transform="translate(80 70) scale(${sx} 1)" d="M10 -4Q46 -52 78 -40Q64 -30 66 -16Q52 -22 50 -8Q40 -14 36 2Q26 -2 10 8Z" fill="#ff5a14" opacity=".4"><animate attributeName="opacity" values=".25;.55;.25" dur="1.4s" repeatCount="indefinite"/></path><path transform="translate(80 70) scale(${sx} 1)" d="M14 -2Q44 -38 70 -34Q58 -26 58 -16Q46 -18 44 -8Q36 -10 32 2Z" fill="#ffd84a" opacity=".3"/>`).join('')}</g>`+o;
   /* braises qui montent */
@@ -51,7 +49,7 @@ function skGive(k){S.skins=S.skins||[];if(!S.skins.includes(k)){S.skins.push(k);
 function skWear(hid,k){S.skinEq=S.skinEq||{};if(k&&(!SKINS[k]||SKINS[k].hero!==hid||!skOwned(k)))return;if(k)S.skinEq[hid]=k;else delete S.skinEq[hid];skRefresh(hid);save();render()}
 /* --- le dessin : si un skin est porté, on dessine le héros virtuel --- */
 {const hb=heroBody;heroBody=function(h,u=0){const k=h&&skEq(h.i);if(!k)return hb.apply(this,arguments);const v=vHero(k);let s=hb.call(this,v,u);
-  try{const f=SKFX[v.i];if(f&&s.indexOf('skfx')<0){const z=s.lastIndexOf('</svg>');s=s.slice(0,z)+f(u||0)+s.slice(z)}}catch(e){}return s}}
+  try{const f=SKFX[v.i];if(f&&s.indexOf('skfx')<0){const z=s.lastIndexOf('</svg>');const rm=/<g transform="(rotate\([-\d.]+ 80 220\))"/.exec(s);s=s.slice(0,z)+(rm?`<g transform="${rm[1]}">${f(u||0)}</g>`:f(u||0))+s.slice(z)}}catch(e){}return s}}
 const skU=hid=>{const o=S.heroes&&S.heroes[hid];return o&&HEROES[hid].r>=4?Math.min(3,o.u||0):0};
 {const pr=portrait;portrait=function(h){const k=h&&skEq(h.i);if(!k)return pr.apply(this,arguments);const v=vHero(k);const had=S.heroes[v.i];S.heroes[v.i]=S.heroes[h.i];try{return pr.call(this,v)}finally{if(had)S.heroes[v.i]=had;else delete S.heroes[v.i]}}}
 {const pu=portraitU;portraitU=function(h,u){const k=h&&skEq(h.i);if(!k)return pu.apply(this,arguments);return pu.call(this,vHero(k),u)}}
