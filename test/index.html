@@ -16238,6 +16238,11 @@ function trS(t){if(LANG==='fr'||typeof t!=='string'||!t)return t;try{const {k,nu
 const I18N_PROPER=new Set([...HEROES.map(h=>h&&h.n).filter(Boolean),"Ordre du Phénix","Garde d'Obsidienne","Crocs de Givre","Les Lames d'Azur","Les Fous du Roi","Cercle Arcanique","Les Insomniaques","Taverne du Dé Pipé","Les Gardiens d'Éther"]);
 {const nd=i18nNode;i18nNode=function(n){const r=nd.apply(this,arguments);try{if(LANG==='en'){const v=n.nodeValue||'';const c=v.trim();if(I18N_PROPER.has(c)&&I18N_EN[c]){n.nodeValue=v.replace(c,I18N_EN[c]);I18N.done.set(n,n.nodeValue)}}}catch(e){}return r}}
 
+/* ================= V37.8 : portails (CrazyGames, Newgrounds) — pas de question « ancienne version » pour un nouveau joueur ================= */
+try{Object.assign(I18N_EN,{"Je suis nouveau":"I'm new","🆕 Je suis nouveau":"🆕 I'm new","Bienvenue dans RDE !":"Welcome to RDE!","Le royaume est prêt !":"The kingdom is ready!","Le royaume est prêt":"The kingdom is ready","Éryndel en pied":"Éryndel, full body"})}catch(e){}
+if(window.RDE_CG){const nm=nameModal;nameModal=function(){try{if(!S.xferAsk){S.xferAsk=1;save()}}catch(e){}return nm.apply(this,arguments)}}
+try{I18N_RULES.push([/^(🏆 )?Succès débloqué : (.+)$/,(m)=>(m[1]||'')+'Achievement unlocked: '+tr(m[2])])}catch(e){}
+
 /* ================= DÉMARRAGE ================= */
 (function init(){
   if(!S.world){S.world=genWorld();
