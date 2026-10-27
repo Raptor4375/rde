@@ -14,6 +14,10 @@ const I18N_RULES=[
  [/^(.+) soigne (.+) : #( k| M)?$/,(m)=>trN(m[1])+' heals '+trN(m[2])+': #'+(m[3]||'')],
  [/^🎲 Dé pipé : # ! Coup critique ×#$/,()=>'🎲 Loaded die: #! Critical hit ×#'],
  [/^(.+) est étourdie? et passe son tour\.$/,(m)=>trN(m[1])+' is stunned and skips their turn.'],
+ [/^✦ ULTIME ULTRA (I{1,3}) ✦$/,(m)=>'✦ ULTRA ULTIMATE '+m[1]+' ✦'],
+ [/^(.+) · FORME ULTRA (I{1,3})$/,(m)=>trN(m[1])+' · ULTRA FORM '+m[2]],
+ [/^((FORME .+? ✦ ?)+)$/,(m)=>m[1].replace(/FORME (.+?) ✦/g,(_,x)=>'FORM '+trUp(x)+' ✦')],
+ [/^✦ (.+) ✦$/,(m)=>'✦ '+trN(m[1])+' ✦'],
  [/^(\S+) (.+) \((.+)\) : \+#( k| M)? dégâts$/,(m)=>m[1]+' '+trN(m[2])+' ('+trN(m[3])+'): +#'+(m[4]||'')+' damage'],
  [/^(.+) lance$/,(m)=>trN(m[1])+' casts'],
  [/^(.+) utilise$/,(m)=>trN(m[1])+' uses'],
@@ -27,6 +31,7 @@ const I18N_RULES=[
  [/^Vu il y a # (h|j|min) · (.+)$/,(m)=>'Seen # '+({h:'h',j:'d',min:'min'})[m[1]]+' ago · '+m[2]],
  [/^En ligne · (.+)$/,(m)=>'Online · '+m[1]],
 ];
+let UPM=null;function trUp(x){if(!UPM){UPM={};for(const k in I18N_EN)UPM[k.toUpperCase()]=I18N_EN[k].toUpperCase()}return UPM[x]||x}
 function trN(s){if(LANG==='en'&&I18N_EN[s])return I18N_EN[s];const c=I18N.mem[s];return c!=null?c:s}
 {const tk=trK;const plain=p=>!/[a-zà-ÿ]{3,}/.test(p)||/^[A-ZÀ-Ý][\wÀ-ÿ'’_-]{0,15}( ×#)?$/.test(p)||i18nNames().has(p);
  trK=function(k){k=String(k).replace(/[\u00a0\u202f]/g,' ');const t=tk(k);if(t!=null)return t;if(LANG!=='en')return null;for(const [rx,f] of I18N_RULES){const m=k.match(rx);if(m){try{return f(m)}catch(e){}}}

@@ -6,3 +6,4 @@ function i18wClear(all){for(const el of [...I18W]){if(all||!el.isConnected||Date
 {const nd=i18nNode;i18nNode=function(n){const r=nd.apply(this,arguments);try{if(LANG!=='fr'){const p=n.parentElement;const v=(n.nodeValue||'').trim();if(p&&v&&/[A-Za-zÀ-ÿ]{2}/.test(v)&&!p.closest(I18N_SKIP)){const {k}=i18nNorm(v);if(I18N.q.has(k)&&!p.classList.contains('i18w')){p.classList.add('i18w');p._i18w=Date.now();I18W.add(p)}}}}catch(e){}return r}}
 {const fl=i18nFlush;i18nFlush=async function(){try{return await fl.apply(this,arguments)}finally{try{i18nPass(document.body)}catch(e){}i18wClear(true)}}}
 setInterval(()=>i18wClear(false),500);
+try{if(LANG!=='fr')document.title=LANG==='en'?'Realms of Ether':document.title}catch(e){}
