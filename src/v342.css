@@ -5,3 +5,15 @@
 .gwrow{display:flex;align-items:center;gap:8px;padding:6px 8px;border-radius:10px;background:rgba(255,255,255,.04)}
 .gwrow.me{background:rgba(255,216,74,.12);border:1px solid #ffd84a66}
 .gwrow .gwrk{width:24px;text-align:center;font-weight:900}.gwrow b{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.gwrow small{color:var(--muted);font-size:11px}
+.gwmapc{padding:8px!important}
+.gwmap{width:100%;height:auto;display:block;border-radius:12px}
+.gwmap .gwn:hover circle{filter:brightness(1.25)}
+.gwtrs{display:flex;flex-direction:column;gap:6px;max-height:50vh;overflow:auto}
+.gwtr{background:rgba(255,255,255,.04);border-radius:10px;padding:6px 8px}
+.gwtr.me{border:1px solid #ffd84a88}
+.gwtt{display:flex;justify-content:space-between;gap:6px;align-items:baseline}.gwtt small{color:var(--muted);font-size:11.5px}
+.gwteam{display:flex;gap:4px;margin-top:4px}.gwteam span{position:relative;width:34px;height:34px;border-radius:8px;overflow:hidden;display:block}
+.gwteam span svg,.gwmine i svg{width:100%;height:100%;display:block}.gwteam i{position:absolute;right:1px;bottom:0;font-size:9px;font-style:normal;font-weight:900;color:#fff;text-shadow:0 1px 2px #000}
+.gwmine{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:5px 0;border-top:1px solid rgba(255,255,255,.06)}
+.gwmine span{display:flex;gap:3px}.gwmine i{width:28px;height:28px;border-radius:7px;overflow:hidden;display:block}
+.gwpick .ht.gwon{outline:3px solid #ffd84a;outline-offset:-1px;border-radius:12px}
