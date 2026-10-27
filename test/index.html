@@ -2774,6 +2774,8 @@ html.scrl .pbgfx *{animation-play-state:paused}
 .gwmine{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:5px 0;border-top:1px solid rgba(255,255,255,.06)}
 .gwmine span{display:flex;gap:3px}.gwmine i{width:28px;height:28px;border-radius:7px;overflow:hidden;display:block}
 .gwpick .ht.gwon{outline:3px solid #ffd84a;outline-offset:-1px;border-radius:12px}
+.awp{display:inline-block;margin-left:3px;color:#7ae0ff;font-size:10px;font-weight:900;text-shadow:0 0 6px rgba(122,224,255,.7)}
+.awp.big{font-size:.6em;vertical-align:super;margin-left:4px}
 </style>
 <div id="boot" role="status" aria-live="polite"><div class="bt-in"><div class="bt-logo" aria-hidden="true"><svg viewBox="0 0 120 120"><defs><linearGradient id="btg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8a6aff"/><stop offset="1" stop-color="#3a2a8a"/></linearGradient><linearGradient id="btgo" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff6c0"/><stop offset="1" stop-color="#e2a42c"/></linearGradient></defs><g class="bt-ring"><circle cx="60" cy="60" r="54" fill="none" stroke="#ffd84a" stroke-width="2" stroke-dasharray="4 9" opacity=".7"/><circle cx="60" cy="6" r="4" fill="#58e4d3"/><circle cx="114" cy="60" r="3" fill="#ffd84a"/><circle cx="60" cy="114" r="4" fill="#ff8ac0"/><circle cx="6" cy="60" r="3" fill="#fff"/></g><path d="M60 16L94 28L90 70Q84 92 60 104Q36 92 30 70L26 28Z" fill="url(#btg)" stroke="#140c24" stroke-width="3" stroke-linejoin="round"/><path d="M60 24L86 33L83 68Q78 86 60 96Q42 86 37 68L34 33Z" fill="none" stroke="url(#btgo)" stroke-width="3"/><path d="M60 38L69 56L60 82L51 56Z" fill="#58e4d3" stroke="#140c24" stroke-width="2.4" stroke-linejoin="round"/><path d="M60 38L60 82L51 56Z" fill="#b0fff4"/><path d="M60 30l2.4 5 5.4.6-4 3.7 1.1 5.3-4.9-2.7-4.9 2.7 1.1-5.3-4-3.7 5.4-.6z" fill="url(#btgo)" stroke="#140c24" stroke-width="1.2"/></svg></div><div class="bt-t">Royaumes<span>d'Éther</span></div><div class="bt-bar"><i></i></div><div class="bt-s" id="bts">Chargement…</div></div></div>
 
@@ -15918,6 +15920,14 @@ document.addEventListener('click',e=>{const b=e.target.closest('[data-a]');if(!b
   if(a==='gwcap'){try{closeBattle()}catch(er){}return gwCapture(GCH.k)}
   try{closeBattle()}catch(er){}TAB='event';UI.lz.event='av';render();scrollTo(0,0)},true);
 try{PATCH.unshift({v:36.1,d:'27 octobre 2026',t:'La Guerre des Guildes',items:["⚔️ <b>Nouveau : la Guerre des Guildes</b>, à chaque saison du pass. Les guildes se battent pour les <b>8 royaumes</b>, puis pour la <b>Capitale d'Éther</b>.","🛡️ <b>Pose tes équipes</b> dans les royaumes (autant d'équipes que tu as de héros, chaque héros une seule fois). Une fois posée, une équipe ne bouge plus.","⚔️ <b>Combat en chaîne</b> : tu affrontes les équipes des autres joueurs posées dans un royaume, les unes après les autres, tant que ton équipe tient. Plus aucun défenseur : le royaume est à ta guilde.","🏰 <b>Jour 5, la finale</b> : les 2 guildes qui tiennent le plus de royaumes s'affrontent pour la capitale.","📅 Cette saison : pose tes équipes dès maintenant, attaques du <b>29 octobre 8h10</b> au 31, finale le 31 octobre."]})}catch(e){}
+/* ================= Classement logique + éveil affiché (+1, +2…) ================= */
+/* 1) Aucun bot ne dépasse le meilleur VRAI joueur, sauf les très chanceux (3 ultras visibles dans leur équipe), et de 3 % au plus. */
+function realTopPw(){let v=0;try{v=teamPower()}catch(e){}try{const n=Date.now(),P=NET.players||{};for(const k in P){const d=P[k];if(d&&d.pw>v&&(!d.t||n-d.t<21*864e5))v=d.pw}}catch(e){}return v||0}
+{const bc=botCareer;botCareer=function(b,t){const r=bc.apply(this,arguments);try{const top=realTopPw();if(top>0){const L=botLuck(b.n||b.id||'');const cap=top*(L>=1.09?1.03:L>=1.05?.985:.96);if(r.tgt>cap)r.tgt=cap}}catch(e){}return r}}
+setTimeout(()=>{try{GH.t=0;const t=Date.now();if(S.world&&Array.isArray(S.world.players)){for(const p of S.world.players)p.pw=growPw(p,t);save()}}catch(e){}},4500);
+/* 2) l'éveil (doublons fusionnés) s'affiche en petit sur les héros : +1, +2… */
+{const ht=heroTile;heroTile=function(h){let s=ht.apply(this,arguments);try{const o=h&&S.heroes[h.i];const a=o&&o.aw||0;if(a>0)s=s.replace(/(<span class="lv">Nv \d+)(<\/span>)/,`$1<b class="awp">+${Math.min(10,a)}</b>$2`)}catch(e){}return s}}
+{const hm=heroModal;heroModal=function(id){const r=hm.apply(this,arguments);try{const a=(S.heroes[id]||{}).aw||0;if(a>0){const m=document.querySelector('#ovl .modal');const hh=m&&m.querySelector('.hd .h, .hd h2, .h');if(hh&&!hh.querySelector('.awp'))hh.insertAdjacentHTML('beforeend',` <b class="awp big">+${Math.min(10,a)}</b>`)}}catch(e){}return r}}
 
 /* ================= DÉMARRAGE ================= */
 (function init(){
