@@ -46,6 +46,10 @@ for a,c,n in RP:
 import re
 n1=len(re.findall(r'(?<!filter\(h=>)\bh\.r===4',src));src=re.sub(r'(?<!filter\(h=>)\bh\.r===4','h.r>=4',src)
 n2=src.count('].r===4');src=src.replace('].r===4','].r>=4');n3=src.count('h.r!==4');src=src.replace('h.r!==4','h.r<4');print('rar',n1,n2,n3)
+
+for _k in ['ach','monde','rank']:
+  _a="TAB='top';UI.soc='%s'"%_k
+  assert src.count(_a)==1,_k;src=src.replace(_a,"TAB='top';UI.soc='%s';UI.lz=UI.lz||{};UI.lz.top='%s'"%(_k,_k))
 open('royaumes.html','w').write(src)
 open('chk.js','w').write(src[src.index('<script>')+8:src.rindex('</script>')])
 a=src.index('<style>');b=src.index('</style>')+8;open('prod.html','w').write(src[:a]+src[b:])

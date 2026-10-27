@@ -4251,8 +4251,8 @@ document.addEventListener('click',e=>{
     case 'cb':UI.cb=v;render();break;
     case 'arref':UI.arOpp=null;render();break;
     case 'arena':startBattle('arena',v);break;
-    case 'arrank':TAB='top';UI.soc='rank';UI.rk='ar';render();window.scrollTo(0,0);break;
-    case 'goach':closeModal();TAB='top';UI.soc='ach';render();window.scrollTo(0,0);break;
+    case 'arrank':TAB='top';UI.soc='rank';UI.lz=UI.lz||{};UI.lz.top='rank';UI.rk='ar';render();window.scrollTo(0,0);break;
+    case 'goach':closeModal();TAB='top';UI.soc='ach';UI.lz=UI.lz||{};UI.lz.top='ach';render();window.scrollTo(0,0);break;
     case 'frame':if(frameUnlocked(v)){S.frame=v;NET.lastPush='';schedulePush();toast('Cadre équipé : '+FRAMES[v]);render()}break;
     case 'achc':{const a=ACH.find(x=>x[0]===v);if(!a||!S.ach[v]||(S.achC||{})[v])return;S.achC=S.achC||{};S.achC[v]=1;S.gems+=a[4];toast(`+${a[4]} gemmes`);render();break}
     case 'setrole':setRole(v,t.dataset.r).then(()=>{closeModal();render()});break;
@@ -6484,7 +6484,7 @@ document.addEventListener('click',e=>{
     case 'mm':UI.mm=v;render();break;
     case 'tmeta':makeMetaTeam(v);break;
     case 'tagedit':tagEditModal();break;
-    case 'gochat':closeModal();TAB='top';UI.soc='monde';render();window.scrollTo(0,0);break;
+    case 'gochat':closeModal();TAB='top';UI.soc='monde';UI.lz=UI.lz||{};UI.lz.top='monde';render();window.scrollTo(0,0);break;
   }
 });
 document.addEventListener('submit',e=>{const f=e.target.closest('form[data-f="tname"]');if(!f)return;e.preventDefault();const i=$('#tnamei');const n=(i?i.value:'').trim().replace(/\s+/g,' ').slice(0,22);if(!n)return;tSync();S.teams[S.tcur].n=n;toast('Équipe renommée : '+esc(n));render()});
