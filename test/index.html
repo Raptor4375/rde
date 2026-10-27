@@ -15999,11 +15999,11 @@ setTimeout(cosFix,4000);setTimeout(cosFix,15000);setInterval(()=>{try{cosVault()
 /* 3) quand une partie arrive d'un autre appareil, on garde les cosmétiques des deux */
 if(typeof accApply==='function'){const aa=accApply;accApply=function(id,r,msg){try{if(r&&r.S)cosMerge(r.S,S)}catch(e){}return aa.apply(this,arguments)}}
 /* 4) code de restauration (donné à la main, une seule utilisation) */
-const CADRE_H={'f3ab8e026bd1a76f461cf2ada2cad6ca':['infernal','abyssal']};
+const CADRE_H={'f3ab8e026bd1a76f461cf2ada2cad6ca':['infernal','abyssal'],'0ce282e4aa2dd177269c6f00d23b5b9a':'AV'};
 window.addEventListener('click',async e=>{const b=e.target.closest('[data-a="mecok"]');if(!b)return;
   const c=String(($('#meccode')||{}).value||'').trim().toUpperCase().replace(/\s+/g,'');if(!/^CADRE-/.test(c))return;
   e.preventDefault();e.stopImmediatePropagation();
-  try{const h=await mecHash(c),L=CADRE_H[h];if(!L){toast("Ce code n'est pas valide.");return}
+  try{const h=await mecHash(c);let L=CADRE_H[h];if(L==='AV')L=((S.avw||{}).fac==='ange')?['aureole','ailesor']:['infernal','abyssal'];if(!L){toast("Ce code n'est pas valide.");return}
     if(!NET.on||!NET.db){toast('Connecte-toi à internet pour valider ton code.');return}
     const ref=NET.db.doc('mecene/'+h);const s=await ref.get();if(s.exists){const d=s.data();if(d&&d.pid!==NET.pid){toast('Ce code a déjà été utilisé.');return}}else await ref.set({pid:NET.pid,n:S.name||'',t:Date.now()});
     S.evFrames=S.evFrames||[];const nw=L.filter(k=>!S.evFrames.includes(k));for(const k of nw)S.evFrames.push(k);cosVault();save();closeModal();
@@ -16045,7 +16045,7 @@ function giftModal(){modal(`<button class="x" data-a="close" aria-label="Fermer"
 document.addEventListener('click',async e=>{const b=e.target.closest('[data-a="giftopen"],[data-a="giftok"]');if(!b)return;e.preventDefault();e.stopPropagation();
   if(b.dataset.a==='giftopen')return giftModal();
   const c=String(($('#giftcode')||{}).value||'').trim().toUpperCase().replace(/\s+/g,'');if(!c)return;
-  b.disabled=true;try{if(/^CADRE-/.test(c)){const h=await mecHash(c),L=CADRE_H[h];if(!L){toast("Ce code n'est pas valide.");return}
+  b.disabled=true;try{if(/^CADRE-/.test(c)){const h=await mecHash(c);let L=CADRE_H[h];if(L==='AV')L=((S.avw||{}).fac==='ange')?['aureole','ailesor']:['infernal','abyssal'];if(!L){toast("Ce code n'est pas valide.");return}
       if(!NET.on||!NET.db){toast('Connecte-toi à internet pour valider ton code.');return}
       const ref=NET.db.doc('mecene/'+h);const s=await ref.get();if(s.exists){const d=s.data();if(d&&d.pid!==NET.pid){toast('Ce code a déjà été utilisé.');return}}else await ref.set({pid:NET.pid,n:S.name||'',t:Date.now()});
       S.evFrames=S.evFrames||[];const nw=L.filter(k=>!S.evFrames.includes(k));for(const k of nw)S.evFrames.push(k);try{cosVault()}catch(er){}save();closeModal();
@@ -16284,6 +16284,11 @@ function avSwap(root){try{for(const sv of root.querySelectorAll('.fav>svg')){con
   if(!AVR.c.has(k)){avRaster(h);continue}const u=AVR.c.get(k);if(!u)continue;const i=document.createElement('img');i.src=u;i.alt=sv.getAttribute('aria-label')||'';i.className='avimg';i.decoding='async';sv.replaceWith(i)}}catch(e){}}
 (function(){const st=document.createElement('style');st.textContent='.fav>img.avimg{width:100%;height:100%;display:block;border-radius:inherit;object-fit:cover}';document.head.appendChild(st);
   let t=0;new MutationObserver(()=>{if(t)return;t=requestAnimationFrame(()=>{t=0;avSwap(document)})}).observe(document.body,{childList:true,subtree:true})})();
+/* tchat de guilde dans le Pigeonnier (onglet Social) : les messages s'affichent tout de suite (avant, seulement dans l'onglet Guilde) */
+{const om=onMsgs;onMsgs=function(){const r=om.apply(this,arguments);try{if(!(TAB==='guilde'&&S.rgid)&&!B){const c=document.querySelector('#main #chat');if(c){const near=c.scrollHeight-c.scrollTop-c.clientHeight<80;c.innerHTML=NET.msgs.map(rmsgHTML).join('')||'<p class="muted">Aucun message. Dis bonjour !</p>';if(near||!c.dataset.f1)c.scrollTop=c.scrollHeight;c.dataset.f1=1}}}catch(e){}return r}}
+/* la boîte à émojis se referme après l'envoi, et quand on touche ailleurs */
+document.addEventListener('submit',e=>{const f=e.target.closest('form.chatf');if(!f)return;setTimeout(()=>{try{document.querySelectorAll('.emobar').forEach(b=>b.hidden=true)}catch(er){}},0)},true);
+document.addEventListener('pointerdown',e=>{try{if(e.target.closest('.emobar,[data-a="emotog"],.chatf'))return;document.querySelectorAll('.emobar:not([hidden])').forEach(b=>b.hidden=true)}catch(er){}},true);
 
 /* ================= DÉMARRAGE ================= */
 (function init(){

@@ -45,3 +45,8 @@ function avSwap(root){try{for(const sv of root.querySelectorAll('.fav>svg')){con
   if(!AVR.c.has(k)){avRaster(h);continue}const u=AVR.c.get(k);if(!u)continue;const i=document.createElement('img');i.src=u;i.alt=sv.getAttribute('aria-label')||'';i.className='avimg';i.decoding='async';sv.replaceWith(i)}}catch(e){}}
 (function(){const st=document.createElement('style');st.textContent='.fav>img.avimg{width:100%;height:100%;display:block;border-radius:inherit;object-fit:cover}';document.head.appendChild(st);
   let t=0;new MutationObserver(()=>{if(t)return;t=requestAnimationFrame(()=>{t=0;avSwap(document)})}).observe(document.body,{childList:true,subtree:true})})();
+/* tchat de guilde dans le Pigeonnier (onglet Social) : les messages s'affichent tout de suite (avant, seulement dans l'onglet Guilde) */
+{const om=onMsgs;onMsgs=function(){const r=om.apply(this,arguments);try{if(!(TAB==='guilde'&&S.rgid)&&!B){const c=document.querySelector('#main #chat');if(c){const near=c.scrollHeight-c.scrollTop-c.clientHeight<80;c.innerHTML=NET.msgs.map(rmsgHTML).join('')||'<p class="muted">Aucun message. Dis bonjour !</p>';if(near||!c.dataset.f1)c.scrollTop=c.scrollHeight;c.dataset.f1=1}}}catch(e){}return r}}
+/* la boîte à émojis se referme après l'envoi, et quand on touche ailleurs */
+document.addEventListener('submit',e=>{const f=e.target.closest('form.chatf');if(!f)return;setTimeout(()=>{try{document.querySelectorAll('.emobar').forEach(b=>b.hidden=true)}catch(er){}},0)},true);
+document.addEventListener('pointerdown',e=>{try{if(e.target.closest('.emobar,[data-a="emotog"],.chatf'))return;document.querySelectorAll('.emobar:not([hidden])').forEach(b=>b.hidden=true)}catch(er){}},true);

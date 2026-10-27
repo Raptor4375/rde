@@ -19,11 +19,11 @@ setTimeout(cosFix,4000);setTimeout(cosFix,15000);setInterval(()=>{try{cosVault()
 /* 3) quand une partie arrive d'un autre appareil, on garde les cosmétiques des deux */
 if(typeof accApply==='function'){const aa=accApply;accApply=function(id,r,msg){try{if(r&&r.S)cosMerge(r.S,S)}catch(e){}return aa.apply(this,arguments)}}
 /* 4) code de restauration (donné à la main, une seule utilisation) */
-const CADRE_H={'f3ab8e026bd1a76f461cf2ada2cad6ca':['infernal','abyssal']};
+const CADRE_H={'f3ab8e026bd1a76f461cf2ada2cad6ca':['infernal','abyssal'],'0ce282e4aa2dd177269c6f00d23b5b9a':'AV'};
 window.addEventListener('click',async e=>{const b=e.target.closest('[data-a="mecok"]');if(!b)return;
   const c=String(($('#meccode')||{}).value||'').trim().toUpperCase().replace(/\s+/g,'');if(!/^CADRE-/.test(c))return;
   e.preventDefault();e.stopImmediatePropagation();
-  try{const h=await mecHash(c),L=CADRE_H[h];if(!L){toast("Ce code n'est pas valide.");return}
+  try{const h=await mecHash(c);let L=CADRE_H[h];if(L==='AV')L=((S.avw||{}).fac==='ange')?['aureole','ailesor']:['infernal','abyssal'];if(!L){toast("Ce code n'est pas valide.");return}
     if(!NET.on||!NET.db){toast('Connecte-toi à internet pour valider ton code.');return}
     const ref=NET.db.doc('mecene/'+h);const s=await ref.get();if(s.exists){const d=s.data();if(d&&d.pid!==NET.pid){toast('Ce code a déjà été utilisé.');return}}else await ref.set({pid:NET.pid,n:S.name||'',t:Date.now()});
     S.evFrames=S.evFrames||[];const nw=L.filter(k=>!S.evFrames.includes(k));for(const k of nw)S.evFrames.push(k);cosVault();save();closeModal();

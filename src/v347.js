@@ -10,7 +10,7 @@ function giftModal(){modal(`<button class="x" data-a="close" aria-label="Fermer"
 document.addEventListener('click',async e=>{const b=e.target.closest('[data-a="giftopen"],[data-a="giftok"]');if(!b)return;e.preventDefault();e.stopPropagation();
   if(b.dataset.a==='giftopen')return giftModal();
   const c=String(($('#giftcode')||{}).value||'').trim().toUpperCase().replace(/\s+/g,'');if(!c)return;
-  b.disabled=true;try{if(/^CADRE-/.test(c)){const h=await mecHash(c),L=CADRE_H[h];if(!L){toast("Ce code n'est pas valide.");return}
+  b.disabled=true;try{if(/^CADRE-/.test(c)){const h=await mecHash(c);let L=CADRE_H[h];if(L==='AV')L=((S.avw||{}).fac==='ange')?['aureole','ailesor']:['infernal','abyssal'];if(!L){toast("Ce code n'est pas valide.");return}
       if(!NET.on||!NET.db){toast('Connecte-toi à internet pour valider ton code.');return}
       const ref=NET.db.doc('mecene/'+h);const s=await ref.get();if(s.exists){const d=s.data();if(d&&d.pid!==NET.pid){toast('Ce code a déjà été utilisé.');return}}else await ref.set({pid:NET.pid,n:S.name||'',t:Date.now()});
       S.evFrames=S.evFrames||[];const nw=L.filter(k=>!S.evFrames.includes(k));for(const k of nw)S.evFrames.push(k);try{cosVault()}catch(er){}save();closeModal();
