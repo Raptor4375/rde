@@ -33,3 +33,15 @@ window.addEventListener('click',e=>{const t=e.target.closest('[data-a="ttpick"],
   if(t.dataset.a==='gott'){e.preventDefault();e.stopImmediatePropagation();closeModal();TAB='top';UI.soc='tt';UI.lz=UI.lz||{};UI.lz.top='ach';render();window.scrollTo(0,0);return}
   if(!t.closest('#main'))return;e.preventDefault();e.stopImmediatePropagation();S.title=t.dataset.v;save();NET.lastPush='';try{schedulePush()}catch(er){}
   toast((LANG==='fr'?'🏷️ Titre affiché : ':'🏷️ Displayed title: ')+'« '+tr(ttOf(S.title).n)+' »');render()},true);
+/* avatars : le portrait (un gros dessin vectoriel) est transformé une seule fois en image toute prête.
+   Avant, le téléphone redessinait chaque portrait à chaque défilement : 45 cadres = le jeu « ne chargeait plus ». */
+const AVR={c:new Map(),busy:new Map()};
+function avKey(h){let x=0;for(let i=0;i<h.length;i+=7)x=(x*31+h.charCodeAt(i))|0;return h.length+':'+x}
+function avRaster(h){const k=avKey(h);if(AVR.c.has(k)||AVR.busy.has(k))return;
+  const p=new Promise(res=>{const im=new Image();im.onload=()=>{try{const c=document.createElement('canvas');c.width=c.height=192;c.getContext('2d').drawImage(im,0,0,192,192);AVR.c.set(k,c.toDataURL('image/png'))}catch(e){AVR.c.set(k,null)}res()};im.onerror=()=>{AVR.c.set(k,null);res()};
+    let s=h;if(!/xmlns=/.test(s))s=s.replace('<svg','<svg xmlns="http://www.w3.org/2000/svg"');s=s.replace(/<svg([^>]*?)>/,(m,a)=>/\bwidth=/.test(a)?m:'<svg'+a+' width="192" height="192">');im.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(s)});
+  AVR.busy.set(k,p);p.then(()=>{AVR.busy.delete(k);avSwap(document)})}
+function avSwap(root){try{for(const sv of root.querySelectorAll('.fav>svg')){const h=sv.outerHTML;if(h.length<1500)continue;const k=avKey(h);
+  if(!AVR.c.has(k)){avRaster(h);continue}const u=AVR.c.get(k);if(!u)continue;const i=document.createElement('img');i.src=u;i.alt=sv.getAttribute('aria-label')||'';i.className='avimg';i.decoding='async';sv.replaceWith(i)}}catch(e){}}
+(function(){const st=document.createElement('style');st.textContent='.fav>img.avimg{width:100%;height:100%;display:block;border-radius:inherit;object-fit:cover}';document.head.appendChild(st);
+  let t=0;new MutationObserver(()=>{if(t)return;t=requestAnimationFrame(()=>{t=0;avSwap(document)})}).observe(document.body,{childList:true,subtree:true})})();
