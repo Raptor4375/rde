@@ -20,3 +20,15 @@ if(window.RDE_NG){try{const st=document.createElement('style');st.textContent='[
   const bad=/itch|github|appli RDE|nouvelle appli|déménag|version Claude|ancienne version|Soutenir le jeu|Mécène|installer/i;
   for(const P of PATCH){if(Array.isArray(P.items))P.items=P.items.filter(x=>!bad.test(String(x)))}
   for(let i=PATCH.length-1;i>=0;i--)if(!PATCH[i].items||!PATCH[i].items.length)PATCH.splice(i,1)}catch(e){}}
+/* traductions manquantes repérées dans les onglets */
+try{Object.assign(I18N_EN,{"Coffre lunaire":"Lunar chest","Céleste Nv # · −# %":"Celestial Lv # · −# %","Épique Nv # · −# %":"Epic Lv # · −# %","Ferme dans # h #":"Closes in # h #",
+ "Les marchands de la nuit déballent leurs trésors. Les offres changent chaque soir.":"The night merchants unpack their treasures. Offers change every evening.",
+ "Nuit claire":"Clear night","🌙 Nuit claire":"🌙 Clear night","🌙 nuit":"🌙 night","Photo « Marchande de la Lune »":"\"Moon Merchant\" photo","Super rare, épique ou céleste (# %)":"Super rare, epic or celestial (# %)",
+ "Une hydre aux trois têtes venue d'une autre dimension. Son souffle empoisonne tout.":"A three-headed hydra from another dimension. Its breath poisons everything.","🐲 Hydre du Néant":"🐲 Void Hydra","Hydre du Néant":"Void Hydra",
+ "Une seule par nuit":"Only one per night","« Approchez, approchez ! Tout est frais, même les épées ! »":"“Step right up! Everything's fresh, even the swords!”",
+ "« Le secret d'une bonne arme ? Taper fort, taper juste, et ne jamais laisser refroidir. »":"“The secret of a good weapon? Strike hard, strike true, and never let it cool down.”",
+ "✨ Astral":"✨ Astral","💰 Événement flash : Pluie d'or pendant # h # !":"💰 Flash event: Gold rain for # h #!","Vu il y a # h":"Seen # h ago","Vu il y a # min":"Seen # min ago","Vu il y a # j":"Seen # d ago",
+ "Coucou Raptor, comment tu as fait pour monter si vite ?":"Hey Raptor, how did you climb so fast?","VIP":"VIP","II":"II","III":"III","Abc":"Abc"})}catch(e){}
+try{I18N_RULES.push([/^Message à (.+)…$/,(m)=>'Message '+m[1]+'…'])}catch(e){}
+/* le texte caché pendant la traduction réapparaît plus vite */
+try{i18wClear=function(all){for(const el of [...I18W]){if(all||!el.isConnected||Date.now()-(el._i18w||0)>600){el.classList.remove('i18w');I18W.delete(el)}}}}catch(e){}
