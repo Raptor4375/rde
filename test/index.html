@@ -16338,6 +16338,8 @@ try{Object.assign(I18N_EN,{"Coffre lunaire":"Lunar chest","Céleste Nv # · −#
 try{I18N_RULES.push([/^Message à (.+)…$/,(m)=>'Message '+m[1]+'…'])}catch(e){}
 /* le texte caché pendant la traduction réapparaît plus vite */
 try{i18wClear=function(all){for(const el of [...I18W]){if(all||!el.isConnected||Date.now()-(el._i18w||0)>600){el.classList.remove('i18w');I18W.delete(el)}}}}catch(e){}
+/* l'étiquette de rareté des héros mythiques (Aléa) affichait « undefined » à l'invocation */
+try{if(RN.length<6)RN.push('MYTHIQUE');Object.assign(I18N_EN,{"MYTHIQUE":"MYTHIC"})}catch(e){}
 
 /* ================= DÉMARRAGE ================= */
 (function init(){
