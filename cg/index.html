@@ -16451,4 +16451,9 @@ try{const nm=nameModal;nameModal=function(){if(!S.xferAsk){S.xferAsk=1;try{save(
     const local=(()=>{try{return JSON.parse(localStorage.getItem(KEY)||'null')}catch(e){return null}})();
     if(!local||!local.name||o.t>mine+60000){const N=JSON.parse(o.s);if(N&&N.heroes){localStorage.setItem(KEY,JSON.stringify(N));ls(TK,o.t);location.reload()}}else put()}catch(e){}},2500);
 })();
+/* --- réglage CrazyGames « désactiver le tchat » : on cache tous les tchats --- */
+(function(){const st=document.createElement('style');st.id='cgnochat';
+  const apply=on=>{st.textContent=on?'.chat,.chatf,.emobar,form[data-f="say"],form[data-f="wsay"],form[data-f="dmsay"],.clban,[data-a="chub"],[data-v="monde"][data-a="soc"],[data-a="dmnew"],.msgs,#wchat,#chat{display:none!important}':'';if(!st.isConnected)document.head.appendChild(st)};
+  (window.__cgReady||Promise.resolve(null)).then(s=>{try{if(!s)return;apply(!!(s.game.settings||{}).disableChat);s.game.addSettingsChangeListener(n=>{try{apply(!!(n&&n.disableChat))}catch(e){}})}catch(e){}});
+})();
 </script></body></html>
