@@ -47,7 +47,7 @@ window.claude={use:async k=>{if(k==='db'||k==='user'){try{const F=await window.R
 window.RDEF();
 })();
 </script>
-<script>window.RDE_V='20261028231315';if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));</script>
+<script>window.RDE_V='20261029074046';if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));</script>
 </head><body>
 <title>RDE · Royaumes d'Éther</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -15876,7 +15876,7 @@ async function gwWrite(k,d){d.t=Date.now();await NET.db.doc(gdoc(k)).set(d);GWD.
 async function gwLoadAll(){if(!NET.on||!NET.db||GWD.busy)return;GWD.busy=1;try{const ks=[...GTER.map(t=>t.k),'cap'];const R=await Promise.all(ks.map(gwRead));ks.forEach((k,i)=>{if(R[i])GWD.m[k]=R[i]});GWD.t=Date.now();gwMineSync()}catch(e){}finally{GWD.busy=0}}
 /* mes équipes disparues = battues : héros blessés jusqu'à demain */
 function gwMineSync(){const G=GWS();let ch=false;for(const id in G.mine){const x=G.mine[id],d=GWD.m[x.k];if(!d)continue;if(!d.tr||!d.tr[id]){(G.wd[gwDay()]=G.wd[gwDay()]||[]).push(...x.ids);delete G.mine[id];ch=true;try{toast(`🛡️ Ton équipe de ${gterOf(x.k).n} a été battue : ses héros se reposent jusqu'à demain.`)}catch(e){}}}if(ch)save()}
-const gwPosted=()=>{const G=GWS(),o=new Set();for(const id in G.mine)for(const h of G.mine[id].ids)o.add(h);return o};
+let gwPosted=()=>{const G=GWS(),o=new Set();for(const id in G.mine)for(const h of G.mine[id].ids)o.add(h);return o};
 const gwWounded=()=>new Set(GWS().wd[gwDay()]||[]);
 /* --- activité d'un défenseur --- */
 function gwActMul(tr){if(!tr||tr.bot)return 1;const P=NET.players&&NET.players[tr.p];const t=(P&&P.t)||tr.at||0;const h=(Date.now()-t)/36e5;return h>48?0:h>24?.7:1}
@@ -16420,6 +16420,18 @@ document.addEventListener('click',async e=>{const b=e.target.closest('[data-a="d
 try{Object.assign(I18N_EN,{"🗑️ Supprimer mon compte":"🗑️ Delete my account","Supprimer définitivement":"Delete permanently","Annuler":"Cancel","Confirmation":"Confirmation","Tape":"Type","pour confirmer.":"to confirm.","Tape SUPPRIMER pour confirmer.":"Type DELETE to confirm.",
  "Tout sera effacé":"Everything will be erased","pour de bon":"for good",": ta progression, tes héros, ta place dans les classements, ton profil public, ta sauvegarde en ligne et ton code de compte. Tu quittes aussi ta guilde.":": your progress, your heroes, your place in the rankings, your public profile, your online save and your account code. You also leave your guild.",
  "Cette action est":"This action is","définitive":"permanent",", on ne pourra pas récupérer ta partie.":", your game cannot be recovered."})}catch(e){}
+
+/* ================= V38.1 : Guerre des Guildes — un héros ne peut être posé que dans UN royaume ================= */
+const gwMyIds=()=>new Set([NET.pid,S.opid,...(Array.isArray(S.pids)?S.pids:[])].filter(Boolean));
+/* on se fie aussi aux royaumes en ligne (et plus seulement à la mémoire de l'appareil, qui pouvait se perdre lors d'une synchro) */
+function gwServerMine(){const me=gwMyIds(),o={};for(const k in GWD.m){const d=GWD.m[k];if(!d||!d.tr)continue;for(const id in d.tr){const t=d.tr[id];if(t&&!t.bot&&me.has(t.p)&&Array.isArray(t.team))o[id]={k,ids:t.team.map(x=>+(x&&x.id!=null?x.id:x))}}}return o}
+{const ms=gwMineSync;gwMineSync=function(){const r=ms.apply(this,arguments);try{const G=GWS(),sv=gwServerMine();let ch=false;for(const id in sv)if(!G.mine[id]){G.mine[id]=sv[id];ch=true}if(ch)save()}catch(e){}return r}}
+try{gwPosted=function(){const G=GWS(),o=new Set();for(const id in G.mine)for(const h of G.mine[id].ids)o.add(+h);try{const sv=gwServerMine();for(const id in sv)for(const h of sv[id].ids)o.add(+h)}catch(e){}return o}}catch(e){}
+/* juste avant de poser : on relit tous les royaumes, puis on revérifie */
+{const gp=gwPost;let busy=false;gwPost=async function(k){if(busy)return;busy=true;try{try{GWD.busy=0;await gwLoadAll()}catch(e){}
+  const ids=(GWD.sel||[]).slice(0,5),used=gwPosted();if(ids.some(i=>used.has(+i))){closeModal();toast(LANG==='fr'?'Un de ces héros est déjà posé dans un autre royaume.':'One of these heroes is already posted in another kingdom.');try{render()}catch(e){}return}
+  return await gp.apply(this,arguments)}finally{busy=false}}}
+try{Object.assign(I18N_EN,{"Un de ces héros est déjà posé dans un autre royaume.":"One of these heroes is already posted in another kingdom."})}catch(e){}
 
 /* ================= DÉMARRAGE ================= */
 (function init(){
