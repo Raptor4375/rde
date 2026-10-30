@@ -16386,13 +16386,15 @@ try{Object.assign(I18N_EN,{"Un de ces héros est déjà posé dans un autre roya
 /* ================= V38.2 : Guerre des Guildes — guildes adverses agressives + journal de guerre ================= */
 /* chaque guilde a son caractère : certaines attaquent beaucoup, d'autres visent la guilde en tête */
 const gwAgg=g=>.6+hash01(g,'agg')*.9, gwRival=g=>hash01(g,'riv');
+const gwRealG=g=>{const d=NET.guilds&&NET.guilds[g];return!!(d&&!d.npc)};
 async function gwSim(){const s=gwSeason();if(!GW_ON(s)||!NET.on||!NET.canWrite||GWD.simB)return;const T=gwT(s),now=Math.min(Date.now(),T.e);if(now<T.a)return;GWD.simB=1;
   try{const l=await NET.db.doc(gdoc('sim')).acquire({holder:NET.pid||'x',ttlMs:60000});if(!l.acquired)return;const sd=await NET.db.doc(gdoc('sim')).get();const meta=sd&&sd.exists?sd.data():{h:-1};
-    const log=Array.isArray(meta.log)?meta.log.slice(-60):[];
+    const log=Array.isArray(meta.log)?meta.log.slice(-60):[];const AC=(meta.ac&&typeof meta.ac==='object')?meta.ac:{};
     const H=Math.floor((now-T.a)/36e5);if(H<=meta.h)return;await gwLoadAll();const M={};for(const t of [...GTER,GCAP]){M[t.k]=GWD.m[t.k]||{own:null,tr:{},bd:{}};M[t.k].tr=M[t.k].tr||{};M[t.k].bd=M[t.k].bd||{}}
     const pool=gwBotPool();const where=()=>{const o={};for(const k in M)for(const id in M[k].tr)o[id]=k;return o};
     for(let h=Math.max(meta.h+1,H-48);h<=H;h++){const t=T.a+h*36e5,ph=t<T.w?'prep':t<T.f?'war':'final',day=dayKey(t),R=rng(s*100000+h*7+3);
       if(ph==='final'&&!M.cap.fin){const C={};for(const x of GTER)if(M[x.k].own)C[M[x.k].own]=(C[M[x.k].own]||0)+1;M.cap.fin=Object.entries(C).sort((a,b)=>b[1]-a[1]).slice(0,2).map(x=>x[0])}
+      for(const d in AC)if(d!==day&&d!==dayKey(t-864e5))delete AC[d];const ac=AC[day]=AC[day]||{};const atkLeft=b=>GW_ATK-(ac[b.id]||0);
       let W=where();const byG={};for(const b of pool)(byG[b.g]=byG[b.g]||[]).push(b);
       const gs=Object.keys(byG).sort(()=>R()-.5);let nAtk=0;const failK=k=>log.some(e=>e.ty==='fail'&&e.g===e.g&&e.k===k&&dayKey(e.t)===day&&e.g===curG);let curG=null;
       for(const g of gs){const bots=byG[g],agg=gwAgg(g);
@@ -16400,24 +16402,26 @@ async function gwSim(){const s=gwSeason();if(!GW_ON(s)||!NET.on||!NET.canWrite||
         const fin=M.cap.fin||[];const okCap=ph==='final'&&fin.includes(g);
         let home=GTER.filter(x=>M[x.k].own===g&&Object.keys(M[x.k].tr).length<GW_MAXT).map(x=>x.k);if(okCap&&(!M.cap.own||M.cap.own===g))home.unshift('cap');
         if(!home.length){const free=GTER.filter(x=>!M[x.k].own);const pr=ph==='prep'?(free.length>3?.12:.04):.3;if(free.length&&R()<pr){const k=free[Math.floor(R()*free.length)].k;M[k].own=g;home=[k];log.push({t,g,k,ty:'claim'})}}
-        for(const b of bots){if(W[b.id]||M_dead(M,b.id,day))continue;if(R()>b.act*.6)continue;const k=home.slice().sort((x,y)=>Object.keys(M[x].tr).length-Object.keys(M[y].tr).length)[0];if(!k||Object.keys(M[k].tr).length>=GW_MAXT)continue;M[k].tr[b.id]={n:b.n,g,bot:1,pw:b.pw,team:b.team,at:t};W[b.id]=k}
+        const hot=k=>log.filter(e=>e.k===k&&e.v===g&&(e.ty==='hit'||e.ty==='fail')&&t-e.t<6*36e5).length;const real=gwRealG(g);
+        for(const b of bots){if(W[b.id]||M_dead(M,b.id,day))continue;if(R()>(real?.85:Math.max(.25,b.act)))continue;const k=home.slice().sort((x,y)=>(hot(y)-hot(x))||(Object.keys(M[x].tr).length-Object.keys(M[y].tr).length))[0];if(!k||Object.keys(M[k].tr).length>=GW_MAXT)continue;M[k].tr[b.id]={n:b.n,g,bot:1,pw:b.pw,team:b.team,at:t};W[b.id]=k}
         /* 2) attaquer : bien plus souvent, et parfois en plusieurs vagues */
-        curG=g;if(ph==='prep'||nAtk>=4)continue;const pA=(ph==='final'?.75:.5)*agg;if(R()>pA)continue;
-        const waves=1+(R()<.35*agg?1:0);
+        curG=g;if(ph==='prep'||(!real&&nAtk>=6))continue;const lost=log.filter(e=>e.v===g&&(e.ty==='take'||e.ty==='grab')&&t-e.t<12*36e5&&M[e.k]&&M[e.k].own===e.g);const pA=real?.8:Math.min(.95,(ph==='final'?.75:.5)*agg+(lost.length?.35:0));if(R()>pA)continue;
+        const ready=bots.filter(b=>!M_dead(M,b.id,day)&&atkLeft(b)>0);if(!ready.length)continue;
+        const waves=real?Math.min(ready.length,1+(R()<.5?1:0)):1+(R()<.35*agg+(lost.length?.3:0)?1:0);
         for(let wv=0;wv<waves;wv++){let tg;
           if(ph==='final'&&okCap&&M.cap.own&&M.cap.own!==g)tg='cap';
           else{const hasFree=bots.some(b=>!W[b.id]&&!M_dead(M,b.id,day));const opts=GTER.filter(x=>M[x.k].own&&M[x.k].own!==g&&(hasFree||Object.keys(M[x.k].tr).length)&&!failK(x.k));if(!opts.length)break;
             const C={};for(const x of GTER)if(M[x.k].own)C[M[x.k].own]=(C[M[x.k].own]||0)+1;const lead=Object.entries(C).filter(([x])=>x!==g).sort((a,b)=>b[1]-a[1])[0];
-            const vs=lead&&R()<.25+gwRival(g)*.35?opts.filter(x=>M[x.k].own===lead[0]):[];const pool2=vs.length?vs:opts;
+            const rev=lost.map(e=>e.k).filter(k=>opts.some(x=>x.k===k));const vs=rev.length&&R()<.7?opts.filter(x=>rev.includes(x.k)):lead&&R()<.25+gwRival(g)*.35?opts.filter(x=>M[x.k].own===lead[0]):[];const pool2=vs.length?vs:opts;
             pool2.sort((a,b)=>Object.keys(M[a.k].tr).length-Object.keys(M[b.k].tr).length);tg=pool2[Math.floor(R()*Math.min(3,pool2.length))].k}
-          const free=bots.filter(b=>!W[b.id]&&!M_dead(M,b.id,day)).sort((a,b)=>b.pw-a.pw);const atk=free[wv]||free[0]||bots.slice().sort((a,b)=>b.pw-a.pw)[wv]||bots[0];if(!atk)break;
+          const free=bots.filter(b=>!W[b.id]&&!M_dead(M,b.id,day)).sort((a,b)=>b.pw-a.pw);const atk=bots.filter(b=>!M_dead(M,b.id,day)&&atkLeft(b)>0).sort((a,b)=>b.pw-a.pw)[0];if(!atk)break;ac[atk.id]=(ac[atk.id]||0)+1;
           const vic=M[tg].own;let st=atk.pw*(.8+R()*.45)*1.3,kills=0;const defs=Object.entries(M[tg].tr).sort((a,b)=>a[1].pw-b[1].pw);
           for(const [id,tr] of defs){const m=gwActMul(tr);if(m<=0){delete M[tg].tr[id];continue}const dp=tr.pw*m*(1+(gterOf(tg).bn[1]||0)/100);if(st>dp){delete M[tg].tr[id];kills++;if(tr.bot)M[tg].bd[id]=day;st-=dp*.8}else break}
           const took=!Object.keys(M[tg].tr).length;if(took){M[tg].own=g;M[tg].tk=t;/* les vainqueurs s'installent pour défendre le royaume pris */const gar=[atk,...free.filter(b=>b!==atk)].filter(b=>!W[b.id]&&!M_dead(M,b.id,day)).slice(0,2+Math.floor(R()*3));for(const b of gar){if(Object.keys(M[tg].tr).length>=GW_MAXT)break;M[tg].tr[b.id]={n:b.n,g,bot:1,pw:b.pw,team:b.team,at:t};W[b.id]=tg}}
-          nAtk++;log.push({t:t+Math.floor(R()*50)*60000+wv*240000,g,v:vic,k:tg,n:atk.n,kl:kills,dn:defs.length,ty:took?(defs.length?'take':'grab'):kills?'hit':'fail'});
+          if(!real)nAtk++;log.push({t:t+Math.floor(R()*50)*60000+wv*240000,g,v:vic,k:tg,n:atk.n,kl:kills,dn:defs.length,ty:took?(defs.length?'take':'grab'):kills?'hit':'fail'});
           W=where()}}}
     log.sort((a,b)=>a.t-b.t);
-    for(const k in M){await NET.db.doc(gdoc(k)).set(Object.assign(M[k],{t:Date.now()}));GWD.m[k]=M[k]}await NET.db.doc(gdoc('sim')).set({h:H,t:Date.now(),log:log.slice(-60)});GWD.log=log.slice(-60);gwMineSync();gwLogNotify()}catch(e){console.warn('gwSim',e)}finally{GWD.simB=0}}
+    for(const k in M){await NET.db.doc(gdoc(k)).set(Object.assign(M[k],{t:Date.now()}));GWD.m[k]=M[k]}await NET.db.doc(gdoc('sim')).set({h:H,t:Date.now(),log:log.slice(-60),ac:AC});GWD.log=log.slice(-60);gwMineSync();gwLogNotify()}catch(e){console.warn('gwSim',e)}finally{GWD.simB=0}}
 /* le journal est lu avec les royaumes */
 {const la=gwLoadAll;gwLoadAll=async function(){const r=await la.apply(this,arguments);try{const sd=await NET.db.doc(gdoc('sim')).get();const d=sd&&sd.exists?sd.data():null;GWD.log=d&&Array.isArray(d.log)?d.log:[];gwLogNotify()}catch(e){}return r}}
 function gwLogLine(e){const G=n=>`<b style="color:${gwColor(n)}">${esc(gwGuildName(n))}</b>`,K=`<b>${esc(gterOf(e.k).n)}</b>`;
