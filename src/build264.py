@@ -73,6 +73,11 @@ assert src.count(_a)>=1,'boot';src=src.replace(_a,"const boot=plate?L.s:bt==='su
 
 for _a,_b in [("&&!face.includes('blindfold'))o.eyes='glow';","&&!face.includes('blindfold')&&!/^lg/.test(o.eyes||''))o.eyes='glow';"),("&&!face.includes('blindfold')&&o.eyes!=='slit')o.eyes='glow';","&&!face.includes('blindfold')&&o.eyes!=='slit'&&!/^lg/.test(o.eyes||''))o.eyes='glow';"),('<div class="b3h q${i}"><i class="b3glow"></i><img src="${btImg(id,u)}" alt="">','<div class="b3h q${i}"><i class="b3glow"></i><img src="${btImg(id,u)}" data-h="${id}_${u}" alt="">')]:
   assert src.count(_a)>=1,_a;src=src.replace(_a,_b)
+
+for _a,_b in [("HEROES.filter(h=>noLeg?h.r<4:true)","HEROES.filter(h=>(!h.ex||S.heroes[h.i])&&(noLeg?h.r<4:true))"),("METAC[k]=HEROES.map(h=>h.i).sort","METAC[k]=HEROES.filter(h=>!h.ex||S.heroes[h.i]).map(h=>h.i).sort"),("const all=HEROES.map(h=>h.i),v=refVal(mk);","const all=HEROES.filter(h=>!h.ex||S.heroes[h.i]).map(h=>h.i),v=refVal(mk);"),("`Niveau ${o.l} / 100${h.r>=4?' · '+(o.e?'★'.repeat(o.e):'Pas encore évolué'):''} · Puissance ${fmt(power(st))}`:'Pas encore débloqué. Obtiens-le par invocation.'","`Niveau ${o.l} / 100${h.r>=4?' · '+(o.e?'★'.repeat(o.e):'Pas encore évolué'):''} · Puissance ${fmt(power(st))}`:h.ex?\"Héros exclusif de l'événement « L'Éveil du Roi de Cendre ».\":'Pas encore débloqué. Obtiens-le par invocation.'")]:
+  assert src.count(_a)==1,_a;src=src.replace(_a,_b)
+_a="r.textContent='Tour '+B.round+' / '+B.maxR;"
+assert src.count(_a)==1,'tour';src=src.replace(_a,"r.textContent='Tour '+Math.min(B.round,B.maxR)+' / '+B.maxR;")
 open('royaumes.html','w').write(src)
 open('chk.js','w').write(src[src.index('<script>')+8:src.rindex('</script>')])
 a=src.index('<style>');b=src.index('</style>')+8;open('prod.html','w').write(src[:a]+src[b:])
