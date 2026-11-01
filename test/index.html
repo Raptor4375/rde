@@ -11446,9 +11446,9 @@ PATCH.unshift({v:26.5,d:'18 octobre 2026',t:"L'atelier du héros",nogem:1,items:
 const AW_MAX=10,AW_COST=5,AW_PCT=.05;
 const awOf=id=>Math.min(AW_MAX,(S.heroes[id]&&S.heroes[id].aw)||0);
 {const hs=heroStats;heroStats=function(id){const st=hs.apply(this,arguments);const a=awOf(id);if(a){const m=1+AW_PCT*a;st.hp=Math.round(st.hp*m);st.atk=Math.round(st.atk*m);st.def=Math.round(st.def*m)}return st}}
-function awaken(id){const o=S.heroes[id];if(!o||HEROES[id].r!==4||o.e<3)return;if((o.aw||0)>=AW_MAX)return toast('Éveil maximal atteint.');if(o.f<AW_COST)return toast(`Il faut ${AW_COST} fragments de ${HEROES[id].n.split(' ')[0]}.`);
+function awaken(id){const o=S.heroes[id];if(!o||HEROES[id].r<4||o.e<3)return;if((o.aw||0)>=AW_MAX)return toast('Éveil maximal atteint.');if(o.f<AW_COST)return toast(`Il faut ${AW_COST} fragments de ${HEROES[id].n.split(' ')[0]}.`);
   o.f-=AW_COST;o.aw=(o.aw||0)+1;save();toast(`◆ ${HEROES[id].n} s'éveille : niveau ${o.aw} (+${Math.round(AW_PCT*o.aw*100)} % de stats)`);try{UIS.evolve()}catch(e){}render();heroModal(id)}
-function awHTML(id){const o=S.heroes[id];if(!o||HEROES[id].r!==4)return'';const a=o.aw||0;
+function awHTML(id){const o=S.heroes[id];if(!o||HEROES[id].r<4)return'';const a=o.aw||0;
   if(o.e<3)return`<div class="awk lock"><div class="sn">◆ Éveil</div><div class="muted" style="font-size:12.5px">Se débloque à l'évolution ★★★. Ensuite, chaque doublon de ${esc(HEROES[id].n.split(' ')[0])} servira à l'éveiller.</div></div>`;
   return`<div class="awk"><div class="row" style="justify-content:space-between;align-items:center"><div class="sn">◆ Éveil ${a}/${AW_MAX}</div><div class="awd">${[...Array(AW_MAX)].map((_,i)=>`<i class="${i<a?'on':''}"></i>`).join('')}</div></div>
    <div style="font-size:13px;margin:4px 0 8px">Les doublons ne servent plus à rien une fois ★★★ ? Chaque éveil coûte <b>${AW_COST} fragments</b> de ce héros (3 par doublon) et donne <b>+${AW_PCT*100} % de PV, ATQ et DÉF</b>. Bonus actuel : <b>+${Math.round(a*AW_PCT*100)} %</b>.</div>

@@ -61,6 +61,9 @@ _a='data-a="goach">Succès et cadres</button>';assert src.count(_a)==1;src=src.r
 _a="const gwPosted=()=>";assert src.count(_a)==1;src=src.replace(_a,"let gwPosted=()=>")
 
 _a="const dur=ms=>{const h=Math.floor(ms/36e5),m=Math.round(ms%36e5/60000);";assert src.count(_a)==1;src=src.replace(_a,"const dur=ms=>{ms=Math.max(0,Math.round(ms/60000)*60000);const h=Math.floor(ms/36e5),m=Math.round(ms%36e5/60000);")
+
+for _a,_b in [("function awHTML(id){const o=S.heroes[id];if(!o||HEROES[id].r!==4)return'';","function awHTML(id){const o=S.heroes[id];if(!o||HEROES[id].r<4)return'';"),("function awaken(id){const o=S.heroes[id];if(!o||HEROES[id].r!==4||o.e<3)return;","function awaken(id){const o=S.heroes[id];if(!o||HEROES[id].r<4||o.e<3)return;")]:
+  assert src.count(_a)==1,_a;src=src.replace(_a,_b)
 open('royaumes.html','w').write(src)
 open('chk.js','w').write(src[src.index('<script>')+8:src.rindex('</script>')])
 a=src.index('<style>');b=src.index('</style>')+8;open('prod.html','w').write(src[:a]+src[b:])
