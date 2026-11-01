@@ -67,6 +67,9 @@ for _a,_b in [("function awHTML(id){const o=S.heroes[id];if(!o||HEROES[id].r!==4
 
 for _a,_b in [("HEROES.filter(h=>h.r===4)","HEROES.filter(h=>h.r===4&&!h.ex)"),("HEROES.filter(x=>x.r===rr)","HEROES.filter(x=>x.r===rr&&!x.ex)"),("HEROES.filter(x=>x.r===r)","HEROES.filter(x=>x.r===r&&!x.ex)"),("HEROES.filter(x=>x.r===4)","HEROES.filter(x=>x.r===4&&!x.ex)"),("HEROES.filter(h=>h.r===r)","HEROES.filter(h=>h.r===r&&!h.ex)"),("HEROES.filter(h=>h.r===4&&h.i!==FORTUNA)","HEROES.filter(h=>h.r===4&&!h.ex&&h.i!==FORTUNA)"),("HEROES.filter(h=>h.r===r&&h.c===c)","HEROES.filter(h=>h.r===r&&!h.ex&&h.c===c)")]:
   src=src.replace(_a,_b)
+
+_a="const boot=plate?L.s:bt==='suit'?'#1a1418':bare&&!rocky?shade(L.s,-.45):'#4a3222',"
+assert src.count(_a)>=1,'boot';src=src.replace(_a,"const boot=plate?L.s:bt==='suit'?'#1a1418':rocky?shade(L.sk,-.22):bare?shade(L.s,-.45):robe?shade(L.m,-.3):'#4a3222',")
 open('royaumes.html','w').write(src)
 open('chk.js','w').write(src[src.index('<script>')+8:src.rindex('</script>')])
 a=src.index('<style>');b=src.index('</style>')+8;open('prod.html','w').write(src[:a]+src[b:])

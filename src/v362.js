@@ -43,3 +43,6 @@ Object.assign(FX,{
 ['lg57','lg58','lg60','lg61','lg66'].forEach(k=>FX_UNDER.add(k));
 for(let i=56;i<=66;i++){if(i===65)continue;const L=LOOKS[i];if(!L)continue;const t=String(L[6]);const m=/(^| )face:([^ ]*)/.exec(t);LOOKS[i]=[...L.slice(0,6),m?t.replace(m[0],`${m[1]}face:${m[2]},lg${i}`):t+` face:lg${i}`];try{delete PCACHE[i];skRefresh(i)}catch(e){}}
 })();
+/* Fortuna : pose « Fière » (les mains jointes à la taille avec la lueur rouge prêtaient à confusion) */
+{const po=poseOf;poseOf=function(h){if(h&&h.i===56)return'hips';return po.apply(this,arguments)}}
+try{for(const i of [56,58,60,62,63])skRefresh(i)}catch(e){}

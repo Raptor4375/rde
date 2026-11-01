@@ -47,7 +47,7 @@ window.claude={use:async k=>{if(k==='db'||k==='user'){try{const F=await window.R
 window.RDEF();
 })();
 </script>
-<script>window.RDE_V='20261101131954';if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));</script>
+<script>window.RDE_V='20261101133804';if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));</script>
 </head><body>
 <title>RDE · Royaumes d'Éther</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -9757,7 +9757,7 @@ function heroBody(h,u=0){const key=h.i+'_'+u;if(BODYC2[key])return BODYC2[key];
   const bt=L.body||'tunic',robe=/robe|dress|kimono|cloak/.test(bt),bare=/bare|rocky|bark|fur/.test(bt),plate=/armor|heavy|scale/.test(bt),rocky=bt==='rocky';
   const skin=L.sk,cloth=bare?skin:L.m,sec=L.s,acc=L.a;
   const pants=robe?shade(L.m,-.25):bare?(rocky?shade(L.s,-.1):shade(L.s,-.15)):bt==='suit'?'#2a2430':plate?shade(L.m,-.2):shade(L.s,-.2);
-  const boot=plate?L.s:bt==='suit'?'#1a1418':bare&&!rocky?shade(L.s,-.45):'#4a3222',bootT=plate?shade(L.s,-.2):shade(boot,.25);
+  const boot=plate?L.s:bt==='suit'?'#1a1418':rocky?shade(L.sk,-.22):bare?shade(L.s,-.45):robe?shade(L.m,-.3):'#4a3222',bootT=plate?shade(L.s,-.2):shade(boot,.25);
   const sleeve=bare?skin:L.m,glove=plate?L.s:skin;
   const A=ARM2[pose],LG=HLEG2[POSEL2[pose]];let s='';
   /* aura, ombre, cape */
@@ -11038,7 +11038,7 @@ function heroBody(h,u=0){const BC=(window.BODYC3||(window.BODYC3={}));const key=
   const bt=L.body||'tunic',robe=/robe|dress|kimono|cloak/.test(bt),bare=/bare|rocky|bark|fur/.test(bt),plate=/armor|heavy|scale/.test(bt),rocky=bt==='rocky';
   const skin=L.sk,cloth=bare?skin:L.m,sec=L.s,acc=L.a;
   const pants=robe?shade(L.m,-.25):bare?(rocky?shade(L.s,-.1):shade(L.s,-.15)):bt==='suit'?'#2a2430':plate?shade(L.m,-.2):shade(L.s,-.2);
-  const boot=plate?L.s:bt==='suit'?'#1a1418':bare&&!rocky?shade(L.s,-.45):'#4a3222',bootT=plate?shade(L.s,-.2):shade(boot,.25);
+  const boot=plate?L.s:bt==='suit'?'#1a1418':rocky?shade(L.sk,-.22):bare?shade(L.s,-.45):robe?shade(L.m,-.3):'#4a3222',bootT=plate?shade(L.s,-.2):shade(boot,.25);
   const sleeve=bare?skin:L.m,glove=plate?L.s:skin;
   const A=ARM2[pose],LG=HLEG2[POSEL2[pose]];let s='';
   /* aura, ombre, cape */
@@ -16546,6 +16546,9 @@ Object.assign(FX,{
 ['lg57','lg58','lg60','lg61','lg66'].forEach(k=>FX_UNDER.add(k));
 for(let i=56;i<=66;i++){if(i===65)continue;const L=LOOKS[i];if(!L)continue;const t=String(L[6]);const m=/(^| )face:([^ ]*)/.exec(t);LOOKS[i]=[...L.slice(0,6),m?t.replace(m[0],`${m[1]}face:${m[2]},lg${i}`):t+` face:lg${i}`];try{delete PCACHE[i];skRefresh(i)}catch(e){}}
 })();
+/* Fortuna : pose « Fière » (les mains jointes à la taille avec la lueur rouge prêtaient à confusion) */
+{const po=poseOf;poseOf=function(h){if(h&&h.i===56)return'hips';return po.apply(this,arguments)}}
+try{for(const i of [56,58,60,62,63])skRefresh(i)}catch(e){}
 
 /* ================= ÉVÉNEMENT « L'Éveil du Roi de Cendre » (préparé, caché jusqu'au lancement) =================
    ASH_GO : date de lancement dans la version publique (null = pas encore). La version de test /test/ l'a toujours. */
