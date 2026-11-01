@@ -16633,7 +16633,7 @@ FX.lg57=L=>{const c='#e0a020',d='#a8700a';
    +Pa('M44.6 55.1Q47.6 52.9 50 54.3Q52.4 52.9 55.4 55.1Q52.8 55.7 50 55.3Q47.2 55.7 44.6 55.1Z',c,`stroke="${d}" stroke-width=".4"`)
    +MIR(CI(33.4,56.5,1.5,'#ffcf4a','stroke="#b8781a" stroke-width=".4"'))};
 FX_UNDER.delete('lg57');
-const EYK={56:'lg56',57:'lg57',58:'lg58',59:'lg59',60:'lg60',61:'lg61',62:'lg62',63:'lg63',66:'lg66'};
+const EYK={60:'lg60',63:'lg63',66:'lg66'};/* les autres gardent leurs yeux d'origine */
 for(const i in EYK){const L=LOOKS[i];if(!L)continue;let t=String(L[6]);t=/(^| )eyes:[^ ]*/.test(t)?t.replace(/(^| )eyes:[^ ]*/,`$1eyes:${EYK[i]}`):t+` eyes:${EYK[i]}`;LOOKS[i]=[...L.slice(0,6),t];try{delete PCACHE[i];skRefresh(+i)}catch(e){}}
 })();
 
