@@ -19,7 +19,7 @@ async function gwSim(){const s=gwSeason();if(!GW_ON(s)||!NET.on||!NET.canWrite||
         let home=GTER.filter(x=>M[x.k].own===g&&Object.keys(M[x.k].tr).length<GW_MAXT).map(x=>x.k);if(okCap&&(!M.cap.own||M.cap.own===g))home.unshift('cap');
         if(!home.length){const free=GTER.filter(x=>!M[x.k].own);const pr=ph==='prep'?(free.length>3?.12:.04):.3;if(free.length&&R()<pr){const k=free[Math.floor(R()*free.length)].k;M[k].own=g;home=[k];log.push({t,g,k,ty:'claim'})}}
         const hot=k=>log.filter(e=>e.k===k&&e.v===g&&(e.ty==='hit'||e.ty==='fail')&&t-e.t<6*36e5).length;const real=gwRealG(g);
-        for(const b of bots){if(W[b.id]||M_dead(M,b.id,day))continue;if(R()>(real?.85:Math.max(.25,b.act)))continue;const k=home.slice().sort((x,y)=>(hot(y)-hot(x))||(Object.keys(M[x].tr).length-Object.keys(M[y].tr).length))[0];if(!k||Object.keys(M[k].tr).length>=GW_MAXT)continue;M[k].tr[b.id]={n:b.n,g,bot:1,pw:b.pw,team:b.team,at:t};W[b.id]=k}
+        for(const b of bots){if(W[b.id]||M_dead(M,b.id,day))continue;if(R()>(real?.85:Math.max(.25,b.act)))continue;const k=home.slice().sort((x,y)=>(hot(y)-hot(x))||(Object.keys(M[x].tr).length-Object.keys(M[y].tr).length))[0];if(!k||Object.keys(M[k].tr).length>=GW_MAXT)continue;if(k==='cap'&&!M.cap.own){M.cap.own=g;M.cap.tk=t;log.push({t,g,k:'cap',ty:'claim'})}else if(k==='cap'&&M.cap.own!==g)continue;M[k].tr[b.id]={n:b.n,g,bot:1,pw:b.pw,team:b.team,at:t};W[b.id]=k}
         /* 2) attaquer : bien plus souvent, et parfois en plusieurs vagues */
         curG=g;if(ph==='prep'||(!real&&nAtk>=6))continue;const lost=log.filter(e=>e.v===g&&(e.ty==='take'||e.ty==='grab')&&t-e.t<12*36e5&&M[e.k]&&M[e.k].own===e.g);const pA=real?.8:Math.min(.95,(ph==='final'?.75:.5)*agg+(lost.length?.35:0));if(R()>pA)continue;
         const ready=bots.filter(b=>!M_dead(M,b.id,day)&&atkLeft(b)>0);if(!ready.length)continue;
@@ -63,3 +63,7 @@ try{I18N_RULES.push(
  [/^🛡️ Ta guilde a repoussé (.+) à (.+) !$/,m=>'🛡️ Your guild repelled '+m[1]+' at '+tr(m[2])+'!']);
  Object.assign(I18N_EN,{"📜 Journal de guerre":"📜 War log","Aucun combat pour l'instant. Les attaques commencent au jour 3.":"No battles yet. Attacks start on day 3."})}catch(e){}
 try{const P=PATCH.find(x=>x.v===36.1)||PATCH[0];if(P)P.items.push("⚔️ Guerre des Guildes : les guildes adverses attaquent bien plus souvent (entre elles et contre vous), en plusieurs vagues, et un 📜 Journal de guerre montre tous les combats en direct.")}catch(e){}
+
+/* Capitale : après la guerre, on montre la guilde gagnante et seulement ses défenseurs (avant, des équipes de plusieurs guildes pouvaient s'y mélanger) */
+{const tm=gwTerModal;gwTerModal=function(k){if(k!=='cap')return tm.apply(this,arguments);const o0=GWD.m.cap;try{const ph=gwPhase();const w=ph==='hold'?capOwner():null;const c=o0||{own:null,tr:{}};const own=w?w.gid:c.own;
+  if(own){const tr={};for(const id in (c.tr||{}))if(c.tr[id]&&c.tr[id].g===own)tr[id]=c.tr[id];GWD.m.cap=Object.assign({},c,{own,tr})}return tm.apply(this,arguments)}finally{GWD.m.cap=o0}}}
