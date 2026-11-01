@@ -8063,7 +8063,7 @@ function uthOf(h){const m=/bg:(\S+)/.exec(LOOKS[h.i][6]);let i=h.i%4;if(m&&UTH[i
 function ultraLook(a,u,h){const T=uthOf(h),o={};a[6].split(' ').forEach(t=>{const i=t.indexOf(':');if(i>0)o[t.slice(0,i)]=t.slice(i+1)});
   o.bg=T.bg;const back=(o.back?o.back.split('+'):[]).filter(x=>!/^wings/.test(x));o.back=[T.w,...back].join('+');
   const face=o.face?o.face.split(','):[];const head=o.head||'human';
-  if((head==='human'||head==='orc'||head==='spirit')&&!face.includes('blindfold'))o.eyes='glow';
+  if((head==='human'||head==='orc'||head==='spirit')&&!face.includes('blindfold')&&!/^lg/.test(o.eyes||''))o.eyes='glow';
   if(u>=2){if(!face.includes(T.fx))face.push(T.fx);if(!/helm/.test(o.hat||''))o.hat=T.hat}
   if(face.length)o.face=face.join(',');
   return[a[0],u>=3?T.s:a[1],T.m,T.s,T.a,T.e,Object.entries(o).map(([k,v])=>k+':'+v).join(' ')]}
@@ -11690,7 +11690,7 @@ function btPick5(){const sh=a=>a.sort(()=>Math.random()-.5);const rg=(a,b)=>[...
   return[[O[0],0],[E[0],0],[L,u],[E[1],0],[O[1],0]]}
 function btScene3(){const se=(function(){try{return seasonNow()}catch(e){return'automne'}})();
   const HC={automne:['#c8762a','#a85a1e','#8a4a1a'],hiver:['#e8eef8','#cfd9ea','#b4c2da'],printemps:['#7ccf6a','#5cb050','#3e8e3a'],ete:['#8ad05a','#6ab84a','#4a983a']}[se]||['#7ccf6a','#5cb050','#3e8e3a'];
-  const T=btPick5();const hs=T.map(([id,u],i)=>`<div class="b3h q${i}"><i class="b3glow"></i><img src="${btImg(id,u)}" alt=""></div>`).join('');
+  const T=btPick5();const hs=T.map(([id,u],i)=>`<div class="b3h q${i}"><i class="b3glow"></i><img src="${btImg(id,u)}" data-h="${id}_${u}" alt=""></div>`).join('');
   let motes='';for(let k=0;k<22;k++)motes+=`<i style="left:${(Math.random()*100).toFixed(1)}%;top:${(25+Math.random()*65).toFixed(1)}%;animation-delay:${(Math.random()*6).toFixed(1)}s;animation-duration:${(5+Math.random()*5).toFixed(1)}s"></i>`;
   const fx=se==='hiver'?'snow':se==='automne'?'leaf':se==='printemps'?'petal':'spark';let fall='';for(let k=0;k<14;k++)fall+=`<i class="${fx}" style="left:${(Math.random()*100).toFixed(1)}%;animation-delay:${(Math.random()*8).toFixed(1)}s;animation-duration:${(7+Math.random()*6).toFixed(1)}s"></i>`;
   const castle=`<svg class="b3castle" viewBox="-60 -110 120 130" aria-hidden="true"><path d="M-52 14Q-40 30 0 34Q40 30 52 14Z" fill="#8a7a9a"/><rect x="-48" y="2" width="96" height="14" fill="#f4ecf8"/><rect x="-39" y="-24" width="10" height="30" fill="#f4ecf8"/><path d="M-41 -24L-34 -36L-27 -24Z" fill="#ffd84a"/><rect x="29" y="-24" width="10" height="30" fill="#f4ecf8"/><path d="M27 -24L34 -36L41 -24Z" fill="#ffd84a"/><rect x="-24" y="-42" width="12" height="44" fill="#f4ecf8"/><path d="M-26 -42L-18 -58L-10 -42Z" fill="#7c5cff"/><rect x="12" y="-42" width="12" height="44" fill="#f4ecf8"/><path d="M10 -42L18 -58L26 -42Z" fill="#7c5cff"/><rect x="-8" y="-64" width="16" height="66" fill="#fffaf2"/><path d="M-10 -64L0 -86L10 -64Z" fill="#ffd84a"/><path d="M0 -86v-10l9 3l-9 3" fill="#ff5d6c"/><rect x="-3" y="-50" width="6" height="8" rx="3" fill="#ffd36a"/><ellipse cx="-40" cy="22" rx="24" ry="7" fill="#fff"/><ellipse cx="38" cy="24" rx="26" ry="7" fill="#fff"/></svg>`;
@@ -13814,7 +13814,7 @@ function btSceneSaga(bk){const R=rng(Date.now()%9973);const r=(a,b)=>a+R()*(b-a)
   let sky,party,title,sub;
   if(bk===1){
     const L=pick([56,58,59,65,66,63,64,61]),E=pick([47,45,54,43]);
-    const T=[[2,0],[0,0],[L,0],[1,0],[E,0]];party=T.map(([id,u],i)=>`<div class="b3h q${i}"><i class="b3glow"></i><img src="${btImg(id,u)}" alt=""></div>`).join('');
+    const T=[[2,0],[0,0],[L,0],[1,0],[E,0]];party=T.map(([id,u],i)=>`<div class="b3h q${i}"><i class="b3glow"></i><img src="${btImg(id,u)}" data-h="${id}_${u}" alt=""></div>`).join('');
     const frag=[0,1,2,3,4,5,6].map(i=>`<g transform="rotate(${i*51.4})"><g transform="translate(0 -52)"><path d="M0 -7L5 0L0 7L-5 0Z" fill="${['#ff9ae8','#9ad8ff','#ffd84a','#b8a4ff','#9af0c0','#ffb38a','#fff'][i]}" stroke="#fff" stroke-width=".8"/></g></g>`).join('');
     sky=`<svg class="bsheart" viewBox="-70 -70 140 140" aria-hidden="true"><defs><radialGradient id="bshg"><stop offset="0" stop-color="#fff"/><stop offset=".35" stop-color="#ff9ae8"/><stop offset=".7" stop-color="#7c5cff" stop-opacity=".5"/><stop offset="1" stop-color="#7c5cff" stop-opacity="0"/></radialGradient></defs>
       <circle r="44" fill="url(#bshg)"><animate attributeName="r" values="38;46;38" dur="4s" repeatCount="indefinite"/></circle>
@@ -13823,7 +13823,7 @@ function btSceneSaga(bk){const R=rng(Date.now()%9973);const r=(a,b)=>a+R()*(b-a)
       <div class="bscorvin"><svg viewBox="0 0 100 100">${MONS['Corvin']()}</svg></div>`;
     title=`📖 Livre I · Les Fragments d'Éther`;sub=`Rassemble les 7 fragments du Cœur d'Éther`}
   else{
-    const T=[[63,0],[56,0],[ALEA,0],[58,0],[62,0]];party=T.map(([id,u],i)=>`<div class="b3h q${i}"><i class="b3glow"></i><img src="${btImg(id,u)}" alt=""></div>`).join('');
+    const T=[[63,0],[56,0],[ALEA,0],[58,0],[62,0]];party=T.map(([id,u],i)=>`<div class="b3h q${i}"><i class="b3glow"></i><img src="${btImg(id,u)}" data-h="${id}_${u}" alt=""></div>`).join('');
     const thr=[...Array(6)].map((_,i)=>`<path d="M${-10+i*80} 0Q${60+i*60} ${120+i*14} ${420-i*40} ${60+i*30}" stroke="#ffe9a0" stroke-width=".8" fill="none" opacity=".45" stroke-dasharray="3 6"><animate attributeName="stroke-dashoffset" values="0;-36" dur="${3+i}s" repeatCount="indefinite"/></path>`).join('');
     const eyes=[[-14,-6,3],[14,-6,3],[0,-18,2.2],[-24,6,1.6],[24,6,1.6]].map(([x,y,s],i)=>`<circle cx="${x}" cy="${y}" r="${s}" fill="#fff6c0"><animate attributeName="opacity" values="0;1;.2;1;0" dur="${5+i*.6}s" begin="${i*.4}s" repeatCount="indefinite"/></circle>`).join('');
     sky=`<svg class="bsthreads" viewBox="0 0 400 300" preserveAspectRatio="none" aria-hidden="true">${thr}</svg>
@@ -14416,7 +14416,7 @@ const UTH_H={
   const o={};a[6].split(' ').forEach(t=>{const i=t.indexOf(':');if(i>0)o[t.slice(0,i)]=t.slice(i+1)});
   o.bg=T.bg;let back=o.back?o.back.split('+'):[];if(T.w){if(/^wings/.test(T.w))back=back.filter(x=>!/^wings/.test(x));if(!back.includes(T.w))back.unshift(T.w)}if(back.length)o.back=back.join('+');
   const face=o.face?o.face.split(','):[];const head=o.head||'human';
-  if((head==='human'||head==='orc'||head==='spirit')&&!face.includes('blindfold')&&o.eyes!=='slit')o.eyes='glow';
+  if((head==='human'||head==='orc'||head==='spirit')&&!face.includes('blindfold')&&o.eyes!=='slit'&&!/^lg/.test(o.eyes||''))o.eyes='glow';
   if(u>=2){if(T.fx&&!face.includes(T.fx))face.push(T.fx);if(T.hat&&!/helm/.test(o.hat||''))o.hat=T.hat}
   if(face.length)o.face=face.join(',');
   return[a[0],u>=3?(T.h3||T.s):a[1],T.m,T.s,T.a,T.e,Object.entries(o).map(([k,v])=>k+':'+v).join(' ')]}}
@@ -14903,7 +14903,7 @@ try{PATCH.unshift({v:32,d:'25 octobre 2026',t:"Livre III : l'Écho du Premier Po
 function btSceneSaga3(){const R=rng(Date.now()%7919);const r=(a,b)=>a+R()*(b-a);
   let stars='';for(let k=0;k<18;k++)stars+=`<i style="left:${r(0,100).toFixed(1)}%;top:${r(0,40).toFixed(1)}%;animation-delay:${r(0,4).toFixed(1)}s;width:${r(1.5,3).toFixed(1)}px;height:${r(1.5,3).toFixed(1)}px"></i>`;
   let fall='';for(let k=0;k<12;k++)fall+=`<i class="${k%3?'ash':'emb'}" style="left:${r(2,96).toFixed(1)}%;animation-delay:${r(0,9).toFixed(1)}s;animation-duration:${r(7,12).toFixed(1)}s"></i>`;
-  const T=[[65,0],[57,0],[58,0],[47,0],[59,0]];const party=T.map(([id,u],i)=>`<div class="b3h q${i}"><i class="b3glow"></i><img src="${btImg(id,u)}" alt=""></div>`).join('');
+  const T=[[65,0],[57,0],[58,0],[47,0],[59,0]];const party=T.map(([id,u],i)=>`<div class="b3h q${i}"><i class="b3glow"></i><img src="${btImg(id,u)}" data-h="${id}_${u}" alt=""></div>`).join('');
   let mem='';try{mem=(eryBody('eryndel')||'').replace('<svg','<svg class="loresvg hb"')}catch(e){}
   const owls=[0,1,2].map(i=>`<svg class="bsowl o${i}" viewBox="0 0 40 20" aria-hidden="true"><path d="M20 12Q14 2 2 6Q10 8 14 14Q17 12 20 14Q23 12 26 14Q30 8 38 6Q26 2 20 12Z" fill="#3a2a1a"/></svg>`).join('');
   const sky=`<div class="bsmem">${mem}</div><svg class="bscrown" viewBox="-60 -50 120 70" aria-hidden="true"><defs><radialGradient id="bscg"><stop offset="0" stop-color="#ffd8a0" stop-opacity=".9"/><stop offset="1" stop-color="#ff6a1a" stop-opacity="0"/></radialGradient></defs><circle r="44" cy="-6" fill="url(#bscg)"><animate attributeName="r" values="38;48;38" dur="3.6s" repeatCount="indefinite"/></circle>
@@ -16592,6 +16592,53 @@ try{if(ashOn()){FRAMES.ashcrown='Couronne de Cendres';FHINT.ashcrown="Événemen
 .ashshop{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px;margin-top:8px}.ashit{display:flex;flex-direction:column;align-items:center;gap:3px;padding:10px 6px;border-radius:12px;background:var(--panel2);border:1px solid rgba(255,106,26,.3);color:var(--fg);cursor:pointer;text-align:center}.ashit:disabled{opacity:.5;cursor:default}.ashit .ic{font-size:22px}.ashit b{font-size:12px}.ashit small{font-size:11px;opacity:.8}`;document.head.appendChild(st);
  if(ashOn())TITLES.push({k:'cendres',n:'Pourfendeur de Cendres',c:'#ff6a1a',d:"Événement « L'Éveil du Roi de Cendre »",ok:()=>!!(S.ash&&S.ash.tt)})}catch(e){}
 try{Object.assign(I18N_EN,{"🔥 L'Éveil du Roi de Cendre":"🔥 Rise of the Ash King","Éveil du Roi de Cendre":"Rise of the Ash King","Roi de Cendre":"Ash King","LA MARCHE DES CENDRES":"THE ASH MARCH","LE REQUIEM DES MILLE ANS":"REQUIEM OF A THOUSAND YEARS","ÉVÉNEMENT TERMINÉ":"EVENT OVER","🛒 Boutique des Braises":"🛒 Ember Shop","🏆 Dégâts sur le Roi":"🏆 Damage on the King","BOSS MONDIAL":"WORLD BOSS","Éryndel le Roi de Cendre":"Éryndel the Ash King","Éryndel, le Roi de Cendre":"Éryndel, the Ash King","Cadre « Couronne de Cendres »":"\"Ash Crown\" frame","Titre « Pourfendeur de Cendres »":"\"Ashslayer\" title","Pourfendeur de Cendres":"Ashslayer","Couronne de Cendres":"Ash Crown","Braises éternelles":"Eternal Embers","Requiem des Mille Ans":"Requiem of a Thousand Years","Repousse le Premier Porteur":"Drive back the First Bearer"})}catch(e){}
+
+/* ================= V38.4 : légendaires — des yeux bien à eux + vraie barbe pour Solaris ================= */
+(function(){
+const star4=(x,y,r,c)=>Pa(`M${x} ${y-r}L${x+r*.3} ${y-r*.3}L${x+r} ${y}L${x+r*.3} ${y+r*.3}L${x} ${y+r}L${x-r*.3} ${y+r*.3}L${x-r} ${y}L${x-r*.3} ${y-r*.3}Z`,c);
+const brow=(L,a,b,w=1.4)=>{const bc=shade(L.hr,-.1);return SL(a,bc,w)+SL(b,bc,w)};
+const EYX={
+ /* Fortuna : yeux en amande, longs cils, iris vert émeraude */
+ lg56:L=>{const one=x=>Pa(`M${x-3.6} 47.2Q${x} 43.6 ${x+3.6} 47.2Q${x} 50 ${x-3.6} 47.2Z`,'#fff')+CI(x+.2,47.1,1.7,L.e)+CI(x+.2,47.1,.75,'#0c1a12')+CI(x-.5,46.4,.5,'#fff');
+   return one(44)+one(56)+SL('M40.4 46.8Q44 43.2 47.8 46.4','#1a0c10',.9)+SL('M52.2 46.4Q56 43.2 59.6 46.8','#1a0c10',.9)+brow(L,'M40 42.4Q44 39.6 47.6 41.8','M60 42.4Q56 39.6 52.4 41.8',1.2)},
+ /* Solaris : iris solaire, rayons dorés autour de la pupille */
+ lg57:L=>{const one=x=>EL(x,47,4.3,3.5,L.e,'opacity=".3"')+EL(x,47,3.1,2.5,'#fff8e0')+CI(x,47,1.9,L.e)+[...Array(8)].map((_,k)=>{const a=k*Math.PI/4;return SL(`M${(x+Math.cos(a)*1.2).toFixed(2)} ${(47+Math.sin(a)*1.2).toFixed(2)}L${(x+Math.cos(a)*2.4).toFixed(2)} ${(47+Math.sin(a)*2.4).toFixed(2)}`,'#b86a10',.35)}).join('')+CI(x,47,.75,'#7a3a08')+CI(x-.6,46.3,.5,'#fff');
+   return one(44)+one(56)+brow(L,'M39.6 42.8Q44 40.6 48 42.4','M60.4 42.8Q56 40.6 52 42.4',1.7)},
+ /* Kaïros : pupille en sablier */
+ lg58:L=>{const one=x=>EL(x,47,3,2.4,'#fff')+CI(x+.2,47.1,1.9,L.e)+Pa(`M${x-.7} 45.9H${x+1.1}L${x+.2} 47.1L${x+1.1} 48.3H${x-.7}L${x+.2} 47.1Z`,'#1a1030')+CI(x-.5,46.3,.45,'#fff');
+   return one(44)+one(56)+brow(L,'M40 43Q44 41.6 47.5 42.6','M60 43Q56 41.6 52.5 42.6',1.2)},
+ /* Gaïa : yeux en feuille, nervure verticale */
+ lg59:L=>{const one=x=>Pa(`M${x-4} 47Q${x} 42.6 ${x+4} 47Q${x} 51.4 ${x-4} 47Z`,L.e,'opacity=".35"')+Pa(`M${x-3.2} 47Q${x} 43.8 ${x+3.2} 47Q${x} 50.2 ${x-3.2} 47Z`,L.e)+SL(`M${x} 44.6L${x} 49.4`,'#1a3a10',.7)+SL(`M${x} 46.4L${x-1.3} 45.6M${x} 47.8L${x+1.3} 47`,'#1a3a10',.4)+CI(x-1,46,.45,'#fff');
+   return one(44)+one(56)+brow(L,'M40 43Q44 41.3 47.5 42.8','M60 43Q56 41.3 52.5 42.8',1.3)},
+ /* Titanor : yeux de cristal à facettes */
+ lg60:L=>{const one=x=>Pa(`M${x-3.6} 47L${x-1.8} 44.2H${x+1.8}L${x+3.6} 47L${x+1.8} 49.8H${x-1.8}Z`,L.e,'opacity=".4"')+Pa(`M${x-2.6} 47L${x-1.3} 45H${x+1.3}L${x+2.6} 47L${x+1.3} 49H${x-1.3}Z`,L.e)+SL(`M${x-1.3} 45L${x} 47L${x+1.3} 45M${x} 47V49`,'#e8ffff',.4)+CI(x,47,.6,'#fff');
+   return one(44)+one(56)},
+ /* Valkyr : regard perçant, iris bleu glacier cerclé */
+ lg61:L=>{const one=(x,d)=>Pa(`M${x-3.6} 47.4Q${x-d} 44.2 ${x+3.6} 46.4Q${x} 49.6 ${x-3.6} 47.4Z`,'#fff')+CI(x+.1,47,1.8,L.e)+CI(x+.1,47,1.8,'none','stroke="#1a3a8a" stroke-width=".4"')+CI(x+.1,47,.75,'#0a1430')+CI(x-.5,46.3,.5,'#fff');
+   return one(44,1)+`<g transform="matrix(-1 0 0 1 100 0)">${one(44,1)}</g>`+brow(L,'M39.4 42L47.4 44.2','M60.6 42L52.6 44.2',1.8)},
+ /* Nyx : yeux lunaires, pupille en croissant */
+ lg62:L=>{const one=x=>EL(x,47,4.2,3.4,L.e,'opacity=".3"')+EL(x,47,3,2.4,L.e)+Pa(`M${x+.6} 45.3A1.8 1.8 0 1 0 ${x+.6} 48.7A1.35 1.35 0 1 1 ${x+.6} 45.3Z`,'#1a0a2a')+CI(x-1,46.2,.45,'#fff');
+   return one(44)+one(56)},
+ /* Orion : pupilles en étoile */
+ lg63:L=>{const one=x=>EL(x,47,4.2,3.4,L.e,'opacity=".3"')+EL(x,47,3,2.4,'#eef4ff')+CI(x,47,1.9,L.e)+star4(x,47,1.5,'#0a1430')+CI(x-.7,46.2,.45,'#fff');
+   return one(44)+one(56)+brow(L,'M40 43Q44 41.3 47.5 42.8','M60 43Q56 41.3 52.5 42.8',1.3)},
+ /* Léviathane : grands yeux des abysses, fente verticale, anneau lumineux */
+ lg66:L=>{const one=x=>CI(x,47,3.6,L.e,'opacity=".28"')+CI(x,47,2.9,'#0a2a3a')+CI(x,47,2.9,'none',`stroke="${L.e}" stroke-width=".7"`)+EL(x,47,.55,2.2,L.e)+CI(x-1,45.9,.5,'#fff');
+   return one(44)+one(56)}};
+{const ey=EYES;EYES=function(t,L){if(EYX[t])return EYX[t](L);return ey.apply(this,arguments)}}
+/* Solaris : une vraie barbe dorée qui suit la mâchoire, avec moustache */
+FX.lg57=L=>{const c='#e0a020',d='#a8700a';
+  return Pa('M36.6 47.5Q36 62 42 69Q50 76 58 69Q64 62 63.4 47.5L61.2 50.5Q60.6 58.2 56.2 61.2Q50 64.2 43.8 61.2Q39.4 58.2 38.8 50.5Z',c,`stroke="${d}" stroke-width=".5"`)
+   +SL('M40 56Q41.5 63 45.5 66M60 56Q58.5 63 54.5 66M50 64.6V71','#fff0a0',.5,'opacity=".6"')
+   +Pa('M44.6 55.1Q47.6 52.9 50 54.3Q52.4 52.9 55.4 55.1Q52.8 55.7 50 55.3Q47.2 55.7 44.6 55.1Z',c,`stroke="${d}" stroke-width=".4"`)
+   +MIR(CI(33.4,56.5,1.5,'#ffcf4a','stroke="#b8781a" stroke-width=".4"'))};
+FX_UNDER.delete('lg57');
+const EYK={56:'lg56',57:'lg57',58:'lg58',59:'lg59',60:'lg60',61:'lg61',62:'lg62',63:'lg63',66:'lg66'};
+for(const i in EYK){const L=LOOKS[i];if(!L)continue;let t=String(L[6]);t=/(^| )eyes:[^ ]*/.test(t)?t.replace(/(^| )eyes:[^ ]*/,`$1eyes:${EYK[i]}`):t+` eyes:${EYK[i]}`;LOOKS[i]=[...L.slice(0,6),t];try{delete PCACHE[i];skRefresh(+i)}catch(e){}}
+})();
+
+/* ================= toujours en dernier : l'écran de chargement reprend les dessins à jour ================= */
+(function(){try{const imgs=document.querySelectorAll('#boot img[data-h]');imgs.forEach(im=>{const [id,u]=im.dataset.h.split('_').map(Number);const s=btImg(id,u);if(s)im.src=s})}catch(e){}})();
 
 /* ================= DÉMARRAGE ================= */
 (function init(){
