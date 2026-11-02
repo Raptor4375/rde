@@ -272,6 +272,16 @@ function eryYoungBody(){if(EC.yb)return EC.yb;const q='ys_';
   s+=C_(117,70,15,`url(#${q}gg)`)+`<g>${P('M117 61.6Q125.4 71.6 121.2 79.2Q119.4 82 117 82.2Q114.6 82 112.8 79.2Q108.6 71.6 117 61.6Z',`url(#${q}gf)`)+P('M117 69.4Q120.6 74.4 118.6 78.4Q117.8 79.6 117 79.6Q116.2 79.6 115.4 78.4Q113.4 74.4 117 69.4Z','#ffffff','opacity=".9"')}<animate attributeName="opacity" values="1;.85;1;.92;1" dur="1.8s" repeatCount="indefinite"/></g>`
     +[[108,62,1],[126,58,.8],[124,72,.7],[110,74,.6]].map(([x,y,r])=>STARP(x,y,r)).join('');
   return EC.yb=s+'</svg>'}
+/* le Porteur Brûlé en pied (chronique de la Garde d'Éther) : le jeune Éryndel… tel que la couronne l'a gardé */
+function eryBurntBody(){if(EC.bb)return EC.bb;let s=eryYoungBody().replace(/ys_/g,'yb_').replace('aria-label="Éryndel, le Premier Porteur"','aria-label="Éryndel, le Porteur Brûlé"');
+  for(const [a,b] of [['#f8dec8','#ebe1d8'],['#eecaae','#d9cdc3'],['#cc9e80','#b2a398'],['#e4bea2','#c9bcb1'],['#b98c74','#8e8078'],['#b48a72','#9a8a80'],['#b08670','#8e7e74'],
+    ['#7a5640','#3e3436'],['#43291c','#1c1617'],['#2a1810','#ff6a1a'],['#a24a32','#4a3a34'],['#5c2418','#231a17'],['#5a6474','#3a3032'],['#2a303c','#141012'],['#8a96a8','#ff8a3a'],
+    ['#fff0a0','#ffb24a'],['#ffb84a','#ff5a14'],['#fff6c8','#ffb06a'],['#d8b070','#9a6a3a'],['#9a7458','#5a4a4c']])s=s.split(a).join(b);
+  const q='yb_',burn=P('M55.4 38.6Q61.6 40.6 64.4 45.6Q64.2 54 59.4 60Q55.8 64 51.8 65.6L52.8 62L55 60.4L54 57L56.6 54.6L55.2 50.6L57.6 48.6L55.6 44.6L57.6 41.6Z','#6a5c56','opacity=".55"')
+    +crack(q,'M58.4 41L60.2 44.6L59.2 47.6M60.2 44.6L62.6 45.4')+crack(q,'M58.6 49.4L61.4 53.8L60 57.6M61.4 53.8L63.4 53.4')+crack(q,'M56.6 59.4L58.4 62.2');
+  const torn=L_('M50 176L53 181L56 176.6L59.6 182L63 177L67 182.6L71 178M89 178L93 182.6L97 177L100.6 182L104 176.6L107 181L110 176',EMB,1.2,'opacity=".9"');
+  s=s.replace(/<\/svg>$/,HG(burn)+torn+'</svg>');return EC.bb=s}
+window.eryPortrait=eryPortrait;window.eryBurntBody=eryBurntBody;
 /* le mode histoire : le jeune Éryndel et le Roi de Cendre avec ces nouveaux dessins */
 try{const se=window.eryBody;if(typeof se==='function')window.eryBody=function(k){try{if(k==='roi')return eryKingBody(0,true);if(k==='eryndel')return eryYoungBody()}catch(e){}return se.apply(this,arguments)}}catch(e){}
 
