@@ -84,6 +84,11 @@ _a="HEROES.filter(h=>noLeg?h.r<4:h.r>=4)"
 assert src.count(_a)==1,'metaleg';src=src.replace(_a,"HEROES.filter(h=>(!h.ex||S.heroes[h.i])&&(noLeg?h.r<4:h.r>=4))")
 _a="const sn=await NET.db.collection('mecene').limit(60).get();const N=[...new Set(sn.docs.map(d=>d.data().n).filter(Boolean))];"
 assert src.count(_a)==1,'mecwall';src=src.replace(_a,"const sn=await NET.db.collection('mecene').limit(200).get();const N=[...new Set(sn.docs.filter(d=>MEC_H.includes(d.id)).map(d=>d.data().n).filter(Boolean))];")
+for _a,_b,_n in [("const ITCH_URL='https://royaume-d-ether.itch.io/rde',ITCH_DON=ITCH_URL;","const ITCH_URL='https://royaume-d-ether.itch.io/rde',ITCH_DON='https://royaume-d-ether.itch.io/pack-mecene-royaumes-dether';",1),
+  ("Après ton don, tu reçois un <b>code Mécène</b> par e-mail. Entre-le ici pour débloquer :","Après ton achat, clique sur « Demander une clé » sur ta page itch.io : tu reçois aussitôt ton <b>code Mécène</b>. Entre-le ici pour débloquer :",1),
+  ("Le don est libre, même 1 € débloque tout le pack.","Prix libre : dès 1 $, tout le pack est débloqué.",1)]:
+  assert src.count(_a)==_n,_a[:40];src=src.replace(_a,_b)
+src=src.replace("const I18N_EN={","const I18N_EN={\"Après ton achat, clique sur « Demander une clé » sur ta page itch.io : tu reçois aussitôt ton\":\"After your purchase, click « Request a key » on your itch.io page: you instantly get your\",\". Entre-le ici pour débloquer :\":\". Enter it here to unlock:\",\"Prix libre : dès # $, tout le pack est débloqué. Paiement géré par itch.io. Si tu es mineur, demande à un parent.\":\"Pay what you want: from # $, the whole pack is unlocked. Payment handled by itch.io. If you're a minor, ask a parent.\",\"☕ Soutenir sur itch.io\":\"☕ Support on itch.io\",",1)
 open('royaumes.html','w').write(src)
 open('chk.js','w').write(src[src.index('<script>')+8:src.rindex('</script>')])
 a=src.index('<style>');b=src.index('</style>')+8;open('prod.html','w').write(src[:a]+src[b:])
