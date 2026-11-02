@@ -167,13 +167,14 @@ function eryYoung(){if(EC.young)return EC.young;const q='ey_';
 
 /* ---------- le corps entier (cadre 160×244, comme les autres héros) ---------- */
 const HG=s=>`<g transform="translate(38 -1) scale(.84)">${s}</g>`;
-function eryBody(u){u=Math.max(0,Math.min(3,u|0));if(EC['b'+u])return EC['b'+u];const q='eb'+u+'_',A=`url(#${q}ar)`;
+function eryKingBody(u,bare){u=Math.max(0,Math.min(3,u|0));const ck='b'+u+(bare?'s':'');if(EC[ck])return EC[ck];const q='eb'+u+(bare?'s':'')+'_',A=`url(#${q}ar)`;
   let s=`<svg class="hbsvg" viewBox="0 -8 160 244" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Éryndel le Roi de Cendre en pied"><defs>${defs(q,u)}<radialGradient id="${q}bb" cx="50%" cy="40%" r="60%"><stop offset="0" stop-color="#ff7a2a" stop-opacity="${.38+u*.08}"/><stop offset=".55" stop-color="#5a0e04" stop-opacity=".32"/><stop offset="1" stop-color="#0a0202" stop-opacity="0"/></radialGradient></defs>`;
   /* décor : lueur, éclipse, quelques braises qui montent (peu d'animations) */
-  s+=`<g class="lgbk">${E_(80,96,80,116,`url(#${q}bb)`)}${rays(80,36,14,120,.05)}${C_(80,36,42+u*3,`url(#${q}gl)`,'opacity=".75"')}${C_(80,36,31.4,'none','stroke="#ff5a14" stroke-width="4" opacity=".26"')}${C_(80,36,28.5,'#140607')}${C_(80,36,29.2,'none','stroke="#ffc062" stroke-width="1.3" opacity=".95"')}`;
-  if(u>=1)s+=C_(80,36,46+u*4,'none',`stroke="${EMB}" stroke-width="1.2" stroke-dasharray="2 6" opacity=".55"`);
+  s+=bare?`<g class="lgbk">${C_(80,36,40,`url(#${q}gl)`,'opacity=".6"')}${C_(80,36,31.4,'none','stroke="#ff5a14" stroke-width="4" opacity=".26"')}${C_(80,36,28.5,'#140607')}${C_(80,36,29.2,'none','stroke="#ffc062" stroke-width="1.3" opacity=".95"')}</g>`:`<g class="lgbk">${E_(80,96,80,116,`url(#${q}bb)`)}${rays(80,36,14,120,.05)}${C_(80,36,42+u*3,`url(#${q}gl)`,'opacity=".75"')}${C_(80,36,31.4,'none','stroke="#ff5a14" stroke-width="4" opacity=".26"')}${C_(80,36,28.5,'#140607')}${C_(80,36,29.2,'none','stroke="#ffc062" stroke-width="1.3" opacity=".95"')}`;
+  if(!bare){if(u>=1)s+=C_(80,36,46+u*4,'none',`stroke="${EMB}" stroke-width="1.2" stroke-dasharray="2 6" opacity=".55"`);
   s+=[...Array(6)].map((_,k)=>{const x=24+k*22.4,d=3.4+(k%3)*.9;return`<circle r="${(.8+(k%3)*.4).toFixed(1)}" fill="${k%2?'#ffb21a':'#c8bcb0'}" opacity=".8"><animateMotion dur="${d}s" begin="${-k*.7}s" repeatCount="indefinite" path="M${r1(x)} 214q${k%2?6:-6} -60 ${k%2?-4:4} -150"/></circle>`}).join('');
-  s+=`</g>`+E_(80,219,42,6,'#000','opacity=".5"')+L_('M80 219L58 223M80 219L102 224M80 219L70 226M80 219L95 213',EMB,.8,'opacity=".55"');
+  s+=`</g>`}
+  s+=E_(80,219,42,6,'#000','opacity=".5"')+L_('M80 219L58 223M80 219L102 224M80 219L70 226M80 219L95 213',EMB,.8,'opacity=".55"');
   if(u>=2)s+=`<g transform="translate(12.5 -15) scale(1.35)">${wings(q,u)}</g>`;
   /* cape qui se consume (plus étroite) */
   const hem='M38 208L45 203L50 212L57 205L64 213L72 206L80 214L88 206L96 213L103 205L110 212L115 203L122 208';
@@ -229,7 +230,50 @@ function eryBody(u){u=Math.max(0,Math.min(3,u|0));if(EC['b'+u])return EC['b'+u];
   /* la Flamme volée (une seule animation légère) */
   s+=glow(q,125,76,14,.75)+`<g>${flame(q,125,87.6,3.5+u*.3)}<animate attributeName="opacity" values="1;.82;1;.9;1" dur="1.6s" repeatCount="indefinite"/></g>`;
   if(u)[[10,40,2.2],[150,58,1.8],[14,140,1.6],[146,150,1.8],[80,-4,1.6]].slice(0,2+u).forEach(([x,y,r])=>{s+=STARP(x,y,r)});
-  s+='</svg>';return EC['b'+u]=s}
+  s+='</svg>';return EC[ck]=s}
+
+/* ---------- le jeune Éryndel du mode histoire (Livre III), avant le vol de la flamme ----------
+   vivant et chaleureux : peau dorée, cheveux châtains, tunique de voyage, aucune arme (« ni épée, ni château »),
+   la flamme dorée du Cœur dans sa paume. Rien à voir avec le Roi de Cendre. */
+function eryYoungBody(){if(EC.yb)return EC.yb;const q='ys_';
+  const D=defs(q,0).replace('#ebe1d8','#f8dec8').replace('#d9cdc3','#eecaae').replace('#b2a398','#cc9e80');
+  let s=`<svg class="hbsvg" viewBox="0 -8 160 244" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Éryndel, le Premier Porteur"><defs>${D}
+<linearGradient id="${q}tu" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#a24a32"/><stop offset="1" stop-color="#5c2418"/></linearGradient>
+<linearGradient id="${q}ck" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5a6474"/><stop offset="1" stop-color="#2a303c"/></linearGradient>
+<linearGradient id="${q}pt" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3c3646"/><stop offset="1" stop-color="#211d28"/></linearGradient>
+<linearGradient id="${q}hb" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7a5640"/><stop offset=".6" stop-color="#43291c"/><stop offset="1" stop-color="#2a1810"/></linearGradient>
+<linearGradient id="${q}gf" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#ffffff"/><stop offset=".45" stop-color="#fff0a0"/><stop offset="1" stop-color="#ffb84a"/></linearGradient>
+<radialGradient id="${q}gg" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#fff6c8" stop-opacity=".9"/><stop offset=".45" stop-color="#ffd84a" stop-opacity=".38"/><stop offset="1" stop-color="#ffd84a" stop-opacity="0"/></radialGradient></defs>`;
+  s+=E_(80,219,34,5.5,'#000','opacity=".4"');
+  /* cape de voyage et capuche rabattue */
+  s+=P('M62 62Q54 110 50 176Q65 182 80 180Q95 182 110 176Q106 110 98 62Z',`url(#${q}ck)`)+P('M62 64Q56 112 53 172L58 174Q60 116 66 68Z','#1e232c','opacity=".7"')+P('M98 64Q104 112 107 172L102 174Q100 116 94 68Z','#1e232c','opacity=".7"')
+    +L_('M50 176Q65 182 80 180Q95 182 110 176','#8a96a8',.8,'opacity=".6"');
+  s+=P('M66 55Q80 49 94 55Q96.6 63 92.4 68Q80 72.6 67.6 68Q63.4 63 66 55Z','#3a4250');
+  s+=HG(P('M34 46Q32 30 42 24.6Q50 21 58 24.6Q68 30 66 46Q66 54 62.4 58L37.6 58Q34 54 34 46Z',`url(#${q}hb)`));
+  /* jambes et bottes */
+  const leg=P('M67.4 138L78.6 138L77.4 176L76.6 200L68.4 200L67.6 176Z',`url(#${q}pt)`)+P('M66.6 196L77.2 196L77.6 208L60.6 210.6Q61.4 204 66.6 196Z','#4a2e1e')+L_('M66.4 197.4L77.4 197.4','#6a4a32',1);
+  s+=MB(leg);
+  /* tunique, ceinture, sacoche */
+  s+=P('M64 64Q80 59.6 96 64L97.6 96Q98.6 120 100.6 146Q80 152 59.4 146Q61.4 120 62.4 96Z',`url(#${q}tu)`)+P('M90 66Q96 100 100.6 146L96 147.4Q92 104 86 66Z','#000','opacity=".14"')
+    +L_('M59.4 146Q80 152 100.6 146','#d8b070',.9,'opacity=".8"')+L_('M80 68L80 86','#3a140c',.8)+L_('M77.6 72L82.4 74M77.6 76.6L82.4 78.6M77.6 81.2L82.4 83.2','#d8b070',.6,'opacity=".8"')
+    +P('M75 61L80 70L85 61Z',`url(#${q}sk)`)+L_('M74.4 61L80 70.6L85.6 61','#5a2418',1);
+  s+=P('M61.6 114Q80 119 98.4 114L98.6 119.6Q80 124.6 61.4 119.6Z','#5a3a24')+`<rect x="76.4" y="115.4" width="7.2" height="6" rx="1.2" fill="#d8b070" stroke="#8a5a2a" stroke-width=".7"/>`;
+  s+=L_('M66 64L97 126','#3a2414',3.4)+L_('M66 64L97 126','#6a4428',2)+`<rect x="94" y="124" width="10" height="9" rx="2.4" fill="#6a4630" stroke="#3a2414" stroke-width=".7"/>`+C_(99,128.4,1,'#d8b070');
+  /* bras droit au repos, bras gauche levé : la flamme dorée du Cœur */
+  s+=P('M62.4 64.6Q57.6 84 58.4 104L66.6 104.6Q67 86 69.6 70Z',`url(#${q}tu)`)+P('M58.4 106Q57.4 120 58.6 134L65.8 134.4Q66.4 120 66.6 106.6Z','#6a4630')+L_('M58.6 112L66.2 112.6M58.4 120L66.2 120.4M58.6 128L66 128.4','#3a2414',.6)
+    +E_(62.2,138.8,4.2,4.8,`url(#${q}sk)`)+L_('M59 140Q61 143.4 64.6 142','#b48a72',.6);
+  s+=P('M93.6 68Q99.6 86 100.4 104L108.4 103.2Q106.8 85 100.6 64.6Z',`url(#${q}tu)`)+P('M101 105.4Q107.4 94.4 112.6 83.4L119 87Q113.6 98.4 107.6 109Z','#6a4630')+L_('M104 101.4L110.2 104.8M107.4 95L113.4 98.2','#3a2414',.6)
+    +E_(116.4,83.2,4.8,3.6,`url(#${q}sk)`,'transform="rotate(-24 116.4 83.2)"')+L_('M112.4 83.6Q116.6 80.6 121 82.6','#b48a72',.6);
+  /* la tête */
+  const fc=face(q,0,true).replace(/#c9bcb1/g,'#e4bea2').replace(/#8e8078/g,'#b98c74').replace(/#9a8a80/g,'#b48a72').replace(/#8e7e74/g,'#b08670').replace("M47 58.6Q50 59.4 53 58.4","M46.8 58Q50 60.4 53.2 58").replace(/#3a2c2a/g,'#4a2c1e');
+  s+=HG(fc+P('M35 45Q33.4 30.4 42.4 25.2Q50.6 21.2 58.6 25Q66.8 29.6 65.2 44.6Q64.4 39.4 62.2 36.6L63 41.4L59.2 35.4L58.6 39.6L55 34.2Q51.4 36.6 46.6 37.6Q42.4 38.6 40.4 42.2Q41.6 37.6 44.6 35.4Q40.6 36.4 37.6 40.6Q38.4 37.6 40.2 35.8Q37 38 35 45Z',`url(#${q}hb)`)
+    +L_('M44.6 35.4Q48.8 32.8 54.4 31.6M40.2 35.8Q44 32.6 48.6 31.4M58.4 30Q61.4 32.6 62.6 36.4','#9a7458',.5,'opacity=".8"')+MI(P('M35 44Q34 49.6 35.8 53Q36.2 48 37.8 44.4Z',`url(#${q}hb)`)));
+  /* la flamme du Cœur (une seule animation légère) */
+  s+=C_(117,70,15,`url(#${q}gg)`)+`<g>${P('M117 61.6Q125.4 71.6 121.2 79.2Q119.4 82 117 82.2Q114.6 82 112.8 79.2Q108.6 71.6 117 61.6Z',`url(#${q}gf)`)+P('M117 69.4Q120.6 74.4 118.6 78.4Q117.8 79.6 117 79.6Q116.2 79.6 115.4 78.4Q113.4 74.4 117 69.4Z','#ffffff','opacity=".9"')}<animate attributeName="opacity" values="1;.85;1;.92;1" dur="1.8s" repeatCount="indefinite"/></g>`
+    +[[108,62,1],[126,58,.8],[124,72,.7],[110,74,.6]].map(([x,y,r])=>STARP(x,y,r)).join('');
+  return EC.yb=s+'</svg>'}
+/* le mode histoire : le jeune Éryndel et le Roi de Cendre avec ces nouveaux dessins */
+try{const se=window.eryBody;if(typeof se==='function')window.eryBody=function(k){try{if(k==='roi')return eryKingBody(0,true);if(k==='eryndel')return eryYoungBody()}catch(e){}return se.apply(this,arguments)}}catch(e){}
 
 /* ---------- son histoire, fidèle au Livre III (« L'Écho du Premier Porteur ») ---------- */
 try{STL[ERY]=["Éryndel n'avait ni épée ni château, seulement l'envie de protéger ceux qu'il aimait. C'est pour cela que le Cœur l'a choisi : il fut le tout premier Porteur de sa flamme.",
@@ -241,11 +285,27 @@ try{const X={"Éryndel n'avait ni épée ni château, seulement l'envie de prot�
  "Éryndel, le Porteur Brûlé":"Éryndel, the Burnt Bearer"};for(const k in X)if(!(k in I18N_EN))I18N_EN[k]=X[k]}catch(e){}
 
 /* ---------- branchements ---------- */
-window.eryPortrait=eryPortrait;window.eryBody=eryBody;
 /* le boss de l'événement et le lieutenant du jour 4 utilisent ces dessins */
 {const ma=monArt;monArt=function(n,hh,bs){try{if(n==='Éryndel, le Roi de Cendre'){const k='ERYboss';return PIMG[k]||(PIMG[k]=svgToImg(eryPortrait(3,'boss')))}if(n==='Éryndel, le Porteur Brûlé'){const k='ERYyoung';return PIMG[k]||(PIMG[k]=svgToImg(eryYoung()))}}catch(e){}return ma.apply(this,arguments)}}
 try{Object.defineProperty(PCACHE,ERY,{get:()=>eryPortrait(0),set(){},configurable:true,enumerable:false})}catch(e){}
 {const pu=portraitU;portraitU=function(h,u){if(h&&h.i===ERY)return eryPortrait(u);return pu.apply(this,arguments)}}
-{const hb=heroBody;heroBody=function(h,u=0){if(h&&h.i===ERY)return eryBody(u);return hb.apply(this,arguments)}}
+{const hb=heroBody;heroBody=function(h,u=0){if(h&&h.i===ERY)return eryKingBody(u);return hb.apply(this,arguments)}}
 try{for(const C of [window.BODYC3,typeof BODYC!=='undefined'?BODYC:null,typeof BODYC2!=='undefined'?BODYC2:null,typeof PIMG!=='undefined'?PIMG:null])if(C)for(const k of Object.keys(C))if(new RegExp('(^|[^0-9])'+ERY+'(_|$)').test(k))delete C[k]}catch(e){}
 }catch(e){console.warn('ery art',e)}})();
+
+/* ================= mode histoire : la musique ne repasse plus sur celle du menu, et le jeu reste fluide =================
+   Avant : chaque rafraîchissement de l'écran (et toutes les 20 s) remettait la musique de l'accueil pendant les dialogues. */
+(function(){try{
+ {const mw=musicWant;musicWant=function(k){try{if(typeof SGP!=='undefined'&&SGP.on&&document.getElementById('sgov'))SGP.mus=k}catch(e){}return mw.apply(this,arguments)}}
+ {const pt=pageTheme;pageTheme=function(){try{if(!B&&typeof SGP!=='undefined'&&SGP.on&&SGP.mus!==undefined&&document.getElementById('sgov'))return SGP.mus}catch(e){}return pt.apply(this,arguments)}}
+ /* pendant une scène, le jeu caché derrière ne se dessine plus (gros gain sur téléphone) */
+ const st=document.createElement('style');st.textContent='body.sgon #app,body.sgon nav.tabs{visibility:hidden;content-visibility:hidden}';document.head.appendChild(st);
+ const sync=()=>{try{document.body.classList.toggle('sgon',!!document.getElementById('sgov'))}catch(e){}};
+ {const so=sagaOpen;sagaOpen=function(){const r=so.apply(this,arguments);sync();return r}}
+ {const sc=sagaClose;sagaClose=function(){const r=sc.apply(this,arguments);sync();return r}}
+ {const rr=render;render=function(){const r=rr.apply(this,arguments);sync();return r}}
+ setInterval(sync,1500);
+ /* les héros qui parlent : image fixe (sans animation), bien plus légère */
+ const STILL={},still=x=>String(x||'').replace(/<(animate|animateMotion|animateTransform|set)\b[^>]*\/>/g,'').replace(/<(animate|animateMotion|animateTransform)\b[^>]*>[\s\S]*?<\/(animate|animateMotion|animateTransform)>/g,'');
+ {const sf=sagaFig;sagaFig=function(w){try{if(typeof w==='number'&&HEROES[w]){const src=STILL[w]||(STILL[w]='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(still(heroBody(HEROES[w],0))));return`<div class="sgfig"><img alt="" src="${src}"></div>`}}catch(e){}return sf.apply(this,arguments)}}
+}catch(e){console.warn('saga fix',e)}})();
