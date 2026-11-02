@@ -18536,6 +18536,8 @@ function sorenBody(u,bare){u=Math.max(0,Math.min(3,u|0));const ck='b'+u+(bare?'s
   /* le carquois dans le dos, cerclé d'or : les flèches de braise dépassent derrière l'épaule */
   const ar=(x,y,a,c)=>`<g transform="translate(${x} ${y}) rotate(${a})">${C_(0,-34,6.4,EM(q),'opacity=".8"')}<path d="M0 0V-30" stroke="#6a4a2a" stroke-width="1.3"/><path d="M0 -30L-3.2 -39L0 -35.6L3.2 -39Z" fill="${c}" stroke="#7a2a10" stroke-width=".35"/><path d="M0 -31L-1.4 -36L0 -34.6L1.4 -36Z" fill="#fff2c8" opacity=".8"/></g>`;
   s+=`<g transform="rotate(24 99.5 76)"><rect x="94" y="56" width="11" height="40" rx="3" fill="${LE(q)}" stroke="#3a2410" stroke-width=".6"/><rect x="93.2" y="55.4" width="12.6" height="3" rx="1.2" fill="${AU(q)}" stroke="#8a5a1a" stroke-width=".4"/><rect x="93.4" y="92.4" width="12.2" height="3.4" rx="1.4" fill="${AU(q)}" stroke="#8a5a1a" stroke-width=".4"/></g>`+ar(104,60,24,'#ff8a3a')+ar(107.6,62,30,'#ffc860')+ar(110.6,65,36,'#ff8a3a');
+  /* l'arrière de la capuche tombe derrière les épaules : l'écharpe (le cache-cou) reste devant, comme sur le portrait */
+  s+=HG(hoodBack(q));
   /* jambes : pantalon, bandes, bottes de marche à boucles d'or */
   const leg=(x,f)=>{const o=f?1:-1,tx=f?x+17.6:x-6.6,bx=f?x-1.4:x+12.4;
     return P(`M${x} 128L${x+11} 128L${x+10.4} 176L${x+.6} 176Z`,'#4a3a2c')+L_(`M${x+.6} 150L${x+10.4} 152M${x+.6} 158L${x+10.4} 160M${x+.8} 166L${x+10.2} 168`,'#8a7458',.9,'opacity=".8"')
@@ -18574,7 +18576,7 @@ function sorenBody(u,bare){u=Math.max(0,Math.min(3,u|0));const ck='b'+u+(bare?'s
   if(u)s+=P('M118 30Q140 120 118 212','none',`stroke="#ffd84a" stroke-width="1.2" opacity="${.25+u*.15}"`);
   s+=`<rect x="125.6" y="110" width="6.4" height="16" rx="2" fill="#4a2c14" stroke="#2a1608" stroke-width=".5"/><rect x="125" y="108.6" width="7.6" height="2.4" rx=".8" fill="${AU(q)}"/><rect x="125" y="125" width="7.6" height="2.4" rx=".8" fill="${AU(q)}"/>`+E_(128.4,118,4.8,4.4,SK(q))+L_('M124.4 115.4L132 115.6M124.2 118.4L132.2 118.6M124.6 121.2L131.8 121.4','#b07a52',.5);
   /* la tête */
-  s+=HG(hoodBack(q)+face(q,u)+hoodFront(q,u)+plume(q));
+  s+=HG(face(q,u)+hoodFront(q,u)+plume(q));
   if(u>=3)s+=E_(80,10.4,10,2.6,'none','stroke="#ffe08a" stroke-width="1.4"')+E_(80,10.4,10,2.6,'none','stroke="#ffffff" stroke-width=".5"');
   if(u&&!bare)[[14,40,2],[146,56,1.8],[16,140,1.6],[144,150,1.8],[24,186,1.5]].slice(0,2+u).forEach(([x,y,r])=>{s+=STARP(x,y,r)});
   s+='</svg>';return SC[ck]=s}
