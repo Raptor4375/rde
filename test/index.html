@@ -14207,7 +14207,7 @@ function mecReward(){unlockFrame('mecene');S.frame='mecene';
    <p class="muted" style="font-size:12px;text-align:center;margin-top:8px">Les gemmes, éclats et l'or t'attendent dans ta 📮 boîte aux lettres.</p>
    <button class="btn pro" data-a="close" style="width:100%;margin-top:10px">Merci ! 💜</button></div>`);
   try{UIS.legend&&UIS.legend()}catch(e){}}
-async function mecWall(){const el=$('#mecwall');if(!el)return;try{if(!NET.on||!NET.db||!NET.db.collection)return;const sn=await NET.db.collection('mecene').limit(60).get();const N=[...new Set(sn.docs.map(d=>d.data().n).filter(Boolean))];
+async function mecWall(){const el=$('#mecwall');if(!el)return;try{if(!NET.on||!NET.db||!NET.db.collection)return;const sn=await NET.db.collection('mecene').limit(200).get();const N=[...new Set(sn.docs.filter(d=>MEC_H.includes(d.id)).map(d=>d.data().n).filter(Boolean))];
   if(!N.length){el.innerHTML='<div class="mwh">💜 Mur des Mécènes</div><span class="muted">Sois le premier !</span>';return}
   el.innerHTML=`<div class="mwh">💜 Mur des Mécènes · ${N.length}</div>`+N.map(n=>`<b>${esc(n)}</b>`).join('')}catch(e){}}
 

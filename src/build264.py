@@ -82,6 +82,8 @@ _a="const SMYTHS=()=>HEROES.filter(h=>h.r===5);"
 assert src.count(_a)==1,'smyths';src=src.replace(_a,"const SMYTHS=()=>HEROES.filter(h=>h.r===5&&!h.ex);")
 _a="HEROES.filter(h=>noLeg?h.r<4:h.r>=4)"
 assert src.count(_a)==1,'metaleg';src=src.replace(_a,"HEROES.filter(h=>(!h.ex||S.heroes[h.i])&&(noLeg?h.r<4:h.r>=4))")
+_a="const sn=await NET.db.collection('mecene').limit(60).get();const N=[...new Set(sn.docs.map(d=>d.data().n).filter(Boolean))];"
+assert src.count(_a)==1,'mecwall';src=src.replace(_a,"const sn=await NET.db.collection('mecene').limit(200).get();const N=[...new Set(sn.docs.filter(d=>MEC_H.includes(d.id)).map(d=>d.data().n).filter(Boolean))];")
 open('royaumes.html','w').write(src)
 open('chk.js','w').write(src[src.index('<script>')+8:src.rindex('</script>')])
 a=src.index('<style>');b=src.index('</style>')+8;open('prod.html','w').write(src[:a]+src[b:])
