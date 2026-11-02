@@ -23,9 +23,11 @@ try{Object.assign(I18N_EN,{"Titres":"Titles","🏷️ Titres":"🏷️ Titles","
 function ttPage(){try{ttCheck()}catch(e){}const own=S.titles||['voyageur'];
   return`<div class="card ttpage"><div class="h3" style="margin:0 0 4px">🏷️ Titres · ${own.length}/${TITLES.length}</div><div class="muted" style="font-size:12.5px;margin-bottom:10px">Choisis le titre affiché sous ton pseudo (profil, classements, tchat).</div><div class="ttlist">${TITLES.map(t=>{const ok=own.includes(t.k);return`<button class="ttb ${S.title===t.k?'on':''}" style="--tc:${t.c}" data-a="ttpick" data-v="${t.k}" ${ok?'':'disabled'}><b>${ok?esc(t.n):'🔒 '+esc(t.n)}</b><small>${esc(t.d)}</small></button>`}).join('')}</div></div>`}
 {const ps=pSocial;pSocial=function(){const soc=UI.soc;let h;
-  if(soc==='tt'){UI.soc='ach';try{h=ps.apply(this,arguments)}finally{UI.soc='tt'}
-    const a=h.indexOf('class="seg"'),e=h.indexOf('</div>',a)+6;h=h.slice(0,e)+ttPage()+'</div>';
+  if(soc==='tt'&&UI.lz&&UI.lz.top){UI.soc='ach';try{h=ps.apply(this,arguments)}finally{UI.soc='tt'}
+    /* seulement dans la Salle des trophées (avant : de retour sur la Grand-Place, la page se cassait en deux) */
+    const a=h.indexOf('class="seg"');if(a>=0){const e=h.indexOf('</div>',a)+6;h=h.slice(0,e)+ttPage()+'</div>';
     h=h.replace(/aria-selected="true" class="on"/g,'aria-selected="false" class=""')}
+    try{h=h.replace(zoneBar('top','tt'),zoneBar('top','ach'))}catch(e){}}
   else h=ps.apply(this,arguments);
   const a=h.indexOf('class="seg"');if(a>=0){const e=h.indexOf('</div>',a);h=h.slice(0,e)+`<button role="tab" aria-selected="${soc==='tt'}" class="${soc==='tt'?'on':''}" data-a="soc" data-v="tt">Titres</button>`+h.slice(e)}
   return h}}

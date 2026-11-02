@@ -206,7 +206,7 @@ const ACSH={};
 const ACK=[{f:.98,bh:1,ba:1},{f:.99,bh:1.02,ba:1},{f:1,bh:1.04,ba:1.01},{f:1.01,bh:1.06,ba:1.02},{f:.98,bh:1.08,ba:1.03},{f:.95,bh:1.12,ba:1.05}];
 let ACKM=1;
 const acLoss=k=>{const L=ASHS().crl;return L&&L[k]||0};
-function acFoes(k){const ids=teamIdsFor('pve').filter(i=>HEROES[i]&&S.heroes[i]);const P=Math.max(1150,idsPower(ids)),K=ACK[k],C=ACH[k];
+function acFoes(k){const ids=teamIdsFor('pve').filter(i=>HEROES[i]&&(S.heroes[i]||(window.PICK&&PICK.on&&PICK.trial[i])));const P=Math.max(1150,(window.pkPow||idsPower)(ids)),K=ACK[k],C=ACH[k];
   const fb=.86+.14*Math.min(1,Math.max(0,(Math.log10(P)-4)/.477)),dda=Math.max(.55,Math.pow(.9,acLoss(k)));
   const e=Math.max(0,Math.log(P*fb*K.f*dda*ACKM/1150)/Math.log(GROW)),g=Math.pow(GROW,e)*(1+1.1*e/99),hm=.85,am=1.08;
   const port=(nm,h,b)=>NMAP[nm]&&typeof nmonArt==='function'?nmonArt(nm,h,b):monArt(nm,h,b);
@@ -238,7 +238,7 @@ function acCard(){if(!acOpenPhase()&&!acCount())return'';const nx=acNext(),n=acC
   else if(!acOpenPhase())main=`<p class="muted" style="font-size:12.5px;margin:0">La chronique est terminée pour cet événement.</p>`;
   else{const st=ashStart(),t=st+(ACH[nx].day-1)*864e5-Date.now();main=`<button class="btn" disabled style="width:100%">🔒 <span>Chapitre ${nx+1}</span> · <span>${dur(Math.max(0,t))}</span></button>`}
   const list=ACH.map((c,k)=>{const ok=acDone(k),un=acUnlocked(k);return`<button class="sgch ${ok?'ok':un?'un':'lock'}" data-a="acplay" data-v="${k}" ${un||ok?'':'disabled'}><span class="sgci">${ok?'✅':un?c.ic:'🔒'}</span><b>${k+1}. ${esc(c.t)}</b><small>${ok?'Terminé · rejouer':un?'Disponible !':`Jour ${c.day} de l'événement`}</small></button>`}).join('');
-  return`<div class="card acard"><div class="acrow"><div class="acpt">${aegisPortrait(0)}</div><div style="min-width:0;flex:1"><span class="tag" style="--rc:#8ac8ff">CHRONIQUE · ${n}/${N}</span><div class="h3" style="margin:4px 0 2px">📖 La Garde d'Éther</div>
+  return`<div class="card acard"><div class="acrow"><button class="acpt" data-a="hero" data-v="${AEG}" aria-label="Aegis">${aegisPortrait(0)}</button><div style="min-width:0;flex:1"><span class="tag" style="--rc:#8ac8ff">CHRONIQUE · ${n}/${N}</span><div class="h3" style="margin:4px 0 2px">📖 La Garde d'Éther</div>
    <p class="muted" style="font-size:12.5px;margin:0">Aegis, Commandant des chevaliers d'Éther, vient défendre le royaume contre les cendres. Un nouveau chapitre chaque jour : à la fin, <b>Aegis rejoint ton équipe</b>.</p></div></div>
    ${BAN(-1)}${main}<details class="sgdet"><summary>Tous les chapitres</summary><div class="sglist">${list}</div></details></div>`}
 window.acCard=acCard;
