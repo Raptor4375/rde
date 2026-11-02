@@ -78,6 +78,10 @@ for _a,_b in [("HEROES.filter(h=>noLeg?h.r<4:true)","HEROES.filter(h=>(!h.ex||S.
   assert src.count(_a)==1,_a;src=src.replace(_a,_b)
 _a="r.textContent='Tour '+B.round+' / '+B.maxR;"
 assert src.count(_a)==1,'tour';src=src.replace(_a,"r.textContent='Tour '+Math.min(B.round,B.maxR)+' / '+B.maxR;")
+_a="const SMYTHS=()=>HEROES.filter(h=>h.r===5);"
+assert src.count(_a)==1,'smyths';src=src.replace(_a,"const SMYTHS=()=>HEROES.filter(h=>h.r===5&&!h.ex);")
+_a="HEROES.filter(h=>noLeg?h.r<4:h.r>=4)"
+assert src.count(_a)==1,'metaleg';src=src.replace(_a,"HEROES.filter(h=>(!h.ex||S.heroes[h.i])&&(noLeg?h.r<4:h.r>=4))")
 open('royaumes.html','w').write(src)
 open('chk.js','w').write(src[src.index('<script>')+8:src.rindex('</script>')])
 a=src.index('<style>');b=src.index('</style>')+8;open('prod.html','w').write(src[:a]+src[b:])

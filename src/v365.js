@@ -114,7 +114,7 @@ function frame(){const c=L_('M2.6 17V5.6Q2.6 2.6 5.6 2.6H17','#e8a050',1,'opacit
 const ROMN=['','I','II','III'],TC='#ff6a1a';
 const STARP=(x,y,r)=>P(`M${x} ${r1(y-r*2)}L${r1(x+r*.5)} ${r1(y-r*.5)}L${r1(x+r*2)} ${y}L${r1(x+r*.5)} ${r1(y+r*.5)}L${x} ${r1(y+r*2)}L${r1(x-r*.5)} ${r1(y+r*.5)}L${r1(x-r*2)} ${y}L${r1(x-r*.5)} ${r1(y-r*.5)}Z`,'#fff','opacity=".9"');
 function eryPortrait(u,v){u=Math.max(0,Math.min(3,u|0));v=v||'hero';if(v==='young')return eryYoung();const ck='p'+u+v;if(EC[ck])return EC[ck];const q='ep'+u+v[0]+'_',HERO=v==='hero';
-  const rc=(typeof RCOL!=='undefined'&&RCOL[4])||'#ffd84a',cc=(typeof CLS!=='undefined'&&CLS.Guerrier&&CLS.Guerrier.c)||'#ff5a4a';
+  const rc=(typeof RCOL!=='undefined'&&RCOL[5])||'#ff5ad8',cc=(typeof CLS!=='undefined'&&CLS.Guerrier&&CLS.Guerrier.c)||'#ff5a4a';
   let s=`<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Éryndel le Roi de Cendre"><defs>${defs(q,u)}</defs><rect width="100" height="100" fill="url(#${q}bg)"/>`;
   s+=rays(50,35,12,80,.07)+C_(50,35,31+u*2,`url(#${q}gl)`)+C_(50,35,24.6,'none','stroke="#ff5a14" stroke-width="3.4" opacity=".28"')+C_(50,35,22,'#140607')+C_(50,35,22.6,'none','stroke="#ffc062" stroke-width="1.1" opacity=".95"');
   if(u>=3)s+=C_(50,35,26.5,'none','stroke="#ffd27a" stroke-width=".6" stroke-dasharray="1.4 2.6" opacity=".8"');
