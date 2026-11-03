@@ -19987,6 +19987,489 @@ function sBody(u,bare){const q='zb'+u+(bare?'s':'')+'_';
   return s+'</svg>'}
 register(SER,sPortrait,sBody);
 }catch(e){console.warn('seraphine art',e)}})();
+
+/* ================= NYX OMBRE-LUNE : nouveau style graphique =================
+   Même assassine : elfe de la nuit à la peau violette, cornes roses, yeux qui brillent, larmes d'étoiles, croissant de lune, dague.
+   Nouveau : visage détaillé, cornes en dégradé, ras-du-cou au croissant, grand croissant de lune derrière la tête,
+   cape à haut col bordée d'argent, épaulière d'ombre, faucille de lune et dague en pied, chauves-souris, ailes d'ombre en ultra II/III. */
+(function(){try{
+const NYX=62;if(!HEROES[NYX]||!window.LK)return;
+const {r1,P,L_,C_,E_,MI,MB,HG,lin,rad,U,STARP,starN,rays,frame,eye,sigilRing,footRing,feather,wingPair,risers,halo,pOpen,pClose,bOpen,bStars,register}=LK;
+const defs=(q,u)=>rad(q+'bg',[[0,u>=3?'#fff0fa':'#ead8ff'],[.15,'#9a6ae0'],[.4,'#3a1a6a'],[.7,'#140828'],[1,'#05020c']],'50%','32%','78%')
+ +rad(q+'gl',[[0,'#ffffff',.9],[.5,'#e0c8ff',.4],[1,'#b07aff',0]])
+ +lin(q+'ag',[[0,'#ffffff'],[.5,'#d8d0f0'],[1,'#7a70a0']],1,1)
+ +lin(q+'au',[[0,'#fff2b0'],[.5,'#ffd84a'],[1,'#c8901a']],1,1)
+ +lin(q+'cl',[[0,u>=3?'#4a2a7a':'#3a2464'],[.55,'#1e1038'],[1,'#0a0418']])
+ +lin(q+'lt',[[0,'#46385e'],[1,'#1c1430']])
+ +lin(q+'sk',[[0,'#8a76c0'],[.55,'#6a58a0'],[1,'#4a3a7a']],1,0)
+ +lin(q+'hr',[[0,'#3a2a5a'],[.5,'#1e1430'],[1,'#0a0612']])
+ +lin(q+'hn',[[0,'#ffb0e0'],[.5,'#ff4aa8'],[1,'#8a1050']])
+ +lin(q+'mn',[[0,'#ffffff'],[.6,'#f0e8ff'],[1,'#b8a8e8']],1,1)
+ +rad(q+'gm',[[0,'#ffe0f0'],[.4,'#ff3a9a'],[1,'#7a0a3a']],'38%','34%','70%')
+ +rad(q+'pg',[[0,'#ffffff',1],[.35,'#ffb0e0',.7],[1,'#ff4aa8',0]]);
+const AG=q=>U(q,'ag'),AU=q=>U(q,'au'),CL=q=>U(q,'cl'),LT=q=>U(q,'lt'),SK=q=>U(q,'sk'),HR=q=>U(q,'hr'),HN=q=>U(q,'hn'),MN=q=>U(q,'mn'),GM=q=>U(q,'gm'),PG=q=>U(q,'pg');
+const gem=(q,x,y,r)=>C_(x,y,r1(r*1.3),AG(q),'stroke="#3a3060" stroke-width=".3"')+C_(x,y,r,GM(q))+C_(r1(x-r*.35),r1(y-r*.35),r1(r*.28),'#fff');
+/* un croissant de lune (centre, rayon, orientation) */
+const crescent=(x,y,R,f,rot=-30,e='',th=.78)=>`<path d="M0 ${-R}A${R} ${R} 0 1 0 0 ${R}A${r1(R*th)} ${r1(R*(th+.08))} 0 1 1 0 ${-R}Z" transform="translate(${x} ${y}) rotate(${rot})" fill="${f}" ${e}/>`;
+/* une chauve-souris */
+const bat=(x,y,s,c='#0a0418')=>`<path d="M0 0Q-2 -2.4 -5 -1.6Q-4 -.6 -4.4 .6Q-2.6 -.4 -1.6 .8Q-.8 -.2 0 1Q.8 -.2 1.6 .8Q2.6 -.4 4.4 .6Q4 -.6 5 -1.6Q2 -2.4 0 0Z" transform="translate(${x} ${y}) scale(${s})" fill="${c}"/>`;
+/* le sceau : grand croissant de lune et anneau étoilé */
+function sigil(q,cx,cy,R,u,op){op=op==null?.55+u*.12:op;let s=C_(r1(cx+R*.2),r1(cy-R*.12),r1(R*1.22),U(q,'gl'),`opacity="${r1(op*.6)}"`)+crescent(r1(cx+R*.12),r1(cy-R*.06),r1(R*1.2),MN(q),-28,`opacity="${r1(Math.min(1,op+.15))}"`,.62)+sigilRing(cx,cy,R,op*.8,'#e0c8ff','#ffffff',36);
+  let d='';for(let k=1;k<12;k++){if(k===6)continue;const a=(k*30-90)*Math.PI/180;d+=`M${r1(cx+R*.925*Math.cos(a))} ${r1(cy+R*.925*Math.sin(a)-R*.05)}L${r1(cx+R*.925*Math.cos(a)+R*.02)} ${r1(cy+R*.925*Math.sin(a))}L${r1(cx+R*.925*Math.cos(a))} ${r1(cy+R*.925*Math.sin(a)+R*.05)}L${r1(cx+R*.925*Math.cos(a)-R*.02)} ${r1(cy+R*.925*Math.sin(a))}Z`}
+  s+=`<path d="${d}" fill="#ffffff" opacity="${r1(op)}"/>`;
+  const y=r1(cy-R*.93);return s+crescent(cx,y,r1(R*.09),AG(q),-30)+gem(q,r1(cx+R*.02),y,r1(R*.035))}
+/* ---------- la tête ---------- */
+function hairBack(q,l=1){const y=k=>r1(46+k*l);return P(`M33.4 46Q30.4 28 41 22.4Q50 18.4 59 22.4Q69.6 28 66.6 46Q69 ${y(16)} 72 ${y(32)}Q74 ${y(44)} 70 ${y(54)}H30Q26 ${y(44)} 28 ${y(32)}Q31 ${y(16)} 33.4 46Z`,HR(q))
+  +L_(`M36 52Q33 66 32 ${y(38)}M64 52Q67 66 68 ${y(38)}`,'#5a4a8a',.5,'opacity=".6"')}
+function horns(q,u){const h=P('M40.6 31Q35 22 37 10Q38.6 4 43 2Q39.4 8 40.6 16Q41.6 22 45 27Z',HN(q),'stroke="#4a0a2a" stroke-width=".35"')+L_('M39.6 24Q38 16 40.4 8','#ffd0ee',.45,'opacity=".8"')+L_('M38.8 18L41.4 17.4M38.6 12.6L41.2 12.4','#8a1050',.4);
+  return MI(h)+(u>=3?P('M40 25L43 19L45.4 24L48 17L50 23L52 17L54.6 24L57 19L60 25Q50 22.4 40 25Z','#140828','stroke="#ff4aa8" stroke-width=".4"')+gem(q,50,21,1):'')}
+function face(q,u){
+  let s=`<rect x="45.4" y="55" width="9.2" height="13" fill="${SK(q)}"/>`+P('M45.4 59.4Q50 62.8 54.6 59.4L54.6 64Q50 66 45.4 64Z','#2a1e48','opacity=".5"');
+  s+=MI(P('M37.6 44Q31 40 28.6 34.6Q33 37.4 37.4 39.4Z',SK(q),'stroke="#2a1e48" stroke-width=".3"')+C_(33.6,41.6,.55,AG(q)));
+  s+=P('M37 44.4Q37 30.4 50 30.4Q63 30.4 63 44.4Q63 52.8 59.6 58.2Q55.4 63.6 50 64.2Q44.6 63.6 40.4 58.2Q37 52.8 37 44.4Z',SK(q));
+  s+=P('M58.4 46Q61.6 52 59 57.4Q56.6 61 53 62.8Q57.6 58.4 59 52.4Z','#2a1e48','opacity=".35"');
+  const io=u>=3?{ir:'#ffe08a',ir2:'#c8901a',glow:'#ffe08a'}:{ir:'#ff6ab8',ir2:'#a8106a',glow:'#ffb0e0'};
+  s+=eye(44,Object.assign({lash:1,lid:'#0a0418',white:'#f4eeff',fierce:1},io))+eye(56,Object.assign({lash:1,lid:'#0a0418',white:'#f4eeff',fierce:1},io));
+  s+=MI(L_('M39.8 41.8Q43.6 39.6 47.6 41','#140828',1.1));
+  s+=L_('M50.4 48.8L49.7 52.8Q50.4 53.6 51.6 53.1','#3a2a64',.65);
+  s+=P('M46.6 57Q50 58.2 53.4 57Q52.6 59.6 50 59.9Q47.4 59.6 46.6 57Z','#5a1a4a')+L_('M46.4 57Q50 58.2 53.6 56.8','#2a0a24',.55)+P('M47.8 58.8Q50 59.6 52.2 58.8Q50 59.4 47.8 58.8Z','#c86aa8','opacity=".7"');
+  /* larmes d'étoiles sous les yeux */
+  s+=MI(STARP(42,52.2,.5,'#ffffff')+C_(42.6,54.4,.35,'#e0d0ff')+C_(43,56,.25,'#e0d0ff'));
+  /* ras-du-cou au croissant */
+  s+=P('M45.4 64.4Q50 66.6 54.6 64.4L54.6 65.8Q50 68 45.4 65.8Z','#140828','stroke="#d8d0f0" stroke-width=".3"')+crescent(50,68.6,1.6,AG(q),-30);
+  /* frange droite noire et longues mèches */
+  s+=P('M36.4 45Q35 29 50 26.8Q65 29 63.6 45Q62.6 38.6 60.4 37.4L58.6 40.6L56.6 36.8L54.2 40.4L52 36.6L49.6 40.4L47.6 36.6L45.4 40.4L43.4 36.8L41.4 40.6L39.6 37.4Q37.4 38.6 36.4 45Z',HR(q))
+    +L_('M42 30Q46.4 28.4 51 28.6M53 28.6Q57.6 29.4 60.4 32.4','#6a5aa0',.5,'opacity=".8"');
+  s+=P('M36.8 42Q34 52 35 62Q36 70 33 80Q38.8 74 39.8 62Q40.6 52 39.6 44Z',HR(q))+P('M63.2 42Q66 52 65 62Q64 70 67 80Q61.2 74 60.2 62Q59.4 52 60.4 44Z',HR(q));
+  return s}
+/* ---------- le buste ---------- */
+function bust(q,u){
+  /* la poignée d'une dague par-dessus l'épaule */
+  let s=L_('M74 72L82 50','#2a2040',2.2)+P('M79.6 52.6L85.6 50.6L85 49L79 51Z',AG(q))+C_(83.4,47.6,1.4,GM(q));
+  s+=P('M8 100Q10 80 24 73.6L76 73.6Q90 80 92 100Z',CL(q))+L_('M9 99.4Q11 81 24.6 74.4M91 99.4Q89 81 75.4 74.4',AG(q),.8);
+  /* haut col de la cape, bordé d'argent */
+  s+=MI(P('M33.6 75Q28 64 31 54L38.6 60.4Q37 67 40 74Z',CL(q),'stroke="#0a0418" stroke-width=".3"')+L_('M31.2 54.4L38.4 60.6Q36.8 67 39.8 73.6',AG(q),.6));
+  /* tenue de cuir sombre, sangles d'argent */
+  s+=P('M30 100L33.6 78Q40 72.4 50 72.4Q60 72.4 66.4 78L70 100Z',LT(q))+L_('M33.8 78.2Q40 72.8 50 72.8Q60 72.8 66.2 78.2',AG(q),.7)+L_('M50 74V100','#05020c',.7)
+    +L_('M34 82Q50 94 68 98',AG(q),1.4)+L_('M34.2 81.8Q50 93.6 68.2 97.6','#05020c',.4)+P('M47.4 89.6H52.6V93.2H47.4Z','none',`stroke="${AG(q)}" stroke-width=".6"`);
+  /* l'épaulière d'ombre à la gemme rose */
+  const lame=(d,rim)=>P(d,'#2a2040','stroke="#05020c" stroke-width=".4"')+L_(rim,AG(q),.75);
+  s+=lame('M34.6 80.2Q25.6 76.6 15 80.6Q8.8 83.4 6.2 90.4Q12 93 18.4 90.8Q27 87.4 34.6 80.2Z','M6.5 90.2Q12 92.6 18.4 90.4Q26.8 87 34.2 80.6')
+    +lame('M38.4 74.6Q27.6 68.4 16 72.4Q9.6 75 7 82.6Q12.8 85.6 19.6 84Q30.4 81 38.4 74.6Z','M7.3 82.4Q12.8 85.2 19.6 83.6Q30.2 80.6 38 75')+gem(q,21.4,78,1.5)+P('M14 72L12 66L17 70.6Z',AG(q))+P('M24 70.6L24 64.6L27.6 70.2Z',AG(q));
+  return s}
+/* ultra II et III : ailes d'ombre */
+function batWings(q,u){const w=`<path d="M38 64Q22 40 4 34Q8 44 6 52Q12 50 16 56Q14 62 16 68Q22 64 28 70Q30 64 38 66Z" fill="#140828" stroke="${u>=3?'#ffd84a':'#ff4aa8'}" stroke-width=".6"/>${L_('M38 64L6 52M37 65L16 68M37 64L16 56M36 64Q20 44 4 34','#5a3a8a',.5)}`;
+  return`<g opacity="${u>=3?.97:.92}">${MI(w)}</g>`}
+/* ---------- portrait ---------- */
+function nPortrait(u){const q='np'+u+'_';
+  let s=pOpen(q,'Nyx Ombre-Lune',defs(q,u));
+  s+=rays(50,34,12,80,.06,'#ffffff')+C_(50,34,30+u*2,U(q,'gl'))+sigil(q,50,34,27,u);
+  s+=[[14,20],[88,18],[90,46],[10,50],[72,8]].map(([x,y],k)=>STARP(x,y,.6+k%2*.3,'#ffffff')).join('')+bat(16,32,1.1)+bat(84,30,.9)+bat(88,62,.8);
+  if(u>=1)s+=C_(50,34,32.4,'none',`stroke="#ffb0e0" stroke-width=".7" stroke-dasharray="1.2 2.6" opacity="${.45+u*.15}"`);
+  if(u>=2)s+=batWings(q,u);
+  s+=hairBack(q)+bust(q,u)+face(q,u)+horns(q,u);
+  if(u>=3)s+=halo(50,12.6,11,2.8);
+  s+=frame('#ff6ab8');
+  return s+pClose('Assassin',u,[[16,40,2],[84,40,1.8],[20,64,1.3],[80,62,1.5]])}
+/* ---------- corps entier ---------- */
+function nBody(u,bare){const q='nb'+u+(bare?'s':'')+'_';
+  let s=bOpen(q,'Nyx Ombre-Lune',defs(q,u)+rad(q+'bb',[[0,'#c8a8ff',.36+u*.08],[.55,'#3a1a6a',.3],[1,'#05020c',0]],'50%','40%','60%'));
+  if(bare)s+=`<g class="lgbk">${C_(80,36,40,U(q,'gl'),'opacity=".45"')}${sigil(q,80,35,32,u,.42)}</g>`;
+  else{s+=`<g class="lgbk">${E_(80,96,80,116,U(q,'bb'))}${rays(80,36,14,120,.04,'#ffffff')}${C_(80,36,42+u*3,U(q,'gl'),'opacity=".7"')}${C_(88,70,58,U(q,'gl'),'opacity=".35"')}${crescent(92,74,54,MN(q),-24,'opacity=".22"',.7)}${sigil(q,80,35,34,u)}`;
+    if(u>=1)s+=C_(80,35,47+u*3,'none','stroke="#ffb0e0" stroke-width="1.1" stroke-dasharray="2 6" opacity=".6"');
+    s+=bat(20,40,1.8)+bat(140,56,1.6)+bat(30,150,1.4)+bat(136,140,1.5)+[[16,24],[146,30],[24,100],[140,104]].map(([x,y])=>STARP(x,y,.8,'#ffffff')).join('');
+    s+=risers(['#ffb0e0','#e0c8ff'],(c,k)=>k%2?bat(0,0,.7,c):`<circle r="1" fill="${c}"/>`)+`</g>`
+      +footRing(80,212,50,10,.9,'#b07aff','#ff6ab8',(x,y)=>`M${x} ${r1(y-1)}A1 1 0 1 0 ${x} ${r1(y+1)}A.8 .9 0 1 1 ${x} ${r1(y-1)}Z`)}
+  s+=E_(80,219,38,6,'#000','opacity=".42"');
+  if(u>=2)s+=`<g transform="translate(12.5 -14) scale(1.35)">${batWings(q,u)}</g>`;
+  /* la cape d'ombre à l'ourlet déchiré */
+  s+=P('M62 60Q46 110 40 206L48 200L54 208L62 200L70 208L80 202L90 208L98 200L106 208L112 200L120 206Q114 110 98 60Z',CL(q))+L_('M40 206L48 200L54 208L62 200L70 208L80 202L90 208L98 200L106 208L112 200L120 206',AG(q),.8,'opacity=".8"')+L_('M61.6 61Q46.4 110 40.4 205.4','#c8a8ff',1,'opacity=".55"')+L_('M98.4 61Q113.6 110 119.6 205.4','#ff8ac8',.7,'opacity=".4"');
+  s+=HG(hairBack(q,1.3));
+  /* jambes : collant sombre, cuissardes à boucles d'argent */
+  const leg=(x,f)=>{const tx=f?x+15:x-4,bx=f?x-1:x+11,o=f?1:-1;
+    return P(`M${x} 124L${x+11} 124L${x+10.4} 160L${x+.6} 160Z`,LT(q))+P(`M${x-.6} 156L${x+11.6} 156L${x+11} 204L${x} 204Z`,'#1a1228','stroke="#05020c" stroke-width=".4"')
+    +P(`M${x} 200L${x+11} 200L${x+11.2} 207Q${r1(x+5.5+o*2)} 210 ${tx} 209L${bx} 206Z`,'#1a1228','stroke="#05020c" stroke-width=".4"')+L_(`M${x-.4} 158L${x+11.4} 158`,AG(q),.8)+L_(`M${x} 176L${x+11} 176.6M${x} 186L${x+11} 186.6`,AG(q),.6)+P(`M${x+4} 174.4H${x+7}V178H${x+4}Z`,'none',`stroke="${AG(q)}" stroke-width=".5"`)};
+  s+=leg(68,0)+leg(81,1);
+  /* tenue d'assassin : cuir sombre, sangles et ceinture de dagues */
+  s+=P('M63 64Q80 58.6 97 64L99 124Q80 130 61 124Z',LT(q))+L_('M66 66.4Q80 61.6 94 66.4',AG(q),.8)+L_('M80 66V124','#05020c',.7);
+  s+=L_('M66 72Q80 96 98 114',AG(q),1.6)+L_('M66.2 71.8Q80 95.6 98.2 113.6','#05020c',.4)+P('M77.4 90.6H82.6V94.2H77.4Z','none',`stroke="${AG(q)}" stroke-width=".6"`);
+  s+=P('M61.6 116Q80 123 98.4 116L98.4 121.6Q80 128.6 61.6 121.6Z','#140c20')+L_('M61.8 116.4Q80 123.4 98.2 116.4',AG(q),.6)+crescent(80,120.4,2.4,AG(q),-30)+gem(q,80.6,120.4,1);
+  s+=L_('M66 122L62 140M94 122L98 140',AG(q),1.4)+P('M60.8 140L63.6 140L62.6 148Z',AG(q))+P('M96.4 140L99.2 140L97.4 148Z',AG(q));
+  s+=P('M66 58Q80 66 94 58L95.6 63Q80 71 64.4 63Z',CL(q))+L_('M64.6 62.8Q80 70.8 95.4 62.8',AG(q),.6);
+  /* bras droit : la faucille de lune */
+  s+=P('M60 66Q52 80 50 100L57.6 101Q59.4 84 65 72Z',LT(q))+P('M50 100Q48.6 112 49.4 120L56.4 120.4Q57.6 111 57.6 101Z',SK(q))+P('M49.6 103Q49 110.6 49.5 117.4L56.7 117.8Q57.3 110.6 57.4 103.4Z','#1a1228','stroke="#05020c" stroke-width=".4"')+L_('M49.6 104.2Q53.6 105.2 57.4 104.6',AG(q),.8);
+  s+=L_('M52.8 122L50 60','#2a2040',2)+`<g transform="translate(50 60)">${crescent(0,-12,14,MN(q),-140,'stroke="#7a70a0" stroke-width=".5"',.66)}${C_(0,0,9,PG(q),'opacity=".35"')}</g>`+gem(q,50,61,1.2)+E_(52.8,122.4,3.8,3.4,SK(q));
+  /* épaulière d'ombre */
+  const lame=(d,rim)=>P(d,'#2a2040','stroke="#05020c" stroke-width=".4"')+L_(rim,AG(q),.75);
+  s+=lame('M67.4 67.2Q61.4 64.4 55.4 67.2Q51.2 69.4 49.8 74.8Q54 77 58.2 75.6Q63.6 73.2 67.4 67.2Z','M50 74.6Q54 76.6 58.2 75.2Q63.4 72.8 67 67.6')
+    +lame('M71 62Q63.8 57.4 56.8 60Q52.2 62.2 50.6 68Q54.8 70.6 59.6 69.4Q66 67.2 71 62Z','M50.8 67.8Q54.8 70.2 59.6 69Q65.8 66.8 70.6 62.4')+gem(q,60.2,64.4,1.4);
+  /* bras gauche : la dague tenue à l'envers */
+  s+=P('M100 66Q110 80 112 98L104.6 100Q103 84 96 72Z',LT(q))+P('M104.6 100L112 98L117.6 116L111.4 118.6Z',SK(q))+P('M105.4 102.6L112.6 100.4L116.2 112.2L109.8 114.6Z','#1a1228','stroke="#05020c" stroke-width=".4"');
+  s+=E_(115,118,4.4,4,SK(q))+L_('M115 122L116 150','#2a2040',1.4)+P('M113.4 120.6H117.4V122.6H113.4Z',AG(q))+P('M114.8 114L115.6 100L117 114Z','none')+P('M113.8 122.6L118 122.6L116.6 152L115.8 152Z',MN(q),'stroke="#7a70a0" stroke-width=".3"');
+  s+=HG(face(q,u)+horns(q,u));
+  if(u>=3)s+=halo(80,9.4,10,2.6);
+  s+=bStars(u,bare);
+  return s+'</svg>'}
+register(NYX,nPortrait,nBody);
+}catch(e){console.warn('nyx art',e)}})();
+
+/* ================= DRAKHAR LE WYRM : nouveau style graphique =================
+   Même dragon : tête de wyrm aux écailles rouges, grandes cornes, yeux de braise à pupille fendue, ailes de dragon, flammes, grande arme.
+   Nouveau : tête de dragon détaillée (arcades, collerettes, crocs, rangées d'écailles), armure d'écailles d'obsidienne
+   bordée d'or et cœur de braise, sceau aux griffes, queue de dragon, glaive de flammes. */
+(function(){try{
+const DRK=65;if(!HEROES[DRK]||!window.LK)return;
+const {r1,P,L_,C_,E_,MI,MB,HG,lin,rad,U,STARP,starN,rays,frame,sigilRing,footRing,feather,wingPair,risers,halo,pOpen,pClose,bOpen,bStars,register,rune}=LK;
+const defs=(q,u)=>rad(q+'bg',[[0,u>=3?'#fffbe8':'#fff0c0'],[.15,'#ffa040'],[.4,'#d4301a'],[.7,'#5a0a08'],[1,'#180202']],'50%','32%','78%')
+ +rad(q+'gl',[[0,'#ffffff',.95],[.5,'#ffd8a0',.45],[1,'#ff6a1a',0]])
+ +lin(q+'au',[[0,'#fff2b0'],[.5,'#ffd84a'],[1,'#c8901a']],1,1)
+ +lin(q+'sc',[[0,u>=3?'#e8502e':'#c8342a'],[.55,'#8a1a16'],[1,'#4a0806']])
+ +lin(q+'sd',[[0,'#d84a34'],[1,'#7a1410']],1,0)
+ +lin(q+'bl',[[0,'#ffcf7a'],[.55,'#e88a3a'],[1,'#a8501a']])
+ +lin(q+'ob',[[0,'#3a1a1a'],[.55,'#1e0a0a'],[1,'#0a0202']])
+ +lin(q+'hn',[[0,'#fffaf0'],[.55,'#e8d8b8'],[1,'#a8946a']],1,1)
+ +lin(q+'mb',[[0,'#ffb04a'],[.55,'#e0501a'],[1,'#8a1a0a']])
+ +rad(q+'ey',[[0,'#fff6c0'],[.5,'#ffc83a'],[1,'#e0700a']])
+ +rad(q+'em',[[0,'#ffffff',1],[.3,'#ffd84a',.85],[1,'#ff4a0a',0]])
+ +rad(q+'gm',[[0,'#fff0c0'],[.4,'#ff8a1a'],[1,'#8a1a04']],'38%','34%','70%');
+const AU=q=>U(q,'au'),SC=q=>U(q,'sc'),SD=q=>U(q,'sd'),BL=q=>U(q,'bl'),OB=q=>U(q,'ob'),HN=q=>U(q,'hn'),MB_=q=>U(q,'mb'),EY=q=>U(q,'ey'),EM=q=>U(q,'em'),GM=q=>U(q,'gm');
+const gem=(q,x,y,r)=>C_(x,y,r1(r*1.3),AU(q),'stroke="#8a5a1a" stroke-width=".3"')+C_(x,y,r,GM(q))+C_(r1(x-r*.35),r1(y-r*.35),r1(r*.28),'#fff');
+/* le sceau : anneau griffu et flamme d'or au sommet */
+function sigil(q,cx,cy,R,u,op){op=op==null?.55+u*.12:op;let s=sigilRing(cx,cy,R,op,'#ffd84a','#ffe9a0',36);
+  let d='';for(let k=0;k<12;k++){const a=(k*30-75)*Math.PI/180,c=Math.cos(a),sn=Math.sin(a);d+=`M${r1(cx+R*1.02*c)} ${r1(cy+R*1.02*sn)}Q${r1(cx+R*1.2*c+R*.06*sn)} ${r1(cy+R*1.2*sn-R*.06*c)} ${r1(cx+R*1.26*c)} ${r1(cy+R*1.26*sn)}`}
+  s+=L_(d,'#ffd84a',r1(R*.03),`opacity="${r1(op*.8)}"`);
+  const y=r1(cy-R*.93),k=r1(R/28);return s+`<g transform="translate(${cx} ${y}) scale(${k})">${P('M0 -6Q3.4 -2 2.4 1.4Q1.6 3.6 0 3.6Q-1.6 3.6 -2.4 1.4Q-3.4 -2 0 -6Z',AU(q),'stroke="#8a5a1a" stroke-width=".3"')}${P('M0 -2.6Q1.4 -.6 .9 1.2Q.4 2.2 0 2.2Q-.4 2.2 -.9 1.2Q-1.4 -.6 0 -2.6Z','#fff6c0')}</g>`}
+/* les ailes de dragon : bras d'os et membrane */
+function dWings(q,u){const big=u>=2?1.12:1,ed=u>=2?'#ffd84a':'#5a0a08';
+  const w=`<g transform="translate(36 62) scale(${big}) translate(-36 -62)"><path d="M36 62Q24 40 6 28Q8 36 4 42Q10 44 8 52Q14 52 14 60Q20 58 22 66Q28 62 34 68Z" fill="${MB_(q)}" stroke="${ed}" stroke-width=".7"/>${L_('M36 62Q24 40 6 28M30 58L4 42M28 60L8 52M28 62L14 60M30 64L22 66','#4a0806',.9)}${L_('M36 62Q24 40 6 28','#ffcf7a',.4,'opacity=".7"')}${P('M6 28L3 24L8 27Z','#e8d8b8')}</g>`;
+  return`<g opacity="${u>=3?.98:.94}">${MI(w)}</g>`}
+/* ---------- la tête de dragon (100×100) ---------- */
+function head(q,u){
+  /* cou écailleux et plaques ventrales */
+  let s=P('M40 58Q38 68 36 80L64 80Q62 68 60 58Z',SC(q))+P('M45 60L55 60L56 80L44 80Z',BL(q))+L_('M44.6 64H55.4M44.4 68.4H55.6M44.2 72.8H55.8M44 77.2H56','#a8501a',.6);
+  /* collerettes épineuses */
+  s+=MI(P('M37.4 44Q28 42 22.4 35Q25.6 44 23.6 51Q28.6 49.6 31.6 54.6Q31 49.4 36.6 50.4Z',MB_(q),'stroke="#5a0a08" stroke-width=".4"')+L_('M37 45L24 38M36.6 47L25 49M36.4 49.4L31 53','#5a0a08',.5));
+  /* les grandes cornes d'ivoire */
+  s+=MI(P('M40.8 30Q34.6 20 31 6.4Q37.4 12.6 42.6 19.4Q44.6 23.4 45.6 27.6Z',HN(q),'stroke="#6a5a3a" stroke-width=".4"')+L_('M39 22L42.2 20.6M36.6 16L39.6 15M34.4 11L37 10.4','#8a7a5a',.45)+L_('M38.8 24Q35.6 16 33 9','#ffffff',.5,'opacity=".7"'));
+  /* crête centrale */
+  s+=P('M48.4 26L50 19.6L51.6 26Z',HN(q))+P('M48.8 22L50 17L51.2 22Z',HN(q),'opacity=".9"');
+  /* le crâne en écu, qui s'affine vers le museau */
+  s+=P('M35.6 40Q35.6 25.6 50 24Q64.4 25.6 64.4 40Q64.4 50 60.6 56.4Q56.4 64.6 50 68.6Q43.6 64.6 39.4 56.4Q35.6 50 35.6 40Z',SC(q),'stroke="#4a0806" stroke-width=".5"');
+  s+=P('M58.4 34Q63 40 61.8 50Q60 58 54 64Q59 54 59.4 46Q59.6 40 58.4 34Z','#4a0806','opacity=".35"');
+  /* rangées d'écailles */
+  let sc='';for(let r=0;r<4;r++){const y=29+r*3.6,n=5-Math.floor(r/2);for(let k=0;k<n;k++){const x=50+(k-(n-1)/2)*4.4;sc+=`M${r1(x-2)} ${r1(y)}Q${r1(x)} ${r1(y+2)} ${r1(x+2)} ${r1(y)}`}}
+  s+=L_(sc,'#ff8a5a',.4,'opacity=".7"');
+  /* arcades sourcilières et yeux de braise à pupille fendue */
+  s+=MI(P('M37 42.4Q42 36.6 48.4 40L47.6 42.4Q42.4 40.2 38.2 44.8Z','#5a0a08')+L_('M37.6 41.8Q42.2 37 48 40.2','#ff8a5a',.4,'opacity=".8"'));
+  const ec=u>=3?'#ffffff':null;
+  s+=MI(`<path d="M38.6 46.4Q42.6 42.4 47.4 45.2Q44.6 49.2 38.6 46.4Z" fill="${ec||EY(q)}"/>`+E_(43.4,45.6,.62,1.9,'#1a0202',`transform="rotate(-8 43.4 45.6)"`)+C_(42.2,44.8,.42,'#ffffff')+L_('M38.6 46.4Q42.6 42.4 47.4 45.2','#2a0202',.7)+C_(43.4,45.6,4,EM(q),'opacity=".35"'));
+  /* museau, naseaux, gueule et crocs */
+  s+=L_('M50 46V62','#ff8a5a',.5,'opacity=".6"')+MI(E_(47.4,60.4,1.1,.6,'#2a0202','transform="rotate(-20 47.4 60.4)"'))+MI(C_(46.6,58.6,.9,EM(q),'opacity=".4"'));
+  s+=L_('M42.6 62.6Q46 65.4 50 65.6Q54 65.4 57.4 62.6','#2a0202',.8)+MI(P('M44.6 63.6L45.6 67.4L46.6 64.2Z','#fffaf0','stroke="#6a5a3a" stroke-width=".2"'));
+  if(u>=3)s+=P('M41 26L43.4 19.6L46 24.6L48.4 17.4L50 22.8L51.6 17.4L54 24.6L56.6 19.6L59 26Q50 23.6 41 26Z',AU(q),'stroke="#8a5a1a" stroke-width=".3"')+gem(q,50,22,1);
+  return s}
+/* ---------- le buste ---------- */
+function bust(q,u){
+  let s=P('M8 100Q10 80 24 73.6L76 73.6Q90 80 92 100Z',OB(q))+L_('M9 99.4Q11 81 24.6 74.4M91 99.4Q89 81 75.4 74.4',AU(q),.8);
+  /* plastron d'écailles d'obsidienne et cœur de braise */
+  s+=P('M30 100L33.6 80Q40 74 50 74Q60 74 66.4 80L70 100Z',OB(q))+L_('M33.8 80.2Q40 74.4 50 74.4Q60 74.4 66.2 80.2',AU(q),.8);
+  let sc='';for(let r=0;r<4;r++){const y=82+r*4.4;for(let k=0;k<6;k++){const x=37+k*5.2+(r%2)*2.6;if(x>64)continue;sc+=`M${r1(x-2.4)} ${r1(y)}Q${r1(x)} ${r1(y+2.6)} ${r1(x+2.4)} ${r1(y)}`}}
+  s+=L_(sc,'#8a2a1a',.6,'opacity=".9"')+C_(50,88,8,EM(q),`opacity="${.4+u*.1}"`)+gem(q,50,88,2.6);
+  /* épaulières à pointes */
+  const lame=(d,rim)=>P(d,OB(q),'stroke="#000" stroke-width=".4"')+L_(rim,AU(q),.8);
+  s+=MI(lame('M34.6 80.2Q25.6 76.6 15 80.6Q8.8 83.4 6.2 90.4Q12 93 18.4 90.8Q27 87.4 34.6 80.2Z','M6.5 90.2Q12 92.6 18.4 90.4Q26.8 87 34.2 80.6')
+    +lame('M38.4 74.6Q27.6 68.4 16 72.4Q9.6 75 7 82.6Q12.8 85.6 19.6 84Q30.4 81 38.4 74.6Z','M7.3 82.4Q12.8 85.2 19.6 83.6Q30.2 80.6 38 75')
+    +P('M14 72.6L9.6 64L17.6 70.6Z',HN(q))+P('M22 70.6L20.4 61.6L26 69.6Z',HN(q))+P('M30 71.4L30.6 63.6L33.6 71.4Z',HN(q))+gem(q,21.4,78,1.4));
+  return s}
+/* ---------- portrait ---------- */
+function dPortrait(u){const q='dp'+u+'_';
+  let s=pOpen(q,'Drakhar le Wyrm',defs(q,u));
+  s+=rays(50,34,14,80,.08,'#fff6c0')+C_(50,34,30+u*2,U(q,'gl'))+sigil(q,50,34,27,u);
+  s+=[[12,24,.9],[86,18,.8],[90,46,.7],[10,52,.6],[70,8,.6],[28,10,.5]].map(([x,y,r],k)=>C_(x,y,r1(r*3.4),EM(q),'opacity=".55"')+C_(x,y,r,k%2?'#fff0c0':'#ff8a2a')).join('');
+  s+=P('M0 100L0 84Q6 76 10 82Q14 70 20 80Q24 74 28 84L28 100Z','#ff6a1a','opacity=".35"')+P('M100 100L100 84Q94 76 90 82Q86 70 80 80Q76 74 72 84L72 100Z','#ff6a1a','opacity=".35"');
+  if(u>=1)s+=C_(50,34,32.4,'none',`stroke="#ffd84a" stroke-width=".7" stroke-dasharray="1.2 2.6" opacity="${.45+u*.15}"`);
+  s+=dWings(q,u)+bust(q,u)+head(q,u);
+  if(u>=3)s+=halo(50,12.4,11,2.8);
+  s+=frame('#ff8a2a');
+  return s+pClose('Guerrier',u,[[16,40,2],[84,40,1.8],[20,64,1.3],[80,62,1.5]])}
+/* ---------- corps entier ---------- */
+function dBody(u,bare){const q='db'+u+(bare?'s':'')+'_';
+  let s=bOpen(q,'Drakhar le Wyrm',defs(q,u)+rad(q+'bb',[[0,'#ffb070',.38+u*.08],[.55,'#8a1a10',.3],[1,'#180202',0]],'50%','40%','60%'));
+  if(bare)s+=`<g class="lgbk">${C_(80,36,40,U(q,'gl'),'opacity=".45"')}${sigil(q,80,35,32,u,.42)}</g>`;
+  else{s+=`<g class="lgbk">${E_(80,96,80,116,U(q,'bb'))}${rays(80,36,14,120,.06,'#fff6c0')}${C_(80,36,42+u*3,U(q,'gl'),'opacity=".75"')}${sigil(q,80,35,34,u)}`;
+    if(u>=1)s+=C_(80,35,47+u*3,'none','stroke="#ffd84a" stroke-width="1.1" stroke-dasharray="2 6" opacity=".6"');
+    s+=risers(['#ffd84a','#ff6a1a'])+`</g>`+footRing(80,212,50,10,.9,'#ffd84a','#ff6a1a',rune)}
+  s+=E_(80,219,40,6,'#000','opacity=".45"');
+  s+=`<g transform="translate(12.5 -14) scale(1.35)">${dWings(q,u)}</g>`;
+  /* la queue de dragon qui s'enroule au sol */
+  s+=P('M92 168Q112 178 122 196Q130 210 146 212Q138 216 126 212Q112 206 104 190Q98 180 88 176Z',SC(q),'stroke="#4a0806" stroke-width=".5"')+L_('M94 172Q110 182 118 196Q126 208 140 211','#ff8a5a',.5,'opacity=".6"')
+    +[[106,180],[116,190],[124,202],[134,210]].map(([x,y])=>P(`M${x} ${y}L${x+2} ${y-5}L${x+4} ${y+1}Z`,HN(q))).join('');
+  /* jambes écailleuses et pieds griffus */
+  const leg=P('M65 126L77 126L75.6 170L74.4 200L65.6 200L65 170Z',SC(q),'stroke="#4a0806" stroke-width=".4"')+L_('M66 140Q70 142 74 140M66 152Q70 154 74 152M66 164Q70 166 74 164','#ff8a5a',.45,'opacity=".7"')
+    +E_(70,170,6,4.6,OB(q),'stroke="#000" stroke-width=".4"')+L_('M64.2 171Q70 175 75.8 171',AU(q),.8)
+    +P('M64 198L76 198L77 206L60 210Q60 203 64 198Z',SC(q),'stroke="#4a0806" stroke-width=".4"')+P('M60 210L57 213L62 210.4ZM64 209.4L62.6 213L66.4 209Z','#fffaf0');
+  s+=MB(leg);
+  /* tassettes d'obsidienne */
+  s+=P('M60 114Q80 121.6 100 114L103 140Q80 147 57 140Z',OB(q),'stroke="#000" stroke-width=".5"')+L_('M57.4 139.6Q80 146.6 102.6 139.6',AU(q),1)+L_('M69 119L67 143M80 121.6V146M91 119L93 143','#5a2a1a',.6);
+  /* torse : plaques ventrales et armure d'écailles bordée d'or */
+  s+=P('M62 64Q80 58.6 98 64L99.6 96Q96.4 114 80 118Q63.6 114 60.4 96Z',OB(q),'stroke="#000" stroke-width=".4"');
+  s+=P('M72 66L88 66L90 114Q80 118 70 114Z',BL(q))+L_('M71 74H89M70.8 82H89.2M70.6 90H89.4M70.4 98H89.6M70.4 106H89.6','#a8501a',.6);
+  let sc='';for(let r=0;r<6;r++){const y=70+r*7;sc+=`M63 ${y}Q66 ${y+3} 69.6 ${y}M90.4 ${y}Q94 ${y+3} 97 ${y}`}
+  s+=L_(sc,'#8a2a1a',.6)+L_('M64.6 76Q80 70 95.4 76',AU(q),.8)+C_(80,82,9,EM(q),`opacity="${.45+u*.1}"`)+gem(q,80,82,3.2);
+  s+=P('M61.4 110.6Q80 118 98.6 110.6L98.6 116Q80 123.4 61.4 116Z','#2a0a0a')+L_('M61.6 111Q80 118.4 98.4 111',AU(q),.7)+gem(q,80,115.6,1.8);
+  /* bras droit : poing griffu, une flamme */
+  s+=P('M58 70Q50 84 49 100L56.6 101.6Q58.6 87 64 76Z',SC(q),'stroke="#4a0806" stroke-width=".4"')+P('M49 100Q47.6 108 48.6 114L55.8 114.4Q56.8 108 56.6 101.6Z',OB(q))+L_('M48.4 104L56.6 104.6',AU(q),.8)
+    +E_(52.4,117,4.4,3.8,SC(q),'stroke="#4a0806" stroke-width=".4"')+P('M48.6 119L47.6 122.4L50 120Z M52 120.4L51.6 124L53.6 120.6Z M55.4 119.8L56 123.2L57 119.4Z','#fffaf0');
+  s+=`<g>${C_(52,108,10,EM(q),'opacity=".7"')}${P('M52 96Q56 102 54.6 106Q53.4 109 52 109Q50.6 109 49.4 106Q48 102 52 96Z','#ffb030')}${P('M52 100Q53.8 103.4 53 105.6Q52.4 107 52 107Q51.6 107 51 105.6Q50.2 103.4 52 100Z','#fff6c0')}<animateTransform attributeName="transform" type="translate" values="0 0;0 -1.4;0 0" dur="1.4s" repeatCount="indefinite"/></g>`;
+  /* bras gauche : le glaive de flammes */
+  s+=P('M102 70Q110 84 111 100L103.4 101.6Q101.4 87 96 76Z',SC(q),'stroke="#4a0806" stroke-width=".4"')+P('M103.4 101.6L111 100L116.6 114L110.4 116.6Z',OB(q));
+  s+=L_('M122 30L116 214','#2a0a0a',2.6)+L_('M122.2 31L116.2 213',AU(q),.5,'opacity=".6"')+P('M121.6 34H124.6V37H121.6Z',AU(q))+P('M117 150H120V153H117Z',AU(q));
+  s+=P('M123 34Q140 26 146 8Q138 14 132 12Q138 6 136 -2Q128 10 120 14Q118 24 123 34Z',BL(q),'stroke="#8a1a0a" stroke-width=".5"')+P('M123.6 30Q134 24 138 14Q132 18 127 18Q130 12 129 7Q124 15 121.6 18Q121 24 123.6 30Z','#fff0c0','opacity=".8"')+C_(124,26,10,EM(q),'opacity=".5"');
+  s+=E_(115,117,4.6,4.2,SC(q),'stroke="#4a0806" stroke-width=".4"');
+  /* épaulières à pointes */
+  const pa=P('M47.8 82.6Q50.6 71.6 61 68.6Q69 67.8 72.2 73Q67 78 60.6 80.4Q54 82.8 47.8 82.6Z',OB(q),'stroke="#000" stroke-width=".4"')+L_('M48.4 82.2Q54.4 82.4 60.6 80Q66.8 77.4 71.8 73.4',AU(q),.8)
+    +P('M50.6 74.4Q53.8 64 64.2 62.6Q71.6 62.6 74.4 67Q69.2 71.8 62.6 73.8Q56 75.6 50.6 74.4Z',OB(q),'stroke="#000" stroke-width=".4"')+L_('M51.2 74.2Q56.6 75.2 62.6 73.4Q68.8 71.2 74 67.4',AU(q),.8)
+    +P('M54 66L50 58L57.6 64.4Z',HN(q))+P('M61 63.4L60.4 55L64.6 63Z',HN(q))+gem(q,60.6,69.6,1.3);
+  s+=MB(pa);
+  s+=HG(head(q,u));
+  if(u>=3)s+=halo(80,9,10,2.6);
+  s+=bStars(u,bare);
+  return s+'</svg>'}
+register(DRK,dPortrait,dBody);
+}catch(e){console.warn('drakhar art',e)}})();
+
+/* ================= LÉVIATHANE DES ABYSSES : nouveau style graphique =================
+   Même reine des abysses : peau turquoise, couronne de corail d'or, nageoires d'oreilles, chevelure-tentacules, grands yeux lumineux, trident.
+   Nouveau : visage détaillé (écailles sur les joues, sourire en coin), couronne de corail et de perles,
+   épaulières-coquillages, armure d'écailles, robe à nageoires, orbe d'eau, tentacules et méduses, nageoires-ailes en ultra II/III. */
+(function(){try{
+const LEV=66;if(!HEROES[LEV]||!window.LK)return;
+const {r1,P,L_,C_,E_,MI,MB,HG,lin,rad,U,STARP,starN,rays,frame,eye,sigilRing,footRing,feather,wingPair,risers,halo,pOpen,pClose,bOpen,bStars,register}=LK;
+const defs=(q,u)=>rad(q+'bg',[[0,u>=3?'#fffbe8':'#e4fff8'],[.15,'#6ae0d0'],[.4,'#128a8a'],[.7,'#063a4a'],[1,'#021018']],'50%','30%','80%')
+ +rad(q+'gl',[[0,'#ffffff',.95],[.5,'#c8fff4',.45],[1,'#2ad0b0',0]])
+ +lin(q+'au',[[0,'#fff2b0'],[.5,'#ffd84a'],[1,'#c8901a']],1,1)
+ +lin(q+'sk',[[0,'#7ad0c8'],[.55,'#4aa8a4'],[1,'#2a7a7a']],1,0)
+ +lin(q+'hr',[[0,u>=3?'#3a6ac8':'#2a4a9a'],[.5,'#162a6a'],[1,'#0a1438']])
+ +lin(q+'sc',[[0,'#3ad0b8'],[.55,'#128a8a'],[1,'#064a50']])
+ +lin(q+'fn',[[0,'#c8fff4',.9],[.5,'#6ae0d0',.7],[1,'#2a6ac8',.6]],1,1)
+ +lin(q+'sh',[[0,'#fff6e0'],[.5,'#ffd8a8'],[1,'#e08a6a']],0,1)
+ +rad(q+'pl',[[0,'#ffffff'],[.6,'#f0f4ff'],[1,'#b8c4e0']],'35%','35%','70%')
+ +rad(q+'wo',[[0,'#ffffff',.95],[.4,'#9afff0',.6],[1,'#2ad0b0',0]])
+ +rad(q+'ey',[[0,'#e8fffa'],[.45,'#6affe0'],[1,'#0e8a7a']]);
+const AU=q=>U(q,'au'),SK=q=>U(q,'sk'),HR=q=>U(q,'hr'),SC=q=>U(q,'sc'),FN=q=>U(q,'fn'),SH=q=>U(q,'sh'),PL=q=>U(q,'pl'),WO=q=>U(q,'wo'),EY=q=>U(q,'ey');
+const pearl=(q,x,y,r)=>C_(x,y,r,PL(q),'stroke="#8a94b0" stroke-width=".2"');
+/* une coquille Saint-Jacques */
+function shell(q,x,y,R,a=0){let d='';for(let k=0;k<7;k++){const t=(-160+k*20)*Math.PI/180;d+=`M0 0L${r1(R*Math.cos(t))} ${r1(R*Math.sin(t))}`}
+  return`<g transform="translate(${x} ${y}) rotate(${a})">${P(`M0 0L${r1(-R*.94)} ${r1(-R*.34)}Q${r1(-R*.7)} ${r1(-R*1.08)} 0 ${r1(-R*1.1)}Q${r1(R*.7)} ${r1(-R*1.08)} ${r1(R*.94)} ${r1(-R*.34)}Z`,SH(q),'stroke="#a8604a" stroke-width=".35"')}${L_(d,'#c8806a',.35)}${P(`M${r1(-R*.24)} 0L${r1(R*.24)} 0L${r1(R*.16)} ${r1(R*.24)}L${r1(-R*.16)} ${r1(R*.24)}Z`,SH(q))}</g>`}
+/* la couronne de corail d'or et ses perles */
+function crown(q,u){const br=MI(L_('M42 30Q40 22 36 18M40 24Q36 22 34 24M38.6 20Q38 14 40 10M46 28Q46 20 44 14M45 20Q42 18 42 14','#ffd84a',1.4)+L_('M42 30Q40 22 36 18M46 28Q46 20 44 14','#fff6c0',.4,'opacity=".8"'));
+  return br+L_('M48.6 28Q50 18 50 10M50 16Q52 12 54 12','#ffd84a',1.4)+pearl(q,50,9.6,1.4)+MI(pearl(q,36,17.6,1.1)+pearl(q,44,13.6,1.1)+pearl(q,40,9.8,1))+(u>=3?MI(L_('M40 10Q38 6 40 2','#ffd84a',1.2)+pearl(q,40,2,1.1)):'')}
+/* le sceau : vague en anneau, perles, coquillage au sommet */
+function sigil(q,cx,cy,R,u,op){op=op==null?.55+u*.12:op;let s=sigilRing(cx,cy,R,op,'#ffe08a','#c8fff4',36);
+  let d='';const n=16;for(let k=0;k<n;k++){const a=(k*360/n-90)*Math.PI/180,b=((k+.5)*360/n-90)*Math.PI/180,c=((k+1)*360/n-90)*Math.PI/180;
+    d+=`M${r1(cx+R*1.1*Math.cos(a))} ${r1(cy+R*1.1*Math.sin(a))}Q${r1(cx+R*1.22*Math.cos(b))} ${r1(cy+R*1.22*Math.sin(b))} ${r1(cx+R*1.1*Math.cos(c))} ${r1(cy+R*1.1*Math.sin(c))}`}
+  s+=L_(d,'#c8fff4',r1(R*.024),`opacity="${r1(op*.8)}"`);
+  [90,180,270].forEach(a=>{const t=(a-90)*Math.PI/180;s+=pearl(q,r1(cx+R*.925*Math.cos(t)),r1(cy+R*.925*Math.sin(t)),r1(R*.05))});
+  return s+shell(q,cx,r1(cy-R*.86),r1(R*.13))}
+/* une méduse */
+const jelly=(x,y,s,op)=>`<g transform="translate(${x} ${y}) scale(${s})" opacity="${op}">${P('M-4 0Q-4 -5 0 -5Q4 -5 4 0Q2 -1 0 0Q-2 -1 -4 0Z','#c8fff4')}${L_('M-2.6 0Q-3.4 3 -2.2 6M0 0Q-.6 4 .4 7M2.6 0Q3.2 3 2.2 6','#c8fff4',.5)}</g>`;
+/* une bulle */
+const bub=(x,y,r)=>C_(x,y,r,'none','stroke="#e8fffa" stroke-width=".4" opacity=".8"')+C_(r1(x-r*.35),r1(y-r*.35),r1(r*.25),'#ffffff','opacity=".8"');
+/* ---------- la tête ---------- */
+function hairBack(q,l=1){const y=k=>r1(46+k*l);let s=P(`M32 46Q28 26 41 20.4Q50 16.4 59 20.4Q72 26 68 46Q72 ${y(14)} 75 ${y(28)}Q78 ${y(42)} 72 ${y(54)}H28Q22 ${y(42)} 25 ${y(28)}Q28 ${y(14)} 32 46Z`,HR(q));
+  /* mèches-tentacules qui ondulent */
+  s+=L_(`M30 56Q24 66 28 ${y(28)}Q32 ${y(38)} 26 ${y(48)}M70 56Q76 66 72 ${y(28)}Q68 ${y(38)} 74 ${y(48)}`,HR(q),3.2)+L_(`M30 56Q24 66 28 ${y(28)}Q32 ${y(38)} 26 ${y(48)}M70 56Q76 66 72 ${y(28)}Q68 ${y(38)} 74 ${y(48)}`,'#6a9aff',.6,'opacity=".6"');
+  return s+[[27,y(34)],[73,y(34)],[26.6,y(44)],[73.4,y(44)]].map(([x,yy])=>C_(x,yy,.7,'#9ad0ff','opacity=".8"')).join('')}
+function face(q,u){
+  let s=`<rect x="45.4" y="55" width="9.2" height="13" fill="${SK(q)}"/>`+P('M45.4 59.4Q50 62.8 54.6 59.4L54.6 64Q50 66 45.4 64Z','#1a5a5a','opacity=".45"');
+  /* nageoires d'oreilles */
+  s+=MI(P('M37.6 42Q30 36 26.6 30Q28.6 36 27 40Q30 40 30.6 44Q32.6 43 37.4 47Z',FN(q),'stroke="#1a6a7a" stroke-width=".35"')+L_('M37 43L28 32M37 45L28.4 39M36.6 46.4L31 43.4','#e8fffa',.35,'opacity=".8"'));
+  s+=P('M37 44.4Q37 30.4 50 30.4Q63 30.4 63 44.4Q63 52.8 59.6 58.2Q55.4 63.6 50 64.2Q44.6 63.6 40.4 58.2Q37 52.8 37 44.4Z',SK(q));
+  s+=P('M58.4 46Q61.6 52 59 57.4Q56.6 61 53 62.8Q57.6 58.4 59 52.4Z','#1a5a5a','opacity=".35"');
+  const io=u>=3?{ir:'#ffe08a',ir2:'#c8901a',glow:'#ffe08a'}:{ir:'#6affe0',ir2:'#0e8a7a',glow:'#9afff0'};
+  s+=eye(44,Object.assign({lash:1,lid:'#06282c',irr:2.3,white:'#f0fffc'},io))+eye(56,Object.assign({lash:1,lid:'#06282c',irr:2.3,white:'#f0fffc'},io));
+  s+=MI(L_('M40 41.2Q43.4 39.4 47.2 40.6','#0a2a5a',1.1));
+  s+=L_('M50.4 48.8L49.7 52.8Q50.4 53.6 51.6 53.1','#1a5a5a',.65);
+  /* un sourire en coin */
+  s+=P('M46.6 57.2Q50.6 58.6 54 56.2Q52.8 59.6 50 59.8Q47.6 59.6 46.6 57.2Z','#1a4a6a')+L_('M46.4 57.2Q50.6 58.6 54.2 56','#06282c',.55)+L_('M53.6 56.2L55 55.4','#06282c',.5);
+  /* écailles sur les joues */
+  s+=MI([[40.4,52.4],[42.2,53.4],[40.6,54.6],[42.4,55.6]].map(([x,y])=>L_(`M${r1(x-.8)} ${y}Q${x} ${r1(y+.8)} ${r1(x+.8)} ${y}`,'#c8fff4',.35,'opacity=".9"')).join(''));
+  /* frange bleu nuit */
+  s+=P('M36.4 45Q35 30 44 25.2Q52 21.8 59.8 25.6Q66.2 29.6 64.4 45Q62.4 37 57.2 33.6Q54.2 37.4 48.8 38.6Q52 35.4 52.4 32.6Q46.6 37.2 39.6 39Q37.2 41.4 36.4 45Z',HR(q))
+    +L_('M44 27Q49 25.4 54 26.4M40 32Q44 28.6 49 28.4M55.4 28.6Q60 30 62.4 34.6','#6a9aff',.5,'opacity=".85"');
+  s+=P('M36.8 42Q34 52 35 62Q36 70 33 80Q38.8 74 39.8 62Q40.6 52 39.6 44Z',HR(q))+P('M63.2 42Q66 52 65 62Q64 70 67 80Q61.2 74 60.2 62Q59.4 52 60.4 44Z',HR(q));
+  /* collier de perles */
+  s+=[44.6,46.4,48.2,50,51.8,53.6,55.4].map((x,k)=>pearl(q,x,r1(65+Math.sin(k/6*Math.PI)*1.6),.7)).join('');
+  return s}
+/* ---------- le buste ---------- */
+function bust(q,u){
+  let s=P('M8 100Q10 80 24 73.6L76 73.6Q90 80 92 100Z',SC(q));
+  /* armure d'écailles bordée d'or */
+  s+=P('M30 100L33.6 78Q40 72.4 50 72.4Q60 72.4 66.4 78L70 100Z',SC(q))+L_('M33.8 78.2Q40 72.8 50 72.8Q60 72.8 66.2 78.2',AU(q),.8);
+  let sc='';for(let r=0;r<5;r++){const y=80+r*4;for(let k=0;k<7;k++){const x=35+k*5+(r%2)*2.5;if(x>66)continue;sc+=`M${r1(x-2.4)} ${y}Q${x} ${r1(y+2.6)} ${r1(x+2.4)} ${y}`}}
+  s+=L_(sc,'#9afff0',.45,'opacity=".75"')+pearl(q,50,86,2.4)+C_(50,86,4,AU(q),'opacity=".0"')+C_(50,86,3.2,'none',`stroke="${AU(q)}" stroke-width=".8"`);
+  /* épaulières-coquillages */
+  s+=MI(shell(q,22,84,13,-20)+shell(q,15,92,9,-36));
+  return s}
+/* ultra II et III : de grandes nageoires translucides */
+function finWings(q,u){const w=`<path d="M38 64Q20 44 4 40Q10 48 6 56Q14 56 12 64Q20 62 22 70Q30 66 38 68Z" fill="${FN(q)}" stroke="${u>=3?'#ffd84a':'#c8fff4'}" stroke-width=".6"/>${L_('M38 64Q22 50 6 44M38 65L8 56M37 66L14 64M37 67L22 70','#e8fffa',.4,'opacity=".8"')}`;
+  return`<g opacity="${u>=3?.95:.88}">${MI(w)}</g>`}
+/* ---------- portrait ---------- */
+function lPortrait(u){const q='vp'+u+'_l';
+  let s=pOpen(q,'Léviathane des Abysses',defs(q,u));
+  s+=rays(50,0,10,110,.07,'#e8fffa')+C_(50,34,30+u*2,U(q,'gl'))+sigil(q,50,36,27,u);
+  s+=bub(12,24,1.6)+bub(16,16,1)+bub(88,30,1.4)+bub(84,20,.9)+bub(90,52,1.2)+jelly(14,48,1,.55)+jelly(86,44,.8,.45);
+  if(u>=1)s+=C_(50,36,32.4,'none',`stroke="#ffe08a" stroke-width=".7" stroke-dasharray="1.2 2.6" opacity="${.45+u*.15}"`);
+  if(u>=2)s+=finWings(q,u);
+  s+=hairBack(q)+bust(q,u)+face(q,u)+crown(q,u);
+  if(u>=3)s+=halo(50,6,10,2.4);
+  s+=frame('#6ae0d0');
+  return s+pClose('Mage',u,[[16,40,2],[84,40,1.8],[20,64,1.3],[80,62,1.5]])}
+/* ---------- corps entier ---------- */
+function lBody(u,bare){const q='vb'+u+(bare?'s':'')+'_l';
+  let s=bOpen(q,'Léviathane des Abysses',defs(q,u)+rad(q+'bb',[[0,'#9afff0',.36+u*.08],[.55,'#0e6a6a',.3],[1,'#021018',0]],'50%','40%','60%'));
+  const tent=`<g opacity=".55">${L_('M10 236Q2 180 22 150Q38 126 28 96','#063a4a',8)}${L_('M150 236Q158 180 138 150Q122 126 132 96','#063a4a',8)}${L_('M10 236Q2 180 22 150Q38 126 28 96M150 236Q158 180 138 150Q122 126 132 96','#128a8a',1.2,'opacity=".6"')}${[[20,170],[26,140],[140,170],[134,140]].map(([x,y])=>C_(x,y,1.6,'#9afff0','opacity=".6"')).join('')}</g>`;
+  if(bare)s+=`<g class="lgbk">${C_(80,36,40,U(q,'gl'),'opacity=".45"')}${sigil(q,80,35,32,u,.42)}</g>`;
+  else{s+=`<g class="lgbk">${E_(80,96,80,116,U(q,'bb'))}${rays(80,-8,10,200,.06,'#e8fffa')}${tent}${C_(80,36,42+u*3,U(q,'gl'),'opacity=".75"')}${sigil(q,80,35,34,u)}`;
+    if(u>=1)s+=C_(80,35,47+u*3,'none','stroke="#ffe08a" stroke-width="1.1" stroke-dasharray="2 6" opacity=".6"');
+    s+=jelly(24,50,1.6,.5)+jelly(138,70,1.3,.45)+bub(30,110,2)+bub(132,120,1.6)+bub(36,180,1.4);
+    s+=risers(['#e8fffa','#9afff0'],(c,k)=>`<circle r="${1+k%2*.6}" fill="none" stroke="${c}" stroke-width=".4"/>`)+`</g>`
+      +footRing(80,212,50,10,.9,'#ffd84a','#6ae0d0',(x,y)=>`M${r1(x-1.2)} ${y}Q${r1(x-.6)} ${r1(y-1)} ${x} ${y}Q${r1(x+.6)} ${r1(y+1)} ${r1(x+1.2)} ${y}`)}
+  s+=E_(80,219,38,6,'#000','opacity=".42"');
+  if(u>=2)s+=`<g transform="translate(12.5 -14) scale(1.35)">${finWings(q,u)}</g>`;
+  s+=HG(hairBack(q,1.3));
+  /* la robe à écailles qui s'ouvre en nageoires */
+  s+=P('M62 112Q54 160 48 200Q44 206 40 212Q54 210 62 206Q72 212 80 208Q88 212 98 206Q106 210 120 212Q116 206 112 200Q106 160 98 112Z',SC(q));
+  let sc='';for(let r=0;r<9;r++){const y=122+r*9;for(let k=0;k<8;k++){const x=56+k*7+(r%2)*3.5;if(x<58-r||x>102+r)continue;sc+=`M${r1(x-3)} ${y}Q${x} ${r1(y+3.4)} ${r1(x+3)} ${y}`}}
+  s+=L_(sc,'#9afff0',.45,'opacity=".6"')+P('M40 212Q54 210 62 206Q72 212 80 208Q88 212 98 206Q106 210 120 212Q106 220 96 214Q88 222 80 216Q72 222 64 214Q54 220 40 212Z',FN(q))+L_('M40 212Q54 210 62 206Q72 212 80 208Q88 212 98 206Q106 210 120 212',AU(q),1);
+  /* armure d'écailles et perles */
+  s+=P('M63 64Q80 58.6 97 64L99 116Q80 122 61 116Z',SC(q))+L_('M66 66.4Q80 61.6 94 66.4',AU(q),.8);
+  sc='';for(let r=0;r<6;r++){const y=70+r*7.4;for(let k=0;k<6;k++){const x=65+k*6+(r%2)*3;if(x>96)continue;sc+=`M${r1(x-2.8)} ${y}Q${x} ${r1(y+3)} ${r1(x+2.8)} ${y}`}}
+  s+=L_(sc,'#9afff0',.45,'opacity=".75"')+pearl(q,80,84,3.2)+C_(80,84,4.2,'none',`stroke="${AU(q)}" stroke-width="1"`);
+  s+=P('M61.4 110.6Q80 118 98.6 110.6L98.6 116Q80 123.4 61.4 116Z','#064a50')+L_('M61.6 111Q80 118.4 98.4 111',AU(q),.7)+[66,72,78,84,90,96].map(x=>pearl(q,x,r1(114+Math.abs(x-80)*-.06+1),.9)).join('');
+  /* épaulières-coquillages */
+  s+=MB(shell(q,60,68,11,-30)+shell(q,55,76,8,-48));
+  /* bras droit : l'orbe d'eau */
+  s+=P('M60 70Q52 84 50 100L57.6 101Q59.4 86 65 76Z',SK(q))+P('M50 100Q49 92 46 86L52 83Q55.6 90 57.6 101Z',SK(q))+L_('M51 92L56 91M50 96L56.4 95','#ffd84a',.7)+E_(47,83,4.4,3,SK(q),'transform="rotate(-20 47 83)"');
+  s+=`<g>${C_(46,70,10,WO(q),'opacity=".95"')}${C_(46,70,6.4,'none','stroke="#e8fffa" stroke-width=".6"')}${L_('M41 70Q44 66 48 68Q51 70 50 73','#ffffff',.6,'opacity=".9"')}${C_(43.8,67.6,1.2,'#ffffff','opacity=".9"')}<animateTransform attributeName="transform" type="translate" values="0 0;0 -1.8;0 0" dur="2.4s" repeatCount="indefinite"/></g>`;
+  /* bras gauche : le trident d'or */
+  s+=P('M100 70Q108 84 110 100L102.4 101Q100.6 86 95 76Z',SK(q))+P('M102.4 101L110 100L116.6 114L110.4 116.6Z',SK(q))+L_('M104 106L110.6 104M105.6 110.6L112 108.6','#ffd84a',.7);
+  s+=L_('M120 40L116 214',AU(q),2.2)+L_('M120.2 41L116.2 213','#fff6c0',.5,'opacity=".7"')+P('M112 42Q120 46 128 42L127 44.6Q120 48.6 113 44.6Z',AU(q),'stroke="#8a5a1a" stroke-width=".3"')
+    +L_('M113 43Q112 34 112 26M127 43Q128 34 128 26M120 46L120.6 18',AU(q),1.6)+P('M110.6 26.6L112 20L113.6 26.6Z',AU(q))+P('M126.4 26.6L128 20L129.4 26.6Z',AU(q))+P('M119 19L120.6 10L122.2 19Z',AU(q))+C_(120.4,40,6,WO(q),'opacity=".7"')+pearl(q,120.4,44,1.4);
+  s+=E_(115,117,4.6,4.2,SK(q));
+  s+=HG(face(q,u)+crown(q,u));
+  if(u>=3)s+=halo(80,3.2,9,2.2);
+  s+=bStars(u,bare);
+  return s+'</svg>'}
+register(LEV,lPortrait,lBody);
+}catch(e){console.warn('leviathane art',e)}})();
+
+/* ================= TITANOR LE MONT-VIVANT : nouveau style graphique =================
+   Même golem : tête et corps de pierre, couronne de cristaux, yeux et fissures lumineux, mousse, marteau de pierre, bouclier runique.
+   Nouveau : tête taillée en facettes, arcade de pierre, cristaux à facettes, épaulières-rochers couvertes de mousse,
+   runes gravées qui brillent, cœur de cristal ; en ultra II/III la lumière devient lave (« Cœur de Lave ») et des cristaux poussent dans son dos. */
+(function(){try{
+const TIT=60;if(!HEROES[TIT]||!window.LK)return;
+const {r1,P,L_,C_,E_,MI,MB,HG,lin,rad,U,STARP,starN,rays,frame,sigilRing,footRing,risers,halo,pOpen,pClose,bOpen,bStars,register,rune}=LK;
+const G=u=>u>=2?{c:'#ffb030',c2:'#ff5a1a',w:'#fff0c0'}:{c:'#6ae0ff',c2:'#2a9ad8',w:'#e8fcff'};
+const defs=(q,u)=>{const g=G(u);return rad(q+'bg',[[0,u>=3?'#fffbe8':(u>=2?'#fff0d8':'#eaf6ff')],[.15,u>=2?'#ffc890':'#9ad0e8'],[.4,u>=2?'#8a5a4a':'#4a6a8a'],[.7,'#1e2838'],[1,'#080a10']],'50%','32%','78%')
+ +rad(q+'gl',[[0,'#ffffff',.95],[.5,g.w,.42],[1,g.c,0]])
+ +lin(q+'au',[[0,'#fff2b0'],[.5,'#ffd84a'],[1,'#c8901a']],1,1)
+ +lin(q+'st',[[0,'#a8a29a'],[.5,'#7a746c'],[1,'#4a4640']],1,1)
+ +lin(q+'s2',[[0,'#8a847c'],[1,'#3a3630']],1,1)
+ +lin(q+'s3',[[0,'#c8c2b8'],[1,'#8a847a']],1,1)
+ +lin(q+'ms',[[0,'#8ad04a'],[1,'#3a7a2a']])
+ +lin(q+'cr',[[0,'#ffffff'],[.4,g.w],[1,g.c2]],1,1)
+ +rad(q+'cg',[[0,'#ffffff',1],[.35,g.c,.8],[1,g.c2,0]])};
+const AU=q=>U(q,'au'),ST=q=>U(q,'st'),S2=q=>U(q,'s2'),S3=q=>U(q,'s3'),MS=q=>U(q,'ms'),CR=q=>U(q,'cr'),CG=q=>U(q,'cg');
+/* un cristal à facettes */
+const crystal=(q,x,y,h,w,a=0)=>`<g transform="translate(${x} ${y}) rotate(${a})">${P(`M${-w} 0L${-w} ${r1(-h*.75)}L0 ${-h}L${w} ${r1(-h*.75)}L${w} 0Z`,CR(q),'stroke="#1a3a5a" stroke-width=".3"')}${L_(`M0 ${-h}V0M${-w} ${r1(-h*.75)}L0 ${r1(-h*.6)}L${w} ${r1(-h*.75)}`,'#ffffff',.3,'opacity=".7"')}</g>`;
+/* une pierre qui flotte */
+const rock=(q,x,y,s)=>P(`M${x-3*s} ${y}L${x-1.6*s} ${y-2.6*s}L${x+1.8*s} ${y-2.2*s}L${x+3*s} ${y+.4*s}L${x+1*s} ${y+2.4*s}L${x-2*s} ${y+2*s}Z`,S2(q),'stroke="#2a2620" stroke-width=".3"');
+/* le sceau : anneau de pierre aux runes lumineuses, un cristal au sommet */
+function sigil(q,cx,cy,R,u,op){const g=G(u);op=op==null?.6+u*.1:op;let s=C_(cx,cy,R,'none',`stroke="#5a5650" stroke-width="${r1(R*.12)}" opacity="${r1(op*.8)}"`)+C_(cx,cy,R,'none',`stroke="#8a847c" stroke-width="${r1(R*.03)}" opacity="${r1(op)}"`);
+  let d='';for(let k=0;k<16;k++){if(k===0)continue;const a=(k*22.5-90)*Math.PI/180;d+=rune(r1(cx+R*Math.cos(a)),r1(cy+R*Math.sin(a)),k)}
+  s+=`<path d="${d}" stroke="${g.c}" stroke-width="${r1(R*.022)}" fill="none" opacity="${r1(Math.min(1,op+.2))}"/>`+sigilRing(cx,cy,r1(R*1.16),op*.6,g.c,g.w,24);
+  return s+crystal(q,cx,r1(cy-R*.9),r1(R*.26),r1(R*.07))}
+/* ---------- la tête de pierre (100×100) ---------- */
+function head(q,u){const g=G(u);
+  let s=P('M42 58L58 58L60 80L40 80Z',S2(q))+L_('M44 64L56 64M43.4 72L56.6 72','#2a2620',.5);
+  s+=P('M35.4 37L41.6 26L58.4 26L64.6 37L65.4 50L60.4 61.6L50 66.4L39.6 61.6L34.6 50Z',ST(q),'stroke="#2a2620" stroke-width=".6"');
+  s+=P('M41.6 26L50 24.4L58.4 26L56 33L44 33Z',S3(q))+P('M58.4 26L64.6 37L65.4 50L60 46L58.6 36Z',S2(q),'opacity=".8"')+P('M35.4 37L41.6 26L44 33L40.6 40Z',S3(q),'opacity=".7"')+P('M39.6 61.6L50 66.4L60.4 61.6L57 56.4L50 59.4L43 56.4Z',S2(q),'opacity=".8"');
+  /* arcade de pierre et yeux-fentes lumineux */
+  s+=P('M36.4 41L63.6 41L62.6 45.4L37.4 45.4Z','#5a5650','stroke="#2a2620" stroke-width=".4"')+L_('M37 41.4H63','#c8c2b8',.5,'opacity=".7"');
+  s+=MI(C_(44,48,5,CG(q),'opacity=".55"')+P('M39.6 48Q44 46 48.4 47.6Q44 50 39.6 48Z',g.w)+L_('M40 48Q44 46.4 48 47.8',g.c,.6));
+  /* fissures qui brillent, et une bouche taillée */
+  s+=L_('M56 27L53.6 32L55.6 35.4L53 39M38 52L41.6 55L40.4 58.6M61 52L58.4 56',g.c,.7,'opacity=".95"')+L_('M56 27L53.6 32L55.6 35.4L53 39',g.w,.25);
+  s+=L_('M44.6 58.6L50 60.2L55.4 58.6',g.c,.8)+L_('M44.6 58.6L50 60.2L55.4 58.6','#2a2620',.3);
+  /* la mousse sur le crâne */
+  s+=P('M38 31Q40 26 46 26Q44 29 40.6 32Z',MS(q))+P('M54 25.6Q60 25.4 62.6 31Q58.6 29.6 56 28.6Z',MS(q))+[[41,28.6],[45,27],[57,26.6],[60,28.6]].map(([x,y])=>C_(x,y,.8,'#a8e86a')).join('');
+  /* la couronne de cristaux */
+  s+=C_(50,22,10,CG(q),'opacity=".45"')+crystal(q,50,27,12,2.4)+crystal(q,44,27.6,8.4,1.8,-14)+crystal(q,56,27.6,8.4,1.8,14)+crystal(q,39.6,30,5.6,1.4,-28)+crystal(q,60.4,30,5.6,1.4,28);
+  if(u>=3)s+=crystal(q,47,26,9,1.4,-6)+crystal(q,53,26,9,1.4,6);
+  return s}
+/* ---------- le buste ---------- */
+function bust(q,u){const g=G(u);
+  let s=P('M6 100Q8 78 24 72L76 72Q92 78 94 100Z',S2(q));
+  /* torse de pierre, runes gravées et cœur de cristal */
+  s+=P('M26 100L28 82Q34 72 50 71Q66 72 72 82L74 100Z',ST(q),'stroke="#2a2620" stroke-width=".5"')+L_('M28.4 84L71.6 84M30 92H70','#4a4640',.6)+L_('M40 74L38 100M60 74L62 100','#4a4640',.5);
+  s+=L_('M34 88L38 84L42 88M58 88L62 84L66 88M46 94L50 90L54 94',g.c,.7)+C_(50,86,6,CG(q),`opacity="${.55+u*.1}"`)+crystal(q,50,90,7,2.4);
+  /* épaulières-rochers couvertes de mousse, cristaux */
+  const sh=P('M38 74Q30 66 18 68Q8 72 6 84Q8 92 16 94Q28 92 34 86Q40 80 38 74Z',ST(q),'stroke="#2a2620" stroke-width=".5"')+P('M16 70Q22 66 30 68Q26 72 18 74Z',S3(q),'opacity=".8"')
+    +P('M10 76Q14 68 24 68Q30 69 34 72Q24 72 16 78Z',MS(q))+[[14,74],[20,70],[27,70]].map(([x,y])=>C_(x,y,.9,'#a8e86a')).join('')+L_('M14 86L20 84L24 88',g.c,.7)+crystal(q,12,72,8,1.8,-30)+crystal(q,18,69,6,1.4,-14);
+  s+=MI(sh);
+  return s}
+/* ultra II et III : des cristaux qui poussent dans le dos */
+function spikes(q,u){let w='';[[-150,30,3.4],[-132,36,3.8],[-114,32,3.4],[-165,22,2.8],[-98,24,2.8]].forEach(([a,h,wd])=>{w+=crystal(q,36,62,h,wd,a+90)});return`<g opacity="${u>=3?.97:.92}">${MI(w)}</g>`}
+/* ---------- portrait ---------- */
+function tPortrait(u){const q='tp'+u+'_';const g=G(u);
+  let s=pOpen(q,'Titanor le Mont-Vivant',defs(q,u));
+  s+=rays(50,34,12,80,.07,'#ffffff')+C_(50,34,30+u*2,U(q,'gl'))+sigil(q,50,36,26,u);
+  s+=rock(q,12,22,1.2)+rock(q,88,18,1)+rock(q,90,48,.8)+rock(q,10,52,.9)+[[20,12],[80,10],[72,30]].map(([x,y])=>C_(x,y,.8,g.w,'opacity=".9"')).join('');
+  if(u>=1)s+=C_(50,36,32.4,'none',`stroke="${g.c}" stroke-width=".7" stroke-dasharray="1.2 2.6" opacity="${.45+u*.15}"`);
+  if(u>=2)s+=spikes(q,u);
+  s+=bust(q,u)+head(q,u);
+  if(u>=3)s+=halo(50,9.6,11,2.8);
+  s+=frame(g.c);
+  return s+pClose('Tank',u,[[16,40,2],[84,40,1.8],[20,64,1.3],[80,62,1.5]])}
+/* ---------- corps entier ---------- */
+function tBody(u,bare){const q='tb'+u+(bare?'s':'')+'_';const g=G(u);
+  let s=bOpen(q,'Titanor le Mont-Vivant',defs(q,u)+rad(q+'bb',[[0,g.w,.32+u*.08],[.55,'#3a4a5a',.3],[1,'#080a10',0]],'50%','40%','60%'));
+  if(bare)s+=`<g class="lgbk">${C_(80,36,40,U(q,'gl'),'opacity=".45"')}${sigil(q,80,35,30,u,.42)}</g>`;
+  else{s+=`<g class="lgbk">${E_(80,96,80,116,U(q,'bb'))}${rays(80,36,14,120,.05,'#ffffff')}${C_(80,36,42+u*3,U(q,'gl'),'opacity=".7"')}${sigil(q,80,35,32,u)}`;
+    s+=rock(q,20,50,2)+rock(q,142,64,1.8)+rock(q,26,150,1.6)+rock(q,138,150,1.7);
+    if(u>=1)s+=C_(80,35,46+u*3,'none',`stroke="${g.c}" stroke-width="1.1" stroke-dasharray="2 6" opacity=".6"`);
+    s+=risers([g.c,g.w],(c,k)=>k%2?`<path d="M-1.2 0L0 -1.8L1.2 0L0 1.8Z" fill="${c}"/>`:`<circle r="1" fill="${c}"/>`)+`</g>`+footRing(80,212,52,10.4,.9,'#8a847c',g.c,rune)}
+  s+=E_(80,219,44,6.4,'#000','opacity=".5"');
+  if(u>=2)s+=`<g transform="translate(12.5 -14) scale(1.35)">${spikes(q,u)}</g>`;
+  /* jambes-piliers et pieds de roc */
+  const leg=P('M62 124L78 124L77 196L63 196Z',ST(q),'stroke="#2a2620" stroke-width=".5"')+L_('M63 144L77 145M63 166L77 167M63 184L77 185','#4a4640',.6)+L_('M66 150L70 156L68 162',g.c,.7)
+    +P('M58 194L80 194L82 210L56 212Z',S2(q),'stroke="#2a2620" stroke-width=".5"')+P('M66 128Q72 124 76 130Q70 132 66 128Z',MS(q));
+  s+=MB(leg);
+  /* bassin de pierre */
+  s+=P('M58 110Q80 118 102 110L104 132Q80 140 56 132Z',S2(q),'stroke="#2a2620" stroke-width=".5"')+L_('M58 120Q80 128 102 120','#2a2620',.5)+L_('M76 128L80 132L84 128',g.c,.8);
+  /* torse massif : runes gravées et cœur de cristal */
+  s+=P('M56 62Q80 54 104 62L106 100Q98 116 80 118Q62 116 54 100Z',ST(q),'stroke="#2a2620" stroke-width=".6"')+P('M58 64Q80 57 102 64L100 72Q80 66 60 72Z',S3(q),'opacity=".7"')
+    +L_('M58 84L102 84M60 98L100 98M80 64V116','#4a4640',.7)+L_('M64 92L70 86L76 92M84 92L90 86L96 92M74 106L80 100L86 106',g.c,.8);
+  s+=C_(80,80,10,CG(q),`opacity="${.55+u*.1}"`)+crystal(q,80,86,11,3.4);
+  /* bras droit : le grand bouclier runique */
+  s+=P('M56 66Q46 76 44 96L54 98Q56 84 62 76Z',ST(q),'stroke="#2a2620" stroke-width=".5"');
+  s+=C_(44,124,22,S2(q),'stroke="#2a2620" stroke-width=".8"')+C_(44,124,22,'none','stroke="#8a847c" stroke-width="1.4"')+C_(44,124,15,'none',`stroke="${g.c}" stroke-width="1.6" opacity=".95"`)+C_(44,124,15,'none',`stroke="${g.w}" stroke-width=".5"`)
+    +C_(44,124,9,CG(q),'opacity=".7"')+P(starN(44,124,4,7,2),g.w,'opacity=".95"')+[0,90,180,270].map(a=>{const t=a*Math.PI/180;return rune(r1(44+18.6*Math.cos(t)),r1(124+18.6*Math.sin(t)),a/90)}).map(d=>`<path d="${d}" stroke="${g.c}" stroke-width=".8" fill="none"/>`).join('');
+  /* bras gauche : le marteau de pierre cerclé d'or */
+  s+=P('M104 66Q114 76 116 96L106 98Q104 84 98 76Z',ST(q),'stroke="#2a2620" stroke-width=".5"')+P('M106 98L116 96L120 116L110 118Z',S2(q),'stroke="#2a2620" stroke-width=".5"');
+  s+=L_('M124 46L118 200','#5a3a1a',3)+L_('M124.2 47L118.2 199','#8a6a3a',.8,'opacity=".7"')+P('M110 28L138 28L140 50L108 50Z',ST(q),'stroke="#2a2620" stroke-width=".7"')+P('M110 28L138 28L136 34L112 34Z',S3(q),'opacity=".8"')
+    +P('M108.6 36H139.4V40H108.6Z',AU(q),'stroke="#8a5a1a" stroke-width=".3"')+P('M108.4 44H139.6V47H108.4Z',AU(q),'stroke="#8a5a1a" stroke-width=".3"')+L_('M118 30L122 34L120 38',g.c,.8)+C_(124,42,2.4,CG(q))+C_(124,42,1.2,g.w);
+  s+=E_(115,118,6,5,ST(q),'stroke="#2a2620" stroke-width=".5"');
+  /* épaulières-rochers moussues */
+  const pa=P('M70 62Q60 52 48 56Q40 60 40 72Q44 80 52 80Q62 78 68 72Z',ST(q),'stroke="#2a2620" stroke-width=".5"')+P('M44 62Q50 54 60 55Q66 57 69 61Q58 60 48 66Z',MS(q))+[[48,60],[54,57],[61,57]].map(([x,y])=>C_(x,y,1,'#a8e86a')).join('')+crystal(q,46,60,9,2,-30)+crystal(q,53,56,7,1.6,-12)+L_('M46 72L52 70L56 74',g.c,.7);
+  s+=MB(pa);
+  s+=HG(head(q,u));
+  if(u>=3)s+=halo(80,6.6,10,2.6);
+  s+=bStars(u,bare);
+  return s+'</svg>'}
+register(TIT,tPortrait,tBody);
+}catch(e){console.warn('titanor art',e)}})();
 /* ================= toujours en dernier : l'écran de chargement reprend les dessins à jour ================= */
 (function(){try{
   /* Livre III : le Roi de Cendre (nouveau design) au premier rang, et le souvenir du jeune Éryndel au-dessus de la couronne */
