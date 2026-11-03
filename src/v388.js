@@ -39,11 +39,22 @@ function face(q,u){
   s+=MI(P('M37.6 44Q31 40 28.6 34.6Q33 37.4 37.4 39.4Z',SK(q),'stroke="#2a1e48" stroke-width=".3"')+C_(33.6,41.6,.55,AG(q)));
   s+=P('M37 44.4Q37 30.4 50 30.4Q63 30.4 63 44.4Q63 52.8 59.6 58.2Q55.4 63.6 50 64.2Q44.6 63.6 40.4 58.2Q37 52.8 37 44.4Z',SK(q));
   s+=P('M58.4 46Q61.6 52 59 57.4Q56.6 61 53 62.8Q57.6 58.4 59 52.4Z','#2a1e48','opacity=".35"');
-  const io=u>=3?{ir:'#ffe08a',ir2:'#c8901a',glow:'#ffe08a'}:{ir:'#ff6ab8',ir2:'#a8106a',glow:'#ffb0e0'};
-  s+=eye(44,Object.assign({lash:1,lid:'#0a0418',white:'#f4eeff',fierce:1},io))+eye(56,Object.assign({lash:1,lid:'#0a0418',white:'#f4eeff',fierce:1},io));
-  s+=MI(L_('M39.8 41.8Q43.6 39.6 47.6 41','#140828',1.1));
+  const io=u>=3?{ir:'#ffe08a',ir2:'#c8901a',glow:'#ffe08a'}:{ir:'#ff5ab0',ir2:'#a8106a',glow:'#ff8ac8'};
+  /* des yeux de chat mi-clos, pupille fendue, fard et trait d'eye-liner : le regard de quelqu'un qui prépare un mauvais coup */
+  const evil=x=>{const d=x<50?1:-1,ox=r1(x-4.2*d),ix=r1(x+3.8*d),cx=r1(x+.3*d);
+    return P(`M${r1(x-4.4*d)} 45.2Q${x} 42.2 ${r1(x+4.4*d)} 46.8Q${x} 44 ${r1(x-4.4*d)} 45.2Z`,'#c83a8a','opacity=".55"')
+      +C_(cx,47.3,3.6,io.glow,'opacity=".42"')
+      +P(`M${ox} 45.6Q${x} 45.2 ${ix} 47.6Q${x} 49.8 ${ox} 45.6Z`,'#f4eeff')
+      +E_(cx,47.25,1.65,1.05,io.ir)+E_(cx,47.3,1,.8,io.ir2)+E_(cx,47.25,.3,.95,'#0a0418')+E_(cx,47.25,1.65,1.05,'none',`stroke="${io.glow}" stroke-width=".25" opacity=".9"`)+C_(r1(x-.5*d),46.8,.32,'#ffffff')
+      +L_(`M${r1(ox-.3*d)} 45.4Q${x} 44.9 ${r1(ix+.3*d)} 47.7`,'#0a0418',1.5)+L_(`M${ox} 45.5L${r1(ox-2.4*d)} 43.8`,'#0a0418',.9)
+      +L_(`M${r1(ox+.6*d)} 46.4Q${x} 49.6 ${r1(ix-.3*d)} 48.1`,'#5a3a8a',.35,'opacity=".7"')};
+  s+=evil(44)+evil(56);
+  /* sourcils fins et très arqués, qui plongent vers le nez */
+  s+=MI(P('M38.2 41.6Q42.2 38 48.2 42.6L47.8 43.6Q42.6 40 38.6 42.6Z','#140828'));
   s+=L_('M50.4 48.8L49.7 52.8Q50.4 53.6 51.6 53.1','#3a2a64',.65);
-  s+=P('M46.6 57Q50 58.2 53.4 57Q52.6 59.6 50 59.9Q47.4 59.6 46.6 57Z','#5a1a4a')+L_('M46.4 57Q50 58.2 53.6 56.8','#2a0a24',.55)+P('M47.8 58.8Q50 59.6 52.2 58.8Q50 59.4 47.8 58.8Z','#c86aa8','opacity=".7"');
+  /* un sourire en coin, lèvres sombres et un petit croc */
+  s+=P('M46 57.6Q49.6 58.6 52.8 57.2Q54.4 56.4 55.4 54.8Q55.2 58.4 52.4 59.4Q49 60.2 46 57.6Z','#3a0a34')+P('M47.4 58.6Q50 59.4 52.6 58.4Q50.4 59.6 47.4 58.6Z','#a84a8a','opacity=".7"')
+    +L_('M45.8 57.6Q49.6 58.8 52.8 57.2Q54.4 56.4 55.6 54.6','#14020f',.6)+P('M51.2 58.1L51.8 60.3L52.6 57.8Z','#ffffff','stroke="#8a7aa8" stroke-width=".15"');
   /* larmes d'étoiles sous les yeux */
   s+=MI(STARP(42,52.2,.5,'#ffffff')+C_(42.6,54.4,.35,'#e0d0ff')+C_(43,56,.25,'#e0d0ff'));
   /* ras-du-cou au croissant */

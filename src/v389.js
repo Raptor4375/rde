@@ -40,18 +40,23 @@ function head(q,u){
   /* crête centrale */
   s+=P('M48.4 26L50 19.6L51.6 26Z',HN(q))+P('M48.8 22L50 17L51.2 22Z',HN(q),'opacity=".9"');
   /* le crâne en écu, qui s'affine vers le museau */
-  s+=P('M35.6 40Q35.6 25.6 50 24Q64.4 25.6 64.4 40Q64.4 50 60.6 56.4Q56.4 64.6 50 68.6Q43.6 64.6 39.4 56.4Q35.6 50 35.6 40Z',SC(q),'stroke="#4a0806" stroke-width=".5"');
+  s+=P('M35 40Q35 25.6 50 24Q65 25.6 65 40Q65 49 63 55Q60.4 62 55.4 66.4Q52.8 68.6 50 68.6Q47.2 68.6 44.6 66.4Q39.6 62 37 55Q35 49 35 40Z',SC(q),'stroke="#4a0806" stroke-width=".5"')
+    +MI(P('M37.2 51.4L32.2 52.6L37 54.8Z',HN(q),'stroke="#6a5a3a" stroke-width=".25"')+P('M38.6 56.8L34.2 59.2L39.4 59.4Z',HN(q),'stroke="#6a5a3a" stroke-width=".25"'));
   s+=P('M58.4 34Q63 40 61.8 50Q60 58 54 64Q59 54 59.4 46Q59.6 40 58.4 34Z','#4a0806','opacity=".35"');
   /* rangées d'écailles */
   let sc='';for(let r=0;r<4;r++){const y=29+r*3.6,n=5-Math.floor(r/2);for(let k=0;k<n;k++){const x=50+(k-(n-1)/2)*4.4;sc+=`M${r1(x-2)} ${r1(y)}Q${r1(x)} ${r1(y+2)} ${r1(x+2)} ${r1(y)}`}}
   s+=L_(sc,'#ff8a5a',.4,'opacity=".7"');
-  /* arcades sourcilières et yeux de braise à pupille fendue */
-  s+=MI(P('M37 42.4Q42 36.6 48.4 40L47.6 42.4Q42.4 40.2 38.2 44.8Z','#5a0a08')+L_('M37.6 41.8Q42.2 37 48 40.2','#ff8a5a',.4,'opacity=".8"'));
+  /* arcades sourcilières froncées en V et yeux de braise plissés de colère */
+  s+=MI(P('M35.4 38.4Q42 39.2 49.2 44L48.4 46.8Q42 42.8 36.2 42.6Z','#5a0a08','stroke="#2a0202" stroke-width=".3"')+L_('M35.8 38.6Q42.2 39.4 48.8 44','#ff8a5a',.45,'opacity=".8"'));
   const ec=u>=3?'#ffffff':null;
-  s+=MI(`<path d="M38.6 46.4Q42.6 42.4 47.4 45.2Q44.6 49.2 38.6 46.4Z" fill="${ec||EY(q)}"/>`+E_(43.4,45.6,.62,1.9,'#1a0202',`transform="rotate(-8 43.4 45.6)"`)+C_(42.2,44.8,.42,'#ffffff')+L_('M38.6 46.4Q42.6 42.4 47.4 45.2','#2a0202',.7)+C_(43.4,45.6,4,EM(q),'opacity=".35"'));
-  /* museau, naseaux, gueule et crocs */
-  s+=L_('M50 46V62','#ff8a5a',.5,'opacity=".6"')+MI(E_(47.4,60.4,1.1,.6,'#2a0202','transform="rotate(-20 47.4 60.4)"'))+MI(C_(46.6,58.6,.9,EM(q),'opacity=".4"'));
-  s+=L_('M42.6 62.6Q46 65.4 50 65.6Q54 65.4 57.4 62.6','#2a0202',.8)+MI(P('M44.6 63.6L45.6 67.4L46.6 64.2Z','#fffaf0','stroke="#6a5a3a" stroke-width=".2"'));
+  s+=MI(C_(43.2,46.6,4.4,EM(q),'opacity=".45"')+`<path d="M38.4 44.2L47.6 47.4Q43.4 50.4 38.4 44.2Z" fill="${ec||EY(q)}"/>`+E_(43.6,46.9,.55,1.6,'#1a0202','transform="rotate(-14 43.6 46.9)"')+C_(41.6,45.6,.36,'#ffffff')+L_('M38.2 44L47.8 47.4','#2a0202',.9));
+  /* le museau plissé, naseaux dilatés où rougeoient des braises */
+  s+=L_('M50 47V58','#ff8a5a',.5,'opacity=".6"')+MI(L_('M45.2 53Q47 54 46.6 56M44.2 55Q45.8 55.8 45.6 57.6','#4a0806',.55));
+  s+=MI(P('M45.8 58.8Q47.2 57.2 48.8 58.4Q48 60.2 45.8 58.8Z','#2a0202')+C_(47.2,58.6,1.4,EM(q),'opacity=".4"'));
+  /* la gueule ouverte qui gronde : crocs et feu au fond de la gorge */
+  s+=P('M40.8 61.4Q45.6 63.6 50 63.8Q54.4 63.6 59.2 61.4Q58 66.8 50 67.6Q42 66.8 40.8 61.4Z','#2a0202')+E_(50,65.2,5.4,1.7,EM(q),'opacity=".95"')+E_(50,65.4,2.6,.8,'#fff6c0','opacity=".8"');
+  s+=MI(P('M42.6 62.2L43.6 65.6L44.8 62.8Z','#fffaf0','stroke="#6a5a3a" stroke-width=".2"')+P('M45.6 63.2L46.4 65.4L47.4 63.6Z','#fffaf0','stroke="#6a5a3a" stroke-width=".2"')+P('M44 66.6L44.8 64.6L45.8 66.8Z','#fffaf0','stroke="#6a5a3a" stroke-width=".2"'));
+  s+=L_('M40.4 61.2Q45.6 63.6 50 63.8Q54.4 63.6 59.6 61.2','#2a0202',.9);
   if(u>=3)s+=P('M41 26L43.4 19.6L46 24.6L48.4 17.4L50 22.8L51.6 17.4L54 24.6L56.6 19.6L59 26Q50 23.6 41 26Z',AU(q),'stroke="#8a5a1a" stroke-width=".3"')+gem(q,50,22,1);
   return s}
 /* ---------- le buste ---------- */

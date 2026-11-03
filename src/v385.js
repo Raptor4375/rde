@@ -45,11 +45,17 @@ function face(q,u){
   s+=P('M58.6 46Q61.8 52 59.2 57.6Q56.8 61.2 53 63Q57.8 58.6 59.2 52.6Z','#a8907e','opacity=".4"');
   const io=u>=3?{ir:'#ffe08a',ir2:'#c8901a',glow:'#ffe08a'}:{ir:'#6afff0',ir2:'#0e8a7a',glow:'#9afff0'};
   s+=eye(44,Object.assign({lid:'#2a1a3a'},io))+L_('M40.6 49.6Q44 50.8 47.4 49.4','#a8907e',.35,'opacity=".7"');
-  s+=L_('M39.6 42.2Q43.6 40.4 47.8 41.6','#c8c0d8',1.2)+L_('M52.4 41.4Q56.4 40.2 60.4 42.2','#c8c0d8',1.2);
+  /* sourcils blancs broussailleux, rides du sage */
+  s+=P('M39 43Q42.6 39.8 48 41.2L47.6 42.8Q43 41.8 39.6 44.2Z','#e8e4f4','stroke="#a8a0c8" stroke-width=".3"')+P('M52 41.2Q57.4 39.8 61 43L60.4 44.2Q57 41.8 52.4 42.8Z','#e8e4f4','stroke="#a8a0c8" stroke-width=".3"')
+    +L_('M38.6 46.4L36.8 45.6M38.6 47.8L36.8 48.4','#a8907e',.4)+L_('M45.4 53.6Q44.2 55.8 44.6 57.6M54.6 53.6Q55.8 55.8 55.4 57.6','#a8907e',.45,'opacity=".8"');
   /* le monocle-horloge sur l'œil droit, sa chaîne d'or */
   s+=C_(56.2,47,5.4,TG(q),`opacity="${.35+u*.1}"`)+clockFace(q,56.2,47,4.4)+L_('M60.4 49.8Q63.4 56 61 64Q60 70 63.6 75','#e0b850',.4,'stroke-dasharray=".6 .5"');
   s+=L_('M50.6 48.4L49.6 53.2Q50.4 54.2 51.8 53.6','#a8907e',.7);
-  s+=L_('M46.4 57.4Q50.2 59.4 54 57.2','#6a4a5a',.85)+L_('M52.6 56.8L54.2 56.2','#6a4a5a',.6);
+  /* la longue barbe blanche en pointe et la moustache */
+  s+=P('M38.2 50.6Q38 58.4 41.6 64Q45.4 70 50 77Q54.6 70 58.4 64Q62 58.4 61.8 50.6Q60.6 56 57.4 58.4Q54 60.2 50 59.8Q46 60.2 42.6 58.4Q39.4 56 38.2 50.6Z',HR(q),'stroke="#a8a0c8" stroke-width=".3"')
+    +L_('M41.6 59Q43.8 65.4 47.6 71.4M58.4 59Q56.2 65.4 52.4 71.4M50 61.4V75M44.6 60.6Q46.4 66 49 70.6M55.4 60.6Q53.6 66 51 70.6','#a8a0c8',.45,'opacity=".85"');
+  s+=P('M46.8 59.4Q50 60.8 53.2 59.4Q51.6 61.2 50 61.2Q48.4 61.2 46.8 59.4Z','#4a3a4a');
+  s+=P('M44.4 56.6Q47.4 54.6 50 55.8Q52.6 54.6 55.6 56.6Q58 58.6 58.8 61.4Q55.8 58.6 52.8 58.8Q51.2 58.4 50 59Q48.8 58.4 47.2 58.8Q44.2 58.6 41.2 61.4Q42 58.6 44.4 56.6Z','#ffffff','stroke="#a8a0c8" stroke-width=".3"');
   /* la marque « XII » sous l'œil */
   s+=`<text x="42" y="54.6" text-anchor="middle" font-size="2.6" font-weight="700" font-family="Georgia,serif" fill="#e0b850">XII</text>`;
   /* mèches blanches sur le front */
