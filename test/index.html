@@ -20470,6 +20470,12 @@ function tBody(u,bare){const q='tb'+u+(bare?'s':'')+'_';const g=G(u);
   return s+'</svg>'}
 register(TIT,tPortrait,tBody);
 }catch(e){console.warn('titanor art',e)}})();
+/* ---------- note de mise à jour ---------- */
+(function(){try{
+const T="Nouveau style pour les légendaires",I=["🎨 Les 11 légendaires du jeu (Fortuna, Solaris, Kaïros, Gaïa, Titanor, Valkyr, Nyx, Orion, Séraphine, Drakhar et Léviathane) sont redessinés dans le style des nouveaux héros : visage détaillé, galons d'or, sceau derrière la tête, cercle magique sous les pieds et cadre doré.","✦ Leurs formes Ultra I, II et III sont redessinées aussi : ailes, auréoles et couronnes propres à chaque héros."];
+PATCH.unshift({v:41,d:'3 novembre 2026',t:T,items:I});
+const X={[T]:"New style for the legendaries",[I[0]]:"🎨 The game's 11 legendaries (Fortuna, Solaris, Kaïros, Gaïa, Titanor, Valkyr, Nyx, Orion, Séraphine, Drakhar and Léviathane) are redrawn in the style of the new heroes: detailed faces, gold trims, a seal behind the head, a magic circle under their feet and a golden frame.",[I[1]]:"✦ Their Ultra I, II and III forms are redrawn too: wings, halos and crowns unique to each hero."};
+for(const k in X)if(!(k in I18N_EN))I18N_EN[k]=X[k]}catch(e){}})();
 /* ================= toujours en dernier : l'écran de chargement reprend les dessins à jour ================= */
 (function(){try{
   /* Livre III : le Roi de Cendre (nouveau design) au premier rang, et le souvenir du jeune Éryndel au-dessus de la couronne */
