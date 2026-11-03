@@ -6738,7 +6738,7 @@ document.addEventListener('submit',e=>{const f=e.target.closest('form[data-f="ge
 /* ================= V13 : ÉVÉNEMENTS ================= */
 const HW_START=new Date(2026,9,13).getTime(),HW_END=new Date(2026,10,1).getTime();
 const hwOn=()=>{const n=Date.now();return n>=HW_START&&n<HW_END};
-const hwEnded=()=>Date.now()>=HW_END&&Date.now()<HW_END+14*864e5;
+let hwEnded=()=>Date.now()>=HW_END&&Date.now()<HW_END+14*864e5;
 const CANDY='🍬';
 function EV(){if(!S.ev)S.ev={c:0,tot:0,dmg:0,bl:1,bhp:0,bmax:0,at:3,d:'',q:{p:{},c:{}},mc:{},shop:{},pkN:0,pkNext:Date.now()+30000};const E=S.ev;
   if(E.d!==today()){E.d=today();E.at=3;E.q={p:{},c:{}};E.pkN=0}
@@ -7753,7 +7753,7 @@ FRAMES.tableroyale='Table Royale';FHINT.tableroyale='Casino de Fortuna : comptoi
 {const fl=frameList;frameList=function(){return fl().filter(f=>f!=='tableroyale'||frameUnlocked(f)||casOn())}}
 
 /* ================= CASINO DE FORTUNA ================= */
-const CAS_START=new Date(2026,9,13).getTime(),CAS_END=new Date(2026,10,3).getTime();
+let CAS_START=new Date(2026,9,13).getTime(),CAS_END=new Date(2026,10,3).getTime();
 function casOn(){const n=Date.now();return n>=CAS_START&&n<CAS_END}
 function casEnded(){const n=Date.now();return n>=CAS_END&&n<CAS_END+14*864e5}
 const CAS_BUY={g:100,j:1500,max:3},CAS_GIFT=1000,CAS_WELCOME=2000;
@@ -19001,6 +19001,32 @@ try{const P=PATCH.find(x=>x.v===40);if(P)P.items.push("🤖 Les autres joueurs p
 /* le monde local se recale doucement (toujours +2 à +4 % par jour au maximum) */
 setTimeout(()=>{try{GH.t=0;const t=Date.now();if(S.world&&Array.isArray(S.world.players)){for(const p of S.world.players)p.pw=growPw(p,t);save()}}catch(e){}},5200);
 }catch(e){console.warn('bots ether',e)}})();
+
+/* ================= Calendrier des événements ================= */
+/* 1) Halloween est terminé : plus d'onglet, plus de manoir hanté, plus de classement Halloween.
+   2) Le casino de Fortuna revient une semaine par mois : du 13 au 20 (minuit) de chaque mois.
+      Entre deux éditions, il disparaît complètement. Les jetons restent dans ta poche d'une édition à l'autre ;
+      les limites de la boutique repartent à zéro à chaque nouvelle édition (les objets uniques déjà obtenus restent obtenus). */
+(function(){try{
+/* ---------- Halloween ---------- */
+try{hwEnded=()=>false}catch(e){}
+{const et=evTabs;evTabs=function(){return et.apply(this,arguments).filter(x=>x&&x[0]!=='hw')}}
+try{if(UI.evt==='hw')UI.evt='pass';if(UI.lz&&UI.lz.event==='hw')UI.lz.event=null}catch(e){}
+
+/* ---------- Casino : une semaine par mois ---------- */
+const CAS_DAY=13,CAS_LEN=7;
+function casWin(t=Date.now()){const d=new Date(t);let a=new Date(d.getFullYear(),d.getMonth(),CAS_DAY).getTime(),b=new Date(d.getFullYear(),d.getMonth(),CAS_DAY+CAS_LEN).getTime();
+  if(t>=b){a=new Date(d.getFullYear(),d.getMonth()+1,CAS_DAY).getTime();b=new Date(d.getFullYear(),d.getMonth()+1,CAS_DAY+CAS_LEN).getTime()}return[a,b]}
+window.casWin=casWin;
+function casSync(){try{const[a,b]=casWin();CAS_START=a;CAS_END=b}catch(e){}}
+casSync();
+{const co=casOn;casOn=function(){casSync();return co.apply(this,arguments)}}
+casEnded=function(){casSync();return false};
+/* nouvelle édition : les limites de la boutique et les records de l'édition repartent à zéro */
+{const C0=CAS;CAS=function(){const C=C0.apply(this,arguments);try{if(casOn()){const ed=new Date(CAS_START).toISOString().slice(0,7);if(C.ed!==ed){if(C.ed!=null||Object.keys(C.shop||{}).length){C.shop={}}C.ed=ed}}}catch(e){}return C}}
+try{if(UI.evt==='cas'&&!casOn())UI.evt='pass';if(UI.lz&&UI.lz.event==='cas'&&!casOn())UI.lz.event=null}catch(e){}
+try{const P=PATCH.find(x=>x.v===40);if(P)P.items.push("🎰 <b>Le casino de Fortuna</b> revient maintenant <b>une semaine par mois</b> (du 13 au 20). Tes jetons t'attendent d'une édition à l'autre, et la boutique se remplit à nouveau à chaque édition.","🎃 Halloween est terminé : merci à tous pour la Nuit des Citrouilles !")}catch(e){}
+}catch(e){console.warn('calendrier',e)}})();
 /* ================= toujours en dernier : l'écran de chargement reprend les dessins à jour ================= */
 (function(){try{
   /* Livre III : le Roi de Cendre (nouveau design) au premier rang, et le souvenir du jeune Éryndel au-dessus de la couronne */
