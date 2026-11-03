@@ -8,6 +8,10 @@
 /* ---------- Halloween ---------- */
 try{hwEnded=()=>false}catch(e){}
 {const et=evTabs;evTabs=function(){return et.apply(this,arguments).filter(x=>x&&x[0]!=='hw')}}
+/* ---------- Octobre Rose est terminé ---------- */
+try{roseEnded=()=>false}catch(e){}
+{const et=evTabs;evTabs=function(){return et.apply(this,arguments).filter(x=>x&&x[0]!=='rose')}}
+try{if(UI.evt==='rose')UI.evt='pass';if(UI.lz&&UI.lz.event==='rose')UI.lz.event=null}catch(e){}
 try{if(UI.evt==='hw')UI.evt='pass';if(UI.lz&&UI.lz.event==='hw')UI.lz.event=null}catch(e){}
 
 /* ---------- Casino : une semaine par mois ---------- */

@@ -47,7 +47,7 @@ window.claude={use:async k=>{if(k==='db'||k==='user'){try{const F=await window.R
 window.RDEF();
 })();
 </script>
-<script>window.RDE_V='20261103143300';if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));</script>
+<script>window.RDE_V='20261103144948';if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));</script>
 </head><body>
 <title>RDE · Royaumes d'Éther</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -7284,7 +7284,7 @@ function passPage(){
 /* ================= V14 : OCTOBRE ROSE ================= */
 const ROSE_START=new Date(2026,9,13).getTime(),ROSE_END=new Date(2026,10,1).getTime();
 const roseOn=()=>{const n=Date.now();return n>=ROSE_START&&n<ROSE_END};
-const roseEnded=()=>Date.now()>=ROSE_END&&Date.now()<ROSE_END+14*864e5;
+let roseEnded=()=>Date.now()>=ROSE_END&&Date.now()<ROSE_END+14*864e5;
 const RIB='<svg class="ic" viewBox="0 0 24 24"><path d="M12 2.4C8.4 2.4 7.9 6.5 10.5 9.7L5.3 20.3L8.5 21.7L12 13.4L15.5 21.7L18.7 20.3L13.5 9.7C16.1 6.5 15.6 2.4 12 2.4Z" fill="#ff6aa8" stroke="#6a0a3a" stroke-width="1.1" stroke-linejoin="round"/><path d="M12 4.7C10.5 4.7 10.3 6.8 12 8.9C13.7 6.8 13.5 4.7 12 4.7Z" fill="#4a0a2a"/><path d="M9.6 4.2Q10.6 3.3 12 3.3" stroke="#ffd0e4" stroke-width="1" fill="none" stroke-linecap="round"/></svg>';
 const RQ=[{k:'win',n:"Gagner 3 combats d'aventure",g:3,rw:4},{k:'heart',n:'Envoyer 2 cœurs à tes amis',g:2,rw:4},{k:'pull',n:'Faire 2 invocations',g:2,rw:3},{k:'chat',n:'Écrire un message dans un tchat',g:1,rw:2},{k:'guild',n:'Pointer à la guilde',g:1,rw:2}];
 const RM=[[15,'100 gemmes',()=>{S.gems+=100}],[40,'Cadre « Ruban Rose »',()=>unlockFrame('rose')],[80,"3 tickets d'invocation",()=>{INV().pt+=3}],[140,'Coffre légendaire',()=>dropItem(4)],[220,'300 gemmes + 1 éclat légendaire',()=>{S.gems+=300;S.shards++}]];
@@ -19061,6 +19061,10 @@ setTimeout(()=>{try{GH.t=0;const t=Date.now();if(S.world&&Array.isArray(S.world.
 /* ---------- Halloween ---------- */
 try{hwEnded=()=>false}catch(e){}
 {const et=evTabs;evTabs=function(){return et.apply(this,arguments).filter(x=>x&&x[0]!=='hw')}}
+/* ---------- Octobre Rose est terminé ---------- */
+try{roseEnded=()=>false}catch(e){}
+{const et=evTabs;evTabs=function(){return et.apply(this,arguments).filter(x=>x&&x[0]!=='rose')}}
+try{if(UI.evt==='rose')UI.evt='pass';if(UI.lz&&UI.lz.event==='rose')UI.lz.event=null}catch(e){}
 try{if(UI.evt==='hw')UI.evt='pass';if(UI.lz&&UI.lz.event==='hw')UI.lz.event=null}catch(e){}
 
 /* ---------- Casino : une semaine par mois ---------- */

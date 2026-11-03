@@ -90,7 +90,7 @@ for _a,_b,_n in [("const ITCH_URL='https://royaume-d-ether.itch.io/rde',ITCH_DON
   assert src.count(_a)==_n,_a[:40];src=src.replace(_a,_b)
 src=src.replace("const I18N_EN={","const I18N_EN={\"Après ton achat, clique sur « Demander une clé » sur ta page itch.io : tu reçois aussitôt ton\":\"After your purchase, click « Request a key » on your itch.io page: you instantly get your\",\". Entre-le ici pour débloquer :\":\". Enter it here to unlock:\",\"Prix libre : dès # $, tout le pack est débloqué. Paiement géré par itch.io. Si tu es mineur, demande à un parent.\":\"Pay what you want: from # $, the whole pack is unlocked. Payment handled by itch.io. If you're a minor, ask a parent.\",\"☕ Soutenir sur itch.io\":\"☕ Support on itch.io\",",1)
 # calendrier des événements : le casino revient chaque mois (v379), Halloween est terminé
-for _a,_b in [('const CAS_START=new Date(2026,9,13).getTime(),CAS_END=new Date(2026,10,3).getTime();','let CAS_START=new Date(2026,9,13).getTime(),CAS_END=new Date(2026,10,3).getTime();'),('const hwEnded=()=>','let hwEnded=()=>')]:
+for _a,_b in [('const CAS_START=new Date(2026,9,13).getTime(),CAS_END=new Date(2026,10,3).getTime();','let CAS_START=new Date(2026,9,13).getTime(),CAS_END=new Date(2026,10,3).getTime();'),('const hwEnded=()=>','let hwEnded=()=>'),('const roseEnded=()=>','let roseEnded=()=>')]:
   assert src.count(_a)==1,(_a,src.count(_a));src=src.replace(_a,_b)
 open('royaumes.html','w').write(src)
 open('chk.js','w').write(src[src.index('<script>')+8:src.rindex('</script>')])
