@@ -129,15 +129,16 @@ function lBody(u,bare){const q='vb'+u+(bare?'s':'')+'_l';
   s+=P('M66 58Q80 66 94 58L96 63Q88 65 86 69Q80 67 74 69Q72 65 64 63Z',AU(q),'stroke="#8a5a1a" stroke-width=".35"');
   s+=P('M59.4 110.6Q80 118 100.6 110.6L100.6 116Q80 123.4 59.4 116Z','#064a50')+L_('M59.6 111Q80 118.4 100.4 111',AU(q),.7)+shell(q,80,119.4,5.2,0);
   /* bras forts à la peau turquoise, brassards d'or */
-  s+=P('M58 66Q47 82 46 100L55 101.6Q57 86 64 74Z',SK(q),'stroke="#1a5a5a" stroke-width=".35"')+P('M46 100Q45 92 43 84L50.6 80.6Q53.6 89 55 101.6Z',SK(q),'stroke="#1a5a5a" stroke-width=".35"')
+  s+=P('M58 66Q47 82 46 100L55 101.6Q57 86 64 74Z',SK(q),'stroke="#0a2a30" stroke-width=".7"')+P('M46 100Q45 92 43 84L50.6 80.6Q53.6 89 55 101.6Z',SK(q),'stroke="#0a2a30" stroke-width=".7"')
     +P('M44.2 90.6L52.4 88L54 96L46 98.2Z',AU(q),'stroke="#8a5a1a" stroke-width=".35"')+L_('M44.8 93.2L52.8 90.8','#8a5a1a',.5)+E_(45.4,80.6,4.8,3.4,SK(q),'transform="rotate(-20 45.4 80.6)"');
   s+=`<g>${C_(44,67,10.4,WO(q),'opacity=".95"')}${C_(44,67,6.6,'none','stroke="#e8fffa" stroke-width=".6"')}${L_('M38.8 67Q42 62.8 46 65Q49 67 48 70','#ffffff',.6,'opacity=".9"')}${C_(41.6,64.4,1.2,'#ffffff','opacity=".9"')}<animateTransform attributeName="transform" type="translate" values="0 0;0 -1.8;0 0" dur="2.4s" repeatCount="indefinite"/></g>`;
-  s+=P('M102 66Q113 82 114 100L105 101.6Q103 86 96 74Z',SK(q),'stroke="#1a5a5a" stroke-width=".35"')+P('M105 101.6L114 100L119 116L111.4 118.6Z',SK(q),'stroke="#1a5a5a" stroke-width=".35"')
-    +P('M106.4 104.6L114.6 102.6L116.6 110.4L108.4 112.6Z',AU(q),'stroke="#8a5a1a" stroke-width=".35"');
+  s+=P('M102 66Q113 82 114 100L105 101.6Q103 86 96 74Z',SK(q),'stroke="#0a2a30" stroke-width=".7"')+P('M105 101.6L114 100L119 116L111.4 118.6Z',SK(q),'stroke="#0a2a30" stroke-width=".7"')
+    +P('M106.4 104.6L114.6 102.6L116.6 110.4L108.4 112.6Z',AU(q),'stroke="#8a5a1a" stroke-width=".35"')
+    +L_('M60 72Q52 84 50.6 98M100 72Q108 84 109.4 98M48 88Q49.6 94 51 100M107.6 104Q111.4 110 114.6 116','#2a7a7a',.7,'opacity=".7"');
   /* le trident d'or */
   s+=L_('M120 40L116 214',AU(q),2.4)+L_('M120.2 41L116.2 213','#fff6c0',.5,'opacity=".7"')+P('M112 42Q120 46 128 42L127 44.6Q120 48.6 113 44.6Z',AU(q),'stroke="#8a5a1a" stroke-width=".3"')
     +L_('M113 43Q112 34 112 26M127 43Q128 34 128 26M120 46L120.6 18',AU(q),1.7)+P('M110.6 26.6L112 20L113.6 26.6Z',AU(q))+P('M126.4 26.6L128 20L129.4 26.6Z',AU(q))+P('M119 19L120.6 10L122.2 19Z',AU(q))+C_(120.4,40,6,WO(q),'opacity=".7"')+pearl(q,120.4,44,1.4);
-  s+=E_(115.6,118,5,4.4,SK(q),'stroke="#1a5a5a" stroke-width=".35"')+L_('M111 115.6L119.6 116.2M110.8 118.4L119.8 119','#1a5a5a',.5);
+  s+=E_(115.6,118,5,4.4,SK(q),'stroke="#0a2a30" stroke-width=".7"')+L_('M111 115.6L119.6 116.2M110.8 118.4L119.8 119','#1a5a5a',.5);
   /* épaulières-coquillages */
   s+=MB(shell(q,58,68,13,-30)+shell(q,52,77,9,-48));
   s+=HG(face(q,u)+crown(q,u));

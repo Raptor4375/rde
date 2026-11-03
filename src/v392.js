@@ -269,6 +269,7 @@ window.SKX={def:k=>SK2[k],art:(k,A)=>{const D=SK2[k];if(!D)return;D.art=A;for(co
 
 /* ================= LA BOUTIQUE, LE CATALOGUE, LE DRESSING ================= */
 const IMGC={};
+const BIMG={};const bImg=(k,u)=>{const kk=SKINS[k].vid+'_'+u;return BIMG[kk]||(BIMG[kk]=svgToImg(svgStill(heroBody(vHero(k),u))))};
 const sImg=(k,u)=>{const kk=SKINS[k].vid+'_'+u;return IMGC[kk]||(IMGC[kk]=svgToImg(portraitU(vHero(k),u)))};
 const own=k=>skOwned(k),price=k=>SKR[SKINS[k].rar].p;
 const rTag=r=>`<span class="skrt r-${r}">${SKR[r].t}</span>`;
@@ -283,7 +284,7 @@ function shopPage(){const r=UI.skr||'all';if(!S.skShopSeen){S.skShopSeen=1;try{s
   const chips=[['all','Toutes'],['l','★ Légendaires'],['e','Épiques'],['r','Rares'],['c','Communes']].map(([k,n])=>`<button class="skchip ${r===k?'on':''} ${k!=='all'?'r-'+k:''}" data-a="skflt" data-v="${k}">${n}</button>`).join('')
     +`<button class="skchip ${UI.skmine?'on':''}" data-a="skmine">${UI.skmine?'☑':'☐'} Mes héros</button>`;
   const L=shopList();const leg=r==='all'&&!UI.skmine?SKL.filter(k=>SKINS[k].rar==='l'):[];
-  const feat=leg.length?`<div class="skfeat">${leg.map(k=>{const s=SKINS[k],o=own(k);return`<button class="skft" data-a="skview" data-v="${k}"><span class="skftf">${svgStill(heroBody(vHero(k),fU(s.hero)))}</span><span class="skftt">${rTag('l')}<b>${esc(s.n)}</b><small>${esc(HEROES[s.hero].n)}</small><em class="skbn">⚡ ${bonTxt('l')}</em>${o?'<span class="skst">✓ Possédée</span>':`<span class="skpr">${GEM}${price(k).toLocaleString('fr-FR')}</span>`}</span></button>`}).join('')}</div>`:'';
+  const feat=leg.length?`<div class="skfeat">${leg.map(k=>{const s=SKINS[k],o=own(k);return`<button class="skft" data-a="skview" data-v="${k}"><span class="skftf">${bImg(k,fU(s.hero))}</span><span class="skftt">${rTag('l')}<b>${esc(s.n)}</b><small>${esc(HEROES[s.hero].n)}</small><em class="skbn">⚡ ${bonTxt('l')}</em>${o?'<span class="skst">✓ Possédée</span>':`<span class="skpr">${GEM}${price(k).toLocaleString('fr-FR')}</span>`}</span></button>`}).join('')}</div>`:'';
   const rest=leg.length?L.filter(k=>SKINS[k].rar!=='l'):L;
   return`<div class="stack"><div class="card skhd"><div><div class="h3" style="margin:0">🛍️ Boutique d'apparences</div><p class="muted" style="margin:2px 0 0;font-size:12.5px">Les rares, épiques et légendaires donnent un bonus de stats quand elles sont portées. Les exclusivités du Pass ne sont jamais vendues ici.</p></div><span class="skbal">${GEM}<b class="num">${fmt(S.gems)}</b></span></div>
    <div class="skchips">${chips}</div>${feat}<div class="skgrid">${rest.map(skCard).join('')||'<p class="muted">Aucune apparence ici pour l\'instant.</p>'}</div>
@@ -314,7 +315,7 @@ function skBuy(k){const s=SKINS[k];if(!s||s.ex||own(k))return;const p=price(k);i
 /* le dressing : tes apparences (dessins fixes : l'animation est dans la fiche) */
 function wardrobe2(){const mine=(S.skins||[]).filter(k=>SKINS[k]).sort((a,b)=>RORD.indexOf(SKINS[a].rar)-RORD.indexOf(SKINS[b].rar)||SKINS[a].hero-SKINS[b].hero);
   const skins=mine.length?`<div class="skwl">${mine.map(k=>{const s=SKINS[k],hid=s.hero,on=skEq(hid)===k,u=fU(hid),has=!!S.heroes[hid];
-    return`<div class="dskin skw r-${s.rar} ${on?'on':''}"><button class="dsfig" data-a="skview" data-v="${k}" aria-label="${esc(s.n)}">${svgStill(heroBody(vHero(k),u))}</button><div class="dsinfo">${s.ex?exTag:rTag(s.rar)}<div class="h3" style="margin:4px 0 2px">${esc(s.n)}</div><div class="muted" style="font-size:12.5px"><span>${esc(HEROES[hid].n)}</span> · <span>${u?'forme Ultra '+['','I','II','III'][u]:'forme de base'}</span></div>
+    return`<div class="dskin skw r-${s.rar} ${on?'on':''}"><button class="dsfig" data-a="skview" data-v="${k}" aria-label="${esc(s.n)}">${bImg(k,u)}</button><div class="dsinfo">${s.ex?exTag:rTag(s.rar)}<div class="h3" style="margin:4px 0 2px">${esc(s.n)}</div><div class="muted" style="font-size:12.5px"><span>${esc(HEROES[hid].n)}</span> · <span>${u?'forme Ultra '+['','I','II','III'][u]:'forme de base'}</span></div>
       <div class="skbn" style="margin:5px 0 7px">${SKR[s.rar].b?'⚡ '+bonTxt(s.rar):'✨ Juste pour le style'}</div>
       ${has?`<div class="row" style="gap:6px">${on?`<button class="btn sm" data-a="skwear" data-v="${hid}" data-k="">Remettre l'original</button><span class="tag" style="--rc:#7ad07a">✓ PORTÉE</span>`:`<button class="btn p sm" data-a="skwear" data-v="${hid}" data-k="${k}">👗 Porter</button>`}</div>`:`<div class="muted" style="font-size:12px">🔒 Il te faut ${esc(HEROES[hid].n)} pour la porter.</div>`}</div></div>`}).join('')}</div>`
     :`<div class="card"><p class="muted" style="margin:0 0 8px">Tu n'as pas encore d'apparence. La boutique en a pour tous les légendaires et les mythiques, et le Pass Pro a ses exclusivités.</p><button class="btn p sm" data-a="dv" data-v="shop">🛍️ Voir la boutique</button></div>`;
@@ -428,8 +429,7 @@ const st=document.createElement('style');st.textContent=`
 .skchip.on{background:var(--skc,#ffd84a);color:#140c24;border-color:transparent}.skchip:not([class*="r-"]).on{background:#e8e0ff}
 .skfeat{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
 .skft{position:relative;display:flex;flex-direction:column;align-items:stretch;padding:0;border:2px solid #ffd84a;border-radius:16px;overflow:hidden;cursor:pointer;color:var(--fg);font:inherit;text-align:left;background:linear-gradient(160deg,#3a2a08,#140c24 55%);box-shadow:0 0 0 1px rgba(255,216,74,.25),0 10px 26px -12px rgba(255,190,40,.6)}
-.skft::after{content:'';position:absolute;inset:0;background:linear-gradient(115deg,transparent 30%,rgba(255,255,255,.16) 45%,transparent 60%);transform:translateX(-120%);animation:skshine 4.5s ease-in-out infinite;pointer-events:none}
-@keyframes skshine{0%,55%{transform:translateX(-120%)}80%,100%{transform:translateX(120%)}}
+.skc,.skci,.dskin.skw{content-visibility:auto;contain-intrinsic-size:auto 220px}
 .skftf{display:block;aspect-ratio:160/244;max-height:260px}.skftf svg{width:100%;height:100%;display:block}
 .skftt{display:flex;flex-direction:column;gap:3px;padding:8px 10px 10px;background:linear-gradient(transparent,rgba(0,0,0,.55) 30%)}
 .skftt b{font-size:14px;line-height:1.15}.skftt small{color:var(--muted);font-size:11.5px}
@@ -462,7 +462,7 @@ const st=document.createElement('style');st.textContent=`
 .skpra{display:flex;flex:none}.skpra img,.skpra svg{width:40px;height:40px;border-radius:9px;margin-left:-10px;border:2px solid #140c24;display:block}.skpra img:first-child,.skpra svg:first-child{margin-left:0}
 .skprg{font-weight:900;color:#ffd84a;flex:none}
 .skann{display:flex;justify-content:center;gap:6px}.skann img,.skann svg{width:84px;height:84px;border-radius:14px;display:block;box-shadow:0 0 22px -6px #ffd84a}
-@media (prefers-reduced-motion:reduce){.skft::after{animation:none}}`;
+`;
 document.head.appendChild(st);
 window.SKSHOP={shopPage,allPage,skView,skBuy,SK2,SKL,skinArt};
 }catch(e){console.warn('boutique apparences',e)}})();

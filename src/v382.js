@@ -5,7 +5,7 @@
    ciel de constellations, cape d'étoiles en ultra II/III, et en pied : une étoile cueillie dans sa main. */
 (function(){try{
 const ORI=63;if(!HEROES[ORI]||!window.LK)return;
-const {r1,P,L_,C_,E_,MI,MB,HG,lin,rad,U,STARP,star8,starN,rays,frame,eye,sigilRing,footRing,feather,wingPair,risers,halo,pOpen,pClose,bOpen,bStars,register}=LK;
+const MI0b=x=>x;const {r1,P,L_,C_,E_,MI,MB,HG,lin,rad,U,STARP,star8,starN,rays,frame,eye,sigilRing,footRing,feather,wingPair,risers,halo,pOpen,pClose,bOpen,bStars,register}=LK;
 const defs=(q,u)=>rad(q+'bg',[[0,u>=3?'#fffbe8':'#eef2ff'],[.15,'#9ab0ff'],[.4,'#3a4aa8'],[.7,'#141c4a'],[1,'#070a1e']],'50%','32%','78%')
  +rad(q+'gl',[[0,'#ffffff',.95],[.5,'#cfe0ff',.42],[1,'#8aa0ff',0]])
  +lin(q+'au',[[0,'#fff2b0'],[.5,'#ffd84a'],[1,'#c8901a']],1,1)
@@ -139,11 +139,13 @@ function oBody(u,bare){const q='ob'+u+(bare?'s':'')+'_';
   s+=lame('M64.8 72.6Q59.4 70.4 54 73.4Q50.4 75.8 49.4 81Q53.2 83 57 81.6Q62 79 64.8 72.6Z','M49.6 80.8Q53.2 82.6 57 81.2Q61.8 78.6 64.4 73')
     +lame('M71 62Q63.8 57.4 56.8 60Q52.2 62.2 50.6 68Q54.8 70.6 59.6 69.4Q66 67.2 71 62Z','M50.8 67.8Q54.8 70.2 59.6 69Q65.8 66.8 70.6 62.4')+P(star8(60.2,64.6,2.4,1.4,.7),AU(q));
   /* bras gauche : il tient l'arc de lumière */
-  s+=P('M100 66Q110 80 112 98L104.6 100Q103 84 96 72Z',TU(q))+P('M104.6 100L112 98L117.6 116L111.4 118.6Z',AG(q),'stroke="#5a6488" stroke-width=".4"');
+  s+=P('M96 63Q109 72 113.4 95L105.4 98.6Q102 84 93.6 73Z',SL(q),'stroke="#0a1030" stroke-width=".5"')+L_('M99 68Q107.6 76 110.6 92','#8ab0ff',.6,'opacity=".6"')
+    +P('M105.2 96.4L113.4 93.2L127.4 112.4L121 118.4Z',BT(q),'stroke="#3a4478" stroke-width=".5"')+L_('M108.4 98L122.6 114.6','#ffffff',.5,'opacity=".6"')+L_('M110.6 102.6L116.8 99.4M117.6 111.8L123.4 107.6',AU(q),.7)
+    +MI0b(P('M102.6 62.6Q97 61 93.4 64.6Q91.6 67.6 92.6 71Q96.6 71.4 99.6 69Q102.8 66.6 102.6 62.6Z',AG(q),'stroke="#5a6488" stroke-width=".4"'));
   s+=P('M118 30Q140 120 118 212','none','stroke="#bfe0ff" stroke-width="7" stroke-linecap="round" opacity=".28"')+P('M118 30Q140 120 118 212','none',`stroke="${LB(q)}" stroke-width="3.4" stroke-linecap="round"`)+L_('M117.6 30.6V211.4','#ffffff',.6,'opacity=".9"');
   s+=L_('M118 30Q115 25.4 117.4 22.4Q120 20 122 22.8',u>=3?'#ffe08a':AG(q),1.6)+L_('M118 212Q115 216.6 117.4 219.6Q120 222 122 219.2',u>=3?'#ffe08a':AG(q),1.6)+P(star8(118.2,29.6,2.6,1.5,.8),'#ffffff')+P(star8(118.2,212.4,2.6,1.5,.8),'#ffffff');
   if(u)s+=P('M118 30Q140 120 118 212','none',`stroke="#ffe08a" stroke-width="1" opacity="${.2+u*.15}"`);
-  s+=`<rect x="125.6" y="110" width="6.4" height="16" rx="2" fill="#1a2458" stroke="#0a1030" stroke-width=".5"/>`+E_(128.4,118,4.8,4.4,SK(q))+L_('M124.4 115.4L132 115.6M124.2 118.4L132.2 118.6M124.6 121.2L131.8 121.4','#b08470',.5);
+  s+=E_(128.4,118,4.8,4.4,SK(q))+L_('M124.4 115.4L132 115.6M124.2 118.4L132.2 118.6M124.6 121.2L131.8 121.4','#b08470',.5);
   s+=HG(face(q,u)+hoodFront(q,u));
   if(u>=3)s+=halo(80,10.4,10,2.6);
   s+=bStars(u,bare);

@@ -88,10 +88,10 @@ function sBody(u,bare){const q='zb'+u+(bare?'s':'')+'_';
   s+=P('M62 108Q80 114 98 108L98.6 114Q80 120 61.4 114Z',AU(q),'stroke="#8a5a1a" stroke-width=".35"')+gem(q,80,112,2.2);
   s+=P('M66 60Q80 66 94 60L95 64Q80 70 65 64Z',AU(q),'stroke="#8a5a1a" stroke-width=".3"')+P('M74 62Q80 74 86 62Q80 66 74 62Z',SK(q))+gem(q,80,76,2.4);
   /* manches larges, main droite levée qui bénit, une lumière douce */
-  s+=P('M60 66Q50 74 44 86L52 92Q56 80 66 74Z',RB(q))+P('M44 86L52 92L50 96L41 90Z',AU(q))+E_(44.6,80.4,3.6,4.6,SK(q),'transform="rotate(-24 44.6 80.4)"')+L_('M42 77.6L42.8 74.4M44 76.8L45 73.6M46 77.6L47.4 74.8','#d8a890',.5);
+  s+=P('M60 66Q50 74 44 86L52 92Q56 80 66 74Z',RB(q),'stroke="#a898c4" stroke-width=".7"')+L_('M58 72Q52 78 48.6 86M62 72Q56 80 52.4 88','#c8b8dc',.6,'opacity=".9"')+P('M44 86L52 92L50 96L41 90Z',AU(q),'stroke="#8a5a1a" stroke-width=".35"')+E_(44.6,80.4,3.6,4.6,SK(q),'transform="rotate(-24 44.6 80.4)"')+L_('M42 77.6L42.8 74.4M44 76.8L45 73.6M46 77.6L47.4 74.8','#d8a890',.5);
   s+=C_(42,72,10,HL(q),'opacity=".8"')+STARP(42,72,1.2,'#ffffff');
   /* main gauche : le bâton d'or à l'anneau étoilé */
-  s+=P('M100 66Q112 84 116 110L104 112Q102 92 94 74Z',RB(q))+P('M116 110L104 112L105 116L117 114Z',AU(q))+E_(113,117,4.4,3.8,SK(q));
+  s+=P('M100 66Q112 84 116 110L104 112Q102 92 94 74Z',RB(q),'stroke="#a898c4" stroke-width=".7"')+L_('M100 74Q107 88 109.6 108M103.4 70Q111 84 113.4 106','#c8b8dc',.6,'opacity=".9"')+P('M116 110L104 112L105 116L117 114Z',AU(q),'stroke="#8a5a1a" stroke-width=".35"')+E_(113,117,4.4,3.8,SK(q));
   s+=L_('M118 40L114 214',AU(q),2)+L_('M118.2 41L114.2 213','#fff6c0',.5,'opacity=".7"')+C_(118.4,30,10,HL(q),'opacity=".8"')+C_(118.4,30,7.4,'none',`stroke="${AU(q)}" stroke-width="1.6"`)
     +P(starN(118.4,30,6,5.4,2.6),'#ffffff','stroke="#c8a04a" stroke-width=".3"')+gem(q,118.4,30,1.4)+C_(114,214,1.4,AU(q));
   s+=HG(face(q,u)+aureole(q,50,18,12,3,u));
