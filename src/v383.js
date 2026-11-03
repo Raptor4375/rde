@@ -104,9 +104,20 @@ function fBody(u,bare){const q='fb'+u+(bare?'s':'')+'_';
   s+=P('M64 110Q58 150 56 186L70 182L74 120Z',RD(q))+P('M96 110Q102 150 104 186L90 182L86 120Z',RD(q))+P('M62 110Q55 150 52 190L68 184L72 118Z',BK(q))+P('M98 110Q105 150 108 190L92 184L88 118Z',BK(q))
     +L_('M52.4 189.4L68 183.6M107.6 189.4L92 183.6',AU(q),.9);
   /* jambes : pantalon noir à bande rouge, bottines à talon */
-  const leg=(x,f)=>{const o=f?1:-1,tx=f?x+15:x-4,bx=f?x-1:x+11;
-    return P(`M${x} 124L${x+11} 124L${x+10} 200L${x+1} 200Z`,BK(q))+L_(`M${f?x+9.6:x+1.4} 126L${f?x+8.8:x+2.2} 198`,'#c01c30',1.1)+L_(`M${f?x+3:x+8} 130L${f?x+3.4:x+7.6} 194`,'#6a5a70',.6,'opacity=".7"')
-    +P(`M${x} 196L${x+11} 196L${x+11.2} 206Q${r1(x+5.5+o*2)} 210 ${tx} 208.6L${bx} 205Z`,'#16101a','stroke="#000" stroke-width=".4"')+P(`M${f?x+1:x+9} 205L${f?x+2.6:x+7.4} 205L${f?x+2.2:x+7.8} 212L${f?x+1.2:x+8.8} 212Z`,'#16101a')+L_(`M${x} 197.4L${x+11} 197.6`,AU(q),.8)+P(`M${f?x+1:x+9} 209L${f?x+2.6:x+7.4} 209L${f?x+2.2:x+7.8} 212L${f?x+1.2:x+8.8} 212Z`,AU(q))};
+  /* jambes : pantalon noir à bande rouge, bottines vernies à talon, boucle d'or */
+  const leg=(x,f)=>{const o=f?1:-1,m=v=>r1(f?x+11-v:x+v);/* m() : coordonnée dans la jambe, côté orteil à gauche (jambe gauche) ou à droite (jambe droite) */
+    let t=P(`M${x} 124L${x+11} 124L${x+10.4} 196L${x+.6} 196Z`,BK(q))+L_(`M${f?x+9.6:x+1.4} 126L${f?x+9:x+2} 194`,'#c01c30',1.1)+L_(`M${f?x+3:x+8} 130L${f?x+3.4:x+7.6} 192`,'#6a5a70',.6,'opacity=".7"');
+    /* tige de la bottine */
+    t+=P(`M${x+.2} 184.6L${x+10.8} 184.6L${x+10.6} 201.6L${x+.4} 201.6Z`,'#1e1620','stroke="#000" stroke-width=".4"')+L_(`M${m(2.4)} 186.4L${m(2.6)} 200.4`,'#8a7a90',.6,'opacity=".8"');
+    t+=P(`M${x-.4} 183.6H${x+11.4}V187H${x-.4}Z`,AU(q),'stroke="#8a5a1a" stroke-width=".3"')+L_(`M${x-.2} 185.3H${x+11.2}`,'#fff6c0',.35,'opacity=".8"');
+    /* le pied, pointe fine vers l'extérieur, et la cambrure */
+    t+=P(`M${m(.4)} 200.6L${m(10.6)} 200.6L${m(10.8)} 205.4Q${m(8.6)} 206.8 ${m(5.4)} 207.6Q${m(1.4)} 208.6 ${m(-3.2)} 209.4Q${m(-6.2)} 209.6 ${m(-6.6)} 208.6Q${m(-6.4)} 207.4 ${m(-3.8)} 206.6Q${m(-.8)} 205.4 ${m(.4)} 200.6Z`,'#1e1620','stroke="#000" stroke-width=".4"');
+    t+=L_(`M${m(-5.6)} 208.2Q${m(-1.4)} 207.2 ${m(3.6)} 206.4`,'#8a7a90',.5,'opacity=".8"')+L_(`M${m(-6.6)} 208.9Q${m(1)} 208.6 ${m(10.8)} 205.6`,'#000',.7);
+    /* le talon fin et sa pointe d'or */
+    t+=P(`M${m(8)} 206.2L${m(10.8)} 205.2L${m(10.4)} 212.2L${m(9.4)} 212.2Z`,'#1e1620','stroke="#000" stroke-width=".35"')+P(`M${m(9.3)} 210.8H${m(10.5)}L${m(10.4)} 212.4H${m(9.4)}Z`,AU(q));
+    /* la bride et sa boucle d'or */
+    t+=L_(`M${m(1)} 202.6Q${m(5)} 204 ${m(10.4)} 202.2`,AU(q),.8)+P(`M${m(4.4)} 202.4h1.8v1.8h-1.8z`.replace(/^M([\d.]+)/,(z,v)=>'M'+r1(f?+v-1.8:+v)),'none',`stroke="${AU(q)}" stroke-width=".5"`)+C_(m(5.3),203.3,.35,'#ff3a4a');
+    return t};
   s+=leg(68,0)+leg(81,1);
   /* gilet rouge, chemise, veste de smoking */
   s+=P('M64 66Q80 60 96 66L98 116Q80 122 62 116Z',BK(q));
