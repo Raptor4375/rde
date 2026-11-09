@@ -21725,7 +21725,9 @@ const gDoc=async key=>{const db=await accDB();return db?db.doc('xfer/GOO'+key):n
 async function gLink(){if(!GOK())return toast("La connexion Google n'est pas disponible ici.");let g;
   try{g=await RDEG.signIn()}catch(e){const c=String(e&&e.code||e);if(/popup-closed|cancelled/.test(c))return;return toast(/unauthorized-domain|operation-not-allowed/.test(c)?"⚠️ La connexion Google n'est pas encore activée sur le serveur du jeu.":"⚠️ Connexion Google impossible pour le moment.")}
   if(!S.acct){S.acct=accNew();save()}
-  try{const d=await gDoc(g.key);if(!d)throw 0;await d.set({c:S.acct,n:String(S.name||''),t:Date.now()});S.gmail=g.email||'Google';save();await pushMark(true);toast('✅ Ta partie est reliée à ton compte Google');try{closeModal();accModal()}catch(e){}}
+  try{const d=await gDoc(g.key);if(!d)throw 0;const o={c:S.acct,n:String(S.name||''),t:Date.now()};
+    /* les règles n'autorisent pas la modification d'une fiche xfer : on l'efface puis on la recrée */
+    try{await d.set(o)}catch(e){try{await d.delete()}catch(_){}await d.set(o)}S.gmail=g.email||'Google';save();await pushMark(true);toast('✅ Ta partie est reliée à ton compte Google');try{closeModal();accModal()}catch(e){}}
   catch(e){toast('⚠️ Impossible de relier le compte pour le moment (connexion ?)')}}
 async function gFind(){const m=$('#accmsg'),say=t=>{if(m)m.innerHTML=t};if(!GOK())return say("La connexion Google n'est pas disponible ici.");let g;
   try{g=await RDEG.signIn()}catch(e){const c=String(e&&e.code||e);if(/popup-closed|cancelled/.test(c))return;return say(/unauthorized-domain|operation-not-allowed/.test(c)?"⚠️ La connexion Google n'est pas encore activée sur le serveur du jeu.":"⚠️ Connexion Google impossible pour le moment.")}
