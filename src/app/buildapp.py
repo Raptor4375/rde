@@ -19,6 +19,9 @@ head=f'''<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="
 out=head+src[len(head0):]
 a='NET.pid=NET.uid||localPid();';assert out.count(a)==1;out=out.replace(a,'NET.pid=(S.opid)||NET.uid||localPid();')
 out=out.replace('<title>Royaumes d\'Éther</title>','<title>RDE · Royaumes d\'Éther</title>',1)
+for x,y in [("quand le jeu est ouvert dans Claude.","quand tu es connecté à internet."),("lorsque le jeu est ouvert dans Claude.","lorsque tu es connecté à internet."),("ne partent que dans Claude.","ne partent que quand tu es connecté à internet."),("est disponible que dans Claude.","est disponible qu'en ligne."),
+  ("when the game is opened in Claude.","when you're connected to the internet."),("when the game is open in Claude.","when you're connected to the internet."),("only go out in Claude.","only go out when you're online."),("is only available in Claude.","is only available online.")]:
+  out=out.replace(x,y)
 out=re.sub(r'<div class="clban">.*?</div>','',out,count=1)
 D='/home/claude/rde'
 open(D+'/index.html','w').write(out)
@@ -35,6 +38,7 @@ open(D+'/version.json','w').write(json.dumps({'v':V}))
 print('app ok',len(out),V)
 
 import subprocess;subprocess.run(['python3','/home/claude/w/app/buildcg.py'])
+subprocess.run(['python3','/home/claude/w/app/buildng.py'])
 
 # version de test (hors ligne, sauvegarde séparée) : /rde/test/
 t=open('/home/claude/w/royaumes.html').read()
