@@ -51,7 +51,7 @@ window.claude={use:async k=>{if(k==='db'||k==='user'){try{const F=await window.R
 window.RDEF();
 })();
 </script>
-<script>window.RDE_V='20261109093525';if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));</script>
+<script>window.RDE_V='20261109093954';if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));</script>
 </head><body>
 <title>RDE · Royaumes d'Éther</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -21740,12 +21740,15 @@ async function gFind(){const m=$('#accmsg'),say=t=>{if(m)m.innerHTML=t};if(!GOK(
   const c=m.querySelector('.accode');(c||m.lastElementChild).insertAdjacentHTML('afterend',html)}catch(e){}return r}}
 {const af=accFindModal;accFindModal=function(){const r=af.apply(this,arguments);try{if(!GOK())return r;const m=document.querySelector('#ovl .modal');const s=m&&m.querySelector('.sub');
   if(s&&!m.querySelector('.gfind'))s.insertAdjacentHTML('afterend',`<button class="btn gfind" data-a="gfind"><span class="gG">G</span> Se connecter avec Google</button><div class="gor">ou avec ton code</div>`)}catch(e){}return r}}
+/* dans les paramètres : le bouton Google bien visible, juste sous « Mon compte » */
+{const sm=settingsModal;settingsModal=function(){const r=sm.apply(this,arguments);try{if(!GOK())return r;const box=document.querySelector('#ovl .modal .accset');if(box&&!box.querySelector('.gset'))box.insertAdjacentHTML('afterbegin',S.gmail?`<div class="gset gok">✅ Partie sauvegardée sur ton compte Google<small>${esc(S.gmail)}</small></div>`:`<button class="btn gset gbtn" data-a="glink"><span class="gG">G</span> Sauvegarder ma partie avec Google</button>`)}catch(e){}return r}}
 document.addEventListener('click',e=>{const b=e.target.closest('[data-a]');if(!b)return;const a=b.dataset.a;if(a!=='glink'&&a!=='gfind')return;e.preventDefault();e.stopPropagation();if(a==='glink')gLink();else gFind()},true);
 const st=document.createElement('style');st.textContent=`.gacc{display:flex;flex-direction:column;gap:5px;margin:10px 0;text-align:left}.gacc small{color:var(--muted);font-size:12px}.gacc span{font-size:13px}.gacc .btn{align-self:flex-start}
 .gfind{width:100%;margin:6px 0 2px;background:#fff!important;color:#1f1f1f!important;font-weight:800;display:flex;align-items:center;justify-content:center;gap:8px}
 .gG{display:inline-grid;place-items:center;width:20px;height:20px;border-radius:50%;background:conic-gradient(#ea4335 0 25%,#fbbc05 0 50%,#34a853 0 75%,#4285f4 0);color:#fff;font-weight:900;font-size:12px}
+.gbtn{width:100%;background:#fff!important;color:#1f1f1f!important;font-weight:800;display:flex;align-items:center;justify-content:center;gap:8px}.gok{display:flex;flex-direction:column;align-items:center;font-weight:800;color:#9ae09a;font-size:13.5px;padding:6px}.gok small{color:var(--muted);font-weight:600}
 .gor{text-align:center;color:var(--muted);font-size:12px;margin:6px 0}`;document.head.appendChild(st);
-try{const X={"✅ Reliée à Google":"✅ Linked to Google","🔗 Relier à mon compte Google":"🔗 Link my Google account","Relier à Google":"Link to Google","Changer de compte Google":"Change Google account","Se connecter avec Google":"Sign in with Google","ou avec ton code":"or with your code",
+try{const X={"✅ Reliée à Google":"✅ Linked to Google","🔗 Relier à mon compte Google":"🔗 Link my Google account","Relier à Google":"Link to Google","Changer de compte Google":"Change Google account","Se connecter avec Google":"Sign in with Google","ou avec ton code":"or with your code","Sauvegarder ma partie avec Google":"Save my game with Google","✅ Partie sauvegardée sur ton compte Google":"✅ Game saved to your Google account",
   "Pour retrouver ta partie sur n'importe quel appareil, même si tu perds ton code. Ton adresse n'est jamais montrée aux autres joueurs.":"To get your game back on any device, even if you lose your code. Your address is never shown to other players.",
   "Sur un nouvel appareil : « Retrouver mon compte » → « Se connecter avec Google ».":"On a new device: “Find my account” → “Sign in with Google”.","✅ Ta partie est reliée à ton compte Google":"✅ Your game is linked to your Google account"};for(const k in X)if(!(k in I18N_EN))I18N_EN[k]=X[k]}catch(e){}
 try{const P=PATCH.find(x=>x.v===43);const I=["🔗 <b>Connexion Google</b> : dans ⚙️ Paramètres → 🔑 Mon compte, relie ta partie à ton compte Google pour la retrouver sur n'importe quel appareil.","🔄 <b>Synchronisation entre appareils corrigée</b> : un appareil resté ouvert ne peut plus renvoyer une vieille partie, et la partie la plus avancée arrive toute seule."];
