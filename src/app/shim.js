@@ -34,6 +34,10 @@ window.RDEF=function(){if(P)return P;P=(async()=>{const [A,F,Au]=await Promise.a
   const db={doc,collection:c=>col(c)};
   const user={id:async()=>uid,can:async()=>true};
   return{db,user,uid}})();P.catch(e=>console.warn('RDE firebase',e));return P};
+/* Connexion Google : seulement pour retrouver sa partie (une 2e instance Firebase, la partie garde son identifiant) */
+window.RDEG={signIn:async()=>{const [A,Au]=await Promise.all([import(U('app')),import(U('auth'))]);let app2;try{app2=A.getApp('rdeg')}catch(e){app2=A.initializeApp(CFG,'rdeg')}
+  const a2=Au.getAuth(app2);try{await Au.setPersistence(a2,Au.inMemoryPersistence)}catch(e){}const pr=new Au.GoogleAuthProvider();try{pr.setCustomParameters({prompt:'select_account'})}catch(e){}
+  const r=await Au.signInWithPopup(a2,pr);const out={key:r.user.uid,email:r.user.email||''};try{await Au.signOut(a2)}catch(e){}return out}};
 window.claude={use:async k=>{if(k==='db'||k==='user'){try{const F=await window.RDEF();return k==='db'?F.db:F.user}catch(e){return null}}return null}};
 window.RDEF();
 })();
