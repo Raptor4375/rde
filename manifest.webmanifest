@@ -9,6 +9,37 @@
  "background_color": "#0b0819",
  "theme_color": "#1a0a3a",
  "lang": "fr",
+ "id": "./",
+ "categories": [
+  "games",
+  "entertainment"
+ ],
+ "screenshots": [
+  {
+   "src": "shots/capture-1.jpg",
+   "sizes": "1080x1920",
+   "type": "image/jpeg",
+   "form_factor": "narrow"
+  },
+  {
+   "src": "shots/capture-2.jpg",
+   "sizes": "1080x1920",
+   "type": "image/jpeg",
+   "form_factor": "narrow"
+  },
+  {
+   "src": "shots/capture-3.jpg",
+   "sizes": "1080x1920",
+   "type": "image/jpeg",
+   "form_factor": "narrow"
+  },
+  {
+   "src": "shots/capture-5.jpg",
+   "sizes": "1080x1920",
+   "type": "image/jpeg",
+   "form_factor": "narrow"
+  }
+ ],
  "icons": [
   {
    "src": "icons/icon-192.png",

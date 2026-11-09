@@ -26,6 +26,7 @@ out=re.sub(r'<div class="clban">.*?</div>','',out,count=1)
 D='/home/claude/rde'
 open(D+'/index.html','w').write(out)
 json.dump({"name":"Royaumes d'Éther","short_name":"RDE","description":"Le jeu d'aventure et d'invocation, avec tes amis.","start_url":"./","scope":"./","display":"standalone","orientation":"portrait","background_color":"#0b0819","theme_color":"#1a0a3a","lang":"fr",
+ "id":"./","categories":["games","entertainment"],"screenshots":[{"src":"shots/capture-1.jpg","sizes":"1080x1920","type":"image/jpeg","form_factor":"narrow"},{"src":"shots/capture-2.jpg","sizes":"1080x1920","type":"image/jpeg","form_factor":"narrow"},{"src":"shots/capture-3.jpg","sizes":"1080x1920","type":"image/jpeg","form_factor":"narrow"},{"src":"shots/capture-5.jpg","sizes":"1080x1920","type":"image/jpeg","form_factor":"narrow"}],
  "icons":[{"src":"icons/icon-192.png","sizes":"192x192","type":"image/png"},{"src":"icons/icon-512.png","sizes":"512x512","type":"image/png"},{"src":"icons/icon-maskable-512.png","sizes":"512x512","type":"image/png","purpose":"maskable"}]},open(D+'/manifest.webmanifest','w'),ensure_ascii=False,indent=1)
 open(D+'/sw.js','w').write(f"""// RDE : mode hors-ligne. Version {V}
 const C='rde-{V}';
