@@ -56,7 +56,7 @@ window.claude={use:async k=>{if(k==='db'||k==='user'){try{const F=await window.R
 window.RDEF();
 })();
 </script>
-<script>window.RDE_V='20261109102823';if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));</script>
+<script>window.RDE_V='20261109104513';if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));</script>
 </head><body>
 <title>RDE · Royaumes d'Éther</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -21732,7 +21732,7 @@ async function gLink(){if(!GOK())return toast("La connexion Google n'est pas dis
 async function gSave(g){if(!S.acct){S.acct=accNew();save()}
   try{const d=await gDoc(g.key);if(!d)throw 0;const o={c:S.acct,n:String(S.name||''),t:Date.now()};
     /* les règles n'autorisent pas la modification d'une fiche xfer : on l'efface puis on la recrée */
-    try{await d.set(o)}catch(e){try{await d.delete()}catch(_){}await d.set(o)}S.gmail=g.email||'Google';save();await pushMark(true);toast(g.mail?'✅ Ta partie est sauvegardée avec ton e-mail':'✅ Ta partie est reliée à ton compte Google');try{closeModal();accModal()}catch(e){}}
+    try{await d.set(o)}catch(e){try{await d.delete()}catch(_){}await d.set(o)}S.gmail=g.email||'Google';S.gkey=g.key;save();await pushMark(true);toast(g.mail?'✅ Ta partie est sauvegardée avec ton e-mail':'✅ Ta partie est reliée à ton compte Google');try{closeModal();accModal()}catch(e){}}
   catch(e){toast('⚠️ Impossible de relier le compte pour le moment (connexion ?)')}}
 async function gFind(){const m=$('#accmsg'),say=t=>{if(m)m.innerHTML=t};if(!GOK())return say("La connexion Google n'est pas disponible ici.");let g;
   try{g=await RDEG.signIn()}catch(e){const c=String(e&&e.code||e);if(/popup-closed|cancelled/.test(c))return;return say(/unauthorized-domain|operation-not-allowed/.test(c)?"⚠️ La connexion Google n'est pas encore activée sur le serveur du jeu.":"⚠️ Connexion Google impossible pour le moment.")}
@@ -21778,6 +21778,7 @@ try{const X={"✅ Reliée à Google":"✅ Linked to Google","🔗 Relier à mon 
   "Sur un nouvel appareil : « Retrouver mon compte » → « Se connecter avec Google ».":"On a new device: “Find my account” → “Sign in with Google”.","✅ Ta partie est reliée à ton compte Google":"✅ Your game is linked to your Google account"};for(const k in X)if(!(k in I18N_EN))I18N_EN[k]=X[k]}catch(e){}
 try{const P=PATCH.find(x=>x.v===43);const I=["🔗 <b>Connexion Google</b> : dans ⚙️ Paramètres → 🔑 Mon compte, relie ta partie à ton compte Google pour la retrouver sur n'importe quel appareil.","🔄 <b>Synchronisation entre appareils corrigée</b> : un appareil resté ouvert ne peut plus renvoyer une vieille partie, et la partie la plus avancée arrive toute seule."];
   if(P)P.items.push(...I);I18N_EN[I[0]]="🔗 <b>Google sign-in</b>: in ⚙️ Settings → 🔑 My account, link your game to your Google account to get it back on any device.";I18N_EN[I[1]]="🔄 <b>Device sync fixed</b>: a device left open can no longer send back an old save, and the most advanced save arrives on its own."}catch(e){}
+try{const d0=delAccount;delAccount=async function(){try{if(S.gkey){const d=await gDoc(S.gkey);if(d)await d.delete()}}catch(e){}return d0.apply(this,arguments)}}catch(e){}
 }catch(e){console.warn('compte google',e)}})();
 
 /* ================= APPLI ANDROID (Play Store) =================
