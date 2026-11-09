@@ -21720,6 +21720,19 @@ try{const X={"✅ Reliée à Google":"✅ Linked to Google","🔗 Relier à mon 
 try{const P=PATCH.find(x=>x.v===43);const I=["🔗 <b>Connexion Google</b> : dans ⚙️ Paramètres → 🔑 Mon compte, relie ta partie à ton compte Google pour la retrouver sur n'importe quel appareil.","🔄 <b>Synchronisation entre appareils corrigée</b> : un appareil resté ouvert ne peut plus renvoyer une vieille partie, et la partie la plus avancée arrive toute seule."];
   if(P)P.items.push(...I);I18N_EN[I[0]]="🔗 <b>Google sign-in</b>: in ⚙️ Settings → 🔑 My account, link your game to your Google account to get it back on any device.";I18N_EN[I[1]]="🔄 <b>Device sync fixed</b>: a device left open can no longer send back an old save, and the most advanced save arrives on its own."}catch(e){}
 }catch(e){console.warn('compte google',e)}})();
+
+/* ================= APPLI ANDROID (Play Store) =================
+   L'appli Android s'ouvre avec ?src=android (ou depuis android-app://). On le retient sur l'appareil.
+   Dans l'appli, Google interdit de renvoyer vers un paiement extérieur : le Pack Mécène (itch.io) y est caché.
+   Le champ « Code cadeau » reste. */
+(function(){try{
+let and=false;try{and=/[?&]src=android\b/.test(location.search)||String(document.referrer||'').startsWith('android-app://');if(and)localStorage.setItem('rde-android','1');else and=localStorage.getItem('rde-android')==='1'}catch(e){}
+window.RDE_AND=and;
+if(!and)return;
+document.documentElement.classList.add('rdeand');
+const st=document.createElement('style');st.textContent=`.rdeand .supbtn,.rdeand a[href*="itch.io"],.rdeand [data-a="support"]{display:none!important}`;document.head.appendChild(st);
+try{supportModal=function(){}}catch(e){}
+}catch(e){console.warn('android',e)}})();
 /* ================= toujours en dernier : l'écran de chargement reprend les dessins à jour ================= */
 (function(){try{
   /* Livre III : le Roi de Cendre (nouveau design) au premier rang, et le souvenir du jeune Éryndel au-dessus de la couronne */
