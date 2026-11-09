@@ -1,7 +1,7 @@
 /* ================= mode arrière-plan : quand une fenêtre de l'appli passe devant (partage, clavier…), le jeu se met en pause ================= */
 const BGP={on:false,pend:false};
 function bgpPause(){if(BGP.on)return;BGP.on=true;document.documentElement.classList.add('bgpause');try{document.querySelectorAll('svg').forEach(s=>{try{s.pauseAnimations()}catch(e){}})}catch(e){}}
-function bgpResume(){if(!BGP.on)return;BGP.on=false;document.documentElement.classList.remove('bgpause');try{document.querySelectorAll('svg').forEach(s=>{try{s.unpauseAnimations()}catch(e){}})}catch(e){}if(BGP.pend){BGP.pend=false;try{render()}catch(e){}}}
+function bgpResume(){if(!BGP.on)return;BGP.on=false;document.documentElement.classList.remove('bgpause');try{document.querySelectorAll('svg').forEach(s=>{try{if(s.__run!==false)s.unpauseAnimations()}catch(e){}})}catch(e){}if(BGP.pend){BGP.pend=false;try{render()}catch(e){}}}
 window.addEventListener('blur',()=>{setTimeout(()=>{if(!document.hasFocus())bgpPause()},60)});
 window.addEventListener('focus',bgpResume);
 ['pointerdown','touchstart','keydown'].forEach(ev=>window.addEventListener(ev,()=>{BGP.ever=true;bgpResume()},{capture:true,passive:true}));

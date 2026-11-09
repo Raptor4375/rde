@@ -10,8 +10,8 @@ const LBIMG=new Map();
    return(st?`<img class="lbimg lbst" src="${st}" alt="" aria-hidden="true" draggable="false">`:'')+`<img class="lbimg lbanim" src="${u}" alt="" aria-hidden="true" decoding="async" draggable="false">`}catch(e){return v}}}
 /* version figée (photo) du décor, affichée pendant le défilement à la place de la version animée */
 const LBST=new Map();
-function lbStatic(u){LBST.set(u,null);const im=new Image();im.onload=()=>{try{const c=document.createElement('canvas');c.width=800;c.height=480;const x=c.getContext('2d');x.drawImage(im,0,0,800,480);
-  c.toBlob(b=>{if(!b)return;const p=URL.createObjectURL(b);LBST.set(u,p);document.querySelectorAll('.lobby>img.lbanim').forEach(a=>{if(a.getAttribute('src')===u&&!(a.previousElementSibling&&a.previousElementSibling.classList.contains('lbst')))a.insertAdjacentHTML('beforebegin',`<img class="lbimg lbst" src="${p}" alt="" aria-hidden="true" draggable="false">`)})},'image/webp',.9)}catch(e){}};im.src=u}
+function lbStatic(u){LBST.set(u,null);const im=new Image();im.onload=()=>{try{const c=document.createElement('canvas');c.width=1600;c.height=960;const x=c.getContext('2d');x.drawImage(im,0,0,1600,960);
+  c.toBlob(b=>{if(!b)return;const p=URL.createObjectURL(b);LBST.set(u,p);document.querySelectorAll('.lobby>img.lbanim').forEach(a=>{if(a.getAttribute('src')===u&&!(a.previousElementSibling&&a.previousElementSibling.classList.contains('lbst')))a.insertAdjacentHTML('beforebegin',`<img class="lbimg lbst" src="${p}" alt="" aria-hidden="true" draggable="false">`)})},'image/webp',.92)}catch(e){}};im.src=u}
 {let tm=0;const on=()=>{document.documentElement.classList.add('scrl');clearTimeout(tm);tm=setTimeout(()=>document.documentElement.classList.remove('scrl'),450)};window.addEventListener('scroll',on,{passive:true,capture:true})}
 /* Pendant qu'on fait défiler, on ne reconstruit plus la page à chaque mise à jour d'un joueur en ligne :
    on attend que le doigt se pose, et pas plus d'une fois toutes les 8 secondes, en gardant la position. */
