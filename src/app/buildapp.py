@@ -26,7 +26,7 @@ out=re.sub(r'<div class="clban">.*?</div>','',out,count=1)
 D='/home/claude/rde'
 open(D+'/index.html','w').write(out)
 json.dump({"name":"Royaumes d'Éther","short_name":"RDE","description":"Le jeu d'aventure et d'invocation, avec tes amis.","start_url":"./","scope":"./","display":"standalone","orientation":"portrait","background_color":"#0b0819","theme_color":"#1a0a3a","lang":"fr",
- "icons":[{"src":"icons/icon-192.png","sizes":"192x192","type":"image/png"},{"src":"icons/icon-512.png","sizes":"512x512","type":"image/png"},{"src":"icons/icon-512.png","sizes":"512x512","type":"image/png","purpose":"maskable"}]},open(D+'/manifest.webmanifest','w'),ensure_ascii=False,indent=1)
+ "icons":[{"src":"icons/icon-192.png","sizes":"192x192","type":"image/png"},{"src":"icons/icon-512.png","sizes":"512x512","type":"image/png"},{"src":"icons/icon-maskable-512.png","sizes":"512x512","type":"image/png","purpose":"maskable"}]},open(D+'/manifest.webmanifest','w'),ensure_ascii=False,indent=1)
 open(D+'/sw.js','w').write(f"""// RDE : mode hors-ligne. Version {V}
 const C='rde-{V}';
 self.addEventListener('install',e=>{{self.skipWaiting();e.waitUntil(caches.open(C).then(c=>c.addAll(['./','index.html','manifest.webmanifest','icons/icon-192.png','icons/icon-512.png'])).catch(()=>{{}}))}});
