@@ -87,6 +87,16 @@ const bolt=(pts,c,wd,dur,beg)=>{const d='M'+pts.map(p=>p.join(' ')).join('L');re
 const boltS=(pts,c,wd,op)=>{const d='M'+pts.map(p=>p.join(' ')).join('L');return`<g opacity="${op}"><path d="${d}" stroke="${c}" stroke-width="${R1(wd*2.6)}" fill="none" opacity=".35" stroke-linejoin="round"/><path d="${d}" stroke="#ffffff" stroke-width="${wd}" fill="none" stroke-linejoin="round"/></g>`};
 const HGs=s=>`<g transform="translate(38 -1) scale(.84)">${s}</g>`;
 
+/* cristaux de glace pour « l'Hiver Immobile » */
+const KXT={
+  xt:(x,y,h,wd,rot,op=1)=>`<g transform="translate(${R1(x)} ${R1(y)}) rotate(${R1(rot)})" opacity="${op}"><path d="M0 ${R1(-h)}L${R1(wd)} ${R1(-h*.3)}L${R1(wd*.55)} 0L0 ${R1(h*.08)}Z" fill="#8AC8F0"/><path d="M0 ${R1(-h)}L${R1(-wd)} ${R1(-h*.3)}L${R1(-wd*.55)} 0L0 ${R1(h*.08)}Z" fill="#E8F8FF"/><path d="M0 ${R1(-h)}L${R1(wd)} ${R1(-h*.3)}L${R1(wd*.55)} 0L${R1(-wd*.55)} 0L${R1(-wd)} ${R1(-h*.3)}Z" fill="none" stroke="#FFFFFF" stroke-width="${R1(wd*.12)}" stroke-linejoin="round" opacity=".9"/><path d="M0 ${R1(-h)}V0" stroke="#FFFFFF" stroke-width="${R1(wd*.1)}" opacity=".7"/></g>`,
+  ring:(cx,cy,r,h,n,op)=>{let o='';for(let k=0;k<n;k++){const a=k/n*360+(k%2?6:0),rad=(a-90)*Math.PI/180,L=h*(k%2?.62:1)*(k%3===0?1.15:1);o+=KXT.xt(cx+Math.cos(rad)*r,cy+Math.sin(rad)*r,L,L*.26,a,op)}return`<g>${o}</g>`},
+  glow:(cx,cy,r)=>`<circle cx="${cx}" cy="${cy}" r="${r}" fill="#BFE6FF" opacity=".16"/><circle cx="${cx}" cy="${cy}" r="${R1(r*.62)}" fill="#E8F8FF" opacity=".12"/>`,
+  cracks:(cx,cy,r,u)=>{const L=[[[-.9,-.2],[-.45,-.1],[-.3,.22],[0,.12]],[[.85,-.35],[.4,-.2],[.18,.1]],[[.2,.95],[.12,.5],[-.12,.36],[0,.12]]].slice(0,2+(u>=2));
+    return`<g fill="none" stroke-linecap="round" stroke-linejoin="round">${L.map(P=>{const d='M'+P.map(([x,y])=>R1(cx+x*r)+' '+R1(cy+y*r)).join('L');return`<path d="${d}" stroke="#BFE6FF" stroke-width="2.4" opacity=".35"/><path d="${d}" stroke="#FFFFFF" stroke-width=".8" opacity=".95"/>`}).join('')}</g>`},
+  frost:(cx,cy,r,u)=>`<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="#D8F4FF" stroke-width="1.2" stroke-dasharray="1.5 5" opacity=".75"/>`+[...Array(6+u*2)].map((_,k)=>{const a=(k/(6+u*2))*6.283,x=R1(cx+Math.cos(a)*r),y=R1(cy+Math.sin(a)*r);return sp4(x,y,R1(1.6+(k%2)*.8),'#FFFFFF',.9).replace('/>',`><animate attributeName="opacity" values=".2;1;.2" dur="${R1(2+(k%3)*.7)}s" begin="${R1(-k*.4)}s" repeatCount="indefinite"/></path>`)}).join(''),
+  crown:(x,y,k,u)=>[[0,0,11,0],[-5,2,7.5,-24],[5,2,7.5,24],[-9,5,5,-44],[9,5,5,44]].slice(0,u>=2?5:3).map(([dx,dy,h,r])=>KXT.xt(x+dx*k,y+dy*k,h*k,h*k*.3,r,1)).join('')+sp4(x,R1(y-11*k),R1(2.2*k),'#FFFFFF',.95),
+  hem:u=>[[36,228,9,-24],[47,231,6,-8],[113,231,7,10],[124,228,10,24],[60,233,4.5,-4],[100,233,5,6]].slice(0,4+Math.min(2,u)).map(([x,y,h,r])=>KXT.xt(x,y,h,h*.28,r,.95)).join('')+`<ellipse cx="80" cy="231" rx="${56+u*4}" ry="6" fill="#E8F8FF" opacity=".2"/>`};
 /* ================= LE CATALOGUE ================= */
 /* fx : p (portrait, devant), pb (portrait, derrière le héros), b (corps, devant), bb (corps, tout derrière), ba (corps, après le décor) */
 const DEF=[
@@ -216,12 +226,23 @@ const DEF=[
   gr:{bg:['#F4FAFF','#B8D4F0','#5A7898','#1E2A40','#0A1222'],gl:['#FFFFFF','#E0F0FF','#9AC8FF'],bb:['#D8E8FF','#3A5A80','#0A1222']},
   fx:{p:u=>place([[14,30,2],[86,24,1.8],[10,64,1.5],[90,58,1.6],[30,10,1.2]],SH.flake,['#FFFFFF','#E0F0FF']),
     b:u=>drift(8,SH.flake,{x0:8,x1:152,y:-16,dy:262,d0:6,d1:10,sw:12,c:['#FFFFFF','#E0F0FF','#C8E0FF'],r:[3.8,3,4.6],op:.92})}}
+,
+/* --- Pass Pro « Givre éternel » : palier 60 (exclusivité) --- */
+{k:'ka_hiver',hero:58,rar:'l',ex:1,season:'p_givre2',how:"Pass Pro « Givre éternel » : palier 60",n:"Kaïros, l'Hiver Immobile",d:"Le jour où l'hiver est tombé pour toujours, toutes les horloges du royaume se sont figées. Toutes, sauf une : celle de Kaïros, prise dans la glace, qui seule décide encore quand le temps reprendra.",
+  map:[w(236,292,{h:210,k:.4,sm:1.05,lm:1.14}),w(26,62,{h:200,k:.2,s:.3,lm:1.14},{smin:.22}),w(150,192,{h:194,k:.3,sm:.55,la:.1})],
+  gr:{bg:['#F2FBFF','#9AD6F6','#2A6AAA','#0A2A5A','#030A1E'],gl:['#FFFFFF','#D8F4FF','#8AD8FF'],bb:['#8ACCF0','#163E70','#030A1E']},
+  forms:["L'Hiver Immobile",'Heure Gelée','Cadran de Cristal','Éternité Blanche'],
+  fx:{pb:u=>KXT.ring(50,40,30+u*2,10+u*2,7+u,.85)+KXT.glow(50,40,40),
+    p:u=>KXT.crown(50,9.5,.62,u)+place([[10,14,3],[90,12,2.6],[8,70,2.2],[92,66,2.4]],SH.flake,['#FFFFFF','#D8F4FF'])+[[24,8,1.2],[80,30,1],[16,44,.9]].map(([x,y,r])=>sp4(x,y,r,'#FFFFFF',.9)).join(''),
+    bb:u=>KXT.ring(80,58,54+u*2,12+u*2,14+u*2,.92)+KXT.cracks(80,58,46,u)+(u>=1?KXT.frost(80,58,78+u*4,u):''),
+    b:u=>KXT.crown(80,15,1,u)+drift(7+u*2,SH.flake,{x0:8,x1:152,y:-16,dy:262,d0:6,d1:10,sw:12,c:['#FFFFFF','#D8F4FF','#BFE6FF'],r:[3.6,2.8,4.4],op:.92})+KXT.hem(u)}}
 ];
 /* ---------- enregistrement ---------- */
 const SK2={},VK={},SKL=[];let vid=401;
-for(const D of DEF){if(!HEROES[D.hero])continue;D.vid=vid++;D.mapF=D.map?mkMap(D.map):null;D.forms=D.forms||[D.n,D.n,D.n,D.n];D.how=`Boutique du Dressing · ${SKR[D.rar].p.toLocaleString('fr-FR')} gemmes`;
+for(const D of DEF){if(!HEROES[D.hero])continue;D.vid=vid++;D.mapF=D.map?mkMap(D.map):null;D.forms=D.forms||[D.n,D.n,D.n,D.n];D.how0=D.how;D.how=`Boutique du Dressing · ${SKR[D.rar].p.toLocaleString('fr-FR')} gemmes`;
   SK2[D.k]=D;VK[D.vid]=D.k;SKL.push(D.k);
-  SKINS[D.k]={n:D.n,hero:D.hero,vid:D.vid,rar:D.rar,shop:1,how:D.how,d:D.d,forms:D.forms};SKV[D.vid]=D.k;
+  if(D.ex)D.how=D.how0||D.how;
+  SKINS[D.k]={n:D.n,hero:D.hero,vid:D.vid,rar:D.rar,shop:D.ex?0:1,ex:D.ex?1:0,season:D.season,how:D.how,d:D.d,forms:D.forms};SKV[D.vid]=D.k;
   try{LOOKS[D.vid]=LOOKS[D.hero];UTH_H[D.vid]=UTH_H[D.hero]}catch(e){}}
 /* l'apparence du Pass Pro est une exclusivité de rang légendaire */
 for(const k in SKINS)if(!SKINS[k].rar){SKINS[k].rar='l';SKINS[k].ex=1}
@@ -275,7 +296,7 @@ const own=k=>skOwned(k),price=k=>SKR[SKINS[k].rar].p;
 const rTag=r=>`<span class="skrt r-${r}">${SKR[r].t}</span>`;
 const exTag=`<span class="skrt r-x">EXCLUSIVE · PASS</span>`;
 const fU=hid=>{const o=S.heroes&&S.heroes[hid];return o&&HEROES[hid].r>=4?Math.min(3,o.u||0):0};
-function shopList(){const L=SKL.filter(k=>{const s=SKINS[k];if(UI.skr&&UI.skr!=='all'&&s.rar!==UI.skr)return false;if(UI.skmine&&!S.heroes[s.hero])return false;return true});
+function shopList(){const L=SKL.filter(k=>{const s=SKINS[k];if(s.ex)return false;if(UI.skr&&UI.skr!=='all'&&s.rar!==UI.skr)return false;if(UI.skmine&&!S.heroes[s.hero])return false;return true});
   return L.sort((a,b)=>RORD.indexOf(SKINS[a].rar)-RORD.indexOf(SKINS[b].rar)||SKINS[a].hero-SKINS[b].hero)}
 function skCard(k){const s=SKINS[k],o=own(k),on=skEq(s.hero)===k,u=fU(s.hero),h=HEROES[s.hero];
   return`<button class="skc r-${s.rar} ${o?'own':''} ${on?'on':''}" data-a="skview" data-v="${k}"><span class="skca">${sImg(k,u)}</span><span class="skcb">${s.ex?exTag:rTag(s.rar)}<b>${esc(s.n)}</b><small>${esc(h.n)}</small>
@@ -283,7 +304,7 @@ function skCard(k){const s=SKINS[k],o=own(k),on=skEq(s.hero)===k,u=fU(s.hero),h=
 function shopPage(){const r=UI.skr||'all';if(!S.skShopSeen){S.skShopSeen=1;try{save()}catch(e){}}
   const chips=[['all','Toutes'],['l','★ Légendaires'],['e','Épiques'],['r','Rares'],['c','Communes']].map(([k,n])=>`<button class="skchip ${r===k?'on':''} ${k!=='all'?'r-'+k:''}" data-a="skflt" data-v="${k}">${n}</button>`).join('')
     +`<button class="skchip ${UI.skmine?'on':''}" data-a="skmine">${UI.skmine?'☑':'☐'} Mes héros</button>`;
-  const L=shopList();const leg=r==='all'&&!UI.skmine?SKL.filter(k=>SKINS[k].rar==='l'):[];
+  const L=shopList();const leg=r==='all'&&!UI.skmine?SKL.filter(k=>SKINS[k].rar==='l'&&!SKINS[k].ex):[];
   const feat=leg.length?`<div class="skfeat">${leg.map(k=>{const s=SKINS[k],o=own(k);return`<button class="skft" data-a="skview" data-v="${k}"><span class="skftf">${bImg(k,fU(s.hero))}</span><span class="skftt">${rTag('l')}<b>${esc(s.n)}</b><small>${esc(HEROES[s.hero].n)}</small><em class="skbn">⚡ ${bonTxt('l')}</em>${o?'<span class="skst">✓ Possédée</span>':`<span class="skpr">${GEM}${price(k).toLocaleString('fr-FR')}</span>`}</span></button>`}).join('')}</div>`:'';
   const rest=leg.length?L.filter(k=>SKINS[k].rar!=='l'):L;
   return`<div class="stack"><div class="card skhd"><div><div class="h3" style="margin:0">🛍️ Boutique d'apparences</div><p class="muted" style="margin:2px 0 0;font-size:12.5px">Les rares, épiques et légendaires donnent un bonus de stats quand elles sont portées. Les exclusivités du Pass ne sont jamais vendues ici.</p></div><span class="skbal">${GEM}<b class="num">${fmt(S.gems)}</b></span></div>
