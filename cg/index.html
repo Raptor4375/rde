@@ -22295,6 +22295,14 @@ try{const I=["🎬 <b>Les skins légendaires ont maintenant leurs propres animat
   "✨ Every future legendary skin will get its own animations too. Without a skin equipped, heroes keep their original animations."];
  I.forEach((x,i)=>{I18N_EN[x]=E[i]});I18N_EN['Animations des skins légendaires']='Legendary skin animations'}catch(e){}
 }catch(e){console.warn('skanim init',e)}})();
+
+/* ================= V402 : saison « Givre éternel » (10 → 24 novembre 2026) ================= */
+(function(){try{
+/* bannière événement de la saison : Kaïros, le maître du temps que l'hiver a figé */
+EVB.ev_givre={h:58,start:'2026-11-10',n:"L'Hiver Immobile",d:"Le temps lui-même a gelé. Kaïros en est le gardien."};
+BANS.ev_givre={n:EVB.ev_givre.n,start:EVB.ev_givre.start};
+try{I18N_EN["L'Hiver Immobile"]='The Still Winter'}catch(e){}
+}catch(e){console.warn('saison givre',e)}})();
 /* ================= toujours en dernier : l'écran de chargement reprend les dessins à jour ================= */
 (function(){try{
   /* Livre III : le Roi de Cendre (nouveau design) au premier rang, et le souvenir du jeune Éryndel au-dessus de la couronne */
