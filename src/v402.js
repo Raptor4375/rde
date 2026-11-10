@@ -169,3 +169,7 @@ try{const I=["❄️ <b>Nouvelle saison : Givre éternel</b>, jusqu'au 24 novemb
   "🎟️ <b>Pro Pass exclusives</b>: “Eternal Frost” background (tier 15), Kairos avatar (tier 30), frost name (tier 45) and the legendary look <b>Kairos, the Still Winter</b> (tier 60): ice crown, frozen clock, and its own battle animations. Its ultimate freezes time and traps enemies in ice."];
  I.forEach((x,i)=>{I18N_EN[x]=E[i]});I18N_EN['Saison Givre éternel']='Eternal Frost season'}catch(e){}
 }catch(e){console.warn('saison givre',e)}})();
+/* ---------- l'événement du Roi de Cendre est terminé : il quitte la liste des événements et le village ----------
+   (il ne reste que pour un joueur qui n'a pas encore récupéré sa récompense du Roi) */
+(function(){try{const END=Date.UTC(2026,10,10,7,10);
+  const et=evTabs;evTabs=function(){const a=et.apply(this,arguments);try{if(Date.now()>=END){const keep=typeof ashBadge==='function'&&ashBadge()==='!';if(!keep)return a.filter(x=>x[0]!=='ash')}}catch(e){}return a}}catch(e){console.warn('fin roi de cendre',e)}})();
