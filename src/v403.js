@@ -214,7 +214,7 @@ const GCH=[
    ['narr',"Depuis ce jour, au royaume, on l'appelle Kaïros, l'Hiver Immobile."]]}];
 const N=GCH.length;
 const dc=L=>L.map(x=>Array.isArray(x)?x.slice():Object.assign({},x,x.ch?{ch:x.ch.map(c=>c.slice())}:{}));
-GCH.forEach(c=>SAGA.push({t:c.t,ic:c.ic,req:1,ashc:1,gvc:1,bg:c.bg,place:c.place,boss:{n:c.boss.n,h:c.boss.h,st:50},intro:dc(c.intro),outro:dc(c.outro)}));
+GCH.forEach(c=>SAGA.push({t:c.t,ic:c.ic,req:1,ashc:1,gvc:1,mus:c.mus,bg:c.bg,place:c.place,boss:{n:c.boss.n,h:c.boss.h,st:50},intro:dc(c.intro),outro:dc(c.outro)}));
 const GVS=()=>{if(!S.gvc||typeof S.gvc!=='object')S.gvc={};if(!S.gvc.d||typeof S.gvc.d!=='object')S.gvc.d={};if(!S.gvc.l||typeof S.gvc.l!=='object')S.gvc.l={};return S.gvc};
 const gvDone=k=>!!GVS().d[k];
 const gvUnlocked=k=>gvDone(k)||(gvOpen()&&gvDay()>=GCH[k].day&&(k===0||gvDone(k-1)));
