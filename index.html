@@ -56,7 +56,7 @@ window.claude={use:async k=>{if(k==='db'||k==='user'){try{const F=await window.R
 window.RDEF();
 })();
 </script>
-<script>window.RDE_V='20261111170754';if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));</script>
+<script>window.RDE_V='20261111173609';if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));</script>
 </head><body>
 <title>RDE · Royaumes d'Éther</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -24715,31 +24715,50 @@ HCH[3].end="« Il a allumé le bon feu, à la fin. Ce n'est pas tout à fait fau
 HCH[4].end="« Deux reliures qui se touchent. C'est très bien comme ça. »";
 const addTtl=(C,ci)=>{try{TITLES.push({k:C.ttl.k,n:C.ttl.n,c:C.col,d:C.ttl.d,ok:()=>hFin(ci)})}catch(e){}};
 HCH.forEach(addTtl);
-try{window.RDEhc={heroChron:id=>HCH.findIndex(C=>C.hero===id),heroOfChapter:c=>inH(c)?HCH[FI(c)[0]].hero:null,open:ci=>hcOpen(ci),list:()=>HCH,unlocked:(ci,ki)=>hUn(ci,ki||0)}}catch(e){}
+try{window.RDEhc={fi:c=>inH(c)?FI(c).slice():null,done:(ci,ki)=>hDone(ci,ki),heroChron:id=>HCH.findIndex(C=>C.hero===id),heroOfChapter:c=>inH(c)?HCH[FI(c)[0]].hero:null,open:ci=>hcOpen(ci),list:()=>HCH,unlocked:(ci,ki)=>hUn(ci,ki||0)}}catch(e){}
 try{window.RDEaddChron=function(cfg){if(!cfg||!cfg.ch||!cfg.ch.length)return-1;const ci=HCH.length;HCH.push(cfg);reg(cfg,ci);addTtl(cfg,ci);return ci}}catch(e){}
 
 /* ---------- l'écran des chroniques ---------- */
-function hcRow(ci){const C=HCH[ci],n=hCount(ci),N=C.ch.length,fin=n>=N;
- const lk=!hUn(ci,0);
- return`<button class="hcrow${fin?' done':''}${lk?' lk':''}" data-a="hcopen" data-v="${ci}" style="--hc:${C.col}"><span class="hcic">${C.ic}</span><span class="hctx"><b>${esc(C.n)}</b><small>${lk?`🔒 ${esc(C.reqTxt||'Bientôt')}`:fin?'Terminée · relire':`${n}/${N} chapitres`} · ${esc(HEROES[C.hero]?HEROES[C.hero].n:'')}</small></span><span class="acbg">${lk?'🔒':fin?'✓':'›'}</span></button>`}
-function hcPic(){try{if(window.RDEstill&&typeof marnPortrait==='function'){const u=RDEstill('marnp0',()=>marnPortrait(0));if(u)return`<img src="${u}" alt="" draggable="false">`}}catch(e){}
- return typeof marnPortrait==='function'?marnPortrait(0):''}
-function hcCard(){const tot=HCH.reduce((a,C,ci)=>a+hCount(ci),0);
- return`<div class="card acard hccard"><div class="acrow"><button class="acpt hcpt" data-a="hero" data-v="${MARN}" aria-label="Marn">${hcPic()}</button><div style="min-width:0;flex:1"><span class="tag" style="--rc:#9fe8c8">CHRONIQUES DES HÉROS · ${tot}/${NT()}</span><div class="h3" style="margin:4px 0 2px">📖 Chroniques des Héros</div>
-  <p class="muted" style="font-size:12.5px;margin:0">Une histoire en 3 chapitres pour chacun des héros arrivés après le Roi de Cendre, dans l'ordre que tu veux. 🎁 Ceux que tu n'as pas encore te sont <b>prêtés</b> pendant les combats : essaie-les avant de les avoir.</p></div></div>
-  <div class="hclist">${HCH.map((_,ci)=>hcRow(ci)).join('')}</div></div>`}
+const hcImg=(k,fn)=>{try{const u=window.RDEstill?RDEstill(k,fn):'';if(u)return`<img src="${u}" alt="" draggable="false">`}catch(e){}try{return fn()}catch(e){return''}};
+const hcPort=id=>{const h=HEROES[id];if(!h)return'';const o=S.heroes[id],u=o&&h.r>=4?Math.min(3,o.u||0):0;return hcImg('hcp'+id+'_'+u,()=>portrait(h))};
+const hcFig=id=>{const h=HEROES[id];if(!h)return'';return hcImg('hcf'+id,()=>heroBody(h,0))};
+const hcFirst=C=>{const h=HEROES[C.hero];return h?h.n.split(/[ ,]/)[0]:''};
+const hcState=ci=>{const C=HCH[ci],n=hCount(ci),N=C.ch.length;return{C,n,N,fin:n>=N,lk:!hUn(ci,0),tr:!!HEROES[C.hero]&&!S.heroes[C.hero]}};
+const hcPips=(ci,cur)=>`<span class="hcpips">${HCH[ci].ch.map((c,k)=>`<i class="${hDone(ci,k)?'on':''}${k===cur?' cur':''}"></i>`).join('')}</span>`;
+/* récompenses affichées (une chronique peut avoir les siennes : C.rwFin) */
+function hcRw(ci){const C=HCH[ci],L=[];const gm=C.ch.reduce((a,c)=>a+(c.rw||0),0);L.push(['💎',`${gm} gemmes`]);
+ let fin=null;try{if(typeof C.rwFin==='function')fin=C.rwFin()}catch(e){}
+ if(fin)L.push(...fin);
+ else{let g=null;try{g=typeof C.gift==='function'?C.gift():C.gift}catch(e){}
+   if(g!=null&&HEROES[g]&&!S.heroes[g])L.push(['✨',`${esc(HEROES[g].n.split(/[ ,]/)[0])} rejoint ton équipe`]);
+   else L.push(['🧩',`15 fragments de ${esc(hcFirst(C))}`])}
+ L.push(['🏷️',`Titre « ${esc(C.ttl.n)} »`]);return L}
+function hcRow(ci){const {C,n,N,fin,lk,tr}=hcState(ci),h=HEROES[C.hero]||{};
+ const chip=lk?'<span class="hcchip lk">🔒</span>':fin?'<span class="hcchip ok">✓</span>':tr?'<span class="hcchip tr">ESSAI</span>':n?`<span class="hcchip go">${n}/${N}</span>`:'<span class="hcchip nw">NOUVEAU</span>';
+ return`<button class="hct${fin?' done':''}${lk?' lk':''}" data-a="hcopen" data-v="${ci}" style="--hc:${C.col}" aria-label="${esc(C.n)}"><span class="hctp">${hcPort(C.hero)}${chip}</span><b class="hctn">${esc(C.n)}</b><small>${C.ic} ${esc(hcFirst(C))}${h.c?' · '+esc(h.c):''}</small>${hcPips(ci,lk||fin?-1:hNext(ci))}</button>`}
+/* la chronique à continuer : celle déjà commencée, sinon celle d'un héros qu'on n'a pas encore */
+function hcNextCi(){let best=-1;for(let ci=0;ci<HCH.length;ci++){const s=hcState(ci);if(!s.lk&&!s.fin&&s.n>0)return ci;if(best<0&&!s.lk&&!s.fin&&s.tr)best=ci}
+ if(best<0)for(let ci=0;ci<HCH.length;ci++){const s=hcState(ci);if(!s.lk&&!s.fin){best=ci;break}}return best}
+function hcCard(){const tot=HCH.reduce((a,C,ci)=>a+hCount(ci),0),NN=NT(),nx=hcNextCi();
+ let cont='';if(nx>=0){const C=HCH[nx],k=hNext(nx);cont=`<button class="hccont" data-a="hcopen" data-v="${nx}" style="--hc:${C.col}"><span class="hccp">${hcPort(C.hero)}</span><span class="hcct"><small>${hCount(nx)?'Continuer':'À découvrir'}</small><b>${C.ic} ${esc(C.n)}</b><small>Chapitre ${k+1} : ${esc(C.ch[k].t)}</small></span><span class="hccgo">▶</span></button>`}
+ return`<div class="card hccard2"><div class="hchd"><div style="min-width:0;flex:1"><div class="h3" style="margin:0">📖 Chroniques des Héros</div>
+  <p class="muted">Une histoire en 3 chapitres pour chaque nouveau héros. 🎁 Ceux que tu n'as pas encore te sont <b>prêtés</b> pendant les combats.</p></div>
+  <div class="hcpr"><b>${tot}</b><small>/ ${NN}</small></div></div>
+  <div class="hcbar"><i style="width:${NN?Math.round(tot/NN*100):0}%"></i></div>
+  ${cont}<div class="hcrail">${HCH.map((_,ci)=>hcRow(ci)).join('')}</div></div>`}
 window.hcCard=hcCard;
-function hcOpen(ci){const C=HCH[ci],N=C.ch.length,n=hCount(ci);
- const list=C.ch.map((c,k)=>{const ok=hDone(ci,k),un=hUn(ci,k);
-   return`<button class="sgch ${ok?'ok':un?'un':'lock'}" data-a="hcplay" data-v="${ci}_${k}" ${un?'':'disabled'}><span class="sgci">${ok?'✅':un?c.ic:'🔒'}</span><b>${k+1}. ${esc(c.t)}</b><small>${ok?'Terminé · rejouer':un?'Disponible !':(k===0&&C.reqTxt?C.reqTxt:'Termine le chapitre précédent')}</small></button>`}).join('');
+function hcOpen(ci){const {C,n,N,fin,lk,tr}=hcState(ci),H0=HEROES[C.hero]||{n:''},first=hcFirst(C),fem=/^(Rouge|Lyra)/.test(H0.n);
  const nx=hNext(ci);
- const main=(nx===0&&!hUn(ci,0))?`<div class="acgot">🔒 ${esc(C.reqTxt||'Bientôt disponible')}</div>`:nx<0?`<div class="acgot">${C.ic} Chronique terminée. <button class="btn sm" data-a="hero" data-v="${C.hero}">Voir ${esc((HEROES[C.hero]||{}).n||'')}</button></div>`
-   :`<button class="btn pro acgo" data-a="hcplay" data-v="${ci}_${nx}">▶️ ${C.ch[nx].ic} Chapitre ${nx+1} : ${esc(C.ch[nx].t)}</button>`;
- const H0=HEROES[C.hero],tri=H0&&!S.heroes[C.hero]&&hUn(ci,0)?`<div class="pkinfo hctrial">🎁 <b>Essai gratuit</b> : ${esc(H0.n.split(/[ ,]/)[0])} t'est prêté${H0.n.startsWith('Rouge')||H0.n.startsWith('Lyra')?'e':''} dans les combats de sa chronique, déjà placé${H0.n.startsWith('Rouge')||H0.n.startsWith('Lyra')?'e':''} dans ton équipe : essaie-${H0.n.startsWith('Rouge')||H0.n.startsWith('Lyra')?'la':'le'} avant de l'avoir.</div>`:'';
- modal(`<button class="x" data-a="close" aria-label="Fermer">×</button><div class="hcmod" style="--hc:${C.col}">
-  <div class="h3" style="margin:0 0 2px">${C.ic} ${esc(C.n)}</div><p class="muted" style="font-size:12.5px;margin:0 0 8px">${esc(C.tag)}</p>${tri}
-  ${BAN(ci,-1)}${main}<div class="sglist" style="margin-top:10px">${list}</div>
-  <p class="muted" style="font-size:12px;margin:10px 0 0">Récompense finale : ${(()=>{try{const g=typeof C.gift==='function'?C.gift():C.gift;if(g!=null&&HEROES[g])return`<b>${esc(HEROES[g].n)}</b> rejoint ton équipe (ou 15 fragments si tu l'as déjà)`}catch(e){}return"<b>15 fragments</b> du héros (si tu l'as déjà)"})()} et le titre « ${esc(C.ttl.n)} ».</p></div>`)}
+ const list=C.ch.map((c,k)=>{const ok=hDone(ci,k),un=hUn(ci,k),cur=!ok&&un;
+   return`<button class="hcch ${ok?'ok':un?'un':'lock'}${k===nx?' cur':''}" data-a="hcplay" data-v="${ci}_${k}" ${un?'':'disabled'}><span class="hcnode">${ok?'✓':un?c.ic:'🔒'}</span><span class="hcctx"><b>${k+1}. ${esc(c.t)}</b><small>${esc(c.place||'')}${c.place?' · ':''}${ok?'Terminé · rejouer':cur?`Disponible · 💎 ${c.rw}`:(k===0&&C.reqTxt?esc(C.reqTxt):'Termine le chapitre précédent')}</small></span>${cur?'<span class="hcplay">▶</span>':''}</button>`}).join('');
+ const main=lk?`<div class="hclock">🔒 ${esc(C.reqTxt||'Bientôt disponible')}</div>`:fin?`<div class="hcfin">${C.ic} Chronique terminée <button class="btn sm" data-a="hero" data-v="${C.hero}">Voir ${esc(first)}</button></div>`
+   :`<button class="btn pro hcgo" data-a="hcplay" data-v="${ci}_${nx}">▶️ Chapitre ${nx+1} : ${esc(C.ch[nx].t)}</button>`;
+ const tri=tr&&!lk?`<div class="hctrial2">🎁 <b>Essai gratuit</b> : ${esc(first)} t'est prêté${fem?'e':''} dans les combats de sa chronique, déjà placé${fem?'e':''} dans ton équipe.</div>`:'';
+ const rw=hcRw(ci).map(([i,t])=>`<span class="hcrw"><i>${i}</i>${t}</span>`).join('');
+ modal(`<button class="x" data-a="close" aria-label="Fermer">×</button><div class="hcmod2" style="--hc:${C.col}">
+  <div class="hchero"><div class="hcht"><span class="hctag">CHRONIQUE · ${esc(first.toUpperCase())}</span><div class="hcttl">${C.ic} ${esc(C.n)}</div><p>${esc(C.tag)}</p>${hcPips(ci,lk||fin?-1:nx)}</div><div class="hchf">${hcFig(C.hero)}</div></div>
+  ${tri}${main}<div class="hcline">${list}</div>
+  <div class="hcrwh">Récompenses</div><div class="hcrws">${rw}</div>${C.end&&fin?`<p class="hcend">${esc(C.end)}</p>`:''}</div>`)}
 document.addEventListener('click',e=>{const o=e.target.closest('[data-a="hcopen"]');
  if(o){e.preventDefault();e.stopImmediatePropagation();hcOpen(+o.dataset.v);return}
  const b=e.target.closest('[data-a="hcplay"]');if(!b)return;e.preventDefault();e.stopImmediatePropagation();
@@ -24747,7 +24766,44 @@ document.addEventListener('click',e=>{const o=e.target.closest('[data-a="hcopen"
  const idx=HC0+HCH.slice(0,ci).reduce((a,C)=>a+C.ch.length,0)+ki;sagaOpen(idx,'intro')},true);
 {const sc=sagaCard;sagaCard=function(){const h=sc.apply(this,arguments);try{return hcCard()+h}catch(e){}return h}}
 
-const st=document.createElement('style');st.textContent=`
+const st=document.createElement('style');st.textContent=`.hccard2{background:radial-gradient(120% 120% at 100% 0%,rgba(159,232,200,.16),transparent 55%),var(--panel)!important;border-color:rgba(159,232,200,.35)!important}
+.hchd{display:flex;gap:10px;align-items:flex-start}.hchd p{font-size:12.5px;margin:3px 0 0;line-height:1.4}
+.hcpr{flex:none;text-align:right;line-height:1}.hcpr b{font-size:24px;color:#9fe8c8}.hcpr small{display:block;font-size:11px;opacity:.7;margin-top:2px}
+.hcbar{height:6px;border-radius:6px;background:rgba(255,255,255,.08);margin:10px 0;overflow:hidden}.hcbar i{display:block;height:100%;border-radius:6px;background:linear-gradient(90deg,#5ad8c8,#9fe8c8,#ffd84a)}
+.hccont{display:flex;align-items:center;gap:10px;width:100%;text-align:left;cursor:pointer;color:var(--fg);padding:8px 10px;border-radius:16px;margin-bottom:10px;
+ background:linear-gradient(110deg,color-mix(in srgb,var(--hc) 38%,transparent),color-mix(in srgb,var(--hc) 8%,transparent) 70%),var(--panel);border:1px solid color-mix(in srgb,var(--hc) 60%,transparent);box-shadow:0 6px 18px -10px var(--hc)}
+.hccp{width:52px;height:52px;flex:none;border-radius:12px;overflow:hidden;box-shadow:0 0 0 2px color-mix(in srgb,var(--hc) 70%,transparent)}.hccp img,.hccp svg{width:100%;height:100%;display:block}
+.hcct{display:flex;flex-direction:column;min-width:0;flex:1}.hcct b{font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.hcct small{font-size:11.5px;opacity:.8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.hcct small:first-child{font-weight:900;letter-spacing:.06em;text-transform:uppercase;font-size:10px;opacity:.9;color:#ffe9a8}
+.hccgo{flex:none;width:36px;height:36px;border-radius:50%;display:grid;place-items:center;background:#ffd84a;color:#2a1a00;font-size:14px;box-shadow:0 0 14px -2px #ffd84a}
+.hcrail{display:flex;gap:9px;overflow-x:auto;scroll-snap-type:x mandatory;padding:2px 2px 6px;margin:0 -4px;scrollbar-width:none}.hcrail::-webkit-scrollbar{display:none}
+.hct{flex:none;width:112px;scroll-snap-align:start;display:flex;flex-direction:column;align-items:stretch;gap:3px;text-align:left;cursor:pointer;color:var(--fg);padding:6px 6px 8px;border-radius:16px;
+ background:linear-gradient(180deg,color-mix(in srgb,var(--hc) 26%,transparent),transparent 70%),var(--panel);border:1px solid color-mix(in srgb,var(--hc) 50%,transparent)}
+.hct.lk{filter:saturate(.35);opacity:.75}.hct.done .hctp{opacity:.85}
+.hctp{position:relative;width:100%;aspect-ratio:1;border-radius:12px;overflow:hidden;box-shadow:inset 0 0 0 2px color-mix(in srgb,var(--hc) 65%,transparent)}.hctp img,.hctp svg{width:100%;height:100%;display:block}
+.hcchip{position:absolute;top:5px;left:5px;font-size:9.5px;font-weight:900;letter-spacing:.04em;padding:2px 6px;border-radius:8px;background:rgba(10,8,24,.78);color:#fff}
+.hcchip.tr{background:#ffd84a;color:#2a1a00}.hcchip.nw{background:#9fe8c8;color:#0a2a24}.hcchip.ok{background:#4ad88a;color:#06301a}.hcchip.go{background:var(--hc);color:#10081e}
+.hctn{font-size:12.5px;line-height:1.2;min-height:30px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}.hct small{font-size:10.5px;opacity:.75;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hcpips{display:flex;gap:4px;margin-top:3px}.hcpips i{flex:1;height:4px;border-radius:3px;background:rgba(255,255,255,.14)}.hcpips i.on{background:var(--hc,#9fe8c8)}.hcpips i.cur{background:rgba(255,255,255,.4);animation:hcpu 1.6s ease-in-out infinite}
+@keyframes hcpu{50%{background:var(--hc,#9fe8c8)}}
+.hcmod2{display:flex;flex-direction:column;gap:10px}
+.hchero{position:relative;display:flex;align-items:stretch;min-height:172px;margin:-6px -4px 0;border-radius:18px;overflow:hidden;
+ background:radial-gradient(90% 120% at 85% 40%,color-mix(in srgb,var(--hc) 55%,transparent),transparent 65%),linear-gradient(160deg,color-mix(in srgb,var(--hc) 22%,#120c24),#0c0818);border:1px solid color-mix(in srgb,var(--hc) 45%,transparent)}
+.hcht{position:relative;z-index:1;flex:1;min-width:0;padding:14px 4px 12px 14px;display:flex;flex-direction:column;gap:4px}
+.hctag{align-self:flex-start;font-size:9.5px;font-weight:900;letter-spacing:.08em;padding:2px 7px;border-radius:7px;background:color-mix(in srgb,var(--hc) 80%,#000);color:#fff}
+.hcttl{font-size:20px;font-weight:900;line-height:1.15;text-shadow:0 2px 10px rgba(0,0,0,.6)}.hcht p{margin:0;font-size:12px;line-height:1.4;opacity:.85}
+.hchf{flex:none;width:118px;display:flex;align-items:flex-end;justify-content:center;margin-right:-4px}.hchf img,.hchf svg{height:176px;width:auto;display:block;filter:drop-shadow(0 6px 14px rgba(0,0,0,.55))}
+.hctrial2{font-size:12.5px;line-height:1.4;padding:8px 10px;border-radius:12px;background:rgba(255,216,74,.1);border:1px solid rgba(255,216,74,.45);color:#ffe9a8}
+.hcgo{width:100%;font-size:15px;padding:11px}.hclock,.hcfin{text-align:center;font-weight:800;padding:10px;border-radius:12px;background:rgba(255,255,255,.06);border:1px dashed rgba(255,255,255,.2);font-size:13px}.hcfin .btn{margin-left:6px}
+.hcline{position:relative;display:flex;flex-direction:column;gap:6px}.hcline::before{content:'';position:absolute;left:20px;top:18px;bottom:18px;width:2px;background:linear-gradient(var(--hc),rgba(255,255,255,.1))}
+.hcch{position:relative;display:flex;align-items:center;gap:10px;width:100%;text-align:left;cursor:pointer;color:var(--fg);padding:8px 10px 8px 6px;border-radius:14px;background:var(--panel);border:1px solid rgba(255,255,255,.08)}
+.hcch:disabled{cursor:default;opacity:.55}.hcch.cur{border-color:color-mix(in srgb,var(--hc) 70%,transparent);background:linear-gradient(100deg,color-mix(in srgb,var(--hc) 22%,transparent),transparent 70%),var(--panel)}
+.hcnode{position:relative;z-index:1;flex:none;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-size:15px;background:#1a1430;border:2px solid color-mix(in srgb,var(--hc) 60%,transparent)}
+.hcch.ok .hcnode{background:var(--hc);color:#10081e;font-weight:900}.hcctx{display:flex;flex-direction:column;min-width:0;flex:1}.hcctx b{font-size:13.5px}.hcctx small{font-size:11px;opacity:.72}
+.hcplay{flex:none;width:28px;height:28px;border-radius:50%;display:grid;place-items:center;background:var(--hc);color:#10081e;font-size:11px}
+.hcrwh{font-size:11px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;opacity:.6;margin-top:2px}
+.hcrws{display:flex;flex-wrap:wrap;gap:6px}.hcrw{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:700;padding:5px 9px;border-radius:10px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1)}.hcrw i{font-style:normal}
+.hcend{margin:0;font-size:12.5px;font-style:italic;opacity:.8;text-align:center}
+
 .hccard .acpt{width:66px;height:66px}
 .hcpt img,.hcpt svg{width:100%;height:100%;display:block;border-radius:12px}
 .hclist{display:flex;flex-direction:column;gap:6px;margin-top:10px}
@@ -26413,6 +26469,64 @@ const pa=pAdv;pAdv=function(){const h=pa.apply(this,arguments);
     return i>=0?h.slice(0,i)+sc+h.slice(i):sc+h}catch(e){console.warn('histoire avent.',e)}
   return h};
 }catch(e){console.warn('v428',e)}})();
+/* ================= V429 : GARANCE ET ORGEMME NE SONT PLUS OFFERTES PAR LEUR CHRONIQUE =================
+   Leur chronique sert à les essayer. À la fin : un ×10 offert sur leur bannière (gardé tant
+   qu'elle est fermée), un cadre de profil à leur thème et le titre. 15 fragments si on les a déjà. */
+(function(){try{
+if(!window.RDEhc||typeof GAR==='undefined'||typeof ORG==='undefined')return;
+const L=RDEhc.list();
+const CFG={};
+for(const [hid,ban,fr,frn,bn] of [[GAR,'ev_garance','botterouge','Botte Rouge','Le Dernier Duel'],[ORG,'ev_orgemme','vitrail','Grande Rose','La Rose Brisée']]){
+  const ci=L.findIndex(C=>C.hero===hid);if(ci<0)continue;const C=L[ci];
+  C.gift=null;CFG[ci]={hid,ban,fr,frn,bn};
+  C.rwFin=()=>[S.heroes[hid]?['🧩',`15 fragments de ${HEROES[hid].n.split(/[ ,]/)[0]}`]:['🎟️',`Un ×10 offert sur la bannière « ${bn} »`],['🖼️',`Cadre « ${frn} »`]]}
+/* --- les cadres --- */
+try{FRAMES.botterouge='Botte Rouge';FHINT.botterouge='Chronique « Le Dernier Duel »';FRAMES.vitrail='Grande Rose';FHINT.vitrail='Chronique « La Rose Brisée »'}catch(e){}
+const SV=x=>`url("data:image/svg+xml,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" overflow="visible">${x}</svg>`)}")`;
+const blades=`<g stroke-linecap="round"><path d="M28 2L60 24" stroke="#f4e6c8" stroke-width="2.6"/><path d="M72 2L40 24" stroke="#f4e6c8" stroke-width="2.6"/><path d="M57 18l6 6M43 18l-6 6" stroke="#ffd84a" stroke-width="4"/><circle cx="62" cy="25.5" r="2.6" fill="#c81e3a"/><circle cx="38" cy="25.5" r="2.6" fill="#c81e3a"/></g><path d="M50 92l-7 8 7-3 7 3z" fill="#c81e3a"/>`;
+const rose=(()=>{const C=['#1e4a92','#8e1e32','#c08a22','#1f6b54','#3f7fd0','#8e1e32','#c08a22','#1f6b54'];let p='';
+  for(let i=0;i<8;i++){const a=i*Math.PI/4,a2=a+Math.PI/4,r=11,x1=50+r*Math.sin(a),y1=8-r*Math.cos(a),x2=50+r*Math.sin(a2),y2=8-r*Math.cos(a2);p+=`<path d="M50 8L${x1.toFixed(1)} ${y1.toFixed(1)}A${r} ${r} 0 0 1 ${x2.toFixed(1)} ${y2.toFixed(1)}Z" fill="${C[i]}" stroke="#f4ecd8" stroke-width="1.1"/>`}
+  return p+`<circle cx="50" cy="8" r="3.4" fill="#ffd84a" stroke="#f4ecd8" stroke-width="1"/><circle cx="50" cy="8" r="11.6" fill="none" stroke="#f4ecd8" stroke-width="1.6"/>`})();
+const st=document.createElement('style');st.textContent=`
+.fav.frm-botterouge{--fd:#1a0610;--gc:#ff3a5a;box-shadow:none}
+.fav.frm-botterouge::before{background:linear-gradient(160deg,rgba(255,255,255,.35),transparent 40%,rgba(0,0,0,.35)),conic-gradient(from var(--fa),#5a0a1a,#e04a5c,#ffd84a,#c81e3a,#f4e6c8,#5a0a1a);animation:fspin 6s linear infinite}
+.fav.frm-botterouge::after{content:'';background-color:transparent;font-size:0;background-image:${SV(blades)}}
+.fav.frm-vitrail{--fd:#0a1022;--gc:#7fb0ff;box-shadow:none}
+.fav.frm-vitrail::before{background:linear-gradient(160deg,rgba(255,255,255,.4),transparent 40%,rgba(0,0,0,.3)),conic-gradient(from var(--fa),#1e4a92,#8e1e32,#c08a22,#1f6b54,#3f7fd0,#8e1e32,#c08a22,#1e4a92);animation:fspin 9s linear infinite}
+.fav.frm-vitrail::after{content:'';background-color:transparent;font-size:0;background-image:${SV(rose)}}
+.evtix{width:100%;margin:0 0 8px;font-weight:900;background:linear-gradient(135deg,#ffd84a,#ff9a3a)!important;color:#2a1400!important;box-shadow:0 0 16px -4px #ffd84a}`;
+document.head.appendChild(st);
+/* --- la récompense finale --- */
+const BT=()=>{if(!S.btix||typeof S.btix!=='object')S.btix={};return S.btix};
+{const sr=sagaReward;sagaReward=function(c){let X=null;
+  try{const f=RDEhc.fi(c);if(f&&CFG[f[0]]&&f[1]===L[f[0]].ch.length-1&&!RDEhc.done(f[0],f[1]))X=Object.assign({own:!!S.heroes[CFG[f[0]].hid]},CFG[f[0]])}catch(e){}
+  const r=sr.apply(this,arguments);
+  if(X)try{if(!X.own){BT()[X.ban]=(BT()[X.ban]||0)+10}
+    S.evFrames=S.evFrames||[];if(!S.evFrames.includes(X.fr))S.evFrames.push(X.fr);save();
+    const rw=document.querySelector('#ovl .xrw');
+    if(rw)rw.insertAdjacentHTML('beforeend',(X.own?'':`<div>🎟️ Un ×10 offert sur la bannière « ${esc(X.bn)} »</div>`)+`<div>🖼️ Cadre « ${esc(X.frn)} »</div>`);
+    if(!X.own){const ov=document.querySelector('#ovl .hcrev');if(ov&&!ov.querySelector('.evtix'))ov.insertAdjacentHTML('beforeend',`<button class="btn evtix" data-a="evtixgo" data-v="${X.ban}" style="margin-top:8px">🎟️ Utiliser mon ×10 maintenant</button>`)}}catch(e){console.warn('récompense chronique',e)}
+  return r}}
+/* --- le ×10 offert sur la bannière --- */
+const NM={ev_garance:'Le Dernier Duel',ev_orgemme:'La Rose Brisée'};
+{const ps=pSummon;pSummon=function(){let h=ps.apply(this,arguments);
+  try{const k=UI.ban,n=(BT()[k]||0);
+    if(NM[k]&&n>=10&&banOpen(k)&&h.indexOf('data-a="evtix"')<0){const b=`<button class="btn evtix" data-a="evtix" data-v="${k}">🎟️ ×10 offert${n>=20?` (${Math.floor(n/10)})`:''} · cadeau de la chronique</button>`;
+      const i=h.indexOf('<div class="evperk">');h=i>=0?h.slice(0,i)+b+h.slice(i):h}
+    for(const kk in NM){const m=BT()[kk]||0;if(m>=10&&!banOpen(kk))h=h.split(`<b>${esc(NM[kk])}</b><small>`).join(`<b>${esc(NM[kk])}</b><small>🎟️ ×10 offert qui t'attend · `)}}catch(e){}
+  return h}}
+const use=k=>{const T=BT();if((T[k]||0)<10||!banOpen(k)){toast("La bannière n'est pas ouverte : ton ×10 t'attend jusqu'à son retour.");return}
+  T[k]-=10;save();UI.ban=k;const before=UI.last;
+  try{pullX(10,{pay:'evt',ban:k})}catch(e){console.warn(e)}
+  if(UI.last===before){T[k]+=10;save();try{render()}catch(e){}}};
+document.addEventListener('click',e=>{const b=e.target.closest('[data-a="evtix"],[data-a="evtixgo"]');if(!b)return;e.preventDefault();e.stopImmediatePropagation();const k=b.dataset.v;
+  if(b.dataset.a==='evtixgo'){try{closeModal()}catch(er){}TAB='invoc';UI.iv='invoc';UI.ban=k;try{render();scrollTo(0,0)}catch(er){}if(!banOpen(k)){toast("Sa bannière revient bientôt : ton ×10 t'attend.");return}}
+  setTimeout(()=>use(k),b.dataset.a==='evtixgo'?250:0)},true);
+try{PATCH.unshift({v:'v56',d:Date.now(),t:'Chroniques : nouvel affichage',items:[
+ "📖 Les Chroniques des Héros ont un nouvel affichage : portraits, progression, la chronique à continuer en premier, et une vraie page pour chaque histoire.",
+ "⚔️🪟 Rouge-Garance et Orgemme ne sont plus offertes à la fin de leur chronique (elles ont leur bannière) : tu peux les <b>essayer gratuitement</b> dedans, puis tu gagnes un <b>×10 offert sur leur bannière</b> (gardé si elle est fermée), un <b>cadre de profil</b> (« Botte Rouge » et « Grande Rose ») et le titre. 15 fragments si tu les as déjà.",
+ "🗺️ Le mode histoire s'affiche aussi en Normal et en Difficile."]})}catch(e){}
+}catch(e){console.warn('v429',e)}})();
 /* ================= toujours en dernier : l'écran de chargement reprend les dessins à jour ================= */
 (function(){try{
   /* Livre III : le Roi de Cendre (nouveau design) au premier rang, et le souvenir du jeune Éryndel au-dessus de la couronne */
