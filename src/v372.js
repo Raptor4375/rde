@@ -15,7 +15,10 @@ const MAXT=5;
 /* les héros prêtés : au niveau moyen de tes 5 meilleurs héros */
 function trialRec(){const own=Object.keys(S.heroes).map(Number).filter(i=>HEROES[i]);const best=own.map(i=>[i,power(heroStats(i))]).sort((a,b)=>b[1]-a[1]).slice(0,5).map(x=>S.heroes[x[0]]);
   const n=Math.max(1,best.length),l=Math.max(1,Math.round(best.reduce((a,o)=>a+(o.l||1),0)/n)),e=Math.min(3,Math.round(best.reduce((a,o)=>a+(o.e||0),0)/n));return{l,e,f:0,u:0,trial:1}}
-const trialIds=()=>HEROES.filter(h=>h.ex&&!S.heroes[h.i]).map(h=>h.i);
+const trialIds=()=>{const L=HEROES.filter(h=>h.ex&&!S.heroes[h.i]).map(h=>h.i);
+  /* les nouveaux héros (v427) : prêtés aussi tant qu'on ne les a pas */
+  try{if(typeof window.RDEtrialMore==='function')for(const i of window.RDEtrialMore())if(HEROES[i]&&!S.heroes[i]&&!L.includes(i))L.push(i)}catch(e){}
+  return L};
 const isTrial=id=>!S.heroes[id]&&!!PICK.trial[id];
 const BODYI={};
 const still=x=>String(x||'').replace(/<(animate|animateMotion|animateTransform|set)\b[^>]*\/>/g,'').replace(/<(animate|animateMotion|animateTransform)\b[^>]*>[\s\S]*?<\/(animate|animateMotion|animateTransform)>/g,'');
@@ -33,6 +36,11 @@ function pkOpen(ctx){PK.ctx=ctx;PK.cls='all';PICK.trial={};
   if(ctx.trials)for(const id of PK.lastTrial)if(PICK.trial[id]&&PK.sel.length<MAXT&&!PK.sel.includes(id))PK.sel.push(id);
   PK.pw={};for(const id of Object.keys(S.heroes).map(Number).filter(i=>HEROES[i]))PK.pw[id]=power(heroStats(id));
   PICK.on=true;try{for(const id of Object.keys(PICK.trial))PK.pw[id]=power(heroStats(+id))}finally{PICK.on=false}
+  /* dans la chronique d'un héros qu'on n'a pas encore, il est déjà placé dans l'équipe */
+  try{const fav=ctx.trials&&typeof window.RDEtrialFav==='function'?window.RDEtrialFav(ctx):null;
+    if(fav!=null&&PICK.trial[fav]&&!S.heroes[fav]&&!PK.sel.includes(fav)){
+      if(PK.sel.length<MAXT)PK.sel.push(fav);
+      else{let w=0;for(let k=1;k<PK.sel.length;k++)if((PK.pw[PK.sel[k]]||0)<(PK.pw[PK.sel[w]]||0))w=k;PK.sel[w]=fav}}}catch(e){}
   let o=document.getElementById('pkov');if(!o){o=document.createElement('div');o.id='pkov';o.setAttribute('role','dialog');o.setAttribute('aria-modal','true');document.body.appendChild(o);o.addEventListener('click',pkClick)}
   document.body.classList.add('pkon');pkRender();try{if(UIS.tap&&AU.ok)UIS.tap()}catch(e){}}
 function pkClose(){const o=document.getElementById('pkov');if(o)o.remove();document.body.classList.remove('pkon');PK.ctx=null}
@@ -51,7 +59,7 @@ function pkRender(){const o=document.getElementById('pkov');if(!o||!PK.ctx)retur
    <div class="pkvs"><span class="me">⚔️ ${fmt(myP)}</span><i>VS</i><span class="them">☠️ ${fmt(foP)}</span>${c.rec?`<small>Conseillé : ${fmt(c.rec)}</small>`:''}</div>
    <div class="pkfield"><div class="pksky"></div><div class="pkfoes">${fz}</div><div class="pkteam">${slots}</div></div>
    <div class="pkaff">${affTeamHTML(sel)||'<small class="muted">Astuce : touche un héros sur le terrain pour le retirer.</small>'}</div>
-   ${c.trials&&Object.keys(PICK.trial).length?`<div class="pkinfo">🎁 <b>Essai gratuit</b> : dans le mode histoire, les héros exclusifs que tu n'as pas encore sont prêtés pour les tester${nT?` (${nT} dans l'équipe)`:''}.</div>`:''}
+   ${c.trials&&Object.keys(PICK.trial).length?`<div class="pkinfo">🎁 <b>Essai gratuit</b> : dans le mode histoire, les nouveaux héros que tu n'as pas encore te sont prêtés pour les essayer${nT?` (${nT} dans l'équipe)`:''}.</div>`:''}
    <div class="pkfil chips">${cls}</div><div class="pklist">${tiles||'<small class="muted">Aucun héros de cette classe.</small>'}</div>
    <button class="btn p pkgo" data-pk="go" ${sel.length?'':'disabled'}>⚔️ Combattre</button>`;
   try{i18nPass&&LANG!=='fr'&&i18nPass(o)}catch(e){}}
