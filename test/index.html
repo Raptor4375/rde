@@ -24684,11 +24684,12 @@ const st=document.createElement('style');st.textContent=`
 .hcsteps i{border-color:color-mix(in srgb,var(--hc,#9fe8c8) 50%,transparent)}
 .hcmod{display:flex;flex-direction:column}
 .hcrev .hcbig{height:190px;display:flex;align-items:center;justify-content:center}
+.marnann svg{height:170px;width:auto;display:block;margin:0 auto}
 .hcrev .hcbig svg{height:100%;width:auto;filter:drop-shadow(0 6px 18px rgba(0,0,0,.5))}`;document.head.appendChild(st);
 
 try{const al=annList;annList=function(){const L=al.apply(this,arguments);try{if(!L.some(a=>a.k==='hchr'))L.unshift({k:'hchr',ac:'#9fe8c8',tag:'NOUVEAU',t:'Chroniques des Héros 📖',
-  h:`<div style="display:flex;justify-content:center;margin:6px 0">${typeof marnBody==='function'?`<div style="height:150px">${marnBody(0)}</div>`:''}</div>`,
-  b:"Chaque héros arrivé après le Roi de Cendre a maintenant <b>sa propre histoire en 3 chapitres</b>, dans l'onglet Aventure : Aegis, Lyra, Sorën, Corvin… et un nouveau venu.<br><br><b>Marn le Sans-Voix</b>, Assassin légendaire, a vendu sa voix quand il avait neuf ans. Son ultime <b>« Point Final »</b> coupe la parole à tous les ennemis : plus aucun ultime pendant 2 tours. Termine sa chronique et il rejoint ton équipe.<br><br>⚠️ Elles ne finissent pas toutes bien."})}catch(e){}return L}}catch(e){}
+  x:"Chaque héros arrivé après le Roi de Cendre a maintenant <b>sa propre histoire en 3 chapitres</b>, dans l'onglet Aventure : Aegis, Lyra, Sorën, Corvin… et un nouveau venu.<br><br><b>Marn le Sans-Voix</b>, Assassin légendaire, a vendu sa voix quand il avait neuf ans. Son ultime <b>« Point Final »</b> coupe la parole à tous les ennemis : plus aucun ultime pendant 2 tours. Termine sa chronique et il rejoint ton équipe.<br><br>⚠️ Elles ne finissent pas toutes bien.",
+  art:()=>`<div class="skann marnann">${typeof marnBody==='function'?marnBody(0):''}</div>`,go:'📖 Ouvrir les chroniques',fn:()=>{TAB='adv';try{scrollTo(0,0)}catch(e){}}})}catch(e){}return L}}catch(e){}
 try{PATCH.unshift({v:'v52',d:Date.now(),t:'Marn le Sans-Voix et les Chroniques des Héros',items:[
  "🤐 <b>Marn le Sans-Voix</b>, Assassin légendaire. Son ultime « Point Final » frappe tous les ennemis et les <b>réduit au silence 2 tours</b> : leur énergie est bloquée, aucun ultime ne part. Passif : chacune de ses attaques normales vole 10 énergie.",
  "📖 <b>Chroniques des Héros</b> : une histoire en 3 chapitres pour Marn, Aegis, Lyra, Sorën et Corvin, toujours disponibles dans l'onglet Aventure. Gemmes à chaque chapitre, fragments et titre à la fin.",
