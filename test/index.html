@@ -26448,6 +26448,13 @@ const BT=()=>{if(!S.btix||typeof S.btix!=='object')S.btix={};return S.btix};
     if(rw)rw.insertAdjacentHTML('beforeend',(X.own?'':`<div>🎟️ Un ×10 offert sur la bannière « ${esc(X.bn)} »</div>`)+`<div>🖼️ Cadre « ${esc(X.frn)} »</div>`);
     if(!X.own){const ov=document.querySelector('#ovl .hcrev');if(ov&&!ov.querySelector('.evtix'))ov.insertAdjacentHTML('beforeend',`<button class="btn evtix" data-a="evtixgo" data-v="${X.ban}" style="margin-top:8px">🎟️ Utiliser mon ×10 maintenant</button>`)}}catch(e){console.warn('récompense chronique',e)}
   return r}}
+/* --- rattrapage : ceux qui avaient déjà fini ces chroniques avant le changement --- */
+const retro=()=>{try{if(!S||!S.hchr)return;const R=S.hcRetro||(S.hcRetro={});let msg=[];
+  for(const ci in CFG){const X=CFG[ci],last=L[ci].ch.length-1;if(R[ci]||!RDEhc.done(+ci,last))continue;R[ci]=1;
+    S.evFrames=S.evFrames||[];if(!S.evFrames.includes(X.fr)){S.evFrames.push(X.fr);msg.push(`🖼️ cadre « ${X.frn} »`)}
+    if(!S.heroes[X.hid]){BT()[X.ban]=(BT()[X.ban]||0)+10;msg.push(`🎟️ ×10 offert sur « ${X.bn} »`)}}
+  if(msg.length){save();setTimeout(()=>{try{toast('📖 Récompenses de chronique : '+msg.join(' · '))}catch(e){}},1200)}}catch(e){}};
+{const rd=render;render=function(){const r=rd.apply(this,arguments);retro();return r}}
 /* --- le ×10 offert sur la bannière --- */
 const NM={ev_garance:'Le Dernier Duel',ev_orgemme:'La Rose Brisée'};
 {const ps=pSummon;pSummon=function(){let h=ps.apply(this,arguments);
