@@ -7,7 +7,7 @@ const MARN=73;
 if(HEROES[MARN]||HEROES.length!==MARN)return;
 HEROES.push({i:MARN,n:'Marn le Sans-Voix',c:'Assassin',r:4,ex:1,
   exd:"Termine la chronique « Le Silence de Marn » dans l'onglet Aventure pour qu'il rejoigne ton équipe.",
-  sk:{n:'Point Final',tg:'all',fx:{dmg:135,silence:2}}});
+  sk:{n:'Point Final',tg:'all',fx:{dmg:155,silence:2}}});
 try{LOOKS[MARN]=['#23203a','#8a1a2a','#c8ccd8','#1a1626','#9fe8c8','#e8cdb4','bg:smoke back:cape hair:short eyes:glow mouth:neutral body:slim ear:human']}catch(e){}
 }catch(e){console.warn('marn hero',e)}})();
 
@@ -112,10 +112,10 @@ const later=(ms,fn)=>setTimeout(()=>{if(ok())try{fn()}catch(e){}},ms/((typeof S!
   return a0.apply(this,arguments)}}
 /* passif : chaque attaque normale lui vole des mots */
 {const b0=basicFx;basicFx=function(s,t,crit){const r=b0.apply(this,arguments);
-  try{if(B&&s&&s.hid===MARN&&t&&t.hp>0&&t.en>0){const v=Math.min(t.en,10);t.en-=v;if(ok()){const b=uc(t);float(t,'♪ −'+v,'info')}}}catch(e){}
+  /* (v430 : le vol d'énergie est passé dans deal, pour marcher aussi en ultra et en combat rapide) */
   return r}}
 try{const sd=skillDesc;skillDesc=function(sk){let r=sd.apply(this,arguments);try{if(sk&&sk.fx&&sk.fx.silence)r+=` Les ennemis ne peuvent plus lancer leur ultime pendant <b>${sk.fx.silence} tours</b> : leur énergie reste bloquée.`}catch(e){}return r}}catch(e){}
-const PASS=`<div class="skill marnpas"><div class="sn">🤐 Celui qui n'a plus de voix</div><div class="muted" style="font-size:11px;font-weight:800;letter-spacing:.4px">CAPACITÉ · PASSIVE</div><p style="margin:6px 0 0;font-size:13px">Chacune de ses attaques normales <b>vole 10 énergie</b> à sa cible. Il prend les mots des autres, un par un.</p></div>`;
+const PASS=`<div class="skill marnpas"><div class="sn">🤐 Celui qui n'a plus de voix</div><div class="muted" style="font-size:11px;font-weight:800;letter-spacing:.4px">CAPACITÉ · PASSIVE</div><p style="margin:6px 0 0;font-size:13px">Chacune de ses attaques normales <b>vole 15 énergie</b> à sa cible et <b>la garde pour lui</b>. Et un ennemi réduit au silence subit <b>+20 % de dégâts</b> de sa part. Il prend les mots des autres, un par un.</p></div>`;
 try{const hm=heroModal;heroModal=function(id){const r=hm.apply(this,arguments);try{if(+id===MARN){const mo=$('#ovl .modal'),sk=mo&&mo.querySelector('.skill');if(sk)sk.insertAdjacentHTML('afterend',PASS)}}catch(e){}return r}}catch(e){}
 
 /* ---------- l'ultime : le jeu se tait vraiment ---------- */
@@ -167,5 +167,5 @@ const st=document.createElement('style');st.textContent=`
 .skill.marnpas{border-color:rgba(159,232,200,.5)!important;background:linear-gradient(135deg,rgba(159,232,200,.12),transparent 70%),var(--panel)!important}`;document.head.appendChild(st);
 try{Object.assign(I18N_EN,{'Marn le Sans-Voix':'Marn the Voiceless','Point Final':'Full Stop',"Celui qui n'a plus de voix":'The one with no voice left','POINT FINAL':'FULL STOP',
  "Termine la chronique « Le Silence de Marn » dans l'onglet Aventure pour qu'il rejoigne ton équipe.":'Finish the chronicle “Marn’s Silence” in the Adventure tab for him to join your team.',
- "Chacune de ses attaques normales <b>vole 10 énergie</b> à sa cible. Il prend les mots des autres, un par un.":'Each of his normal attacks <b>steals 10 energy</b> from its target. He takes other people’s words, one at a time.'})}catch(e){}
+ "Chacune de ses attaques normales <b>vole 15 énergie</b> à sa cible et <b>la garde pour lui</b>. Et un ennemi réduit au silence subit <b>+20 % de dégâts</b> de sa part. Il prend les mots des autres, un par un.":'Each of his normal attacks <b>steals 15 energy</b> from its target and <b>keeps it</b>. Silenced enemies take <b>+20% damage</b> from him. He takes other people’s words, one at a time.'})}catch(e){}
 }catch(e){console.warn('marn skill',e)}})();

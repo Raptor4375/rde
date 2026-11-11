@@ -56,7 +56,7 @@ window.claude={use:async k=>{if(k==='db'||k==='user'){try{const F=await window.R
 window.RDEF();
 })();
 </script>
-<script>window.RDE_V='20261111174430';if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));</script>
+<script>window.RDE_V='20261111175518';if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));</script>
 </head><body>
 <title>RDE · Royaumes d'Éther</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -24070,7 +24070,7 @@ const MARN=73;
 if(HEROES[MARN]||HEROES.length!==MARN)return;
 HEROES.push({i:MARN,n:'Marn le Sans-Voix',c:'Assassin',r:4,ex:1,
   exd:"Termine la chronique « Le Silence de Marn » dans l'onglet Aventure pour qu'il rejoigne ton équipe.",
-  sk:{n:'Point Final',tg:'all',fx:{dmg:135,silence:2}}});
+  sk:{n:'Point Final',tg:'all',fx:{dmg:155,silence:2}}});
 try{LOOKS[MARN]=['#23203a','#8a1a2a','#c8ccd8','#1a1626','#9fe8c8','#e8cdb4','bg:smoke back:cape hair:short eyes:glow mouth:neutral body:slim ear:human']}catch(e){}
 }catch(e){console.warn('marn hero',e)}})();
 
@@ -24175,10 +24175,10 @@ const later=(ms,fn)=>setTimeout(()=>{if(ok())try{fn()}catch(e){}},ms/((typeof S!
   return a0.apply(this,arguments)}}
 /* passif : chaque attaque normale lui vole des mots */
 {const b0=basicFx;basicFx=function(s,t,crit){const r=b0.apply(this,arguments);
-  try{if(B&&s&&s.hid===MARN&&t&&t.hp>0&&t.en>0){const v=Math.min(t.en,10);t.en-=v;if(ok()){const b=uc(t);float(t,'♪ −'+v,'info')}}}catch(e){}
+  /* (v430 : le vol d'énergie est passé dans deal, pour marcher aussi en ultra et en combat rapide) */
   return r}}
 try{const sd=skillDesc;skillDesc=function(sk){let r=sd.apply(this,arguments);try{if(sk&&sk.fx&&sk.fx.silence)r+=` Les ennemis ne peuvent plus lancer leur ultime pendant <b>${sk.fx.silence} tours</b> : leur énergie reste bloquée.`}catch(e){}return r}}catch(e){}
-const PASS=`<div class="skill marnpas"><div class="sn">🤐 Celui qui n'a plus de voix</div><div class="muted" style="font-size:11px;font-weight:800;letter-spacing:.4px">CAPACITÉ · PASSIVE</div><p style="margin:6px 0 0;font-size:13px">Chacune de ses attaques normales <b>vole 10 énergie</b> à sa cible. Il prend les mots des autres, un par un.</p></div>`;
+const PASS=`<div class="skill marnpas"><div class="sn">🤐 Celui qui n'a plus de voix</div><div class="muted" style="font-size:11px;font-weight:800;letter-spacing:.4px">CAPACITÉ · PASSIVE</div><p style="margin:6px 0 0;font-size:13px">Chacune de ses attaques normales <b>vole 15 énergie</b> à sa cible et <b>la garde pour lui</b>. Et un ennemi réduit au silence subit <b>+20 % de dégâts</b> de sa part. Il prend les mots des autres, un par un.</p></div>`;
 try{const hm=heroModal;heroModal=function(id){const r=hm.apply(this,arguments);try{if(+id===MARN){const mo=$('#ovl .modal'),sk=mo&&mo.querySelector('.skill');if(sk)sk.insertAdjacentHTML('afterend',PASS)}}catch(e){}return r}}catch(e){}
 
 /* ---------- l'ultime : le jeu se tait vraiment ---------- */
@@ -24230,7 +24230,7 @@ const st=document.createElement('style');st.textContent=`
 .skill.marnpas{border-color:rgba(159,232,200,.5)!important;background:linear-gradient(135deg,rgba(159,232,200,.12),transparent 70%),var(--panel)!important}`;document.head.appendChild(st);
 try{Object.assign(I18N_EN,{'Marn le Sans-Voix':'Marn the Voiceless','Point Final':'Full Stop',"Celui qui n'a plus de voix":'The one with no voice left','POINT FINAL':'FULL STOP',
  "Termine la chronique « Le Silence de Marn » dans l'onglet Aventure pour qu'il rejoigne ton équipe.":'Finish the chronicle “Marn’s Silence” in the Adventure tab for him to join your team.',
- "Chacune de ses attaques normales <b>vole 10 énergie</b> à sa cible. Il prend les mots des autres, un par un.":'Each of his normal attacks <b>steals 10 energy</b> from its target. He takes other people’s words, one at a time.'})}catch(e){}
+ "Chacune de ses attaques normales <b>vole 15 énergie</b> à sa cible et <b>la garde pour lui</b>. Et un ennemi réduit au silence subit <b>+20 % de dégâts</b> de sa part. Il prend les mots des autres, un par un.":'Each of his normal attacks <b>steals 15 energy</b> from its target and <b>keeps it</b>. Silenced enemies take <b>+20% damage</b> from him. He takes other people’s words, one at a time.'})}catch(e){}
 }catch(e){console.warn('marn skill',e)}})();
 /* ================= V414 : CHRONIQUES DES HÉROS =================
    Une histoire en 3 chapitres pour chacun des héros arrivés après le Roi de Cendre.
@@ -26534,6 +26534,30 @@ try{PATCH.unshift({v:'v56',d:Date.now(),t:'Chroniques : nouvel affichage',items:
  "⚔️🪟 Rouge-Garance et Orgemme ne sont plus offertes à la fin de leur chronique (elles ont leur bannière) : tu peux les <b>essayer gratuitement</b> dedans, puis tu gagnes un <b>×10 offert sur leur bannière</b> (gardé si elle est fermée), un <b>cadre de profil</b> (« Botte Rouge » et « Grande Rose ») et le titre. 15 fragments si tu les as déjà.",
  "🗺️ Le mode histoire s'affiche aussi en Normal et en Difficile."]})}catch(e){}
 }catch(e){console.warn('v429',e)}})();
+/* ================= V430 : MARN PLUS FORT =================
+   · Point Final : 135 % → 155 % à tous les ennemis (toujours 2 tours de silence).
+   · Passif : il vole 15 énergie par attaque normale (au lieu de 10) et la GARDE pour lui,
+     donc il relance son silence beaucoup plus souvent. Marche aussi en ultra et en combat rapide
+     (avant, en ultra-évolution, le vol ne se déclenchait pas du tout).
+   · Un ennemi réduit au silence subit +20 % de dégâts de Marn.
+   · La page Méta comptait le silence pour rien : il est maintenant pris en compte. */
+(function(){try{
+if(typeof MARN==='undefined'||!HEROES[MARN])return;
+const vis=()=>typeof B!=='undefined'&&B&&!B.skip&&!(typeof REDUCED!=='undefined'&&REDUCED);
+{const d0=deal;deal=function(s,t,pct,o){o=o||{};let p=pct;
+  try{if(s&&s.hid===MARN&&t&&t.sil>0)p=pct*1.2}catch(e){}
+  const alive0=!!(t&&t.hp>0);const r=d0.call(this,s,t,p,o);
+  try{if(B&&!B.track&&s&&s.hid===MARN&&alive0&&t.hp>0&&!o.sk&&!o.ub&&!o.ct&&!o.al&&t.en>0){const v=Math.min(t.en,15);t.en-=v;s.en=Math.min(100,(s.en||0)+v);
+    if(vis()){try{float(t,'♪ −'+v,'info')}catch(e){}}try{refreshOne(t);refreshOne(s)}catch(e){}}}catch(e){}
+  return r}}
+{const mm=modeMult;modeMult=function(h,mk){let m=mm.apply(this,arguments);try{const sl=h&&h.sk&&h.sk.fx&&h.sk.fx.silence;
+  if(sl){m*=mk==='pvp'?1.16:mk==='pve'?1.08:String(mk).startsWith('raid')?1.1:1.08}}catch(e){}return m}}
+try{PATCH.unshift({v:'v57',d:Date.now(),t:'Marn plus fort',items:[
+ "🤐 <b>Marn</b> : « Point Final » passe de 135 % à <b>155 %</b> à tous les ennemis (toujours 2 tours de silence).",
+ "Son passif vole maintenant <b>15 énergie</b> par attaque normale et <b>la garde pour lui</b> : il relance son silence bien plus souvent. Les ennemis réduits au silence subissent <b>+20 % de dégâts</b> de sa part.",
+ "Correctif : en ultra-évolution, son vol d'énergie ne marchait pas du tout.",
+ "La page Méta compte enfin le silence dans la valeur de Marn."]})}catch(e){}
+}catch(e){console.warn('v430',e)}})();
 /* ================= toujours en dernier : l'écran de chargement reprend les dessins à jour ================= */
 (function(){try{
   /* Livre III : le Roi de Cendre (nouveau design) au premier rang, et le souvenir du jeune Éryndel au-dessus de la couronne */
