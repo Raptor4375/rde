@@ -26559,6 +26559,101 @@ try{PATCH.unshift({v:'v57',d:Date.now(),t:'Marn plus fort',items:[
  "Correctif : en ultra-évolution, son vol d'énergie ne marchait pas du tout.",
  "La page Méta compte enfin le silence dans la valeur de Marn."]})}catch(e){}
 }catch(e){console.warn('v430',e)}})();
+/* ================= V431 : ÉQUILIBRAGE DES NOUVEAUX HÉROS (d'après ~4 000 combats simulés) =================
+   Éryndel (mythique) était sous le niveau d'un légendaire, Lyra s'effondrait en Aventure (pas assez de soin),
+   Sorën ne servait à rien en raid, Garance était juste en dessous en arène.
+   Les réglages sont dans window.RDEBAL pour pouvoir les re-simuler. */
+window.RDEBAL=Object.assign({eryAura:.25,eryD:250,eryDot:75,eryBurn:.3,lyH:180,lySh:100,sorRef:2,sorBoss:.25,garX:1.3,garWin:60,garLs:.4,garD:370},window.RDEBAL||{});
+(function(){try{
+const BAL=window.RDEBAL;
+const H=i=>{try{return HEROES[i]}catch(e){return null}};
+const fixFx=()=>{try{
+  const e=typeof ERY!=='undefined'&&H(ERY);if(e){e.sk.fx.dmg=BAL.eryD;e.sk.fx.dot=BAL.eryDot}
+  const g=typeof GAR!=='undefined'&&H(GAR);if(g)g.sk.fx.dmg=BAL.garD;
+  const l=typeof LYR!=='undefined'&&H(LYR);if(l){l.sk.fx.healall=BAL.lyH;if(BAL.lySh)l.sk.fx.shield=BAL.lySh;else delete l.sk.fx.shield}
+ }catch(e){}};
+window.RDEbalFix=fixFx;fixFx();
+{const sb=startBattle;startBattle=function(){fixFx();return sb.apply(this,arguments)}}
+{const hm=heroModal;heroModal=function(){fixFx();return hm.apply(this,arguments)}}
+{const rd=render;render=function(){fixFx();return rd.apply(this,arguments)}}
+const vis=()=>typeof B!=='undefined'&&B&&!B.skip&&!(typeof REDUCED!=='undefined'&&REDUCED);
+/* --- Éryndel : les cendres. Un ennemi qui brûle subit plus de dégâts d'Éryndel --- */
+{const d0=deal;deal=function(s,t,pct,o){o=o||{};let p=pct;
+  try{if(BAL.eryBurn&&typeof ERY!=='undefined'&&s&&s.hid===ERY&&t&&t.dot)p*=1+BAL.eryBurn}catch(e){}
+  try{const D=B&&B.duel;if(BAL.garX!==1&&D&&s===D.u&&t===D.t&&t.hp>0&&B.round<=D.until)p*=BAL.garX}catch(e){}
+  const hp0=t?t.hp:0;const r=d0.call(this,s,t,p,o);
+  /* Garance : vol de vie pendant son duel */
+  try{const D=B&&B.duel;if(BAL.garLs&&D&&s===D.u&&s.hid===GAR&&r>0&&s.hp>0)s.hp=Math.min(s.max,s.hp+Math.round(r*BAL.garLs))}catch(e){}
+  /* Sorën : ses attaques normales gardent la cible marquée */
+  try{if(BAL.sorRef&&typeof SOR!=='undefined'&&s&&s.hid===SOR&&t&&t.hp>0&&!o.sk&&!o.ub&&!o.ct&&(t.markT>0||t.boss))t.markT=Math.max(t.markT||0,BAL.sorRef)}catch(e){}
+  return r}}
+/* Sorën : la marque vaut plus sur un boss */
+{const h3=hurt;hurt=function(t,d,c){try{if(BAL.sorBoss&&t&&t.boss&&t.markT>0&&d>0)d=Math.round(d*(1+BAL.sorBoss))}catch(e){}return h3.call(this,t,d,c)}}
+/* Éryndel : « Roi de Cendre », ses alliés frappent plus fort tant qu'il est là */
+{const am=applyMeta;applyMeta=function(units,mk){const r=am.apply(this,arguments);
+  try{if(BAL.eryAura&&typeof ERY!=='undefined'){const k=units.find(u=>u.hid===ERY);if(k)for(const u of units)if(u!==k&&u.side===k.side)u.atk=Math.round(u.atk*(1+BAL.eryAura))}}catch(e){}return r}}
+/* --- raids et boss de guilde : on compte les VRAIS dégâts ---
+   Avant, les dégâts sur la durée (brûlure, poison…) et les bonus de marque n'étaient comptés pour personne. */
+{const hu=hurt;hurt=function(t,d,c){const h0=t?t.hp:0;const r=hu.apply(this,arguments);
+  try{if(B&&t&&t.side===1&&t.raid&&h0>t.hp)B.realDmg=(B.realDmg||0)+(h0-t.hp)}catch(e){}return r}}
+{const f0=finish;finish=function(res){try{if(B&&!B.done&&B.realDmg>0&&B.units.some(u=>u.side===1&&u.raid)){const al=B.units.filter(u=>u.side===0),c=al.reduce((a,u)=>a+(u.dmg||0),0);
+   if(c>0&&B.realDmg>c){const k=B.realDmg/c;for(const u of al)u.dmg=Math.round((u.dmg||0)*k)}}}catch(e){}return f0.apply(this,arguments)}}
+/* Garance : gagner le duel lui rend des forces */
+{const r0=refreshUnits;refreshUnits=function(){const r=r0.apply(this,arguments);
+  try{const D=B&&B.duel;if(BAL.garWin&&D&&D.won&&!D.rew&&D.u&&D.u.hp>0){D.rew=1;const u=D.u;u.en=Math.min(100,(u.en||0)+BAL.garWin);u.hp=Math.min(u.max,u.hp+Math.round(u.max*.2));
+    log(`⚔️ Victoire en duel : <b>${u.name}</b> récupère 20 % de ses PV et ${BAL.garWin} énergie.`,'sk');if(vis())try{float(u,'+'+BAL.garWin+' ⚡','heal')}catch(e){}}}catch(e){}
+  return r}}
+/* --- les nouveaux passifs sur les fiches --- */
+const PB=(ic,n,t)=>`<div class="skill balpas"><div class="sn">${ic} ${n}</div><div class="muted" style="font-size:11px;font-weight:800;letter-spacing:.05em">PASSIF</div><div style="margin-top:4px">${t}</div></div>`;
+const PX=()=>{const o={};try{o[ERY]=PB('🔥','Roi de Cendre',`Tant qu'Éryndel est dans l'équipe, ses alliés ont <b>+${Math.round(BAL.eryAura*100)} % ATQ</b>. Les ennemis qui brûlent subissent <b>+${Math.round(BAL.eryBurn*100)} %</b> de ses dégâts.`)}catch(e){}
+  try{o[SOR]=PB('🎯','Marque tenace',`Ses attaques normales <b>gardent la cible marquée</b> (et marquent toujours les boss). Sur un boss, la marque fait <b>+${Math.round(BAL.sorBoss*100)} %</b> de dégâts en plus.`)}catch(e){}
+  try{o[GAR]=PB('🩸','Duelliste',`Contre son adversaire de duel : <b>+${Math.round((BAL.garX-1)*100)} % de dégâts</b> et <b>${Math.round(BAL.garLs*100)} % de vol de vie</b>. Gagner le duel lui rend <b>20 % PV et ${BAL.garWin} énergie</b>.`)}catch(e){}
+  return o};
+{const hm=heroModal;heroModal=function(id){const r=hm.apply(this,arguments);try{const x=PX()[+id];const m=document.querySelector('#ovl .modal');
+  if(x&&m&&!m.querySelector('.balpas')){const L=[...m.querySelectorAll('.skill')];let a=L.find(e=>/ULTIME/.test(e.textContent))||L[0];if(a){while(a.nextElementSibling&&a.nextElementSibling.classList.contains('skill')&&/PASSI/.test(a.nextElementSibling.textContent))a=a.nextElementSibling;a.insertAdjacentHTML('afterend',x)}}}catch(e){}return r}}
+}catch(e){console.warn('v431',e)}})();
+/* ================= V432 : AFFINITÉS DES NOUVEAUX HÉROS =================
+   Jusqu'ici, Marn, Garance, Orgemme, Perrin et Corvin n'avaient aucune affinité : le calculateur
+   d'équipes de la Méta préférait toujours les vieux duos. Leurs histoires leur en donnent. */
+(function(){try{
+const has=v=>typeof v==='number'&&HEROES[v];
+const add=(name,id)=>{try{const a=AFF.find(x=>x.n===name);if(a&&has(id)&&!a.ids.includes(id))a.ids.push(id)}catch(e){}};
+const neu=a=>{try{if(a.ids.every(has)&&!AFF.some(x=>x.n===a.n))AFF.push(a)}catch(e){}};
+const apply=()=>{try{
+ /* Perrin rejoint la Garde d'Éther, Sorën les archers, Éryndel les cœurs de braise */
+ add("La Garde d'Éther",PRN);add("Œil de l'aigle",SOR);add('Cœurs de braise',ERY);
+ neu({n:'Le Silence et le Temps',ic:'🤐',ids:[MARN,58],need:2,fx:{en:25},d:'+25 énergie au départ',q:"Kaïros : « Je sais ce qu'ils vont dire. » — Marn ne répond pas. Il n'a pas besoin."});
+ neu({n:'Les Effacés',ic:'📜',ids:[MARN,CRV],need:2,fx:{skm:.12,hp:.05},d:'+12 % puissance des ultimes, +5 % PV',q:"Corvin : « On t'a pris ta voix. À moi, on a pris mon histoire. » Marn hoche la tête."});
+ neu({n:'Duellistes',ic:'⚔️',ids:[GAR,61,51],need:2,fx:{atk:.10,crit:.05},d:'+10 % ATQ, +5 % critique',q:"Garance : « Valkyr. Un jour, toi et moi, sans témoins. » — Valkyr : « Quand tu veux. »"});
+ neu({n:'Lumière du Vitrail',ic:'🪟',ids:[ORG,64,57],need:2,fx:{tm:.08,hm:.10},d:'−8 % dégâts subis, +10 % soins',q:"Orgemme : « La lumière passe à travers moi. Elle ressort en couleurs. »"});
+ neu({n:'Le Commandant et le Gamin',ic:'🛡️',ids:[AEG,PRN],need:2,fx:{tm:.08,en:15},d:'−8 % dégâts subis, +15 énergie au départ',q:"Aegis : « Rentre chez toi, Perrin. » — Perrin : « Après vous, commandant. »"});
+ neu({n:'La Chronique',ic:'🖋️',ids:[CRV,LYR,SOR],need:2,fx:{en:15,hm:.08},d:'+15 énergie au départ, +8 % soins',q:"Lyra : « Tu écris, je chante, Sorën regarde. Il nous faut juste une fin. »"});
+}catch(e){console.warn('affinités',e)}};
+apply();
+{const rd=render;render=function(){apply();return rd.apply(this,arguments)}}
+{const sb=startBattle;startBattle=function(){apply();return sb.apply(this,arguments)}}
+}catch(e){console.warn('v432',e)}})();
+/* ================= V433 : LA PAGE MÉTA COLLE AUX VRAIS COMBATS =================
+   La formule de la Méta ne voyait pas les capacités spéciales des nouveaux héros (protection d'Aegis,
+   énergie de Lyra, marque de Sorën, duel de Garance, renvoi d'Orgemme…). On l'a recalée sur des
+   simulations : chaque nouveau héros a remplacé un ancien de sa classe dans ~200 combats par mode. */
+(function(){try{
+const COR={68:{pve:.939,pvp:1.002,guild:.822,raid0:.921,raid1:.921,raid2:.921},69:{pve:1.8,pvp:1.8,guild:1.017,raid0:1.017,raid1:.908,raid2:.908},
+ 70:{pve:.964,pvp:1.295,guild:1.203,raid0:1.258,raid1:1.094,raid2:1.094},71:{pve:.989,pvp:1.401,guild:1.8,raid0:1.631,raid1:1.631,raid2:1.254},
+ 72:{pve:1.062,pvp:1.052,guild:.963,raid0:.875,raid1:.875,raid2:.875},73:{pve:.818,pvp:1.042,guild:.926,raid0:.968,raid1:.968,raid2:.968},
+ 74:{pve:1.254,pvp:1.026,guild:.844,raid0:.888,raid1:.888,raid2:.888},75:{pve:1.045,pvp:1.211,guild:.989,raid0:.989,raid1:.883,raid2:.883}};
+{const mm=modeMult;modeMult=function(h,mk){let m=mm.apply(this,arguments);try{const c=h&&COR[h.i];if(c&&c[mk])m*=c[mk]}catch(e){}return m}}
+try{for(const k in METAC)delete METAC[k]}catch(e){}
+try{PATCH.unshift({v:'v58',d:Date.now(),t:'Équilibrage des nouveaux héros',items:[
+ "📊 On a simulé ~5 000 combats (tous les héros au même niveau) pour voir qui sert vraiment à quoi. Résultat : quelques corrections.",
+ "🔥 <b>Éryndel</b> (il était sous le niveau d'un légendaire) : « Requiem » 170 % → <b>250 %</b>, brûlure 40 → <b>75</b>. Nouveau passif <b>Roi de Cendre</b> : ses alliés ont <b>+25 % ATQ</b>, et les ennemis qui brûlent subissent <b>+30 %</b> de ses dégâts.",
+ "🎶 <b>Lyra</b> (elle s'effondrait en Aventure) : soin 110 → <b>180 %</b> et un <b>bouclier de 100 %</b> pour toute l'équipe.",
+ "🏹 <b>Sorën</b> : ses attaques normales <b>gardent la cible marquée</b>, et la marque fait <b>+25 % de plus sur les boss</b>. C'est désormais le meilleur tireur de raid.",
+ "⚔️ <b>Rouge-Garance</b> : « Mise en Garde » 300 → <b>370 %</b>, <b>+30 % de dégâts</b> et <b>40 % de vol de vie</b> sur son adversaire de duel. Gagner un duel lui rend <b>20 % PV et 60 énergie</b>.",
+ "🩸 Raids et boss de guilde : les dégâts sur la durée (brûlure, poison) et les bonus de marque sont enfin <b>comptés dans ton score</b>.",
+ "🤝 Nouvelles affinités : <b>Le Silence et le Temps</b> (Marn + Kaïros), <b>Les Effacés</b> (Marn + Corvin), <b>Duellistes</b> (Garance + Valkyr / Draven), <b>Lumière du Vitrail</b> (Orgemme + Séraphine / Solaris), <b>Le Commandant et le Gamin</b> (Aegis + Perrin), <b>La Chronique</b> (Corvin + Lyra / Sorën). Perrin rejoint la Garde d'Éther, Sorën l'Œil de l'aigle, Éryndel les Cœurs de braise.",
+ "📚 La page <b>Méta</b> tient enfin compte des capacités des nouveaux héros."]})}catch(e){}
+}catch(e){console.warn('v433',e)}})();
 /* ================= toujours en dernier : l'écran de chargement reprend les dessins à jour ================= */
 (function(){try{
   /* Livre III : le Roi de Cendre (nouveau design) au premier rang, et le souvenir du jeune Éryndel au-dessus de la couronne */
