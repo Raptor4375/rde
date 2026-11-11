@@ -173,6 +173,7 @@ for(const nm of Object.keys(INKM)){const D=INKM[nm],pap=D.w==='papier';
   const tg=[...new Set(seq)];if(!tg.length)return m0.apply(this,arguments);
   try{await A.ult(u,tg)}catch(e){console.warn('encre',e)}}}
 
+try{window.INKFX={splat,letters,stroke,cursive,pageVeil,ok:fxOK,later:F}}catch(e){}
 /* ---------- styles ---------- */
 const st=document.createElement('style');st.textContent=`
 .sgfig.scribef{filter:drop-shadow(0 0 16px rgba(138,106,255,.7))}
