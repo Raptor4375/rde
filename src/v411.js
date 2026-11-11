@@ -43,7 +43,7 @@ function orbit(X,cx,cy,r,n,col){for(let i=0;i<n;i++){const a0=i/n*6.283;
 function pageSky(dur){fxItem(dur,(c,p)=>{const al=(p<.08?p/.08:p>.86?(1-p)/.14:1)*.8;c.globalAlpha=al;c.fillStyle='#f8f1de';c.fillRect(0,0,FXS.w,FXS.h);
   c.globalAlpha=al*.75;c.strokeStyle='#8aa0cc';c.lineWidth=1.1;for(let y=16;y<FXS.h;y+=22){c.beginPath();c.moveTo(0,y);c.lineTo(FXS.w,y);c.stroke()}
   c.strokeStyle='#e0a0a0';c.beginPath();c.moveTo(FXS.w*.1,0);c.lineTo(FXS.w*.1,FXS.h);c.stroke()})}
-LEG_FX[CRV]=async(u,seq,th)=>{const a=uc(u),W=FXS.w,H=FXS.h,m=rowMid(u.side),IF=window.INKFX;
+LEG2[CRV]=async X=>{const u=X.u,seq=X.seq,th=X.th,a=uc(u),W=FXS.w,H=FXS.h,m=rowMid(u.side),IF=window.INKFX;
   vignette('#1a1430',1400,.5);glowPulse(a.x,a.y,VIO,700,a.s*.7);
   /* il ouvre la Dernière Page */
   shapes(a.x,a.y,'card',[CRM,'#efe8da'],8,5,3,34,.18,{});
