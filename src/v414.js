@@ -45,7 +45,7 @@ try{Object.assign(NMAP,{
 
 /* ---------- les chroniques ---------- */
 const HCH=[
-{id:'marn',hero:MARN,ic:'🤐',n:'Le Silence de Marn',col:'#9fe8c8',
+{id:'marn',hero:MARN,ic:'🤐',n:'Le Silence de Marn',col:'#9fe8c8',gift:()=>MARN,
  tag:"Un enfant a vendu sa voix pour sauver sa sœur. Il revient chercher la monnaie.",
  ttl:{k:'sansvoix',n:'Sans-Voix',d:"Terminer la chronique « Le Silence de Marn »"},
  ch:[
@@ -126,7 +126,7 @@ const HCH=[
    ['marn',"…"],
    ['plume',"« Je l'ai vendue pour elle. Elle est morte. La vendre deux fois, ça l'effacerait. » … Hou. D'accord, Marn. D'accord."]]}]},
 
-{id:'aegis',hero:AEG2,ic:'🛡️',n:'Le Mur qui Reste',col:'#8ac8ff',
+{id:'aegis',hero:AEG2,ic:'🛡️',n:'Le Mur qui Reste',col:'#8ac8ff',gift:()=>(typeof PRN!=='undefined'?PRN:null),
  tag:"La guerre est finie. On dissout la Garde d'Éther. Aegis n'a pas reçu l'ordre à temps.",
  ttl:{k:'murreste',n:'Le Mur qui Reste',d:'Terminer la chronique « Le Mur qui Reste »'},
  ch:[
@@ -412,9 +412,10 @@ const HCH=[
 /* ---------- enregistrement ---------- */
 const dc=L=>L.map(x=>Array.isArray(x)?x.slice():Object.assign({},x,x.ch?{ch:x.ch.map(c=>c.slice())}:{}));
 const FLAT=[];
-HCH.forEach((C,ci)=>C.ch.forEach((c,ki)=>{FLAT.push([ci,ki]);
-  SAGA.push({t:c.t,ic:c.ic,req:1,ashc:1,hchr:1,mus:c.mus,bg:c.bg,place:c.place,boss:{n:c.boss.n,h:c.boss.h,st:50},intro:dc(c.intro),outro:dc(c.outro)})}));
-const NT=FLAT.length;
+const reg=(C,ci)=>C.ch.forEach((c,ki)=>{FLAT.push([ci,ki]);
+  SAGA.push({t:c.t,ic:c.ic,req:1,ashc:1,hchr:1,mus:c.mus,bg:c.bg,place:c.place,boss:{n:c.boss.n,h:c.boss.h,st:50},intro:dc(c.intro),outro:dc(c.outro)})});
+HCH.forEach(reg);
+const NT=()=>FLAT.length;
 const HS=()=>{if(!S.hchr||typeof S.hchr!=='object')S.hchr={};const H=S.hchr;if(!H.d||typeof H.d!=='object')H.d={};if(!H.l||typeof H.l!=='object')H.l={};return H};
 const kk=(ci,ki)=>ci+'_'+ki;
 const hDone=(ci,ki)=>!!HS().d[kk(ci,ki)];
@@ -422,7 +423,7 @@ const hUn=(ci,ki)=>hDone(ci,ki)||ki===0||hDone(ci,ki-1);
 const hCount=ci=>HCH[ci].ch.filter((_,k)=>hDone(ci,k)).length;
 const hNext=ci=>{for(let k=0;k<HCH[ci].ch.length;k++)if(!hDone(ci,k))return k;return-1};
 const hFin=ci=>hNext(ci)<0;
-const inH=c=>c>=HC0&&c<HC0+NT;
+const inH=c=>c>=HC0&&c<HC0+FLAT.length;
 const FI=c=>FLAT[c-HC0];
 {const su=sagaUnlocked;sagaUnlocked=function(i){if(inH(i)){const f=FI(i);return hUn(f[0],f[1])}return su.apply(this,arguments)}}
 {const so=sagaOpen;sagaOpen=function(c,part){if(!inH(c))return so.apply(this,arguments);const f=FI(c),C=HCH[f[0]],src=C.ch[f[1]],cfg=SAGA[c];
@@ -461,14 +462,15 @@ function hFoes(ci,ki){const C=HCH[ci].ch[ki];
 const BAN=(ci,i)=>`<div class="acsteps hcsteps">${HCH[ci].ch.map((c,k)=>`<i class="${hDone(ci,k)?'on':''}${k===i?' cur':''}">${hDone(ci,k)?'✓':c.ic}</i>`).join('')}</div>`;
 {const sr=sagaReward;sagaReward=function(c){if(!inH(c))return sr.apply(this,arguments);
   const [ci,ki]=FI(c),C=HCH[ci],H=HS();if(H.d[kk(ci,ki)]){render();return}H.d[kk(ci,ki)]=Date.now();
-  const gm=C.ch[ki].rw;S.gems+=gm;const fin=ki===C.ch.length-1;let got=false,fr=false;
-  if(fin){if(!S.heroes[C.hero]&&C.id==='marn'){S.heroes[C.hero]={l:1,e:0,f:0};got=true;try{news(Date.now(),`${S.name||'Voyageur'} a été rejoint par Marn le Sans-Voix.`)}catch(e){}}
+  const gm=C.ch[ki].rw;S.gems+=gm;const fin=ki===C.ch.length-1;let got=null,fr=false;
+  let gi=null;try{gi=typeof C.gift==='function'?C.gift():(C.gift!=null?C.gift:null)}catch(e){}
+  if(fin){if(gi!=null&&HEROES[gi]&&!S.heroes[gi]){S.heroes[gi]={l:1,e:0,f:0};got=gi;try{news(Date.now(),`${S.name||'Voyageur'} a été rejoint par ${HEROES[gi].n}.`)}catch(e){}}
     else if(S.heroes[C.hero]){S.heroes[C.hero].f=(S.heroes[C.hero].f||0)+15;fr=true}
     try{news(Date.now(),`${S.name||'Voyageur'} a terminé la chronique « ${C.n} ».`)}catch(e){}}
   save();try{ttCheck()}catch(e){}
-  const rw=`<div class="xrw"><div>${GEM}${gm} gemmes</div>${fin?(got?`<div>${C.ic} ${esc(HEROES[C.hero].n)} rejoint ton équipe</div>`:fr?`<div>${C.ic} 15 fragments de ${esc(HEROES[C.hero].n.split(' ')[0].replace(',',''))}</div>`:'')+`<div>🏷️ Titre « ${esc(C.ttl.n)} »</div>`:''}</div>`;
-  if(fin){const fig=C.id==='marn'?(typeof marnBody==='function'?marnBody(0):''):heroBody(HEROES[C.hero],0);
-    modal(`<button class="x" data-a="close" aria-label="Fermer">×</button><div class="urev hcrev" style="--uc:${C.col}"><div class="big hcbig">${fig}</div><div class="h">${got?'NOUVEAU HÉROS !':'CHRONIQUE TERMINÉE'}</div><div style="font-weight:900">${C.ic} ${esc(C.n)}</div><p class="muted" style="font-size:13px;margin:0 8px">${esc(C.end||'')}</p>${rw}<button class="btn p" data-a="close" style="width:100%">Continuer</button></div>`)}
+  const rw=`<div class="xrw"><div>${GEM}${gm} gemmes</div>${fin?(got!=null?`<div>✨ ${esc(HEROES[got].n)} rejoint ton équipe</div>`:fr?`<div>${C.ic} 15 fragments de ${esc(HEROES[C.hero].n.split(' ')[0].replace(',',''))}</div>`:'')+`<div>🏷️ Titre « ${esc(C.ttl.n)} »</div>`:''}</div>`;
+  if(fin){const fig=heroBody(HEROES[got!=null?got:C.hero],0);
+    modal(`<button class="x" data-a="close" aria-label="Fermer">×</button><div class="urev hcrev" style="--uc:${C.col}"><div class="big hcbig">${fig}</div><div class="h">${got!=null?'NOUVEAU HÉROS !':'CHRONIQUE TERMINÉE'}</div><div style="font-weight:900">${C.ic} ${esc(C.n)}</div><p class="muted" style="font-size:13px;margin:0 8px">${esc(C.end||'')}</p>${rw}<button class="btn p" data-a="close" style="width:100%">Continuer</button></div>`)}
   else{const nx=hNext(ci);
     modal(`<div class="sgrw acrw"><div class="sgfrag">${C.ch[ki].ic}</div><div class="h">Chapitre ${ki+1} terminé</div><p class="sub">« ${esc(C.ch[ki].t)} »</p>${BAN(ci,ki)}${rw}<p class="muted" style="font-size:12.5px;margin:8px 0 0">▶️ Chapitre ${nx+1} : « ${esc(C.ch[nx].t)} »</p><button class="btn p" data-a="close" style="width:100%;margin-top:10px">Continuer</button></div>`)}
   render()}}
@@ -477,7 +479,9 @@ HCH[1].end="« Ce n'était pas le bouclier qui tenait le mur. »";
 HCH[2].end="« Elle a oublié sa plus belle chanson pour que deux mille personnes puissent pleurer de nouveau. »";
 HCH[3].end="« Il a allumé le bon feu, à la fin. Ce n'est pas tout à fait faux. »";
 HCH[4].end="« Deux reliures qui se touchent. C'est très bien comme ça. »";
-try{HCH.forEach((C,ci)=>TITLES.push({k:C.ttl.k,n:C.ttl.n,c:C.col,d:C.ttl.d,ok:()=>hFin(ci)}))}catch(e){}
+const addTtl=(C,ci)=>{try{TITLES.push({k:C.ttl.k,n:C.ttl.n,c:C.col,d:C.ttl.d,ok:()=>hFin(ci)})}catch(e){}};
+HCH.forEach(addTtl);
+try{window.RDEaddChron=function(cfg){if(!cfg||!cfg.ch||!cfg.ch.length)return-1;const ci=HCH.length;HCH.push(cfg);reg(cfg,ci);addTtl(cfg,ci);return ci}}catch(e){}
 
 /* ---------- l'écran des chroniques ---------- */
 function hcRow(ci){const C=HCH[ci],n=hCount(ci),N=C.ch.length,fin=n>=N;
@@ -485,7 +489,7 @@ function hcRow(ci){const C=HCH[ci],n=hCount(ci),N=C.ch.length,fin=n>=N;
 function hcPic(){try{if(window.RDEstill&&typeof marnPortrait==='function'){const u=RDEstill('marnp0',()=>marnPortrait(0));if(u)return`<img src="${u}" alt="" draggable="false">`}}catch(e){}
  return typeof marnPortrait==='function'?marnPortrait(0):''}
 function hcCard(){const tot=HCH.reduce((a,C,ci)=>a+hCount(ci),0);
- return`<div class="card acard hccard"><div class="acrow"><button class="acpt hcpt" data-a="hero" data-v="${MARN}" aria-label="Marn">${hcPic()}</button><div style="min-width:0;flex:1"><span class="tag" style="--rc:#9fe8c8">CHRONIQUES DES HÉROS · ${tot}/${NT}</span><div class="h3" style="margin:4px 0 2px">📖 Chroniques des Héros</div>
+ return`<div class="card acard hccard"><div class="acrow"><button class="acpt hcpt" data-a="hero" data-v="${MARN}" aria-label="Marn">${hcPic()}</button><div style="min-width:0;flex:1"><span class="tag" style="--rc:#9fe8c8">CHRONIQUES DES HÉROS · ${tot}/${NT()}</span><div class="h3" style="margin:4px 0 2px">📖 Chroniques des Héros</div>
   <p class="muted" style="font-size:12.5px;margin:0">Une histoire en 3 chapitres pour chacun des héros arrivés après le Roi de Cendre. Toujours ouvertes, dans l'ordre que tu veux. <b>Marn le Sans-Voix</b> rejoint ton équipe à la fin de la sienne.</p></div></div>
   <div class="hclist">${HCH.map((_,ci)=>hcRow(ci)).join('')}</div></div>`}
 window.hcCard=hcCard;
@@ -498,7 +502,7 @@ function hcOpen(ci){const C=HCH[ci],N=C.ch.length,n=hCount(ci);
  modal(`<button class="x" data-a="close" aria-label="Fermer">×</button><div class="hcmod" style="--hc:${C.col}">
   <div class="h3" style="margin:0 0 2px">${C.ic} ${esc(C.n)}</div><p class="muted" style="font-size:12.5px;margin:0 0 8px">${esc(C.tag)}</p>
   ${BAN(ci,-1)}${main}<div class="sglist" style="margin-top:10px">${list}</div>
-  <p class="muted" style="font-size:12px;margin:10px 0 0">Récompense finale : ${C.id==='marn'?'<b>Marn le Sans-Voix</b> rejoint ton équipe':'<b>15 fragments</b> du héros (si tu l\'as déjà)'} et le titre « ${esc(C.ttl.n)} ».</p></div>`)}
+  <p class="muted" style="font-size:12px;margin:10px 0 0">Récompense finale : ${(()=>{try{const g=typeof C.gift==='function'?C.gift():C.gift;if(g!=null&&HEROES[g])return`<b>${esc(HEROES[g].n)}</b> rejoint ton équipe (ou 15 fragments si tu l'as déjà)`}catch(e){}return"<b>15 fragments</b> du héros (si tu l'as déjà)"})()} et le titre « ${esc(C.ttl.n)} ».</p></div>`)}
 document.addEventListener('click',e=>{const o=e.target.closest('[data-a="hcopen"]');
  if(o){e.preventDefault();e.stopImmediatePropagation();hcOpen(+o.dataset.v);return}
  const b=e.target.closest('[data-a="hcplay"]');if(!b)return;e.preventDefault();e.stopImmediatePropagation();

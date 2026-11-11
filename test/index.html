@@ -24212,7 +24212,7 @@ try{Object.assign(NMAP,{
 
 /* ---------- les chroniques ---------- */
 const HCH=[
-{id:'marn',hero:MARN,ic:'🤐',n:'Le Silence de Marn',col:'#9fe8c8',
+{id:'marn',hero:MARN,ic:'🤐',n:'Le Silence de Marn',col:'#9fe8c8',gift:()=>MARN,
  tag:"Un enfant a vendu sa voix pour sauver sa sœur. Il revient chercher la monnaie.",
  ttl:{k:'sansvoix',n:'Sans-Voix',d:"Terminer la chronique « Le Silence de Marn »"},
  ch:[
@@ -24293,7 +24293,7 @@ const HCH=[
    ['marn',"…"],
    ['plume',"« Je l'ai vendue pour elle. Elle est morte. La vendre deux fois, ça l'effacerait. » … Hou. D'accord, Marn. D'accord."]]}]},
 
-{id:'aegis',hero:AEG2,ic:'🛡️',n:'Le Mur qui Reste',col:'#8ac8ff',
+{id:'aegis',hero:AEG2,ic:'🛡️',n:'Le Mur qui Reste',col:'#8ac8ff',gift:()=>(typeof PRN!=='undefined'?PRN:null),
  tag:"La guerre est finie. On dissout la Garde d'Éther. Aegis n'a pas reçu l'ordre à temps.",
  ttl:{k:'murreste',n:'Le Mur qui Reste',d:'Terminer la chronique « Le Mur qui Reste »'},
  ch:[
@@ -24579,9 +24579,10 @@ const HCH=[
 /* ---------- enregistrement ---------- */
 const dc=L=>L.map(x=>Array.isArray(x)?x.slice():Object.assign({},x,x.ch?{ch:x.ch.map(c=>c.slice())}:{}));
 const FLAT=[];
-HCH.forEach((C,ci)=>C.ch.forEach((c,ki)=>{FLAT.push([ci,ki]);
-  SAGA.push({t:c.t,ic:c.ic,req:1,ashc:1,hchr:1,mus:c.mus,bg:c.bg,place:c.place,boss:{n:c.boss.n,h:c.boss.h,st:50},intro:dc(c.intro),outro:dc(c.outro)})}));
-const NT=FLAT.length;
+const reg=(C,ci)=>C.ch.forEach((c,ki)=>{FLAT.push([ci,ki]);
+  SAGA.push({t:c.t,ic:c.ic,req:1,ashc:1,hchr:1,mus:c.mus,bg:c.bg,place:c.place,boss:{n:c.boss.n,h:c.boss.h,st:50},intro:dc(c.intro),outro:dc(c.outro)})});
+HCH.forEach(reg);
+const NT=()=>FLAT.length;
 const HS=()=>{if(!S.hchr||typeof S.hchr!=='object')S.hchr={};const H=S.hchr;if(!H.d||typeof H.d!=='object')H.d={};if(!H.l||typeof H.l!=='object')H.l={};return H};
 const kk=(ci,ki)=>ci+'_'+ki;
 const hDone=(ci,ki)=>!!HS().d[kk(ci,ki)];
@@ -24589,7 +24590,7 @@ const hUn=(ci,ki)=>hDone(ci,ki)||ki===0||hDone(ci,ki-1);
 const hCount=ci=>HCH[ci].ch.filter((_,k)=>hDone(ci,k)).length;
 const hNext=ci=>{for(let k=0;k<HCH[ci].ch.length;k++)if(!hDone(ci,k))return k;return-1};
 const hFin=ci=>hNext(ci)<0;
-const inH=c=>c>=HC0&&c<HC0+NT;
+const inH=c=>c>=HC0&&c<HC0+FLAT.length;
 const FI=c=>FLAT[c-HC0];
 {const su=sagaUnlocked;sagaUnlocked=function(i){if(inH(i)){const f=FI(i);return hUn(f[0],f[1])}return su.apply(this,arguments)}}
 {const so=sagaOpen;sagaOpen=function(c,part){if(!inH(c))return so.apply(this,arguments);const f=FI(c),C=HCH[f[0]],src=C.ch[f[1]],cfg=SAGA[c];
@@ -24628,14 +24629,15 @@ function hFoes(ci,ki){const C=HCH[ci].ch[ki];
 const BAN=(ci,i)=>`<div class="acsteps hcsteps">${HCH[ci].ch.map((c,k)=>`<i class="${hDone(ci,k)?'on':''}${k===i?' cur':''}">${hDone(ci,k)?'✓':c.ic}</i>`).join('')}</div>`;
 {const sr=sagaReward;sagaReward=function(c){if(!inH(c))return sr.apply(this,arguments);
   const [ci,ki]=FI(c),C=HCH[ci],H=HS();if(H.d[kk(ci,ki)]){render();return}H.d[kk(ci,ki)]=Date.now();
-  const gm=C.ch[ki].rw;S.gems+=gm;const fin=ki===C.ch.length-1;let got=false,fr=false;
-  if(fin){if(!S.heroes[C.hero]&&C.id==='marn'){S.heroes[C.hero]={l:1,e:0,f:0};got=true;try{news(Date.now(),`${S.name||'Voyageur'} a été rejoint par Marn le Sans-Voix.`)}catch(e){}}
+  const gm=C.ch[ki].rw;S.gems+=gm;const fin=ki===C.ch.length-1;let got=null,fr=false;
+  let gi=null;try{gi=typeof C.gift==='function'?C.gift():(C.gift!=null?C.gift:null)}catch(e){}
+  if(fin){if(gi!=null&&HEROES[gi]&&!S.heroes[gi]){S.heroes[gi]={l:1,e:0,f:0};got=gi;try{news(Date.now(),`${S.name||'Voyageur'} a été rejoint par ${HEROES[gi].n}.`)}catch(e){}}
     else if(S.heroes[C.hero]){S.heroes[C.hero].f=(S.heroes[C.hero].f||0)+15;fr=true}
     try{news(Date.now(),`${S.name||'Voyageur'} a terminé la chronique « ${C.n} ».`)}catch(e){}}
   save();try{ttCheck()}catch(e){}
-  const rw=`<div class="xrw"><div>${GEM}${gm} gemmes</div>${fin?(got?`<div>${C.ic} ${esc(HEROES[C.hero].n)} rejoint ton équipe</div>`:fr?`<div>${C.ic} 15 fragments de ${esc(HEROES[C.hero].n.split(' ')[0].replace(',',''))}</div>`:'')+`<div>🏷️ Titre « ${esc(C.ttl.n)} »</div>`:''}</div>`;
-  if(fin){const fig=C.id==='marn'?(typeof marnBody==='function'?marnBody(0):''):heroBody(HEROES[C.hero],0);
-    modal(`<button class="x" data-a="close" aria-label="Fermer">×</button><div class="urev hcrev" style="--uc:${C.col}"><div class="big hcbig">${fig}</div><div class="h">${got?'NOUVEAU HÉROS !':'CHRONIQUE TERMINÉE'}</div><div style="font-weight:900">${C.ic} ${esc(C.n)}</div><p class="muted" style="font-size:13px;margin:0 8px">${esc(C.end||'')}</p>${rw}<button class="btn p" data-a="close" style="width:100%">Continuer</button></div>`)}
+  const rw=`<div class="xrw"><div>${GEM}${gm} gemmes</div>${fin?(got!=null?`<div>✨ ${esc(HEROES[got].n)} rejoint ton équipe</div>`:fr?`<div>${C.ic} 15 fragments de ${esc(HEROES[C.hero].n.split(' ')[0].replace(',',''))}</div>`:'')+`<div>🏷️ Titre « ${esc(C.ttl.n)} »</div>`:''}</div>`;
+  if(fin){const fig=heroBody(HEROES[got!=null?got:C.hero],0);
+    modal(`<button class="x" data-a="close" aria-label="Fermer">×</button><div class="urev hcrev" style="--uc:${C.col}"><div class="big hcbig">${fig}</div><div class="h">${got!=null?'NOUVEAU HÉROS !':'CHRONIQUE TERMINÉE'}</div><div style="font-weight:900">${C.ic} ${esc(C.n)}</div><p class="muted" style="font-size:13px;margin:0 8px">${esc(C.end||'')}</p>${rw}<button class="btn p" data-a="close" style="width:100%">Continuer</button></div>`)}
   else{const nx=hNext(ci);
     modal(`<div class="sgrw acrw"><div class="sgfrag">${C.ch[ki].ic}</div><div class="h">Chapitre ${ki+1} terminé</div><p class="sub">« ${esc(C.ch[ki].t)} »</p>${BAN(ci,ki)}${rw}<p class="muted" style="font-size:12.5px;margin:8px 0 0">▶️ Chapitre ${nx+1} : « ${esc(C.ch[nx].t)} »</p><button class="btn p" data-a="close" style="width:100%;margin-top:10px">Continuer</button></div>`)}
   render()}}
@@ -24644,7 +24646,9 @@ HCH[1].end="« Ce n'était pas le bouclier qui tenait le mur. »";
 HCH[2].end="« Elle a oublié sa plus belle chanson pour que deux mille personnes puissent pleurer de nouveau. »";
 HCH[3].end="« Il a allumé le bon feu, à la fin. Ce n'est pas tout à fait faux. »";
 HCH[4].end="« Deux reliures qui se touchent. C'est très bien comme ça. »";
-try{HCH.forEach((C,ci)=>TITLES.push({k:C.ttl.k,n:C.ttl.n,c:C.col,d:C.ttl.d,ok:()=>hFin(ci)}))}catch(e){}
+const addTtl=(C,ci)=>{try{TITLES.push({k:C.ttl.k,n:C.ttl.n,c:C.col,d:C.ttl.d,ok:()=>hFin(ci)})}catch(e){}};
+HCH.forEach(addTtl);
+try{window.RDEaddChron=function(cfg){if(!cfg||!cfg.ch||!cfg.ch.length)return-1;const ci=HCH.length;HCH.push(cfg);reg(cfg,ci);addTtl(cfg,ci);return ci}}catch(e){}
 
 /* ---------- l'écran des chroniques ---------- */
 function hcRow(ci){const C=HCH[ci],n=hCount(ci),N=C.ch.length,fin=n>=N;
@@ -24652,7 +24656,7 @@ function hcRow(ci){const C=HCH[ci],n=hCount(ci),N=C.ch.length,fin=n>=N;
 function hcPic(){try{if(window.RDEstill&&typeof marnPortrait==='function'){const u=RDEstill('marnp0',()=>marnPortrait(0));if(u)return`<img src="${u}" alt="" draggable="false">`}}catch(e){}
  return typeof marnPortrait==='function'?marnPortrait(0):''}
 function hcCard(){const tot=HCH.reduce((a,C,ci)=>a+hCount(ci),0);
- return`<div class="card acard hccard"><div class="acrow"><button class="acpt hcpt" data-a="hero" data-v="${MARN}" aria-label="Marn">${hcPic()}</button><div style="min-width:0;flex:1"><span class="tag" style="--rc:#9fe8c8">CHRONIQUES DES HÉROS · ${tot}/${NT}</span><div class="h3" style="margin:4px 0 2px">📖 Chroniques des Héros</div>
+ return`<div class="card acard hccard"><div class="acrow"><button class="acpt hcpt" data-a="hero" data-v="${MARN}" aria-label="Marn">${hcPic()}</button><div style="min-width:0;flex:1"><span class="tag" style="--rc:#9fe8c8">CHRONIQUES DES HÉROS · ${tot}/${NT()}</span><div class="h3" style="margin:4px 0 2px">📖 Chroniques des Héros</div>
   <p class="muted" style="font-size:12.5px;margin:0">Une histoire en 3 chapitres pour chacun des héros arrivés après le Roi de Cendre. Toujours ouvertes, dans l'ordre que tu veux. <b>Marn le Sans-Voix</b> rejoint ton équipe à la fin de la sienne.</p></div></div>
   <div class="hclist">${HCH.map((_,ci)=>hcRow(ci)).join('')}</div></div>`}
 window.hcCard=hcCard;
@@ -24665,7 +24669,7 @@ function hcOpen(ci){const C=HCH[ci],N=C.ch.length,n=hCount(ci);
  modal(`<button class="x" data-a="close" aria-label="Fermer">×</button><div class="hcmod" style="--hc:${C.col}">
   <div class="h3" style="margin:0 0 2px">${C.ic} ${esc(C.n)}</div><p class="muted" style="font-size:12.5px;margin:0 0 8px">${esc(C.tag)}</p>
   ${BAN(ci,-1)}${main}<div class="sglist" style="margin-top:10px">${list}</div>
-  <p class="muted" style="font-size:12px;margin:10px 0 0">Récompense finale : ${C.id==='marn'?'<b>Marn le Sans-Voix</b> rejoint ton équipe':'<b>15 fragments</b> du héros (si tu l\'as déjà)'} et le titre « ${esc(C.ttl.n)} ».</p></div>`)}
+  <p class="muted" style="font-size:12px;margin:10px 0 0">Récompense finale : ${(()=>{try{const g=typeof C.gift==='function'?C.gift():C.gift;if(g!=null&&HEROES[g])return`<b>${esc(HEROES[g].n)}</b> rejoint ton équipe (ou 15 fragments si tu l'as déjà)`}catch(e){}return"<b>15 fragments</b> du héros (si tu l'as déjà)"})()} et le titre « ${esc(C.ttl.n)} ».</p></div>`)}
 document.addEventListener('click',e=>{const o=e.target.closest('[data-a="hcopen"]');
  if(o){e.preventDefault();e.stopImmediatePropagation();hcOpen(+o.dataset.v);return}
  const b=e.target.closest('[data-a="hcplay"]');if(!b)return;e.preventDefault();e.stopImmediatePropagation();
@@ -24696,6 +24700,739 @@ try{PATCH.unshift({v:'v52',d:Date.now(),t:'Marn le Sans-Voix et les Chroniques d
  "🏷️ 5 nouveaux titres : Sans-Voix, Le Mur qui Reste, La Chanson Volée, Deux Flèches, Celui qui se souvient.",
  "🎬 Les ultimes de Corvin et de Marn ont enfin leur vraie animation (elles passaient à côté)."]})}catch(e){}
 }catch(e){console.warn('chroniques des héros',e)}})();
+/* ================= V415 : ROUGE-GARANCE, LA DUELLISTE =================
+   Fille de teinturiers : le rouge sur ses bras, c'est de la garance, pas du sang.
+   Elle laisse croire ce qu'on veut. Elle ne se bat qu'en duel, et elle contre tout. */
+const GAR=74;
+(function(){try{
+if(HEROES[GAR]||HEROES.length!==GAR)return;
+HEROES.push({i:GAR,n:'Rouge-Garance la Duelliste',c:'Guerrier',r:4,
+  sk:{n:'Mise en Garde',tg:'one',fx:{dmg:300,duel:2,crit:25}}});
+try{LOOKS[GAR]=['#b5243a','#2a1220','#d8dce8','#5a2018','#f4ece0','#e8c6a8','bg:blood back:cape hair:tail eyes:sharp mouth:smirk body:slim ear:human']}catch(e){}
+}catch(e){console.warn('garance hero',e)}})();
+
+/* ---------- le dessin ---------- */
+(function(){try{
+if(!HEROES[GAR])return;
+const GC={},O='stroke="#160a12" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"',
+ RG='#b5243a',RG2='#e04a5c',RG3='#7a1428',CH='#2a1220',WH='#f4ece0',WH2='#ded2c2',ST='#d8dce8',ST2='#8a90a4',
+ HR='#5a2018',HR2='#8a3020',SK='#e8c6a8',SK2='#c79a78',GLD='#e8b84a';
+const A=(at,v,d,b)=>`<animate attributeName="${at}" values="${v}" dur="${d}s"${b?` begin="${b}s"`:''} repeatCount="indefinite"/>`;
+function garArt(q,u,o){u=Math.max(0,Math.min(3,u|0));o=o||{};
+ const lim=(d,w,c)=>`<path d="${d}" fill="none" stroke="#160a12" stroke-width="${w+3.2}" stroke-linecap="round" stroke-linejoin="round"/><path d="${d}" fill="none" stroke="${c}" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round"/>`;
+ let s=`<defs>
+  <linearGradient id="${q}c" x1=".15" y1="0" x2=".85" y2="1"><stop offset="0" stop-color="${RG}"/><stop offset=".5" stop-color="${RG3}"/><stop offset="1" stop-color="#520c1a"/></linearGradient>
+  <linearGradient id="${q}s" x1=".15" y1="0" x2=".85" y2="1"><stop offset="0" stop-color="${RG2}"/><stop offset=".6" stop-color="${RG}"/><stop offset="1" stop-color="${RG3}"/></linearGradient>
+  <linearGradient id="${q}d" x1=".2" y1="0" x2=".8" y2="1"><stop offset="0" stop-color="#46203a"/><stop offset=".6" stop-color="#32162a"/><stop offset="1" stop-color="${CH}"/></linearGradient>
+  <linearGradient id="${q}bl" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="${ST2}"/><stop offset=".5" stop-color="#ffffff"/><stop offset="1" stop-color="${ST}"/></linearGradient>
+  <linearGradient id="${q}ar" x1=".1" y1="1" x2=".6" y2="0"><stop offset="0" stop-color="${RG3}"/><stop offset=".5" stop-color="${RG}"/><stop offset="1" stop-color="#d0566a"/></linearGradient>
+  <radialGradient id="${q}g"><stop offset="0" stop-color="${RG2}" stop-opacity=".5"/><stop offset="1" stop-color="${RG}" stop-opacity="0"/></radialGradient></defs>`;
+ s+=`<ellipse cx="80" cy="104" rx="76" ry="102" fill="url(#${q}g)"/>`;
+ if(u>=1)s+=[...Array(3+u*3)].map((_,i)=>{const x=16+((i*53)%128),y=46+((i*71)%146);
+   return`<path d="M${x} ${y}q4.5-6.5 9 0q-4.5 7.5-9 0Z" fill="${i%2?RG2:RG}" opacity="0"><animateTransform attributeName="transform" type="translate" values="0 12;0 -18" dur="${4+i%3}s" begin="${-i*.7}s" repeatCount="indefinite"/>${A('opacity','0;.7;0',4+i%3,-i*.7)}</path>`}).join('');
+ if(!o.bust)s+=`<ellipse cx="80" cy="214" rx="40" ry="6" fill="#000" opacity=".45"/>`;
+ /* la demi-cape, drapée dans le dos */
+ s+=`<g><path d="M66 60Q36 78 28 128Q24 156 12 174L30 182L38 166L46 180L54 162L62 176L70 152Q62 102 88 70Z" fill="url(#${q}c)" ${O}/>
+   <path d="M64 66Q40 86 34 126Q31 150 24 166" fill="none" stroke="${RG3}" stroke-width="1.8" opacity=".75"/>
+   <animateTransform attributeName="transform" type="rotate" values="-2.5 70 64;3.5 70 64;-2.5 70 64" dur="4.6s" repeatCount="indefinite"/></g>`;
+ /* jambes : fente d'escrime, jambe avant pliée */
+ s+=lim('M92 128L112 160L122 192',15,`url(#${q}d)`);
+ s+=lim('M70 128L56 158L56 192',15,`url(#${q}d)`);
+ s+=`<path d="M44 190h25q4 0 4 4v9q0 4-4 4H48q-4 0-4-4Z" fill="#120a10" ${O}/>`;
+ s+=`<path d="M112 186l21 11q4 2 2 6l-4 7q-2 4-6 2l-21-11Z" fill="#120a10" ${O}/>`;
+ s+=`<path d="M45 193q13-6 26 0M111 189q11 5 21 11" stroke="${RG}" stroke-width="3.2" fill="none" stroke-linecap="round"/>`;
+ /* buste */
+ s+=`<path d="M80 56Q58 61 54 80L50 122Q65 136 80 136T110 122L106 80Q102 61 80 56Z" fill="url(#${q}d)" ${O}/>`;
+ /* chemise blanche : col et plastron */
+ s+=`<path d="M80 56L67 70L74 100L80 110L86 100L93 70Z" fill="${WH}" ${O}/>`;
+ s+=`<path d="M80 110L76 98h8Z" fill="${WH2}"/>`;
+ s+=`<path d="M68 58q6 9 12 9t12-9l3 7q-7 11-15 11t-15-11Z" fill="${WH}" ${O}/>`;
+ s+=[0,1,2].map(i=>`<circle cx="80" cy="${80+i*11}" r="2" fill="${GLD}" stroke="#160a12" stroke-width=".9"/>`).join('');
+ /* écharpe de garance à la taille */
+ s+=`<path d="M52 118q28 15 56 0l3.4 15q-30 16-62 0Z" fill="url(#${q}s)" ${O}/>`;
+ s+=`<path d="M55 131q-7 18-4 33l11-4q-3-15 2-26Z" fill="${RG3}" ${O}/>`;
+ s+=`<path d="M60 125q20 9 38 0" stroke="${RG3}" stroke-width="1.5" fill="none" opacity=".85"/>`;
+ /* bras gauche : main sur la hanche, avant-bras teint de garance jusqu'au coude */
+ s+=lim('M60 74L45 94',14,`url(#${q}d)`);
+ s+=`<path d="M41 90q6-3 10 2l-5 7q-5-3-10-2Z" fill="${WH}" ${O}/>`;
+ s+=lim('M45 96L60 116',12.4,`url(#${q}ar)`);
+ s+=`<path d="M44.6 99.4q4.6-2.2 8.4.6" stroke="${RG3}" stroke-width="1.5" fill="none" opacity=".8"/>`;
+ s+=`<path d="M49.6 104q2.6 3.6 2.6 7.4M54.6 108q2 3 2 5.6" stroke="${RG3}" stroke-width="1.3" fill="none" stroke-linecap="round" opacity=".55"/>`;
+ s+=`<path d="M57 112q8 2 9.6 9q1 5-4 6q-6 1-9.6-4Z" fill="${RG}" ${O}/>`;
+ s+=`<path d="M58.6 118.6q4.4-1.6 7.4 1M58 123q4-1.4 7 .6" stroke="${RG3}" stroke-width="1.3" fill="none" stroke-linecap="round"/>`;
+ /* bras droit : la rapière haute */
+ s+=lim('M100 72L114 64',14,`url(#${q}d)`);
+ s+=`<path d="M108 58q6-3 10 2l-4 8q-5-3-10-2Z" fill="${WH}" ${O}/>`;
+ s+=`<circle cx="115" cy="63" r="5.8" fill="${SK}" ${O}/>`;
+ s+=`<g transform="translate(115 63) rotate(24)">
+   <path d="M-2.2 0h4.4v14h-4.4Z" fill="${CH}" ${O}/><circle cx="0" cy="15.6" r="3.2" fill="${GLD}" ${O}/>
+   <path d="M-9 -2h18" stroke="${ST}" stroke-width="3.4" stroke-linecap="round"/>
+   <path d="M0 -4q-9 2-9 9t9 7.6q9-.6 9-7.6T0 -4Z" fill="none" stroke="${ST}" stroke-width="2.4"/>
+   <path d="M-7 -3q7-6 14 0" fill="none" stroke="${ST2}" stroke-width="1.6"/>
+   <path d="M-2.6 -4.4h5.2L1.6 -76q-.6-6-1.6-6t-1.6 6Z" fill="url(#${q}bl)" stroke="#160a12" stroke-width="1.2"/>
+   <path d="M0 -8V-72" stroke="#ffffff" stroke-width=".9" opacity=".85"/>
+   ${u>=2?`<path d="M-2.6 -4.4h5.2L1.6 -76q-.6-6-1.6-6t-1.6 6Z" fill="${RG2}" opacity="0">${A('opacity','0;.6;0',2.2)}</path>`:''}</g>`;
+ /* queue-de-cheval, derrière */
+ s+=`<g><path d="M67 25Q46 20 38 36Q31 52 41 65L50 58Q43 47 47 37Q53 27 68 32Z" fill="${HR}" ${O}/>
+   <path d="M41 61q-8 6-7 15l9-2q-1-6 5-9Z" fill="${HR2}" ${O}/>
+   <animateTransform attributeName="transform" type="rotate" values="-3 67 27;4 67 27;-3 67 27" dur="4s" repeatCount="indefinite"/></g>`;
+ /* tête */
+ s+=`<ellipse cx="80" cy="40" rx="14.6" ry="16.4" fill="${SK}" ${O}/>`;
+ s+=`<path d="M65.4 41Q61 18 80 15Q99 18 94.6 41Q92 29 84 26Q80 31 72 26Q67 29 65.4 41Z" fill="${HR}" ${O}/>`;
+ s+=`<path d="M88 17q10 4 12 13l-5.4 2q-2.4-8-9-10Z" fill="${HR2}" ${O}/>`;
+ s+=`<path d="M66 28q-5 4-5.4 11l5 1.4q.4-7 4-10Z" fill="${HR}" ${O}/>`;
+ s+=`<path d="M63 30q8-4 10 2l-9 5Z" fill="${RG}" ${O}/>`;
+ /* visage : regard tranchant, cicatrice, sourire en coin */
+ s+=`<path d="M68.6 40.6q3.4-5.2 9.4-2.2q-2.6 5-9.4 2.2ZM91.4 40.6q-3.4-5.2-9.4-2.2q2.6 5 9.4 2.2Z" fill="#1a0f18"/>`;
+ s+=`<ellipse cx="73" cy="39.4" rx="1.9" ry="2.2" fill="#8e1a2e"/><ellipse cx="87" cy="39.4" rx="1.9" ry="2.2" fill="#8e1a2e"/>`;
+ s+=`<circle cx="72.4" cy="38.6" r=".9" fill="#fff"/><circle cx="86.4" cy="38.6" r=".9" fill="#fff"/>`;
+ s+=`<path d="M66.6 33.6q6.4-4.4 12-1.4M93.4 33.6q-6.4-4.4-12-1.4" stroke="${HR}" stroke-width="2.5" fill="none" stroke-linecap="round"/>`;
+ s+=`<path d="M91.4 35.4l-1.6 9.6" stroke="${SK2}" stroke-width="1.6" stroke-linecap="round"/><path d="M90.6 38.2l2.6 1M89.9 42l2.6 1" stroke="${SK2}" stroke-width="1.1" stroke-linecap="round"/>`;
+ s+=`<path d="M75.6 49.8q5 2.6 9.4-3.2" stroke="#8a3a44" stroke-width="2.1" fill="none" stroke-linecap="round"/>`;
+ if(u>=3)s+=`<g opacity=".65"><circle cx="60" cy="118" r="12" fill="none" stroke="${RG2}" stroke-width="1.6">${A('r','8;22;8',2.6)}${A('opacity','.7;0;.7',2.6)}</circle></g>`;
+ return s}
+function garBody(u){const k='b'+(u|0);if(GC[k])return GC[k];
+ return GC[k]=`<svg class="hbsvg" viewBox="0 -8 160 244" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Rouge-Garance la Duelliste en pied">${garArt('gb'+(u|0)+'_',u)}</svg>`}
+function garPortrait(u){const k='p'+(u|0);if(GC[k])return GC[k];const q='gp'+(u|0)+'_';
+ return GC[k]=`<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Rouge-Garance la Duelliste"><defs><radialGradient id="${q}bg" cx="52%" cy="34%" r="76%"><stop offset="0" stop-color="#6a2436"/><stop offset=".45" stop-color="#36121f"/><stop offset="1" stop-color="#140810"/></radialGradient></defs><rect width="100" height="100" fill="url(#${q}bg)"/><g transform="translate(-70 -22) scale(1.5)">${garArt(q,u,{bust:1})}</g></svg>`}
+window.garBody=garBody;window.garPortrait=garPortrait;
+{const pu=portraitU;portraitU=function(h,u){if(h&&h.i===GAR)return garPortrait(u);return pu.apply(this,arguments)}}
+{const hb=heroBody;heroBody=function(h,u=0){if(h&&h.i===GAR)return garBody(u);return hb.apply(this,arguments)}}
+try{const sf=sagaFig;sagaFig=function(w){if(w==='garance')return`<div class="sgfig lore garf">${garBody(0)}</div>`;return sf.apply(this,arguments)}}catch(e){}
+}catch(e){console.warn('garance art',e)}})();
+
+/* ---------- riposte et duel ---------- */
+(function(){try{
+if(!HEROES[GAR])return;
+const RG='#b5243a',RG2='#e04a5c',WH='#fff0e8',GLD='#e8b84a',RIP=70;
+const ok=()=>typeof B!=='undefined'&&B&&!B.skip&&typeof FXS!=='undefined'&&FXS.ctx&&!(typeof REDUCED!=='undefined'&&REDUCED);
+/* registre partagé : « quelqu'un vient d'en frapper un autre » (sert aussi au renvoi d'Orgemme) */
+const HITH=[];try{window.RDEonHit=f=>{if(typeof f==='function')HITH.push(f)}}catch(e){}
+const duel=()=>{try{const D=B&&B.duel;if(D&&D.t&&D.u&&D.t.hp>0&&D.u.hp>0&&B.round<=D.until)return D}catch(e){}return null};
+window.RDEduel=duel;
+let CAST=null;
+
+/* les dégâts passent tous par là : bonus de duel, puis les contre-attaques */
+{const d0=deal;deal=function(s,t,pct,o){o=o||{};let p=pct;
+  try{const D=duel();if(D){if(s===D.u&&t===D.t)p=pct*1.4;else if(s===D.t&&t===D.u)p=pct*.8}}catch(e){}
+  const d=d0.call(this,s,t,p,o);
+  try{if(B&&d>0&&s&&t&&s.side!==t.side&&!o.ct)for(const f of HITH)f(s,t,d,o)}catch(e){}
+  return d}}
+
+/* passif : elle contre toutes les attaques normales, et tout ce qui vient de son adversaire en duel */
+function riposte(g,s){if(!B||g.hp<=0||s.hp<=0)return;
+  const e0=s.en;const d=deal(g,s,RIP,{ct:1});try{s.en=Math.min(100,e0)}catch(e){}
+  log(`⚔️ <b>${g.name}</b> riposte sur ${s.name} : ${fmt(d)}`,'ba');
+  if(ok())try{const b=uc(s);float(g,'⚔️ Riposte','info');slashLine(b.x,b.y,b.s*1.05,-.6,[WH,RG2],220,4);sparks(b.x,b.y,RG2,8,5,1.6,18);refreshOne(s);if(s.hp<=0)deathFx(s)}catch(e){}
+  else{try{refreshOne(s)}catch(e){}}}
+try{window.RDEonHit((s,t,d,o)=>{if(!t||t.hid!==GAR||t.hp<=0||!s||s.hp<=0)return;
+  const D=duel();if(o&&o.sk&&!(D&&s===D.t))return;riposte(t,s)})}catch(e){}
+
+/* l'ultime ouvre le duel : elle choisit le plus dangereux */
+{const sk0=skill;skill=function(u,sk,sc){
+  try{if(B&&u&&sk&&sk.fx&&sk.fx.duel){const f=alive(1-u.side);
+    if(f.length){const t=f.reduce((a,b)=>((b.boss?1.6:1)*b.atk>(a.boss?1.6:1)*a.atk?b:a));
+      B.duel={u,t,until:B.round+sk.fx.duel,won:0};
+      log(`⚔️ <b>${u.name}</b> provoque <b>${t.name}</b> en duel. Plus personne d'autre ne s'en mêle pendant <b>${sk.fx.duel} tours</b>.`,'sk')}}}catch(e){}
+  const D=duel();let s0=null;
+  try{if(D&&D.t&&u&&u.side===D.t.side&&u!==D.t)s0=D.t.sh}catch(e){}
+  CAST=u;let r;try{r=sk0.apply(this,arguments)}finally{CAST=null}
+  try{if(s0!==null&&D.t.sh>s0){D.t.sh=s0;float(D.t,'🚫 duel','info')}}catch(e){}
+  try{markDuel()}catch(e){}
+  return r}}
+/* pendant le duel, les deux adversaires n'existent plus que l'un pour l'autre */
+{const p0=pickT;pickT=function(u){try{const D=duel();if(D){
+   if(u===D.u)return D.t;if(u===D.t)return D.u;
+   const ex=u.side===D.u.side?D.t:u.side===D.t.side?D.u:null;
+   if(ex){const f=alive(1-u.side).filter(x=>x!==ex);if(f.length){const tt=f.filter(x=>x.taunt>0);return pick(tt.length?tt:f)}}}}catch(e){}
+  return p0.apply(this,arguments)}}
+/* ses alliés ne peuvent plus le soigner */
+{const h0=heal;heal=function(t,v){try{const D=duel();if(D&&t===D.t&&CAST&&CAST!==D.t){float(t,'🚫 duel','info');return}}catch(e){}return h0.apply(this,arguments)}}
+
+function markDuel(){try{document.querySelectorAll('#battle .u.duelon').forEach(e=>e.classList.remove('duelon'));
+  const D=duel();if(!D)return;for(const x of[D.u,D.t]){const el=cardEl(x);if(el)el.classList.add('duelon')}}catch(e){}}
+{const r0=refreshUnits;refreshUnits=function(){const r=r0.apply(this,arguments);
+  try{const D=B&&B.duel;if(D&&D.t&&D.t.hp<=0&&!D.won&&D.u&&D.u.hp>0){D.won=1;log(`⚔️ <b>${D.u.name}</b> remporte le duel.`,'sk');
+    if(ok()){const a=uc(D.u);textPop(a.x,a.y-a.s*.5,'DUEL REMPORTÉ',RG2,16,900);ringFx(a.x,a.y,RG2,a.s*.8,500,4)}}
+   markDuel()}catch(e){}return r}}
+
+/* ---------- l'ultime : Mise en Garde ---------- */
+function thread(x1,y1,x2,y2,dur,delay){fxItem(dur,(c,p)=>{const g=Math.min(1,p*2.4),al=p>.7?(1-p)/.3:1;
+  c.globalAlpha=al*.9;c.strokeStyle=RG2;c.lineWidth=2.2;c.setLineDash([7,6]);c.lineDashOffset=-p*60;
+  c.beginPath();c.moveTo(x1,y1);c.lineTo(x1+(x2-x1)*g,y1+(y2-y1)*g);c.stroke();c.setLineDash([]);
+  c.globalCompositeOperation='lighter';c.globalAlpha=al*.3;c.lineWidth=7;c.stroke()},delay)}
+function lunge(y,dur,delay){fxItem(dur||280,(c,p)=>{const g=ease(Math.min(1,p*1.8)),al=p>.5?(1-p)/.5:1;
+  c.globalAlpha=al;c.strokeStyle='#ffffff';c.lineWidth=3.4;c.lineCap='round';
+  c.beginPath();c.moveTo(0,y);c.lineTo(FXS.w*g,y);c.stroke();
+  c.globalCompositeOperation='lighter';c.globalAlpha=al*.45;c.lineWidth=14;c.strokeStyle=RG2;c.stroke()},delay)}
+LEG2[GAR]=async X=>{const {u,tg}=X;fxSetup();if(!FXS.ctx)return;
+  const a=uc(u),W=FXS.w,H=FXS.h,t=tg[0]||(B.duel&&B.duel.t);if(!t)return;const b=uc(t);
+  /* le monde se referme sur eux deux */
+  vignette('#2a0810',1700,.66);try{dimOn(.6)}catch(e){}
+  glowPulse(a.x,a.y,RG2,520,a.s*.5);glowPulse(b.x,b.y,RG2,520,b.s*.5);
+  thread(a.x,a.y,b.x,b.y,760);
+  try{cSnd&&cSnd.ok&&cSnd.ok()}catch(e){}
+  await fxWait(360);if(!B)return;
+  /* elle part */
+  await cardMove(u,(b.x-a.x)*.45,(b.y-a.y)*.45,240);if(!B)return;
+  for(let i=0;i<3;i++){const dx=(b.x-a.x)*(i+1)/4,dy=(b.y-a.y)*(i+1)/4;
+    fxItem(380,(c,p)=>{c.globalAlpha=(1-p)*.4;c.fillStyle=i%2?RG:'#3a1424';c.beginPath();c.ellipse(a.x+dx,a.y+dy,a.s*.2,a.s*.3,0,0,7);c.fill()},i*50)}
+  /* cinq touches, très vite */
+  const ang=[-1.15,-.35,.45,1.2,0];
+  for(let k=0;k<5;k++){slashLine(b.x+(k%2?6:-6),b.y+(k-2)*4,b.s*(k===4?1.5:1.05),ang[k],[WH,RG2],200,k===4?5:3.2,k*72);
+    if(k<4)fxItem(160,(c,p)=>{c.globalAlpha=1-p;c.fillStyle=WH;c.beginPath();c.arc(b.x+Math.cos(ang[k])*b.s*.4,b.y+Math.sin(ang[k])*b.s*.4,3.4*(1-p),0,7);c.fill()},k*72+60)}
+  try{for(let k=0;k<4;k++)setTimeout(()=>{try{SND&&SND.slash&&SND.slash()}catch(e){}},k*72/((S&&S.speed)||1))}catch(e){}
+  await fxWait(430);if(!B)return;
+  /* la botte */
+  lunge(b.y,320);flash('#ffffff',200,.72);shake(3);camPunch(b,1.09,420);
+  sparks(b.x,b.y,RG2,16,8,2.2,26);ringFx(b.x,b.y,RG2,b.s*.7,460,5);
+  shapes(b.x,b.y,'petal',[RG2,RG,'#ffd0d8'],16,5,5,44,.15,{});
+  hit(X,t,1.45);
+  await fxWait(300);if(!B)return;
+  ringFx(a.x,a.y,GLD,a.s*.7,520,3);thread(a.x,a.y,b.x,b.y,620);
+  textPop(W/2,Math.min(a.y,b.y)-b.s*.3,'EN GARDE',RG2,Math.max(16,Math.min(26,W*.9/8)),950);
+  try{markDuel()}catch(e){}
+  await fxWait(420)};
+
+/* ---------- textes et habillage ---------- */
+try{const sd=skillDesc;skillDesc=function(sk){let r=sd.apply(this,arguments);
+  try{if(sk&&sk.fx&&sk.fx.duel)r+=` Elle provoque l'ennemi le plus dangereux en <b>duel pendant ${sk.fx.duel} tours</b> : eux deux ne peuvent plus cibler personne d'autre, personne d'autre ne peut les cibler, et <b>ses alliés ne peuvent plus le soigner ni le protéger</b>. Elle lui inflige +40 % de dégâts et en subit 20 % de moins.`}catch(e){}return r}}catch(e){}
+const PASS=`<div class="skill garpas"><div class="sn">⚔️ Riposte</div><div class="muted" style="font-size:11px;font-weight:800;letter-spacing:.4px">CAPACITÉ · PASSIVE</div><p style="margin:6px 0 0;font-size:13px">Chaque <b>attaque normale</b> reçue est contrée aussitôt pour <b>${RIP} % de son ATQ</b>. Pendant un duel, elle contre aussi les <b>ultimes</b> de son adversaire.</p></div>`;
+try{const hm=heroModal;heroModal=function(id){const r=hm.apply(this,arguments);try{if(+id===GAR){const mo=$('#ovl .modal'),sk=mo&&mo.querySelector('.skill');if(sk)sk.insertAdjacentHTML('afterend',PASS)}}catch(e){}return r}}catch(e){}
+const st=document.createElement('style');st.textContent=`
+#battle .u.duelon{box-shadow:0 0 0 2px ${RG2},0 0 20px rgba(224,74,92,.55)!important;border-radius:14px}
+#battle .u.duelon::after{content:"⚔️";position:absolute;top:-8px;right:-6px;font-size:15px;filter:drop-shadow(0 1px 3px #000);z-index:3}
+.sgfig.garf{filter:drop-shadow(0 0 14px rgba(224,74,92,.55))}
+.skill.garpas{border-color:rgba(224,74,92,.5)!important;background:linear-gradient(135deg,rgba(224,74,92,.14),transparent 70%),var(--panel)!important}`;document.head.appendChild(st);
+try{Object.assign(I18N_EN,{'Rouge-Garance la Duelliste':'Rouge-Garance the Duellist','Mise en Garde':'On Guard','EN GARDE':'ON GUARD','DUEL REMPORTÉ':'DUEL WON','⚔️ Riposte':'⚔️ Riposte','🚫 duel':'🚫 duel',
+ 'Chaque <b>attaque normale</b> reçue est contrée aussitôt pour <b>70 % de son ATQ</b>. Pendant un duel, elle contre aussi les <b>ultimes</b> de son adversaire.':'Every <b>normal attack</b> she takes is countered at once for <b>70 % of her ATK</b>. During a duel, she also counters her opponent’s <b>ultimates</b>.'})}catch(e){}
+}catch(e){console.warn('garance duel',e)}})();
+/* ================= V416 : ORGEMME, LE COLOSSE DE VITRAIL =================
+   Une rosace de cathédrale à qui on a donné des jambes. La lumière le traverse.
+   Plus on le casse, plus il renvoie. */
+const ORG=75;
+(function(){try{
+if(HEROES[ORG]||HEROES.length!==ORG)return;
+HEROES.push({i:ORG,n:'Orgemme le Colosse de Vitrail',c:'Tank',r:4,
+  sk:{n:'Rose Éclatée',tg:'all',fx:{dmg:110,rose:1,reflect:3,shield:200,taunt:2}}});
+try{LOOKS[ORG]=['#4a9ae0','#b02a3a','#e0a83a','#1a1626','#fff6e0','#3a8a6a','bg:holy back:none hair:none eyes:glow mouth:none body:huge ear:none']}catch(e){}
+}catch(e){console.warn('orgemme hero',e)}})();
+
+/* ---------- le dessin ---------- */
+(function(){try{
+if(!HEROES[ORG])return;
+const OC={},O='stroke="#120f1c" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"',
+ LD='#1a1626',LD2='#2e2a3e',BL='#2e6ab0',BL2='#4a9ae0',RD='#b02a3a',RD2='#e04a4a',GD='#e0a83a',GD2='#ffd87a',GR='#3a8a6a',GR2='#5ac0a0',WL='#fff6e0';
+const COLS=[BL,RD,GD,GR,BL2,RD2];
+const A=(at,v,d,b)=>`<animate attributeName="${at}" values="${v}" dur="${d}s"${b?` begin="${b}s"`:''} repeatCount="indefinite"/>`;
+function orgArt(q,u,o){u=Math.max(0,Math.min(3,u|0));o=o||{};
+ const CO={bl:['#1e4a92','#3f7fd0'],rd:['#8e1e32','#c8394a'],am:['#c08a22','#f0c457'],em:['#1f6b54','#39a07e']};
+ const K=['bl','rd','am','em'];
+ const pane=(x,y,w,h,c,op)=>`<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${CO[c][0]}" opacity="${op||1}"/><rect x="${x}" y="${y}" width="${w}" height="${(h*.44).toFixed(1)}" fill="${CO[c][1]}" opacity="${(op||1)*.75}"/>`;
+ /* une lancette : ogive + barlotières */
+ const lanc=(x,w,yt,yb,c,dark)=>{const d=`M${x} ${yb}L${x} ${yt+w*.55}Q${x+w/2} ${yt} ${x+w} ${yt+w*.55}L${x+w} ${yb}Z`;
+   let p=`<path d="${d}" fill="${dark?'#07060c':CO[c][0]}" stroke="${LD}" stroke-width="2.4" stroke-linejoin="round"/>`;
+   if(!dark){p+=`<path d="${d}" fill="${CO[c][1]}" opacity=".45" transform="translate(0 0)" clip-path="none" style="clip-path:none"/>`;
+     p=`<path d="${d}" fill="${CO[c][0]}" stroke="${LD}" stroke-width="2.4" stroke-linejoin="round"/><path d="M${x+1} ${yt+w*.5}Q${x+w/2} ${yt+1.6} ${x+w-1} ${yt+w*.5}L${x+w-1} ${yt+w*1.5}L${x+1} ${yt+w*1.5}Z" fill="${CO[c][1]}" opacity=".7"/>`;
+     for(let i=1;i<4;i++)p+=`<path d="M${x} ${yt+w*.55+(yb-yt-w*.55)*i/4}h${w}" stroke="${LD}" stroke-width="2"/>`;
+     p+=`<path d="M${x+w/2} ${yt+w*.3}V${yb}" stroke="${LD}" stroke-width="2"/>`}
+   else{p+=`<path d="${d}" fill="#ffd87a" opacity=".16">${A('opacity','.05;.4;.05',2.8)}</path>`;
+     p+=[0,1,2].map(i=>`<path d="M${x+3+i*(w-6)/2} ${yt+w*.7}V${yb-4}" stroke="#ffe9a8" stroke-width="1.6" opacity=".3"><animate attributeName="opacity" values="0;.55;0" dur="${2.4+i*.5}s" begin="${-i*.6}s" repeatCount="indefinite"/></path>`).join('')}
+   return p};
+ /* la rosace */
+ const rose=(cx,cy,R,miss)=>{let p=`<circle cx="${cx}" cy="${cy}" r="${R+4}" fill="${LD}"/><circle cx="${cx}" cy="${cy}" r="${R+1.6}" fill="#0a0812"/>`;
+   const n=12,r0=R*.42;
+   for(let k=0;k<n;k++){const a0=k*2*Math.PI/n-Math.PI/2,a1=(k+1)*2*Math.PI/n-Math.PI/2;
+     const x0=(cx+Math.cos(a0)*r0).toFixed(1),y0=(cy+Math.sin(a0)*r0).toFixed(1),x1=(cx+Math.cos(a0)*R).toFixed(1),y1=(cy+Math.sin(a0)*R).toFixed(1),x2=(cx+Math.cos(a1)*R).toFixed(1),y2=(cy+Math.sin(a1)*R).toFixed(1),x3=(cx+Math.cos(a1)*r0).toFixed(1),y3=(cy+Math.sin(a1)*r0).toFixed(1);
+     const c=K[k%4],gone=miss&&miss.includes(k);
+     p+=`<path d="M${x0} ${y0}L${x1} ${y1}A${R} ${R} 0 0 1 ${x2} ${y2}L${x3} ${y3}Z" fill="${gone?'#07060c':CO[c][0]}" stroke="${LD}" stroke-width="1.8" stroke-linejoin="round"/>`;
+     if(!gone)p+=`<path d="M${x0} ${y0}L${x1} ${y1}A${R} ${R} 0 0 1 ${x2} ${y2}Z" fill="${CO[c][1]}" opacity=".55"/>`}
+   p+=`<circle cx="${cx}" cy="${cy}" r="${r0+1.4}" fill="${LD}"/><circle cx="${cx}" cy="${cy}" r="${r0*.9}" fill="url(#${q}e)"/>`;
+   p+=`<circle cx="${cx}" cy="${cy}" r="${(r0*.5).toFixed(1)}" fill="${WL}">${A('r',`${(r0*.4).toFixed(1)};${(r0*.62).toFixed(1)};${(r0*.4).toFixed(1)}`,3)}</circle>`;
+   p+=`<circle cx="${(cx-r0*.22).toFixed(1)}" cy="${(cy-r0*.22).toFixed(1)}" r="1.5" fill="#fff"/>`;
+   return p};
+ let s=`<defs>
+  <linearGradient id="${q}l" x1=".2" y1="0" x2=".8" y2="1"><stop offset="0" stop-color="#2e2840"/><stop offset=".55" stop-color="#241f33"/><stop offset="1" stop-color="${LD}"/></linearGradient>
+  <radialGradient id="${q}e" cx="50%" cy="48%" r="52%"><stop offset="0" stop-color="#ffffff"/><stop offset=".4" stop-color="#ffeaa8"/><stop offset="1" stop-color="#e0a83a"/></radialGradient>
+  <radialGradient id="${q}g"><stop offset="0" stop-color="#ffd87a" stop-opacity=".45"/><stop offset=".55" stop-color="#3f7fd0" stop-opacity=".2"/><stop offset="1" stop-color="#1e4a92" stop-opacity="0"/></radialGradient>
+  <linearGradient id="${q}ray" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffd87a" stop-opacity=".5"/><stop offset="1" stop-color="#ffd87a" stop-opacity="0"/></linearGradient></defs>`;
+ s+=`<ellipse cx="80" cy="96" rx="78" ry="106" fill="url(#${q}g)"/>`;
+ if(!o.bust){s+=[[-36,'#3f7fd0'],[-6,'#f0c457'],[26,'#c8394a'],[46,'#39a07e']].map(([dx,c],i)=>`<ellipse cx="${80+dx}" cy="${214+(i%2)*3}" rx="${18-Math.abs(dx)/6}" ry="5" fill="${c}" opacity=".3">${A('opacity','.15;.4;.15',3.4+i,-i*.8)}</ellipse>`).join('');
+  s+=`<ellipse cx="80" cy="216" rx="46" ry="7" fill="#000" opacity=".42"/>`;
+  s+=`<path d="M62 50L36 216H124L98 50Z" fill="url(#${q}ray)" opacity=".38">${A('opacity','.2;.46;.2',4.4)}</path>`}
+ /* jambes : colonnes trapues */
+ const col=(x,w)=>`<path d="M${x} 158h${w}v46h${-w}Z" fill="url(#${q}l)" ${O}/>`+
+   [0,1,2].map(i=>`<path d="M${x+4.5+i*(w-9)/2} 164V200" stroke="#0e0b16" stroke-width="2.4" opacity=".75"/>`).join('')+
+   `<path d="M${x-7} 200h${w+14}q3 0 3 3v9q0 3-3 3h${-(w+14)}q-3 0-3-3v-9q0-3 3-3Z" fill="url(#${q}l)" ${O}/>`;
+ s+=col(44,30)+col(86,30);
+ /* bras : lourds, détachés du corps */
+ const arm=(x0,y0,x1,y1,fx2,fy,sd)=>{const d=`M${x0} ${y0}L${x1} ${y1}L${fx2} ${fy}`;
+   let p=`<path d="${d}" fill="none" stroke="${LD}" stroke-width="27" stroke-linecap="round" stroke-linejoin="round"/>`;
+   p+=`<path d="${d}" fill="none" stroke="url(#${q}l)" stroke-width="21" stroke-linecap="round" stroke-linejoin="round"/>`;
+   for(let i=0;i<4;i++){const t=(i+.5)/4,ax=t<.5?x0+(x1-x0)*t*2:x1+(fx2-x1)*(t-.5)*2,ay=t<.5?y0+(y1-y0)*t*2:y1+(fy-y1)*(t-.5)*2;
+     p+=`<rect x="${(ax-6.5).toFixed(1)}" y="${(ay-5.5).toFixed(1)}" width="13" height="11" rx="2.4" fill="${CO[K[(i+sd)%4]][0]}" stroke="${LD}" stroke-width="1.8"/>`;
+     p+=`<rect x="${(ax-6.5).toFixed(1)}" y="${(ay-5.5).toFixed(1)}" width="13" height="4.8" rx="2.4" fill="${CO[K[(i+sd)%4]][1]}" opacity=".75"/>`}
+   return p};
+ s+=arm(28,104,18,138,22,172,1)+arm(132,104,142,138,138,172,3);
+ s+=`<path d="M8 168h30q4 0 4 4v12q0 5-5 5H9q-5 0-5-5v-12q0-4 4-4Z" fill="url(#${q}l)" ${O}/>`;
+ s+=`<path d="M122 168h30q4 0 4 4v12q0 5-5 5h-29q-5 0-5-5v-12q0-4 4-4Z" fill="url(#${q}l)" ${O}/>`;
+ s+=`<circle cx="23" cy="177" r="5.4" fill="${CO.rd[0]}" stroke="${LD}" stroke-width="1.8"/><circle cx="137" cy="177" r="5.4" fill="${CO.bl[0]}" stroke="${LD}" stroke-width="1.8"/>`;
+ /* la façade : large, et surtout pleine de verre */
+ s+=`<ellipse cx="80" cy="134" rx="50" ry="44" fill="#ffd87a" opacity=".18"/>`;
+ s+=`<path d="M32 166V112Q34 100 44 96H116Q126 100 128 112V166Q80 180 32 166Z" fill="url(#${q}l)" ${O}/>`;
+ s+=lanc(37,27,106,158,'bl',u>=2)+lanc(67,27,100,164,'am',false)+lanc(97,27,106,158,'rd',u>=1);
+ /* la corniche des épaules */
+ s+=`<path d="M26 86h108q4 0 4 4v10q0 4-4 4H26q-4 0-4-4V90q0-4 4-4Z" fill="url(#${q}l)" ${O}/>`;
+ s+=[0,1,2,3,4,5,6].map(i=>`<path d="M${30+i*15} 104l4-6h7l4 6Z" fill="#0e0b16" opacity=".6"/>`).join('');
+ /* remplages et fêlures recousues à l'or */
+ s+=[[48,116],[80,110],[112,116]].map(([x,y],i)=>`<circle cx="${x}" cy="${y}" r="5.4" fill="${CO[K[i%4]][0]}" stroke="${LD}" stroke-width="1.8"/><circle cx="${x}" cy="${y-1.4}" r="3.1" fill="${CO[K[i%4]][1]}" opacity=".75"/>`).join('');
+ s+=`<path d="M38 128L56 140L46 156L64 168" fill="none" stroke="#ffd87a" stroke-width="2.4" stroke-linejoin="round" opacity=".92"/>`;
+ s+=`<path d="M124 122L110 134L118 152" fill="none" stroke="#ffd87a" stroke-width="2.2" stroke-linejoin="round" opacity=".85"/>`;
+ /* arcs-boutants */
+ s+=`<path d="M24 120Q26 96 44 88L46 100Q34 104 34 126Z" fill="url(#${q}l)" ${O}/>`;
+ s+=`<path d="M136 120Q134 96 116 88L114 100Q126 104 126 126Z" fill="url(#${q}l)" ${O}/>`;
+ /* la tête : un gâble, la rosace dedans, et une petite arcature */
+ s+=`<path d="M54 90V46Q54 16 80 5Q106 16 106 46V90Z" fill="url(#${q}l)" ${O}/>`;
+ s+=`<path d="M80 5L56 46M80 5l24 41" stroke="#0e0b16" stroke-width="2.2" opacity=".55"/>`;
+ s+=rose(80,42,18,u>=3?[2,9]:null);
+ s+=[0,1,2,3].map(i=>{const x=59+i*11.4;return`<path d="M${x} 86V76q0-4.4 4.4-4.4T${x+8.8} 76v10Z" fill="${CO[K[(i+1)%4]][0]}" stroke="${LD}" stroke-width="1.6"/><path d="M${x} 80V76q0-4.4 4.4-4.4T${x+8.8} 76v4Z" fill="${CO[K[(i+1)%4]][1]}" opacity=".7"/>`}).join('');
+  if(u>=3)s+=`<g opacity=".75"><circle cx="80" cy="40" r="28" fill="none" stroke="#ffd87a" stroke-width="1.8">${A('r','24;46;24',3.2)}${A('opacity','.7;0;.7',3.2)}</circle></g>`;
+ return s}
+function orgBody(u){const k='b'+(u|0);if(OC[k])return OC[k];
+ return OC[k]=`<svg class="hbsvg" viewBox="0 -8 160 244" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Orgemme le Colosse de Vitrail en pied">${orgArt('ob'+(u|0)+'_',u)}</svg>`}
+function orgPortrait(u){const k='p'+(u|0);if(OC[k])return OC[k];const q='op'+(u|0)+'_';
+ return OC[k]=`<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Orgemme le Colosse de Vitrail"><defs><radialGradient id="${q}bg" cx="50%" cy="32%" r="78%"><stop offset="0" stop-color="#2a4a7a"/><stop offset=".45" stop-color="#141a30"/><stop offset="1" stop-color="#080a14"/></radialGradient></defs><rect width="100" height="100" fill="url(#${q}bg)"/><g transform="translate(-56 -4) scale(1.32)">${orgArt(q,u,{bust:1})}</g></svg>`}
+window.orgBody=orgBody;window.orgPortrait=orgPortrait;
+{const pu=portraitU;portraitU=function(h,u){if(h&&h.i===ORG)return orgPortrait(u);return pu.apply(this,arguments)}}
+{const hb=heroBody;heroBody=function(h,u=0){if(h&&h.i===ORG)return orgBody(u);return hb.apply(this,arguments)}}
+try{const sf=sagaFig;sagaFig=function(w){if(w==='orgemme')return`<div class="sgfig lore orgf">${orgBody(0)}</div>`;return sf.apply(this,arguments)}}catch(e){}
+}catch(e){console.warn('orgemme art',e)}})();
+
+/* ---------- le renvoi, et la rose qui éclate ---------- */
+(function(){try{
+if(!HEROES[ORG])return;
+const BL='#3f7fd0',RD='#c8394a',AM='#f0c457',EM='#39a07e',WL='#fff8e4',LD='#120f1c',COLS=['#1e4a92','#8e1e32','#c08a22','#1f6b54'];
+const ok=()=>typeof B!=='undefined'&&B&&!B.skip&&typeof FXS!=='undefined'&&FXS.ctx&&!(typeof REDUCED!=='undefined'&&REDUCED);
+const reflOf=u=>{const base=u.hp/u.max<.5?.5:.35,bo=(B&&B.round<=(u.reflT||0))?(u.refl||0):0;return base+bo};
+
+/* passif : la lumière repart d'où elle vient */
+try{window.RDEonHit&&window.RDEonHit((s,t,d,o)=>{
+  if(!B||!t||t.hid!==ORG||t.hp<=0||!s||s.hp<=0||!d)return;
+  t.stored=(t.stored||0)+d;
+  const back=Math.max(1,Math.round(d*reflOf(t)));
+  hurt(s,back,'dmg');t.dmg=(t.dmg||0)+back;
+  if(ok())try{const a=uc(t),b=uc(s);float(t,'🪟 Renvoi','info');
+    fxItem(300,(c,p)=>{const g=ease(p),al=1-p;c.globalAlpha=al*.95;c.strokeStyle=[BL,RD,AM,EM][(back+d)%4];c.lineWidth=3;c.lineCap='round';
+      c.beginPath();c.moveTo(a.x,a.y);c.lineTo(a.x+(b.x-a.x)*g,a.y+(b.y-a.y)*g);c.stroke();
+      c.globalCompositeOperation='lighter';c.globalAlpha=al*.4;c.lineWidth=9;c.stroke()});
+    sparks(b.x,b.y,AM,6,4,1.5,16)}catch(e){}
+  try{refreshOne(s);if(s.hp<=0)deathFx(s)}catch(e){}})}catch(e){}
+
+/* l'ultime : il se brise exprès, et tout ce qu'il a encaissé repart en éclats */
+{const sk0=skill;skill=function(u,sk,sc){
+  if(!(B&&u&&u.hid===ORG&&sk&&sk.fx&&sk.fx.rose))return sk0.apply(this,arguments);
+  const f=sk.fx,d0=f.dmg,k=Math.min(2.4,(u.stored||0)/Math.max(1,u.max));
+  f.dmg=Math.round(d0*(1+k));u.roseK=k;
+  try{return sk0.apply(this,arguments)}
+  finally{f.dmg=d0;u.refl=.35;u.reflT=B.round+(f.reflect||3);u.stored=0;
+    u.hp=Math.max(1,u.hp-Math.round(u.hp*.25));
+    log(`🪟 <b>${u.name}</b> se brise : <b>+${Math.round(k*100)} %</b> de dégâts pour tout ce qu'il a encaissé, et son Renvoi monte à <b>70 %</b> pendant ${f.reflect||3} tours.`,'sk');
+    try{float(u,'🪟 +'+Math.round(k*100)+'%','info');refreshOne(u)}catch(e){}}}}
+
+/* ---------- l'animation ---------- */
+function roseCv(cx,cy,R,dur,delay){fxItem(dur,(c,p)=>{const g=ease(Math.min(1,p*1.5)),al=p>.84?(1-p)/.16:Math.min(1,p*4);
+  c.globalAlpha=al*.46;
+  for(let ring=0;ring<3;ring++){const r0=R*ring/3*g,r1=R*(ring+1)/3*g,n=8+ring*8;
+    for(let k=0;k<n;k++){const a0=k/n*6.2832+ring*.25,a1=(k+1)/n*6.2832+ring*.25;
+      c.beginPath();c.arc(cx,cy,r1,a0,a1);c.arc(cx,cy,r0,a1,a0,true);c.closePath();
+      c.fillStyle=COLS[(k+ring)%4];c.fill();c.lineWidth=2.6;c.strokeStyle=LD;c.stroke()}}
+  c.globalCompositeOperation='lighter';c.globalAlpha=al*.5;c.drawImage(spr('#ffe9a8'),cx-R*.32*g,cy-R*.32*g,R*.64*g,R*.64*g)},delay)}
+function shardFx(cx,cy,R,dur){const sh=[...Array(26)].map(()=>{const a=rnd(0,6.2832),v=rnd(.55,1.25);
+   return{a,v,s:rnd(5,13),c:COLS[(Math.random()*4)|0],rot:rnd(0,6.2832),vr:rnd(-.2,.2)}});
+ fxItem(dur,(c,p)=>{const al=1-p*p;
+  for(const q of sh){const d=R*q.v*ease(p),x=cx+Math.cos(q.a)*d,y=cy+Math.sin(q.a)*d+p*p*34;
+    c.globalAlpha=al;c.save();c.translate(x,y);c.rotate(q.rot+q.vr*p*10);
+    c.fillStyle=q.c;c.strokeStyle=LD;c.lineWidth=1.6;
+    c.beginPath();c.moveTo(0,-q.s);c.lineTo(q.s*.6,q.s*.4);c.lineTo(-q.s*.55,q.s*.5);c.closePath();c.fill();c.stroke();
+    c.globalCompositeOperation='lighter';c.globalAlpha=al*.35;c.fillStyle='#ffe9a8';c.fill();c.restore();c.globalCompositeOperation='source-over'}})}
+LEG2[ORG]=async X=>{const {u,tg}=X;fxSetup();if(!FXS.ctx)return;
+  const a=uc(u),W=FXS.w,H=FXS.h,R=Math.max(W,H)*.62,rx=W/2,ry=H*.44;
+  vignette('#0a1024',1800,.6);try{dimOn(.45)}catch(e){}
+  glowPulse(a.x,a.y,AM,620,a.s*.7);
+  roseCv(rx,ry,R,1400);
+  try{cSnd&&cSnd.ok&&cSnd.ok()}catch(e){}
+  await fxWait(520);if(!B)return;
+  /* la lumière monte */
+  fxItem(420,(c,p)=>{c.globalCompositeOperation='lighter';c.globalAlpha=p*.5;c.drawImage(spr('#ffe9a8'),rx-R*.45*p,ry-R*.45*p,R*.9*p,R*.9*p)});
+  await fxWait(300);if(!B)return;
+  /* il se brise */
+  flash('#ffffff',260,.85);shake(4);camPunch(a,1.1,460);
+  shardFx(rx,ry,R*1.15,950);
+  ringFx(a.x,a.y,AM,W*.6,700,7,.5);ringFx(a.x,a.y,BL,W*.44,700,4,.5,110);
+  try{SND&&SND.thud&&SND.thud()}catch(e){}
+  for(let i=0;i<tg.length;i++){const t=tg[i],b=uc(t);
+    pillarFx(b.x,b.y,[BL,RD,AM,EM][i%4],680,b.s*.62,i*55);
+    slashLine(b.x,b.y,b.s*1.25,.6,['#ffffff',AM],230,4,i*55);
+    shapes(b.x,b.y,'tri',[COLS[i%4],'#ffe9a8',WL],11,6,4.2,34,.2,{});
+    sparks(b.x,b.y,'#ffe9a8',10,6,1.8,22);hit(X,t,1.15);await fxWait(55)}
+  await fxWait(360);if(!B)return;
+  /* il se recompose */
+  ringFx(a.x,a.y,'#ffe9a8',a.s*.9,620,4);glowPulse(a.x,a.y,AM,620,a.s*.6);
+  textPop(W/2,a.y-a.s*.55,'ROSE ÉCLATÉE',AM,Math.max(16,Math.min(25,W*.9/10)),1000);
+  await fxWait(430)};
+
+/* ---------- textes ---------- */
+try{const sd=skillDesc;skillDesc=function(sk){let r=sd.apply(this,arguments);
+  try{if(sk&&sk.fx&&sk.fx.rose)r+=` Les dégâts augmentent avec <b>tout ce qu'Orgemme a encaissé depuis le début du combat</b> (jusqu'à +240 %). Il y laisse 25 % de ses PV, et son <b>Renvoi monte à 70 % pendant ${sk.fx.reflect||3} tours</b>.`}catch(e){}return r}}catch(e){}
+const PASS=`<div class="skill orgpas"><div class="sn">🪟 Renvoi</div><div class="muted" style="font-size:11px;font-weight:800;letter-spacing:.4px">CAPACITÉ · PASSIVE</div><p style="margin:6px 0 0;font-size:13px">Chaque coup reçu lui renvoie <b>35 % des dégâts</b> dans la figure de l'attaquant. <b>Sous 50 % de PV, ça passe à 50 %.</b> Tout ce qu'il encaisse est aussi mis de côté pour son ultime.</p></div>`;
+try{const hm=heroModal;heroModal=function(id){const r=hm.apply(this,arguments);try{if(+id===ORG){const mo=$('#ovl .modal'),sk=mo&&mo.querySelector('.skill');if(sk)sk.insertAdjacentHTML('afterend',PASS)}}catch(e){}return r}}catch(e){}
+const st=document.createElement('style');st.textContent=`
+.sgfig.orgf{filter:drop-shadow(0 0 16px rgba(240,196,87,.5))}
+.skill.orgpas{border-color:rgba(240,196,87,.5)!important;background:linear-gradient(135deg,rgba(240,196,87,.13),rgba(63,127,208,.1) 60%,transparent 80%),var(--panel)!important}`;document.head.appendChild(st);
+try{Object.assign(I18N_EN,{'Orgemme le Colosse de Vitrail':'Orgemme the Stained-Glass Colossus','Rose Éclatée':'Shattered Rose','ROSE ÉCLATÉE':'SHATTERED ROSE','🪟 Renvoi':'🪟 Backlash',
+ "Chaque coup reçu lui renvoie <b>35 % des dégâts</b> dans la figure de l'attaquant. <b>Sous 50 % de PV, ça passe à 50 %.</b> Tout ce qu'il encaisse est aussi mis de côté pour son ultime.":"Every hit he takes sends <b>35 % of the damage</b> straight back at the attacker. <b>Below 50 % HP it becomes 50 %.</b> Everything he absorbs is also stored up for his ultimate."})}catch(e){}
+}catch(e){console.warn('orgemme renvoi',e)}})();
+/* ================= V417 : PERRIN, LE DERNIER DE LA GARDE =================
+   Dix-sept ans. On lui a dit de rendre son bouclier et de rentrer chez lui.
+   Il n'est pas rentré. Plus il reste seul, plus il tient. */
+const PRN=76;
+(function(){try{
+if(HEROES[PRN]||HEROES.length!==PRN)return;
+HEROES.push({i:PRN,n:'Perrin le Dernier de la Garde',c:'Tank',r:3,
+  exd:"Termine la chronique « Le Mur qui Reste » (Aegis) dans les Chroniques des Héros.",
+  sk:{n:'Je tiens',tg:'team',fx:{shield:150,shieldself:200,taunt:2,wall:1}}});
+const done=()=>{try{return!!(S.hchr&&S.hchr.d&&S.hchr.d['1_2'])}catch(e){return false}};
+try{Object.defineProperty(HEROES[PRN],'ex',{configurable:true,get(){return(done()||(S.heroes&&S.heroes[PRN]))?0:1}})}catch(e){HEROES[PRN].ex=1}
+try{LOOKS[PRN]=['#2a5aa8','#e8c05a','#c0c6d4','#c8872a','#f0cdaa','#5a4030','bg:star back:none hair:short eyes:round mouth:set body:small ear:human']}catch(e){}
+}catch(e){console.warn('perrin hero',e)}})();
+
+/* ---------- le dessin ---------- */
+(function(){try{
+if(!HEROES[PRN])return;
+const PC={},O='stroke="#141020" stroke-width="1.7" stroke-linejoin="round" stroke-linecap="round"',
+ BL='#2a5aa8',BL2='#4a86d8',BL3='#1a3a70',GD='#e8c05a',GD2='#fff0b8',ST='#c0c6d4',ST2='#8a90a2',ST3='#5e6478',
+ LE='#5a4030',SK='#f0cdaa',SK2='#cfa47e',HR='#c8872a',HR2='#e8aa4a';
+const A=(at,v,d,b)=>`<animate attributeName="${at}" values="${v}" dur="${d}s"${b?` begin="${b}s"`:''} repeatCount="indefinite"/>`;
+function prnArt(q,u,o){u=Math.max(0,Math.min(3,u|0));o=o||{};
+ const lim=(d,w,c)=>`<path d="${d}" fill="none" stroke="#141020" stroke-width="${w+3}" stroke-linecap="round" stroke-linejoin="round"/><path d="${d}" fill="none" stroke="${c}" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round"/>`;
+ let s=`<defs>
+  <linearGradient id="${q}b" x1=".2" y1="0" x2=".8" y2="1"><stop offset="0" stop-color="${BL2}"/><stop offset=".55" stop-color="${BL}"/><stop offset="1" stop-color="${BL3}"/></linearGradient>
+  <linearGradient id="${q}m" x1=".2" y1="0" x2=".8" y2="1"><stop offset="0" stop-color="#e6ebf6"/><stop offset=".5" stop-color="${ST}"/><stop offset="1" stop-color="${ST3}"/></linearGradient>
+  <radialGradient id="${q}g"><stop offset="0" stop-color="${GD2}" stop-opacity=".4"/><stop offset=".6" stop-color="${BL2}" stop-opacity=".2"/><stop offset="1" stop-color="${BL}" stop-opacity="0"/></radialGradient></defs>`;
+ s+=`<ellipse cx="80" cy="104" rx="74" ry="100" fill="url(#${q}g)"/>`;
+ if(!o.bust)s+=`<ellipse cx="80" cy="214" rx="34" ry="6" fill="#000" opacity=".45"/>`;
+ /* jambes trop grandes pour lui */
+ s+=lim('M70 150L66 186L64 200',13,`url(#${q}m)`);
+ s+=lim('M92 150L98 186L100 200',13,`url(#${q}m)`);
+ s+=`<path d="M52 196h26q4 0 4 4v9q0 4-4 4H56q-4 0-4-4Z" fill="${LE}" ${O}/>`;
+ s+=`<path d="M86 196h26q4 0 4 4v9q0 4-4 4H90q-4 0-4-4Z" fill="${LE}" ${O}/>`;
+ /* la cotte et le surcot */
+ s+=`<path d="M80 64Q58 68 54 86L50 132Q66 146 80 146T110 132L106 86Q102 68 80 64Z" fill="url(#${q}m)" ${O}/>`;
+ s+=`<path d="M80 66Q64 70 61 86L58 132Q68 142 80 142T102 132L99 86Q96 70 80 66Z" fill="url(#${q}b)" ${O}/>`;
+ s+=`<path d="M80 86l6 10-6 10-6-10Z" fill="${GD}" ${O}/>`;
+ s+=`<path d="M74 104h12v20H74Z" fill="${GD}" opacity=".9" stroke="#141020" stroke-width="1.4"/>`;
+ s+=`<path d="M80 104v20M74 112h12" stroke="${BL3}" stroke-width="1.4"/>`;
+ /* épaulière dépareillée : une seule, trop grande */
+ s+=`<path d="M52 78q14-8 24 2l-4 12q-10-8-22-2Z" fill="url(#${q}m)" ${O}/>`;
+ s+=`<path d="M50 88q12-6 22 1l-3 9q-9-6-20-1Z" fill="url(#${q}m)" ${O}/>`;
+ s+=`<path d="M106 76q8 2 10 10l-10 4q-1-6-6-8Z" fill="${LE}" ${O}/>`;
+ /* bras droit : la main serrée sur l'épée, encore au fourreau */
+ s+=lim('M104 88L116 112L112 136',11.5,`url(#${q}m)`);
+ s+=`<circle cx="112" cy="140" r="6" fill="${SK}" ${O}/>`;
+ s+=`<path d="M116 128l10 36q1 4-3 5l-4 1q-4 1-5-3l-9-36Z" fill="${LE}" ${O}/>`;
+ s+=`<path d="M112 120h10l2 8h-12Z" fill="${GD}" ${O}/>`;
+ /* bras gauche : accroché à l'énarme du bouclier */
+ s+=lim('M58 88L48 112L56 130',11.5,`url(#${q}m)`);
+ /* tête */
+ s+=`<ellipse cx="80" cy="44" rx="13.4" ry="15" fill="${SK}" ${O}/>`;
+ s+=`<path d="M67 44Q64 26 80 24Q96 26 93 44Q91 34 86 32Q80 36 74 32Q69 34 67 44Z" fill="${HR}" ${O}/>`;
+ s+=`<path d="M86 26q6 3 7 10l-4 1q-1-6-5-8Z" fill="${HR2}" ${O}/>`;
+ /* le heaume, trop grand, repoussé en arrière, cabossé */
+ s+=`<path d="M62 36q0-20 18-21t18 21l-2 6q-4-14-16-14T64 42Z" fill="url(#${q}m)" ${O}/>`;
+ s+=`<path d="M62 36h36l1.6 6H60.4Z" fill="${ST2}" ${O}/>`;
+ s+=`<path d="M80 15v-5" stroke="${ST2}" stroke-width="2.4" stroke-linecap="round"/><circle cx="80" cy="9" r="2.6" fill="${GD}" ${O}/>`;
+ s+=`<path d="M86 20q5 4 5.6 10" stroke="${ST3}" stroke-width="1.6" fill="none"/>`;
+ s+=`<path d="M70 24q-3 5-2.6 10" stroke="${ST3}" stroke-width="1.6" fill="none"/>`;
+ /* visage : dix-sept ans, et il reste quand même */
+ s+=`<ellipse cx="74.6" cy="44.4" rx="2.3" ry="2.6" fill="#2a2440"/><ellipse cx="85.4" cy="44.4" rx="2.3" ry="2.6" fill="#2a2440"/>`;
+ s+=`<circle cx="74" cy="43.6" r="1" fill="#fff"/><circle cx="84.8" cy="43.6" r="1" fill="#fff"/>`;
+ s+=`<path d="M70.6 39.4q4.4-2.4 8.4-.4M89.4 39.4q-4.4-2.4-8.4-.4" stroke="${HR}" stroke-width="2.1" fill="none" stroke-linecap="round"/>`;
+ s+=`<path d="M75.4 52.4h9.2" stroke="#b07a5a" stroke-width="2" stroke-linecap="round"/>`;
+ s+=[[70,48],[73,50.6],[88,47.6],[90.6,50]].map(([x,y])=>`<circle cx="${x}" cy="${y}" r=".9" fill="${SK2}"/>`).join('');
+ /* le bouclier, plus grand que lui */
+ s+=`<g transform="translate(-14 5) scale(.94)"><g><path d="M30 92Q80 78 130 92L128 148Q80 204 32 148Z" fill="url(#${q}b)" ${O} stroke-width="2.4"/>
+  <path d="M34 96Q80 84 126 96L124 146Q80 196 36 146Z" fill="none" stroke="${GD}" stroke-width="2.2" opacity=".9"/>
+  <path d="M80 88V196" stroke="${BL3}" stroke-width="2" opacity=".55"/>
+  <path d="M80 104l10 16-10 16-10-16Z" fill="${GD}" ${O}/>
+  <path d="M80 112l5 8-5 8-5-8Z" fill="${GD2}"/>
+  <path d="M56 100l6 10M104 100l-6 10" stroke="${GD}" stroke-width="2" opacity=".75"/>
+  <path d="M46 118q6 8 2 16M114 118q-6 8-2 16" stroke="${BL3}" stroke-width="2.4" opacity=".6"/>
+  <path d="M100 140l12 6-11 3Z" fill="#141020" opacity=".7"/>
+  <path d="M52 158l10 3-8 5Z" fill="#141020" opacity=".7"/>
+  <circle cx="64" cy="132" r="2.6" fill="#141020" opacity=".65"/><circle cx="98" cy="156" r="2.2" fill="#141020" opacity=".6"/>
+  ${u>=1?`<path d="M30 92Q80 78 130 92L128 148Q80 204 32 148Z" fill="none" stroke="${GD2}" stroke-width="2" opacity="0">${A('opacity','0;.85;0',2.8)}</path>`:''}
+  ${u>=2?`<path d="M36 112q44-10 88 0" fill="none" stroke="${GD2}" stroke-width="1.6" opacity=".7"/><path d="M40 132q40-9 80 0" fill="none" stroke="${GD2}" stroke-width="1.6" opacity=".55"/>`:''}
+  <animateTransform attributeName="transform" type="translate" values="0 0;0 -2.4;0 0" dur="3.6s" repeatCount="indefinite"/></g></g>`;
+ if(u>=3)s+=`<g opacity=".7"><ellipse cx="80" cy="130" rx="60" ry="62" fill="none" stroke="${GD2}" stroke-width="1.6">${A('rx','52;70;52',3)}${A('opacity','.65;0;.65',3)}</ellipse></g>`;
+ return s}
+function prnBody(u){const k='b'+(u|0);if(PC[k])return PC[k];
+ return PC[k]=`<svg class="hbsvg" viewBox="0 -8 160 244" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Perrin le Dernier de la Garde en pied">${prnArt('pb'+(u|0)+'_',u)}</svg>`}
+function prnPortrait(u){const k='p'+(u|0);if(PC[k])return PC[k];const q='pp'+(u|0)+'_';
+ return PC[k]=`<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Perrin le Dernier de la Garde"><defs><radialGradient id="${q}bg" cx="50%" cy="34%" r="76%"><stop offset="0" stop-color="#3a5e9a"/><stop offset=".45" stop-color="#1a2846"/><stop offset="1" stop-color="#0a0e1a"/></radialGradient></defs><rect width="100" height="100" fill="url(#${q}bg)"/><g transform="translate(-66 -17) scale(1.45)">${prnArt(q,u,{bust:1})}</g></svg>`}
+window.prnBody=prnBody;window.prnPortrait=prnPortrait;
+{const pu=portraitU;portraitU=function(h,u){if(h&&h.i===PRN)return prnPortrait(u);return pu.apply(this,arguments)}}
+{const hb=heroBody;heroBody=function(h,u=0){if(h&&h.i===PRN)return prnBody(u);return hb.apply(this,arguments)}}
+try{const sf=sagaFig;sagaFig=function(w){if(w==='perrin')return`<div class="sgfig lore prnf">${prnBody(0)}</div>`;return sf.apply(this,arguments)}}catch(e){}
+}catch(e){console.warn('perrin art',e)}})();
+
+/* ---------- le mur qui reste ---------- */
+(function(){try{
+if(!HEROES[PRN])return;
+const GD='#e8c05a',GD2='#fff0b8',BL='#4a86d8',WH='#ffffff';
+const ok=()=>typeof B!=='undefined'&&B&&!B.skip&&typeof FXS!=='undefined'&&FXS.ctx&&!(typeof REDUCED!=='undefined'&&REDUCED);
+const fallen=u=>{try{return B.units.filter(x=>x.side===u.side&&x!==u&&x.hp<=0).length}catch(e){return 0}};
+/* chaque allié tombé le rend plus dur */
+{const r0=refreshUnits;refreshUnits=function(){const r=r0.apply(this,arguments);
+  try{if(B)for(const u of B.units){if(u.hid!==PRN||u.hp<=0)continue;
+    if(u.dm0===undefined)u.dm0=u.dm||1;if(u.tm0===undefined)u.tm0=u.tm||1;
+    const n=fallen(u);if(n===u.wallN)continue;
+    const up=n>(u.wallN||0);u.wallN=n;
+    u.dm=u.dm0*(1+.18*n);u.tm=u.tm0*Math.max(.45,1-.12*n);
+    if(up){u.en=Math.min(100,(u.en||0)+20);
+      log(`🛡️ <b>${u.name}</b> ne recule pas : +${Math.round(18*n)} % de dégâts, −${Math.round(12*n)} % de dégâts subis.`,'sk');
+      if(ok())try{const b=uc(u);float(u,'🛡️ Je tiens','info');ringFx(b.x,b.y,GD,b.s*.7,520,4);glowPulse(b.x,b.y,GD2,480,b.s*.45)}catch(e){}}}}catch(e){}
+  return r}}
+/* son bouclier grandit avec ce qu'il a perdu */
+{const sk0=skill;skill=function(u,sk,sc){
+  if(!(B&&u&&u.hid===PRN&&sk&&sk.fx&&sk.fx.wall))return sk0.apply(this,arguments);
+  const f=sk.fx,s0=f.shieldself,sh0=f.shield,n=fallen(u);
+  f.shieldself=Math.round(s0*(1+.5*n));f.shield=Math.round(sh0*(1+.25*n));
+  try{return sk0.apply(this,arguments)}finally{f.shieldself=s0;f.shield=sh0;
+    try{if(n)log(`🛡️ Pour chaque compagnon tombé, Perrin tient un peu mieux : bouclier +${Math.round(50*n)} % sur lui.`,'sk')}catch(e){}}}}
+/* l'animation : un mur qui monte devant l'équipe */
+function wallFx(y,dur,col){fxItem(dur,(c,p)=>{const g=ease(Math.min(1,p*1.7)),al=p>.72?(1-p)/.28:1,H=FXS.h*.5*g;
+  c.globalAlpha=al*.5;const gr=c.createLinearGradient(0,y,0,y-H);gr.addColorStop(0,hexA(col,.85));gr.addColorStop(1,hexA(col,0));
+  c.fillStyle=gr;c.fillRect(0,y-H,FXS.w,H);
+  c.globalAlpha=al*.9;c.strokeStyle=col;c.lineWidth=3;c.beginPath();c.moveTo(0,y-H);c.lineTo(FXS.w,y-H);c.stroke();
+  for(let k=0;k<7;k++){c.globalAlpha=al*.3;c.lineWidth=1.6;c.beginPath();c.moveTo(FXS.w*k/7,y);c.lineTo(FXS.w*k/7,y-H);c.stroke()}})}
+LEG2[PRN]=async X=>{const {u}=X;fxSetup();if(!FXS.ctx)return;
+  const a=uc(u),W=FXS.w,H=FXS.h,m=rowMid(u.side),n=fallen(u);
+  vignette('#101a32',1400,.5);
+  glowPulse(a.x,a.y,GD2,560,a.s*.6);ringFx(a.x,a.y,GD,a.s*.8,520,4);
+  await fxWait(260);if(!B)return;
+  wallFx(m.y+m.s*.5,900,GD);
+  shapes(a.x,a.y,'plus',[GD2,GD,WH],10,3,4,40,-.05,{add:1,ang:-Math.PI/2,spread:1});
+  try{SND&&SND.thud&&SND.thud()}catch(e){}
+  shake(2);camPunch(m,1.05,380);
+  await fxWait(360);if(!B)return;
+  for(const t of alive(u.side)){const b=uc(t);domeFx(b.x,b.y,GD,b.s*.55,760);await fxWait(45)}
+  if(n>0)textPop(W/2,m.y-m.s*.45,n>=3?'PERSONNE NE PASSE':'JE TIENS',GD2,Math.max(15,Math.min(23,W*.9/11)),900);
+  await fxWait(420)};
+try{const sd=skillDesc;skillDesc=function(sk){let r=sd.apply(this,arguments);
+  try{if(sk&&sk.fx&&sk.fx.wall)r+=` Le bouclier qu'il se donne augmente de <b>+50 % par allié tombé</b> (et celui de l'équipe de +25 %).`}catch(e){}return r}}catch(e){}
+const PASS=`<div class="skill prnpas"><div class="sn">🛡️ Le mur qui reste</div><div class="muted" style="font-size:11px;font-weight:800;letter-spacing:.4px">CAPACITÉ · PASSIVE</div><p style="margin:6px 0 0;font-size:13px">Pour <b>chaque allié tombé</b> : <b>+18 % de dégâts</b>, <b>−12 % de dégâts subis</b> et <b>+20 énergie</b> immédiatement. Plus il reste seul, plus il tient.</p></div>`;
+try{const hm=heroModal;heroModal=function(id){const r=hm.apply(this,arguments);try{if(+id===PRN){const mo=$('#ovl .modal'),sk=mo&&mo.querySelector('.skill');if(sk)sk.insertAdjacentHTML('afterend',PASS)}}catch(e){}return r}}catch(e){}
+const st=document.createElement('style');st.textContent=`
+.sgfig.prnf{filter:drop-shadow(0 0 13px rgba(232,192,90,.5))}
+.skill.prnpas{border-color:rgba(232,192,90,.5)!important;background:linear-gradient(135deg,rgba(232,192,90,.13),rgba(74,134,216,.1) 60%,transparent 80%),var(--panel)!important}`;document.head.appendChild(st);
+try{Object.assign(I18N_EN,{'Perrin le Dernier de la Garde':'Perrin the Last of the Guard','Je tiens':'I Hold','JE TIENS':'I HOLD','PERSONNE NE PASSE':'NOBODY GETS THROUGH','🛡️ Le mur qui reste':'🛡️ The Wall That Stays',
+ "Pour <b>chaque allié tombé</b> : <b>+18 % de dégâts</b>, <b>−12 % de dégâts subis</b> et <b>+20 énergie</b> immédiatement. Plus il reste seul, plus il tient.":"For <b>every fallen ally</b>: <b>+18 % damage</b>, <b>−12 % damage taken</b> and <b>+20 energy</b> at once. The more alone he is, the harder he holds."})}catch(e){}
+}catch(e){console.warn('perrin mur',e)}})();
+/* ================= V418 : DEUX CHRONIQUES DE PLUS =================
+   « Le Dernier Duel » (Rouge-Garance) et « La Rose Brisée » (Orgemme).
+   Perrin se débloque au bout de la chronique d'Aegis. */
+(function(){try{
+if(typeof window.RDEaddChron!=='function'||typeof GAR==='undefined'||typeof ORG==='undefined')return;
+try{Object.assign(NMAP,{
+ 'Bretteur de Louage':{base:'Chevalier Déchu',o:{to:350,sat:.5},ov:['armor']},
+ 'Juge des Lames':{base:'Gargouille',o:{to:2,sat:.3,light:.9},ov:['mask']},
+ 'Champion Loué':{base:'Chevalier Déchu',o:{to:345,sat:.72,light:.95},ov:['armor','crown']},
+ 'Fiole de Verjus':{base:'Diablotin',o:{to:92,sat:.6},ov:['spectral']},
+ "Second d'Ambroise":{base:'Sorcière des Brumes',o:{to:330,sat:.5,light:.85},ov:['mask','runes']},
+ 'Garde du Tribunal':{base:'Chevalier Déchu',o:{to:0,sat:.25,light:.8},ov:['armor','mask']},
+ "Sire Ambroise, l'Invaincu":{base:'Chevalier Déchu',o:{to:352,sat:.88,light:1.05},ov:['crown','armor','aura']},
+ 'Pèlerin Gris':{base:'Spectre Noyé',o:{to:42,sat:.12,light:1.05},ov:['mask']},
+ 'Bedeau de Sainte-Vitre':{base:'Gargouille',o:{to:40,sat:.3,light:.95},ov:['crown']},
+ 'Gardien des Reliques':{base:'Golem Runique',o:{to:46,sat:.55,metal:1},ov:['runes','crown']},
+ 'Éclat Vivant':{base:'Élémentaire de Glace',o:{to:212,sat:.95,light:1.12},ov:['crystal']},
+ 'Vitrail Gardien':{base:'Sentinelle Céleste',o:{to:216,sat:.85},ov:['crystal','aura']},
+ "Garde de l'Évêque":{base:'Chevalier Déchu',o:{to:286,sat:.42,light:.9},ov:['armor']},
+ "L'Évêque Sombrard":{base:'Liche',o:{to:286,sat:.55,light:.98},ov:['crown','runes','spectral']}
+})}catch(e){console.warn('v418 mons',e)}
+
+/* ---------- ⚔️ Le Dernier Duel ---------- */
+window.RDEaddChron({id:'garance',hero:GAR,ic:'⚔️',n:'Le Dernier Duel',col:'#e04a5c',gift:()=>GAR,
+ tag:"Dans sa ville, on règle tout en duel. Et le champion de la ville n'a jamais perdu.",
+ ttl:{k:'dernduel',n:'Le Dernier Duel',d:'Terminer la chronique « Le Dernier Duel »'},
+ end:"« Tu as encore du sang sur les bras. » — « Non. C'est de la garance. »",
+ ch:[
+ {t:'Le teinturier',ic:'🧵',place:'Vaupré-les-Cuves',bg:['#f0d8d0','#a85a58','#1c1016'],mus:'dungeon',rw:120,
+  mins:[['Bretteur de Louage',350],['Juge des Lames',2]],boss:{n:'Champion Loué',h:345},bsk:{n:'Botte payée',fx:{dmg:105,crit:20}},
+  intro:[['narr',"Vaupré-les-Cuves sent le vinaigre et la garance. C'est une ville de teinturiers : les rues ont des rigoles rouges, et les mains des gens aussi."],
+   ['garance',"Je suis née dans la troisième maison après le pont. Ne me demandez pas pourquoi je ne suis pas revenue depuis onze ans."],
+   ['plume',"Hou… Garance ? Tes mains. Tout le monde ici les a comme toi."],
+   ['garance',"Oui. Dehors, les gens croient que c'est du sang. Je les laisse croire. Ça évite beaucoup de conversations."],
+   ['narr',"Sur la grand-place, deux hommes se tiennent face à face avec des épées. Autour, la ville entière regarde, comme on regarde un marché."],
+   [71,"Ils vont se battre pour de vrai ? Devant les enfants ?"],
+   ['narr',"« Tribunal des Lames », explique une vieille femme sans quitter le duel des yeux. « Un différend, un duel. C'est la loi depuis trois cents ans. Et si on ne sait pas tenir une épée, on paye quelqu'un qui sait. »"],
+   ['garance',"…Qui se bat, là ?"],
+   ['narr',"« Le teinturier Maurin contre un champion loué. Une histoire de cuves. Il va perdre, le pauvre vieux. »"],
+   ['garance',"Maurin."],
+   ['plume',"Garance ? Tu le connais ?"],
+   ['garance',"C'est mon père."],
+   {ch:[["⚔️ Prendre sa place dans le duel",'brv',"Il ne tiendra pas trois passes. J'y vais à sa place."],["🛡️ Le sortir de là d'abord",'cmp',"On arrête ça maintenant, on discutera des règles après."]]},
+   ['garance',"Champion loué. Tu es payé combien pour humilier un homme de soixante ans ?"]],
+  outro:[['narr',"Le champion loué repart sans son épée et sans son chapeau. La foule n'applaudit pas : elle note. Quelque chose vient de changer dans le barème."],
+   ['narr',"Maurin le teinturier regarde sa fille comme on regarde quelqu'un qu'on avait rangé dans les morts."],
+   ['narr',"« Tu n'aurais pas dû. Maintenant ils vont envoyer Ambroise. »"],
+   ['garance',"Qui est Ambroise ?"],
+   ['narr',"« Le champion de la ville. Quatre-vingt-onze duels. Quatre-vingt-onze victoires. Il n'a jamais été touché une seule fois. »"],
+   [62,"Personne n'est aussi bon. Pas sur quatre-vingt-onze duels."],
+   ['garance',"Non. Personne."]]},
+ {t:"Ce qu'il y a dans le gant",ic:'🧤',place:'Tribunal des Lames',bg:['#2a1a22','#7a4a4a','#140a10'],mus:'dungeon',rw:135,
+  mins:[['Fiole de Verjus',92],['Garde du Tribunal',0]],boss:{n:"Second d'Ambroise",h:330},bsk:{n:'Entre deux passes',fx:{dmg:108,dot:38}},
+  intro:[['narr',"Le Tribunal des Lames est une salle ronde avec du sable par terre, pour boire ce qui tombe. Au mur, quatre-vingt-onze plaques de cuivre gravées."],
+   ['garance',"Quatre-vingt-onze noms. Quatre-vingt-onze perdants. Et aucun qui s'est relevé."],
+   [71,"Regarde les dates. Les quarante premiers duels, les adversaires repartent blessés. À partir du quarante et unième, ils meurent tous."],
+   ['garance',"Il a changé quelque chose au quarante et unième."],
+   ['narr',"Dans l'arrière-salle, un homme mince au visage gris prépare le matériel : le gant, la coupe, le linge, et une petite fiole de verre vert."],
+   ['garance',"Vous êtes son second. Qu'est-ce qu'il y a dans la fiole ?"],
+   ['narr',"« Du verjus. Pour sa gorge. Il parle beaucoup avant les duels. »"],
+   [62,"Il ment. J'ai vu la même fiole à la Cour, un soir où un ambassadeur est mort de fatigue."],
+   ['narr',"« Vous ne comprenez pas ce que vous faites. Sire Ambroise, c'est la ville. S'il perd, les trois cents ans tombent avec lui. »"],
+   ['garance',"Et si je prouve qu'il triche, les trois cents ans tombent aussi, non ?"],
+   ['narr',"« Non. Parce que personne ne voudra l'avoir vu. »"],
+   ['narr',"Il casse la fiole d'un geste et tire sa lame. Derrière lui, les gardes du Tribunal ferment les portes."],
+   {ch:[["🧪 Récupérer un éclat de la fiole",'cmp',"Une preuve. On ne gagne pas ça à l'épée."],["⚔️ L'empêcher de prévenir Ambroise",'brv',"S'il sort d'ici, on perd l'effet de surprise."]]},
+   ['garance',"Entre deux passes. Il te tend le gant, tu l'essuies, et la lame est enduite. C'est ça, hein ?"]],
+  outro:[['narr',"Le second s'écroule sur le sable, et le sable boit. Dans sa manche, un deuxième gant, propre, prêt à être échangé."],
+   ['plume',"On l'a ! On a la preuve ! On va voir les juges !"],
+   ['narr',"Les juges regardent le gant. Les juges regardent l'éclat de verre vert. Les juges regardent les quatre-vingt-onze plaques de cuivre au mur."],
+   ['narr',"Puis le plus vieux repose le gant sur la table et dit : « Je ne vois qu'un gant, mademoiselle. »"],
+   ['garance',"…"],
+   [71,"Ils savaient. Depuis le quarante et unième, ils savaient tous."],
+   ['garance',"Alors il reste une seule façon de régler ça. La leur."]]},
+ {t:'Le dernier duel',ic:'🗡️',place:'La Place aux Rigoles',bg:['#3a1418','#a02a34','#120508'],mus:'dungeon',rw:175,
+  mins:[['Bretteur de Louage',350],['Garde du Tribunal',0]],boss:{n:"Sire Ambroise, l'Invaincu",h:352},bsk:{n:'Quatre-vingt-douze',fx:{dmg:124,dot:42,crit:20}},
+  intro:[['narr',"Toute la ville est là. Les teinturiers ont laissé les cuves ouvertes, et la rigole rouge passe au milieu de la place, entre les deux duellistes."],
+   ['narr',"Sire Ambroise est plus petit qu'on ne l'imagine. Il sourit beaucoup. Il a des mains très propres."],
+   ['narr',"« La fille de Maurin. On m'a dit que tu avais tué mon second. C'était un homme bien, tu sais. Il avait des enfants. »"],
+   ['garance',"Quatre-vingt-onze, Ambroise. Combien avaient des enfants ?"],
+   ['narr',"« Je ne compte pas ça. Je compte les victoires. »"],
+   [69,"Garance. Il n'a plus de second. Il n'a plus son gant. Techniquement, c'est un duel propre."],
+   ['garance',"Non. Un homme qui a triché quatre-vingt-onze fois ne sait plus se battre autrement. C'est ça qui va le tuer."],
+   ['narr',"Les juges lèvent la main. La foule se tait. Quelque part derrière, un vieux teinturier tient sa canne à deux mains."],
+   ['garance',"Papa. Ferme les yeux, s'il te plaît."],
+   {ch:[["⚔️ Le laisser frapper en premier",'cmp',"Qu'il montre à toute la ville comment il gagne."],["🗡️ Ouvrir, et vite",'brv',"Le plus vite sera le plus propre."]]},
+   ['narr',"Ambroise salue. Et au milieu du salut, sa main gauche passe sous sa manche."]],
+  outro:[['narr',"Il a triché. Bien sûr qu'il a triché : une petite lame dans la manche gauche, au quatrième échange, pendant que la foule regardait la droite."],
+   ['narr',"Elle l'a vu venir — mais pas assez vite. La lame lui ouvre la main gauche en travers, celle qui est rouge jusqu'au coude."],
+   ['narr',"Et Garance, au lieu de reculer, referme cette main-là sur la lame et tire Ambroise vers elle."],
+   ['narr',"Le quatre-vingt-douzième duel de Sire Ambroise aura duré onze secondes."],
+   ['garance',"…Voilà. C'est fini."],
+   ['plume',"Garance ! Ta main ! Il y a du sang partout, il faut—"],
+   ['garance',"Non. Regarde mieux."],
+   ['narr',"Sur ses bras, le rouge s'arrête net au coude, comme une manche. C'est de la garance. Ça n'est jamais parti au lavage depuis qu'elle a huit ans."],
+   ['narr',"Le sang, lui, ne commence qu'à la paume. Il y en a beaucoup moins qu'on ne croit. Il y en a toujours beaucoup moins qu'on ne croit."],
+   ['narr',"Le Tribunal des Lames a été aboli trois jours plus tard, par les mêmes juges, qui ont expliqué qu'ils y pensaient depuis longtemps."],
+   ['narr',"Personne n'a rendu l'atelier à Maurin. Il est mort l'hiver suivant, sans avoir jamais redemandé à sa fille pourquoi elle était partie onze ans."],
+   ['garance',"Elle garde deux doigts raides de la main gauche. Elle dit que ça ne la gêne pas : ce n'est pas la main de l'épée."]]}]});
+
+/* ---------- 🪟 La Rose Brisée ---------- */
+window.RDEaddChron({id:'orgemme',hero:ORG,ic:'🪟',n:'La Rose Brisée',col:'#f0c457',gift:()=>ORG,
+ tag:"Une rosace tient toute seule en l'air au-dessus d'un village. Ce n'est pas un miracle.",
+ ttl:{k:'rosebris',n:'La Rose Brisée',d:'Terminer la chronique « La Rose Brisée »'},
+ end:"« Quarante ans debout. Il voulait juste s'asseoir. »",
+ ch:[
+ {t:'Le miracle de Sainte-Vitre',ic:'✨',place:'Sainte-Vitre',bg:['#f4e8c8','#b89050','#1a1408'],mus:'dungeon',rw:125,
+  mins:[['Pèlerin Gris',42],['Bedeau de Sainte-Vitre',40]],boss:{n:'Gardien des Reliques',h:46},bsk:{n:'Offrande obligatoire',fx:{dmg:100,drain:25}},
+  intro:[['narr',"De loin, on croit à une erreur des yeux : une rosace de cathédrale, vingt mètres de diamètre, debout en plein ciel. Rien autour. Pas de mur, pas de toit, pas de pierres."],
+   ['plume',"Hou-hou-hou. Porteur. Il n'y a RIEN qui la tient."],
+   ['narr',"En dessous, un village. Cent maisons serrées sous la rosace, construites après elle, exprès, pour être dedans quand la lumière passe."],
+   ['narr',"La lumière passe. Elle peint des taches bleues et rouges sur les toits, sur les gens, sur les chèvres."],
+   [70,"C'est… c'est magnifique. Et j'ai très envie de partir d'ici tout de suite."],
+   ['plume',"Pareil. Pourquoi ?"],
+   [70,"Parce qu'une chose qui ne devrait pas tenir et qui tient quand même, ça veut dire que quelque chose la tient."],
+   ['narr',"Sur la place, des pèlerins font la queue devant une châsse gardée par un colosse de pierre et de verre. Un bedeau encaisse les offrandes."],
+   ['narr',"« Deux pièces pour toucher la châsse. Cinq pour prier dessous à midi, quand la lumière est bonne. Pas de remboursement en cas de nuage. »"],
+   [69,"Et si on ne paye pas ?"],
+   ['narr',"Le colosse se tourne vers nous. Très lentement. Les pèlerins s'écartent, en gens qui ont déjà vu ça."],
+   {ch:[["💰 Payer et poser des questions",'cmp',"On paye. Cinq pièces contre des réponses, c'est donné."],["⚔️ Refuser de payer pour un ciel",'brv',"La lumière du jour n'appartient à personne."]]},
+   ['plume',"Je n'aime pas les endroits où un miracle a un tarif."]],
+  outro:[['narr',"Le Gardien des Reliques se défait en morceaux de verre et de mortier. Dans la châsse, il n'y a pas de relique : il y a un registre comptable."],
+   [71,"Quatre mille deux cents pèlerins l'an dernier. Deux cent dix mille pièces."],
+   ['narr',"Au-dessus de nous, très haut, la rosace bouge. Pas de beaucoup : de trois ou quatre degrés. Elle s'est tournée vers nous."],
+   ['plume',"HOU. Elle nous regarde."],
+   [70,"Non. Elle regarde la châsse. Elle a vu ce qu'on vient d'y trouver."]]},
+ {t:'Le verrier dans le verre',ic:'🫧',place:'La nef sans murs',bg:['#1a2a4a','#4a7ab8','#0a1020'],mus:'dungeon',rw:140,
+  mins:[['Éclat Vivant',212],['Pèlerin Gris',42]],boss:{n:'Vitrail Gardien',h:216},bsk:{n:'Éclats de verre',fx:{dmg:112,weak:1}},
+  intro:[['narr',"On monte par l'escalier de l'ancienne tour, le seul morceau de cathédrale encore debout. Quarante mètres de marches qui ne mènent nulle part."],
+   ['narr',"En haut, on est à hauteur de la rosace. De près, elle est vivante : les plombs respirent, et l'œil de lumière au centre suit chacun de nos mouvements."],
+   ['orgemme',"…Vous êtes montés. En quarante ans, personne n'était monté."],
+   ['plume',"HOU ! Elle parle ! Elle parle, Porteur !"],
+   ['orgemme',"Je m'appelais Orgemme. J'étais maître-verrier. C'est moi qui ai fait cette rosace, il y a quarante-trois ans. J'en étais très fier."],
+   [69,"Qu'est-ce qui vous est arrivé ?"],
+   {fb:1,t:'Il y a quarante ans…'},
+   ['narr',"La cathédrale brûle. Le feu a pris par la charpente, et la charpente tient les voûtes, et les voûtes tiennent tout."],
+   ['narr',"Dans la nef, deux cents personnes sont venues s'abriter de l'orage, et les portes ont gonflé."],
+   ['narr',"Un homme en tablier de cuir monte sur l'échafaudage avec un seau de plomb fondu. Il ne sait pas ce qu'il fait. Il sait seulement que son vitrail est la dernière pièce qui tient encore."],
+   ['narr',"Il se coule dedans. Littéralement. On ne devrait pas pouvoir faire ça. Il le fait quand même, parce que personne ne lui a dit que c'était impossible."],
+   {fb:0},
+   ['orgemme',"Les deux cents personnes sont sorties. Les voûtes sont tombées. Moi, je tiens ce qu'il reste : un pan de ciel, et tout ce qu'il y a dessous."],
+   [70,"Et si vous bougez ?"],
+   ['orgemme',"Alors quarante mètres de pierre tombent sur cent maisons. Je l'ai calculé souvent. J'ai eu le temps."],
+   ['narr',"Quelque chose remonte l'escalier derrière nous. Un deuxième colosse de verre, plus petit, aux couleurs identiques."],
+   ['orgemme',"Ah. Celui-là, ce n'est pas moi. L'évêque fait fondre mes chutes."],
+   {ch:[["🪟 Protéger Orgemme pendant le combat",'cmp',"S'il se défend, le village tombe. On s'en occupe."],["⚔️ Briser la copie",'brv',"Ce n'est que du verre volé. Ça se casse."]]},
+   ['orgemme',"Faites attention aux éclats. Ils ont ma colère dedans, et je n'en suis pas fier."]],
+  outro:[['narr',"Le Vitrail Gardien tombe de la tour et met longtemps à arriver en bas. Orgemme ne regarde pas."],
+   ['orgemme',"L'évêque Sombrard sait tout depuis le début. C'est lui qui a interdit qu'on reconstruise ailleurs."],
+   [71,"Pourquoi ?"],
+   ['orgemme',"Parce qu'un village sous un miracle, ça fait venir des pèlerins. Et qu'un village qui déménage, ça n'en fait plus venir du tout."],
+   ['plume',"Alors il garde cent familles sous quarante mètres de pierre… pour des pièces ?"],
+   ['orgemme',"Il dit que je suis la preuve que Dieu les protège. Il n'a pas tort. C'est juste que ce n'est pas Dieu, et que je suis fatigué."]]},
+ {t:'Déplacer le village',ic:'🏚️',place:'Sous la rosace',bg:['#2a1c2e','#8a5a7a','#120a14'],mus:'dungeon',rw:180,
+  mins:[["Garde de l'Évêque",286],['Bedeau de Sainte-Vitre',40]],boss:{n:"L'Évêque Sombrard",h:286},bsk:{n:'Anathème',fx:{dmg:120,weak:1,drain:20}},
+  intro:[['narr',"On a mis onze jours à convaincre cent familles de partir. Ce qui a marché, ce n'est pas la vérité : c'est quand Orgemme a parlé, et que tout le village a entendu la voix sortir du ciel."],
+   ['narr',"Au matin du douzième jour, il reste les charrettes, la poussière, et l'évêque Sombrard debout devant le pont avec sa garde."],
+   ['narr',"« Personne ne sort. Ce village est un lieu saint. On ne déménage pas un lieu saint, on y reste. »"],
+   [69,"Il y a des enfants dans ces charrettes."],
+   ['narr',"« Il y a des enfants qui ont la chance de naître sous une rosace qui tient toute seule. Vous leur enlevez ça pour quoi ? Pour une plaine ? »"],
+   ['orgemme',"Sombrard. Dis-leur ce que tu sais."],
+   ['narr',"« Je sais qu'un maître-verrier est entré dans son œuvre et n'en est jamais ressorti. Et je sais que c'est le plus beau miracle de ce royaume. »"],
+   ['orgemme',"Dis-leur combien de temps je tiens encore."],
+   ['narr',"Silence. L'évêque ne répond pas. Un pèlerin, au fond, demande : « …Combien ? »"],
+   ['orgemme',"Trois ans. Peut-être deux. Le plomb coule, en bas. Il l'a fait mesurer il y a six ans."],
+   [70,"Six ans ?! Et vous les avez laissés construire une école ?"],
+   {ch:[["🛡️ Ouvrir le pont pour les charrettes",'cmp',"Les gens d'abord. Il peut parler, on fait passer."],["⚔️ Arrêter Sombrard tout de suite",'brv',"Tant qu'il est debout devant ce pont, personne ne passe."]]},
+   ['narr',"L'évêque lève la main, et sa garde avance."]],
+  outro:[['narr',"Sombrard tombe au milieu du pont. Il n'a pas demandé pardon : il a demandé qu'on compte combien de pèlerins viendraient encore l'année prochaine."],
+   ['narr',"À midi, la dernière charrette passe la crête. Le village de Sainte-Vitre est vide pour la première fois depuis quarante ans."],
+   ['orgemme',"…Je peux ?"],
+   ['plume',"Attends ! Attends — il reste quelqu'un ?"],
+   ['narr',"Il reste quelqu'un. Une silhouette noire, assise sur les marches de la châsse vide, qui a refusé de monter dans les charrettes."],
+   ['orgemme',"Je lui ai demandé trois fois."],
+   [69,"Alors ce n'est plus votre affaire. Ni la nôtre."],
+   ['narr',"Orgemme bouge pour la première fois depuis quarante ans."],
+   ['narr',"Le bruit n'est pas celui qu'on imagine. Ce n'est pas un fracas : c'est un très long soupir de pierre, et puis plus rien, et puis de la poussière pendant une heure."],
+   ['narr',"Quand elle retombe, il y a un colosse debout au milieu des ruines. Il est couvert de fêlures qu'on a recousues à l'or, parce que quarante ans debout, ça se voit."],
+   ['orgemme',"Quarante-trois ans que je n'avais pas vu ce que je fabriquais d'en bas."],
+   ['plume',"C'est beau ?"],
+   ['orgemme',"Non. C'est cassé. Mais c'est la première chose que je regarde parce que j'en ai envie."]]}]});
+
+/* ---------- annonce et patch ---------- */
+try{const al=annList;annList=function(){const L=al.apply(this,arguments);try{if(!L.some(a=>a.k==='v53'))L.unshift({k:'v53',ac:'#e04a5c',tag:'NOUVEAU',t:'Le duel, le vitrail et le gamin ⚔️🪟🛡️',
+  x:"Trois arrivées d'un coup.<br><br><b>⚔️ Rouge-Garance la Duelliste</b> (Guerrier légendaire) <b>contre toutes les attaques normales</b> qu'elle reçoit. Son ultime provoque le plus dangereux en <b>duel</b> : eux deux ne ciblent plus personne d'autre, personne d'autre ne les cible, et <b>ses alliés ne peuvent plus le soigner</b>.<br><br><b>🪟 Orgemme le Colosse de Vitrail</b> (Tank légendaire) <b>renvoie 35 % des dégâts</b> reçus (50 % sous la moitié de ses PV). Son ultime le brise exprès : les dégâts dépendent de <b>tout ce qu'il a encaissé</b>.<br><br><b>🛡️ Perrin le Dernier de la Garde</b> (Tank épique) devient plus fort à <b>chaque allié tombé</b>. Il se débloque au bout de la chronique d'Aegis.<br><br>Et deux chroniques de plus : <b>Le Dernier Duel</b> et <b>La Rose Brisée</b>.",
+  art:()=>`<div class="skann v53ann">${typeof garBody==='function'?garBody(0):''}${typeof orgBody==='function'?orgBody(0):''}</div>`,
+  go:'📖 Voir les chroniques',fn:()=>{TAB='adv';try{scrollTo(0,0)}catch(e){}}})}catch(e){}return L}}catch(e){}
+try{PATCH.unshift({v:'v53',d:Date.now(),t:'Rouge-Garance, Orgemme et Perrin',items:[
+ "⚔️ <b>Rouge-Garance la Duelliste</b>, Guerrier légendaire. Passive <b>Riposte</b> : elle contre chaque attaque normale reçue pour 70 % de son ATQ. Ultime <b>Mise en Garde</b> : duel de 2 tours contre l'ennemi le plus dangereux — plus aucune interférence des deux côtés, et ses alliés ne peuvent plus le soigner ni le protéger.",
+ "🪟 <b>Orgemme le Colosse de Vitrail</b>, Tank légendaire. Passive <b>Renvoi</b> : 35 % des dégâts reçus repartent sur l'attaquant, 50 % sous la moitié de ses PV. Ultime <b>Rose Éclatée</b> : il se brise exprès, les dégâts montent avec tout ce qu'il a encaissé (jusqu'à +240 %), l'équipe gagne un bouclier et son Renvoi passe à 70 % pendant 3 tours.",
+ "🛡️ <b>Perrin le Dernier de la Garde</b>, Tank épique. Pour chaque allié tombé : +18 % de dégâts, −12 % de dégâts subis et +20 énergie. Il se débloque en terminant la chronique d'Aegis.",
+ "📖 Deux chroniques de plus : <b>Le Dernier Duel</b> (Garance) et <b>La Rose Brisée</b> (Orgemme). Elles donnent le héros si tu ne l'as pas encore.",
+ "🏷️ Trois nouveaux titres : Le Dernier Duel, La Rose Brisée, et celui de la Garde."]})}catch(e){}
+const st=document.createElement('style');st.textContent=`.skann.v53ann{display:flex;justify-content:center;gap:4px}.skann.v53ann svg{height:160px;width:auto}`;document.head.appendChild(st);
+}catch(e){console.warn('chroniques v418',e)}})();
 /* ================= toujours en dernier : l'écran de chargement reprend les dessins à jour ================= */
 (function(){try{
   /* Livre III : le Roi de Cendre (nouveau design) au premier rang, et le souvenir du jeune Éryndel au-dessus de la couronne */
