@@ -56,7 +56,7 @@ window.claude={use:async k=>{if(k==='db'||k==='user'){try{const F=await window.R
 window.RDEF();
 })();
 </script>
-<script>window.RDE_V='20261111170107';if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));</script>
+<script>window.RDE_V='20261111170754';if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));</script>
 </head><body>
 <title>RDE · Royaumes d'Éther</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -26403,6 +26403,16 @@ try{PATCH.unshift({v:'v55',d:Date.now(),t:'Essai des nouveaux héros',items:[
  "🛡️ Nouvelle chronique : <b>Le Gué du Commandant</b> (Perrin), après « Le Mur qui Reste ».",
  "🎨 Marn, Rouge-Garance, Orgemme, Perrin et Corvin redessinés dans le style des autres héros."]})}catch(e){}
 }catch(e){console.warn('essai v427',e)}})();
+/* ================= V428 : LE MODE HISTOIRE DANS TOUS LES MODES DE L'AVENTURE =================
+   En Normal et en Difficile, l'Aventure était dessinée sans la carte du mode histoire
+   (ni les Chroniques des Héros). On la remet en haut, comme en Facile. */
+(function(){try{
+const pa=pAdv;pAdv=function(){const h=pa.apply(this,arguments);
+  try{if(typeof h!=='string'||h.indexOf('hccard')>=0||h.indexOf('sgcard')>=0)return h;
+    const sc=sagaCard();if(!sc)return h;const i=h.indexOf('<div class="card');
+    return i>=0?h.slice(0,i)+sc+h.slice(i):sc+h}catch(e){console.warn('histoire avent.',e)}
+  return h};
+}catch(e){console.warn('v428',e)}})();
 /* ================= toujours en dernier : l'écran de chargement reprend les dessins à jour ================= */
 (function(){try{
   /* Livre III : le Roi de Cendre (nouveau design) au premier rang, et le souvenir du jeune Éryndel au-dessus de la couronne */
