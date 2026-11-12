@@ -110,11 +110,19 @@ function ethPage(){if(!S.ethSeen){S.ethSeen=1;try{save()}catch(e){}}const L=Obje
   /* échanges */
   h+=`<div class="card"><div class="h3" style="margin:0 0 2px">⚒️ Échanges</div><div class="muted" style="font-size:12.5px;margin-bottom:8px">Échange seulement ce dont tu n'as plus besoin.</div><div class="ethx">${EX.map(x=>`<div class="ethi"><div class="ethic">${x.ic()}</div><div class="ethin"><b>${x.n}</b><small>${x.d}</small>${x.lim?`<small class="ethlim">${T('Cette semaine','This week')} : ${x.lim-exLeft(x)}/${x.lim}</small>`:''}</div><div class="ethbt">${x.steps.map(n=>{const ok=sh()>=x.c*n&&n<=exLeft(x);return`<button class="btn sm ${ok?'p':''}" data-a="ethx" data-v="${x.k}" data-n="${n}" ${ok?'':'disabled'}>${n>1?'×'+n+' · ':''}${SH} ${x.c*n}</button>`}).join('')}</div></div>`).join('')}`;
   const F=frHeroes();
-  if(F.length){const sel=F.includes(UI.ethfr)?UI.ethfr:F[0];UI.ethfr=sel;const o=S.heroes[sel];
-    h+=`<div class="ethi fr"><div class="ethic">◆</div><div class="ethin"><b>Fragments d'un légendaire</b><small>Pour son Éveil ◆ : ${FR_RATE} éclats = 1 fragment.</small>
-      <select class="ethsel" data-a="ethfrsel" aria-label="Héros">${F.map(i=>`<option value="${i}" ${i===sel?'selected':''}>${esc(T(HEROES[i].n,(typeof tr==='function'?tr(HEROES[i].n):HEROES[i].n)))} · ${T('Éveil','Awakening')} ${S.heroes[i].aw||0}/${typeof AW_MAX!=='undefined'?AW_MAX:10} · ${S.heroes[i].f||0} frag.</option>`).join('')}</select></div>
-      <div class="ethbt">${[1,5].map(n=>`<button class="btn sm ${sh()>=FR_RATE*n?'p':''}" data-a="ethfr" data-n="${n}" ${sh()>=FR_RATE*n?'':'disabled'}>+${n} · ${SH} ${FR_RATE*n}</button>`).join('')}</div></div>`}
-  h+=`</div></div>`;
+  if(F.length){const sel=F.includes(UI.ethfr)?UI.ethfr:F[0];UI.ethfr=sel;const o=S.heroes[sel],hh=HEROES[sel],aw=o.aw||0,AM=typeof AW_MAX!=='undefined'?AW_MAX:10,AC=typeof AW_COST!=='undefined'?AW_COST:5,f=o.f||0;
+    const nm=x=>esc(T(x.n,(typeof tr==='function'?tr(x.n):x.n)));
+    const pips=Array.from({length:AM},(_,k)=>`<i class="${k<aw?'on':''}"></i>`).join('');
+    const canAw=f>=AC&&aw<AM;
+    h+=`</div></div><div class="card ethfrc"><div class="h3" style="margin:0 0 2px">◆ Fragments d'un légendaire</div><div class="muted" style="font-size:12.5px;margin-bottom:10px">Pour l'<b>Éveil ◆</b> de tes légendaires ★★★ : <b>${FR_RATE} éclats = 1 fragment</b>, et <b>${AC} fragments = 1 niveau d'éveil</b> (+${(typeof AW_PCT!=='undefined'?AW_PCT:.05)*100} % de stats).</div>
+      <div class="efsel" style="${rv(hh.r)}"><button class="efpt" data-a="hero" data-v="${sel}" aria-label="${nm(hh)}">${portrait(hh)}</button>
+        <div class="efinfo"><b>${nm(hh)}</b><div class="efpips" aria-label="Éveil ${aw} sur ${AM}">${pips}</div>
+          <small>Éveil <b>${aw}/${AM}</b> · <b class="effr">${f}</b> fragment${f>1?'s':''} en réserve${aw<AM?` · ${canAw?'<span class="efok">prêt à s\'éveiller !</span>':`encore ${AC-f} pour le prochain`}`:''}</small>
+          <div class="efbar"><i style="width:${Math.min(100,f/AC*100)}%"></i></div></div></div>
+      <div class="efbtns">${[1,5].map(n=>`<button class="btn sm ${sh()>=FR_RATE*n?'p':''}" data-a="ethfr" data-n="${n}" ${sh()>=FR_RATE*n?'':'disabled'}>+${n} ◆ · ${SH} ${FR_RATE*n}</button>`).join('')}${canAw?`<button class="btn sm g" data-a="ethaw" data-v="${sel}">◆ Éveiller maintenant</button>`:''}</div>
+      <div class="efrail" role="listbox" aria-label="Choisir le héros">${F.map(i=>{const q=S.heroes[i],x=HEROES[i],qa=q.aw||0,ready=(q.f||0)>=AC&&qa<AM;
+        return`<button class="efch ${i===sel?'on':''}" role="option" aria-selected="${i===sel}" data-a="ethfrpick" data-v="${i}" style="${rv(x.r)}" aria-label="${nm(x)}"><span class="efcp">${portrait(x)}</span><span class="efaw">◆${qa}</span>${ready?'<span class="efrd">!</span>':''}<small>${esc(x.n.split(/[ ,]/)[0])}</small></button>`}).join('')}</div>`}
+  h+=F.length?`</div>`:`</div></div>`;
   return h}
 window.ethPage=ethPage;
 {const pe=pEquip;pEquip=function(){if(UI.lz&&(UI.lz.equip==='eth'||(UI.eqv==='eth'&&UI.lz.equip))){UI.eqv='eth';UI.lz.equip='eth';return`<div class="stack">${zoneBar('equip','eth')}${npcCard('ether')}${ethPage()}</div>`}
@@ -140,6 +148,22 @@ document.addEventListener('click',ev=>{const t=ev.target.closest('[data-a="esset
   if(a==='ethfr')return ethFrag(UI.ethfr,+t.dataset.n||1);
   if(a==='ethgo'){try{closeModal()}catch(e){}TAB='equip';UI.lz=UI.lz||{};UI.lz.equip='eth';UI.eqv='eth';render();window.scrollTo(0,0)}},true);
 document.addEventListener('change',ev=>{const t=ev.target.closest('[data-a="ethfrsel"]');if(!t)return;UI.ethfr=+t.value;render()},true);
+document.addEventListener('click',ev=>{const t=ev.target.closest('[data-a="ethfrpick"],[data-a="ethaw"]');if(!t)return;ev.preventDefault();ev.stopPropagation();
+  if(t.dataset.a==='ethfrpick'){UI.ethfr=+t.dataset.v;render();return}
+  if(t.dataset.a==='ethaw'){try{awaken(+t.dataset.v)}catch(e){}}},true);
+{const st=document.createElement('style');st.textContent=`.ethfrc .efsel{display:flex;gap:12px;align-items:center;padding:10px;border-radius:16px;background:radial-gradient(120% 140% at 0% 0%,rgba(200,160,255,.22),transparent 60%),rgba(255,255,255,.04);border:1px solid rgba(200,160,255,.35)}
+.efpt{flex:none;width:68px;height:68px;padding:0;border-radius:16px;overflow:hidden;border:2px solid var(--rc,#c8a0ff);box-shadow:0 0 16px -4px var(--rc,#c8a0ff);background:#140c24;cursor:pointer}.efpt svg,.efpt img{width:100%;height:100%;display:block}
+.efinfo{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px}.efinfo b{font-size:14.5px}.efinfo small{font-size:11.5px;opacity:.85}.effr{color:#ffd84a}.efok{color:#7dffb0;font-weight:900}
+.efpips{display:flex;gap:3px}.efpips i{flex:1;height:7px;border-radius:2px;transform:skewX(-20deg);background:rgba(255,255,255,.12)}.efpips i.on{background:linear-gradient(90deg,#c8a0ff,#ffd84a);box-shadow:0 0 6px rgba(255,216,74,.5)}
+.efbar{height:5px;border-radius:5px;background:rgba(255,255,255,.08);overflow:hidden}.efbar i{display:block;height:100%;background:linear-gradient(90deg,#c8a0ff,#ffd84a)}
+.efbtns{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0}.efbtns .btn{flex:1 1 auto}
+.efrail{display:flex;gap:8px;overflow-x:auto;padding:4px 2px 6px;scrollbar-width:none;scroll-snap-type:x proximity}.efrail::-webkit-scrollbar{display:none}
+.efch{position:relative;flex:none;width:62px;display:flex;flex-direction:column;align-items:center;gap:3px;padding:0;background:none;border:0;color:var(--fg);cursor:pointer;scroll-snap-align:start}
+.efcp{width:56px;height:56px;border-radius:14px;overflow:hidden;border:2px solid rgba(255,255,255,.14);opacity:.7;transition:opacity .15s,transform .15s}.efcp svg,.efcp img{width:100%;height:100%;display:block}
+.efch.on .efcp{opacity:1;border-color:var(--rc,#ffd84a);box-shadow:0 0 0 2px #140c24,0 0 0 4px var(--rc,#ffd84a);transform:translateY(-2px)}
+.efch small{font-size:10.5px;font-weight:800;max-width:62px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;opacity:.8}.efch.on small{opacity:1;color:#ffe9a8}
+.efaw{position:absolute;top:40px;left:50%;transform:translateX(-50%);font-size:9.5px;font-weight:900;padding:1px 5px;border-radius:7px;background:#140c24;border:1px solid rgba(200,160,255,.6);color:#e8d8ff}
+.efrd{position:absolute;top:-3px;right:0;width:16px;height:16px;border-radius:50%;display:grid;place-items:center;font-size:11px;font-weight:900;background:#7dffb0;color:#06301a}`;document.head.appendChild(st)}
 
 /* ---------- style ---------- */
 const st=document.createElement('style');st.textContent=`

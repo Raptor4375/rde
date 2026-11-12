@@ -485,5 +485,5 @@ const st=document.createElement('style');st.textContent=`
 .skann{display:flex;justify-content:center;gap:6px}.skann img,.skann svg{width:84px;height:84px;border-radius:14px;display:block;box-shadow:0 0 22px -6px #ffd84a}
 `;
 document.head.appendChild(st);
-window.SKSHOP={shopPage,allPage,skView,skBuy,SK2,SKL,skinArt};
+window.SKSHOP={shopPage,allPage,skView,skBuy,SK2,SKL,skinArt,SKC};
 }catch(e){console.warn('boutique apparences',e)}})();

@@ -17,7 +17,13 @@ function patch(a,b){
   /* un SVG est gardé tel quel s'il n'a pas changé (ses animations continuent), sinon remplacé d'un bloc */
   if(a.namespaceURI===SVGNS&&a.nodeName.toLowerCase()==='svg'){if(!a.isEqualNode(b)){a.replaceWith(b);return b}return a}
   const tag=a.nodeName;
-  if(tag==='INPUT'||tag==='TEXTAREA'||tag==='SELECT'){const foc=document.activeElement===a,v=a.value;syncAttrs(a,b);if(tag!=='SELECT')morphKids(a,b);if(foc||(tag!=='SELECT'&&v&&!b.hasAttribute('value')))try{a.value=v}catch(e){}if(tag==='INPUT'&&(a.type==='checkbox'||a.type==='radio'))a.checked=b.hasAttribute('checked');return a}
+  /* champs de saisie : comme un écran tout neuf, sauf celui qu'on est en train d'utiliser */
+  if(tag==='INPUT'||tag==='TEXTAREA'||tag==='SELECT'){const foc=document.activeElement===a,v=a.value;
+    let want=null;if(tag==='SELECT'){const op=[...b.querySelectorAll('option')];const so=op.find(o=>o.hasAttribute('selected'))||op[0];want=so?(so.hasAttribute('value')?so.getAttribute('value'):so.textContent):null}
+    else if(tag==='TEXTAREA')want=b.textContent;else want=b.hasAttribute('value')?b.getAttribute('value'):'';
+    syncAttrs(a,b);morphKids(a,b);
+    try{if(foc)a.value=v;else if(want!=null&&a.value!==want)a.value=want}catch(e){}
+    if(tag==='INPUT'&&(a.type==='checkbox'||a.type==='radio'))a.checked=b.hasAttribute('checked');return a}
   syncAttrs(a,b);morphKids(a,b);return a}
 function morphKids(from,to){
   let a=from.firstChild,b=to.firstChild;
