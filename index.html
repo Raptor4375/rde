@@ -56,7 +56,7 @@ window.claude={use:async k=>{if(k==='db'||k==='user'){try{const F=await window.R
 window.RDEF();
 })();
 </script>
-<script>window.RDE_V='20261112070723';if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));</script>
+<script>window.RDE_V='20261112092904';if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));</script>
 </head><body>
 <title>RDE · Royaumes d'Éther</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -23429,12 +23429,16 @@ const LAST={},U2T=new Map();
 let busy=false;
 function warm(){if(busy||document.hidden)return;try{if((typeof B!=='undefined'&&B)||(typeof scrollBusy==='function'&&scrollBusy())||(typeof SGP!=='undefined'&&SGP.on))return}catch(e){}
   busy=true;const tabs=Object.keys(LOBS);let i=0;
-  const step=()=>{if(i>=tabs.length||document.hidden){busy=false;return}const t=tabs[i++];
+  const ric=window.requestIdleCallback?f=>requestIdleCallback(f,{timeout:5000}):f=>setTimeout(f,300);
+  const step=()=>{if(i>=tabs.length||document.hidden){busy=false;return}
+    /* pas pendant que le joueur touche l'écran ou fait défiler : on attend qu'il ait fini */
+    try{if((typeof scrollBusy==='function'&&scrollBusy())||(typeof B!=='undefined'&&B)){setTimeout(()=>ric(step),2000);return}}catch(e){}
+    const t=tabs[i++];
     try{if(!(typeof B!=='undefined'&&B)){const h=lobbyBlock(t);const m=h.match(/class="lbimg lbanim" src="([^"]+)"/);if(m){const im=new Image();im.src=m[1];if(im.decode)im.decode().catch(()=>{})}}}catch(e){}
-    setTimeout(step,900)};
-  step()}
+    setTimeout(()=>ric(step),1200)};
+  ric(step)}
 const iv=setInterval(()=>{try{if(BOOT.done){clearInterval(iv);setTimeout(warm,3000)}}catch(e){clearInterval(iv)}},1000);
-setInterval(warm,180000);
+setInterval(warm,600000);
 document.addEventListener('visibilitychange',()=>{if(!document.hidden)setTimeout(warm,1500)});
 }catch(e){console.warn('décors sans écran noir',e)}})();
 /* ================= V406 : Le Scribe sans Nom — vrai design + animations d'encre =================
@@ -26703,15 +26707,20 @@ const hook=el=>{if(!el||el.__mo)return;el.__mo=1;
 /* --- les photos des décors (version figée pendant le défilement) : plus petites, et faites quand le téléphone ne fait rien --- */
 try{if(typeof lbStatic==='function'&&typeof LBST!=='undefined'){
   const ric=window.requestIdleCallback?f=>requestIdleCallback(f,{timeout:4000}):f=>setTimeout(f,600);
-  lbStatic=function(u){LBST.set(u,null);ric(()=>{const im=new Image();im.onload=()=>ric(()=>{try{const c=document.createElement('canvas');c.width=900;c.height=540;c.getContext('2d').drawImage(im,0,0,900,540);
+  const calm=f=>{const go=()=>{try{if(typeof scrollBusy==='function'&&scrollBusy())return setTimeout(()=>ric(go),1500)}catch(e){}f()};ric(go)};
+  lbStatic=function(u){LBST.set(u,null);calm(()=>{const im=new Image();im.onload=()=>calm(()=>{try{const c=document.createElement('canvas');c.width=900;c.height=540;c.getContext('2d').drawImage(im,0,0,900,540);
     c.toBlob(b=>{if(!b)return;const p=URL.createObjectURL(b);LBST.set(u,p);document.querySelectorAll('.lobby>img.lbanim').forEach(a=>{if(a.getAttribute('src')===u&&!(a.previousElementSibling&&a.previousElementSibling.classList.contains('lbst')))a.insertAdjacentHTML('beforebegin',`<img class="lbimg lbst" src="${p}" alt="" aria-hidden="true" draggable="false">`)})},'image/webp',.85)}catch(e){}});im.src=u})}}}catch(e){}
+/* --- pendant qu'on fait défiler, les animations décoratives se mettent en pause ; les cadres des petits avatars dans les listes ne tournent plus --- */
+{const st=document.createElement('style');st.textContent=`html.scrl #app *,html.scrl #app *::before,html.scrl #app *::after{animation-play-state:paused!important}
+.rk .fav::before,.rk .fav::after,.list .fav::before,.list .fav::after,.rk .av::before,.rk .av::after{animation:none!important}`;document.head.appendChild(st)}
 const ids=['main','av'];
 const install=()=>{for(const id of ids)hook(document.getElementById(id))};
 install();document.addEventListener('DOMContentLoaded',install);setTimeout(install,1500);
 try{PATCH.unshift({v:'v59',d:Date.now(),t:'Fluidité',items:[
  "⚡ L'écran n'est plus entièrement redessiné à chaque toucher : seules les parties qui changent sont mises à jour. Les menus réagissent 2 à 3 fois plus vite (Héros, Équipement, Event, Combats, Social…).",
  "🖼️ Les portraits et les décors ne sont plus re-décodés à chaque action, et leurs animations ne redémarrent plus.",
- "🏞️ Les photos des décors (utilisées pendant le défilement) sont préparées quand le téléphone ne fait rien, en plus léger."]})}catch(e){}
+ "🏞️ Les photos des décors (utilisées pendant le défilement) sont préparées quand le téléphone ne fait rien, en plus léger.",
+ "📜 Défilement plus fluide : les animations décoratives se mettent en pause pendant qu'on fait défiler, les cadres des petits avatars dans les listes ne tournent plus, et la préparation des décors en arrière-plan attend que tu aies fini de toucher l'écran."]})}catch(e){}
 }catch(e){console.warn('v434',e)}})();
 /* ================= toujours en dernier : l'écran de chargement reprend les dessins à jour ================= */
 (function(){try{

@@ -19,11 +19,15 @@ const LAST={},U2T=new Map();
 let busy=false;
 function warm(){if(busy||document.hidden)return;try{if((typeof B!=='undefined'&&B)||(typeof scrollBusy==='function'&&scrollBusy())||(typeof SGP!=='undefined'&&SGP.on))return}catch(e){}
   busy=true;const tabs=Object.keys(LOBS);let i=0;
-  const step=()=>{if(i>=tabs.length||document.hidden){busy=false;return}const t=tabs[i++];
+  const ric=window.requestIdleCallback?f=>requestIdleCallback(f,{timeout:5000}):f=>setTimeout(f,300);
+  const step=()=>{if(i>=tabs.length||document.hidden){busy=false;return}
+    /* pas pendant que le joueur touche l'écran ou fait défiler : on attend qu'il ait fini */
+    try{if((typeof scrollBusy==='function'&&scrollBusy())||(typeof B!=='undefined'&&B)){setTimeout(()=>ric(step),2000);return}}catch(e){}
+    const t=tabs[i++];
     try{if(!(typeof B!=='undefined'&&B)){const h=lobbyBlock(t);const m=h.match(/class="lbimg lbanim" src="([^"]+)"/);if(m){const im=new Image();im.src=m[1];if(im.decode)im.decode().catch(()=>{})}}}catch(e){}
-    setTimeout(step,900)};
-  step()}
+    setTimeout(()=>ric(step),1200)};
+  ric(step)}
 const iv=setInterval(()=>{try{if(BOOT.done){clearInterval(iv);setTimeout(warm,3000)}}catch(e){clearInterval(iv)}},1000);
-setInterval(warm,180000);
+setInterval(warm,600000);
 document.addEventListener('visibilitychange',()=>{if(!document.hidden)setTimeout(warm,1500)});
 }catch(e){console.warn('décors sans écran noir',e)}})();

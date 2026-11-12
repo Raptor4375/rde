@@ -43,13 +43,18 @@ const hook=el=>{if(!el||el.__mo)return;el.__mo=1;
 /* --- les photos des décors (version figée pendant le défilement) : plus petites, et faites quand le téléphone ne fait rien --- */
 try{if(typeof lbStatic==='function'&&typeof LBST!=='undefined'){
   const ric=window.requestIdleCallback?f=>requestIdleCallback(f,{timeout:4000}):f=>setTimeout(f,600);
-  lbStatic=function(u){LBST.set(u,null);ric(()=>{const im=new Image();im.onload=()=>ric(()=>{try{const c=document.createElement('canvas');c.width=900;c.height=540;c.getContext('2d').drawImage(im,0,0,900,540);
+  const calm=f=>{const go=()=>{try{if(typeof scrollBusy==='function'&&scrollBusy())return setTimeout(()=>ric(go),1500)}catch(e){}f()};ric(go)};
+  lbStatic=function(u){LBST.set(u,null);calm(()=>{const im=new Image();im.onload=()=>calm(()=>{try{const c=document.createElement('canvas');c.width=900;c.height=540;c.getContext('2d').drawImage(im,0,0,900,540);
     c.toBlob(b=>{if(!b)return;const p=URL.createObjectURL(b);LBST.set(u,p);document.querySelectorAll('.lobby>img.lbanim').forEach(a=>{if(a.getAttribute('src')===u&&!(a.previousElementSibling&&a.previousElementSibling.classList.contains('lbst')))a.insertAdjacentHTML('beforebegin',`<img class="lbimg lbst" src="${p}" alt="" aria-hidden="true" draggable="false">`)})},'image/webp',.85)}catch(e){}});im.src=u})}}}catch(e){}
+/* --- pendant qu'on fait défiler, les animations décoratives se mettent en pause ; les cadres des petits avatars dans les listes ne tournent plus --- */
+{const st=document.createElement('style');st.textContent=`html.scrl #app *,html.scrl #app *::before,html.scrl #app *::after{animation-play-state:paused!important}
+.rk .fav::before,.rk .fav::after,.list .fav::before,.list .fav::after,.rk .av::before,.rk .av::after{animation:none!important}`;document.head.appendChild(st)}
 const ids=['main','av'];
 const install=()=>{for(const id of ids)hook(document.getElementById(id))};
 install();document.addEventListener('DOMContentLoaded',install);setTimeout(install,1500);
 try{PATCH.unshift({v:'v59',d:Date.now(),t:'Fluidité',items:[
  "⚡ L'écran n'est plus entièrement redessiné à chaque toucher : seules les parties qui changent sont mises à jour. Les menus réagissent 2 à 3 fois plus vite (Héros, Équipement, Event, Combats, Social…).",
  "🖼️ Les portraits et les décors ne sont plus re-décodés à chaque action, et leurs animations ne redémarrent plus.",
- "🏞️ Les photos des décors (utilisées pendant le défilement) sont préparées quand le téléphone ne fait rien, en plus léger."]})}catch(e){}
+ "🏞️ Les photos des décors (utilisées pendant le défilement) sont préparées quand le téléphone ne fait rien, en plus léger.",
+ "📜 Défilement plus fluide : les animations décoratives se mettent en pause pendant qu'on fait défiler, les cadres des petits avatars dans les listes ne tournent plus, et la préparation des décors en arrière-plan attend que tu aies fini de toucher l'écran."]})}catch(e){}
 }catch(e){console.warn('v434',e)}})();
