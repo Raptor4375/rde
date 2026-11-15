@@ -34,7 +34,7 @@ function morphKids(from,to){
     a=na;b=nb}
   while(a){const na=a.nextSibling;from.removeChild(a);a=na}}
 const LAST=new WeakMap();let OFF=false;
-function morph(el,html){html=html==null?'':String(html);
+function morph(el,html){html=html==null?'':String(html);if(el.id==='main'&&window.RDElight)try{html=RDElight(html)}catch(e){}
   let pend=0;try{pend=el.__obs?el.__obs.takeRecords().length:0}catch(e){}if(pend)LAST.delete(el);
   if(OFF||!el.isConnected||!el.firstChild||html===''){PD.set.call(el,html)}
   else if(LAST.get(el)===html&&el.childNodes.length){return}     /* rien n'a changé et personne n'y a touché : rien à faire */
