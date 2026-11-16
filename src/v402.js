@@ -77,7 +77,9 @@ try{if(window.SKANIM){
   const ok=()=>typeof B!=='undefined'&&B&&!B.skip&&FXS.ctx;
   const later=(ms,fn)=>setTimeout(()=>{if(!ok())return;try{fn()}catch(e){}},ms/(S.speed||1));
   function layer(X,draw){const it={t0:performance.now(),dur:60000,draw:null};it.draw=c=>{const now=performance.now(),sp=S.speed||1;let al=Math.min(1,(now-it.t0)/(200/sp));if(it.e)al*=Math.max(0,1-(now-it.e)/(340/sp));if(al<=0)return;draw(c,al,(now-it.t0)/1000*sp)};FXS.items.push(it);fxRun();(X.L=X.L||[]).push(it);return it}
-  function endLayers(X){const now=performance.now(),sp=S.speed||1;for(const it of X.L||[])if(!it.e){it.e=now;it.dur=now-it.t0+360/sp}}
+  function endLayers(X){const now=performance.now(),sp=S.speed||1;for(const it of X.L||[])if(!it.e){it.e=now;it.dur=now-it.t0+360/sp}for(const v of X.V||[])try{v.end()}catch(e){}X.V=[]}
+  /* voile plein écran : un calque HTML (calculé par la carte graphique) au lieu de repeindre tout le canvas à chaque image (v441) */
+  function domVeil(X,col,max){try{const v=window.RDEveil&&RDEveil(col,max);if(v){(X.V=X.V||[]).push(v);return}}catch(e){}layer(X,(c,al)=>{c.globalAlpha=al*max;c.fillStyle=col;c.fillRect(0,0,FXS.w,FXS.h)})}
   /* la grande horloge : les aiguilles s'emballent puis se figent ; elle se fissure à l'impact */
   function bigClock(X,cx,cy,R,st){return layer(X,(c,al,t)=>{const g=ease(Math.min(1,t/.5)),r=R*g;if(r<2)return;c.translate(cx,cy);c.globalAlpha=al;
       c.globalCompositeOperation='lighter';c.drawImage(spr('#8ad8ff'),-r*1.9,-r*1.9,r*3.8,r*3.8);c.globalCompositeOperation='source-over';
@@ -99,14 +101,14 @@ try{if(window.SKANIM){
       c.beginPath();c.moveTo(x+w*.08,y);c.lineTo(x+w*.92,y+h*.04);c.lineTo(x+w,y+h*.5);c.lineTo(x+w*.94,y+h);c.lineTo(x+w*.04,y+h*.97);c.lineTo(x,y+h*.42);c.closePath();c.fill();
       c.strokeStyle='rgba(255,255,255,.9)';c.lineWidth=1.6;c.stroke();c.lineWidth=1;c.strokeStyle='rgba(255,255,255,.55)';c.beginPath();c.moveTo(x+w*.08,y);c.lineTo(x+w*.4,y+h*.45);c.lineTo(x+w*.04,y+h*.97);c.moveTo(x+w*.4,y+h*.45);c.lineTo(x+w,y+h*.5);c.moveTo(x+w*.4,y+h*.45);c.lineTo(x+w*.7,y+h);c.stroke();
       c.globalCompositeOperation='lighter';c.globalAlpha=al*.5;c.fillStyle='#ffffff';c.fillRect(x+w*.14,y+h*.08,w*.08,h*.5)},del||0)}
-  function freezeTint(X){layer(X,(c,al)=>{c.globalCompositeOperation='source-over';c.globalAlpha=al*.16;c.fillStyle='#bfe6ff';c.fillRect(0,0,FXS.w,FXS.h)})}
+  function freezeTint(X){domVeil(X,'#bfe6ff',.16)}
   function snowfall(n,dur){for(let k=0;k<n;k++)later(k*dur/n,()=>emit(1,()=>({k:'shape',sh:'snow',x:rnd(0,FXS.w),y:-10,vx:rnd(-.6,.2),vy:rnd(1.4,2.6),life:110,max:110,s:rnd(2.5,5),c:'#ffffff',rot:rnd(0,6),vr:rnd(-.05,.05),wob:rnd(0,6),fade:1.3,add:1})))}
   function tick(){try{if(!AU||!AU.ctx||!cSnd.ok())return;SND.wood(AU.F.v,NOW(),3200)}catch(e){}}
   function finTitle(X,col){const m=rowMid(1-X.u.side),t=String(X.A.fin);textPop(FXS.w/2,m.y-m.s*.35,t,col,Math.max(16,Math.min(28,FXS.w*.9/(t.length*.68))),1100);for(const t2 of X.tg)cardFlash(t2,true)}
   SKANIM.reg(SK,{th:['#8ad8ff','#ffffff'],el:'ice',cut:['#8ad8ff','#e8f8ff'],fin:'ÉTERNITÉ BLANCHE',
     aura(a){shapes(a.x,a.y,'snow',['#ffffff','#bff4ff'],8,2.4,4.5,50,-.02,{add:1,wob:1});ringFx(a.x,a.y,'#e8f8ff',a.s*.7,600,3,.5)},
     async ult(X){const {u,ux}=X,a=uc(u),W=FXS.w,H=FXS.h,m=rowMid(1-u.side),cx=W/2,cy=H*.24,R=Math.min(W,H)*.15,st={};
-      layer(X,(c,al)=>{c.globalAlpha=al*.62;c.fillStyle='#03112a';c.fillRect(0,0,W,H)});snowfall(20+ux*6,1600);
+      domVeil(X,'#03112a',.62);snowfall(20+ux*6,1600);
       FXD.sigil(a.x,a.y+a.s*.5,a.s*1.15,'#8ad8ff',1400,.38,12);glowPulse(a.x,a.y,'#8ad8ff',700,a.s*.55);const CK=bigClock(X,cx,cy,R,st),ct=it=>(performance.now()-it.t0)/1000*(S.speed||1);
       for(let i=0;i<8;i++)later(140+i*85,tick);
       await fxWait(820);if(!ok())return;

@@ -22142,8 +22142,9 @@ SHAPES.ash=(c,s,f)=>{c.fillStyle=f;c.beginPath();c.moveTo(-s,-s*.2);c.lineTo(-s*
 
 /* ---------- briques communes ---------- */
 function layer(X,draw){const it={t0:performance.now(),dur:60000,draw:null};it.draw=c=>{const now=performance.now(),sp=S.speed||1;let al=Math.min(1,(now-it.t0)/(200/sp));if(it.e)al*=Math.max(0,1-(now-it.e)/(340/sp));if(al<=0)return;draw(c,al,(now-it.t0)/1000*sp)};FXS.items.push(it);fxRun();(X.L=X.L||[]).push(it);return it}
-function endLayers(X){const now=performance.now(),sp=S.speed||1;for(const it of X.L||[])if(!it.e){it.e=now;it.dur=now-it.t0+360/sp}}
-function veil(X,col,max=.6){layer(X,(c,al)=>{c.globalCompositeOperation='source-over';c.globalAlpha=al*max;c.fillStyle=col;c.fillRect(0,0,FXS.w,FXS.h)})}
+function endLayers(X){const now=performance.now(),sp=S.speed||1;for(const it of X.L||[])if(!it.e){it.e=now;it.dur=now-it.t0+360/sp}for(const v of X.V||[])try{v.end()}catch(e){}X.V=[]}
+/* voile plein écran : calque HTML (carte graphique) plutôt que de repeindre tout le canvas à chaque image (v441) */
+function veil(X,col,max=.6){try{const v=window.RDEveil&&RDEveil(col,max);if(v){(X.V=X.V||[]).push(v);return}}catch(e){}layer(X,(c,al)=>{c.globalCompositeOperation='source-over';c.globalAlpha=al*max;c.fillStyle=col;c.fillRect(0,0,FXS.w,FXS.h)})}
 function finTitle(X,col){const m=rowMid(1-X.u.side),t=String(X.A.fin);textPop(FXS.w/2,m.y-m.s*.35,t,col,Math.max(16,Math.min(28,FXS.w*.9/(t.length*.68))),1100);for(const t of X.tg)cardFlash(t,true)}
 
 /* ================= VALKYR, REINE DU GIVRE : nuit polaire, aurore, pics de glace ================= */
@@ -22427,7 +22428,9 @@ try{if(window.SKANIM){
   const ok=()=>typeof B!=='undefined'&&B&&!B.skip&&FXS.ctx;
   const later=(ms,fn)=>setTimeout(()=>{if(!ok())return;try{fn()}catch(e){}},ms/(S.speed||1));
   function layer(X,draw){const it={t0:performance.now(),dur:60000,draw:null};it.draw=c=>{const now=performance.now(),sp=S.speed||1;let al=Math.min(1,(now-it.t0)/(200/sp));if(it.e)al*=Math.max(0,1-(now-it.e)/(340/sp));if(al<=0)return;draw(c,al,(now-it.t0)/1000*sp)};FXS.items.push(it);fxRun();(X.L=X.L||[]).push(it);return it}
-  function endLayers(X){const now=performance.now(),sp=S.speed||1;for(const it of X.L||[])if(!it.e){it.e=now;it.dur=now-it.t0+360/sp}}
+  function endLayers(X){const now=performance.now(),sp=S.speed||1;for(const it of X.L||[])if(!it.e){it.e=now;it.dur=now-it.t0+360/sp}for(const v of X.V||[])try{v.end()}catch(e){}X.V=[]}
+  /* voile plein écran : un calque HTML (calculé par la carte graphique) au lieu de repeindre tout le canvas à chaque image (v441) */
+  function domVeil(X,col,max){try{const v=window.RDEveil&&RDEveil(col,max);if(v){(X.V=X.V||[]).push(v);return}}catch(e){}layer(X,(c,al)=>{c.globalAlpha=al*max;c.fillStyle=col;c.fillRect(0,0,FXS.w,FXS.h)})}
   /* la grande horloge : les aiguilles s'emballent puis se figent ; elle se fissure à l'impact */
   function bigClock(X,cx,cy,R,st){return layer(X,(c,al,t)=>{const g=ease(Math.min(1,t/.5)),r=R*g;if(r<2)return;c.translate(cx,cy);c.globalAlpha=al;
       c.globalCompositeOperation='lighter';c.drawImage(spr('#8ad8ff'),-r*1.9,-r*1.9,r*3.8,r*3.8);c.globalCompositeOperation='source-over';
@@ -22449,14 +22452,14 @@ try{if(window.SKANIM){
       c.beginPath();c.moveTo(x+w*.08,y);c.lineTo(x+w*.92,y+h*.04);c.lineTo(x+w,y+h*.5);c.lineTo(x+w*.94,y+h);c.lineTo(x+w*.04,y+h*.97);c.lineTo(x,y+h*.42);c.closePath();c.fill();
       c.strokeStyle='rgba(255,255,255,.9)';c.lineWidth=1.6;c.stroke();c.lineWidth=1;c.strokeStyle='rgba(255,255,255,.55)';c.beginPath();c.moveTo(x+w*.08,y);c.lineTo(x+w*.4,y+h*.45);c.lineTo(x+w*.04,y+h*.97);c.moveTo(x+w*.4,y+h*.45);c.lineTo(x+w,y+h*.5);c.moveTo(x+w*.4,y+h*.45);c.lineTo(x+w*.7,y+h);c.stroke();
       c.globalCompositeOperation='lighter';c.globalAlpha=al*.5;c.fillStyle='#ffffff';c.fillRect(x+w*.14,y+h*.08,w*.08,h*.5)},del||0)}
-  function freezeTint(X){layer(X,(c,al)=>{c.globalCompositeOperation='source-over';c.globalAlpha=al*.16;c.fillStyle='#bfe6ff';c.fillRect(0,0,FXS.w,FXS.h)})}
+  function freezeTint(X){domVeil(X,'#bfe6ff',.16)}
   function snowfall(n,dur){for(let k=0;k<n;k++)later(k*dur/n,()=>emit(1,()=>({k:'shape',sh:'snow',x:rnd(0,FXS.w),y:-10,vx:rnd(-.6,.2),vy:rnd(1.4,2.6),life:110,max:110,s:rnd(2.5,5),c:'#ffffff',rot:rnd(0,6),vr:rnd(-.05,.05),wob:rnd(0,6),fade:1.3,add:1})))}
   function tick(){try{if(!AU||!AU.ctx||!cSnd.ok())return;SND.wood(AU.F.v,NOW(),3200)}catch(e){}}
   function finTitle(X,col){const m=rowMid(1-X.u.side),t=String(X.A.fin);textPop(FXS.w/2,m.y-m.s*.35,t,col,Math.max(16,Math.min(28,FXS.w*.9/(t.length*.68))),1100);for(const t2 of X.tg)cardFlash(t2,true)}
   SKANIM.reg(SK,{th:['#8ad8ff','#ffffff'],el:'ice',cut:['#8ad8ff','#e8f8ff'],fin:'ÉTERNITÉ BLANCHE',
     aura(a){shapes(a.x,a.y,'snow',['#ffffff','#bff4ff'],8,2.4,4.5,50,-.02,{add:1,wob:1});ringFx(a.x,a.y,'#e8f8ff',a.s*.7,600,3,.5)},
     async ult(X){const {u,ux}=X,a=uc(u),W=FXS.w,H=FXS.h,m=rowMid(1-u.side),cx=W/2,cy=H*.24,R=Math.min(W,H)*.15,st={};
-      layer(X,(c,al)=>{c.globalAlpha=al*.62;c.fillStyle='#03112a';c.fillRect(0,0,W,H)});snowfall(20+ux*6,1600);
+      domVeil(X,'#03112a',.62);snowfall(20+ux*6,1600);
       FXD.sigil(a.x,a.y+a.s*.5,a.s*1.15,'#8ad8ff',1400,.38,12);glowPulse(a.x,a.y,'#8ad8ff',700,a.s*.55);const CK=bigClock(X,cx,cy,R,st),ct=it=>(performance.now()-it.t0)/1000*(S.speed||1);
       for(let i=0;i<8;i++)later(140+i*85,tick);
       await fxWait(820);if(!ok())return;
@@ -26916,7 +26919,9 @@ try{PATCH.unshift({v:'v60',d:Date.now(),t:"Forge d'Éther et Kaïros d'hiver",it
 /* --- portraits → images en cache --- */
 const PURL=new Map();
 const toUrl=svg=>{let u=PURL.get(svg);if(u)return u;
-  u=URL.createObjectURL(new Blob([svg],{type:'image/svg+xml'}));PURL.set(svg,u);
+  /* version fixe : un dessin animé dans une image se redessinait à chaque image (v441) */
+  let fx=svg;try{if(window.RDEnoanim)fx=RDEnoanim(svg)}catch(e){}
+  u=URL.createObjectURL(new Blob([fx],{type:'image/svg+xml'}));PURL.set(svg,u);
   if(PURL.size>1500){let n=0;for(const [k,v] of PURL){if(n++>=500)break;PURL.delete(k);setTimeout(()=>{try{URL.revokeObjectURL(v)}catch(e){}},30000)}}
   return u};
 const RX=/<svg\b[^>]*viewBox="0 0 100 100"[\s\S]*?<\/svg>/g;
@@ -26925,18 +26930,23 @@ function light(h){if(typeof h!=='string'||h.length<20000)return h;
     /* portrait déjà « emballé » (une image dans un SVG) : on garde seulement l'image du dedans, un seul décodage */
     const w=/^<svg[^>]*><image href="data:image\/svg\+xml;charset=utf-8,([^"]+)"[^>]*\/><\/svg>$/.exec(m);
     let src=m;if(w){try{src=decodeURIComponent(w[1])}catch(e){src=m}}
-    const r=RAS.get(src);if(!r)rasQ(src);
+    let r=RAS.get(src);
+    /* déjà photographié lors d'une partie précédente (cache permanent, v441) */
+    if(!r&&window.RDEIMG){try{const c=RDEIMG.get(pkey(src));if(c){RAS.set(src,c);r=c}}catch(e){}}
+    if(!r)rasQ(src);
     return`<img class="lpt" src="${r||toUrl(src)}" alt="" draggable="false" decoding="async">`})}catch(e){return h}}
 /* --- et chaque portrait est ensuite « photographié » une fois (image simple, bien plus rapide à afficher et à faire défiler) --- */
 const RAS=new Map(),RQ=[],RQS=new Set();let rBusy=false;
+const PK=new Map();const pkey=s=>{let k=PK.get(s);if(!k){k='p'+RDEIMG.hash(s);PK.set(s,k);if(PK.size>2500)PK.clear()}return k};
 const ric=window.requestIdleCallback?f=>requestIdleCallback(f,{timeout:3000}):f=>setTimeout(f,200);
 function rasQ(svg){if(RQS.has(svg)||RAS.has(svg))return;RQS.add(svg);RQ.push(svg);if(!rBusy){rBusy=true;ric(rasStep)}}
 function rasStep(){const svg=RQ.shift();if(!svg){rBusy=false;return}
   try{if(typeof scrollBusy==='function'&&scrollBusy()){RQ.unshift(svg);setTimeout(()=>ric(rasStep),800);return}}catch(e){}
+  try{if(typeof B!=='undefined'&&B&&!B.done){RQ.unshift(svg);setTimeout(()=>ric(rasStep),1500);return}}catch(e){}
   const u=toUrl(svg),im=new Image();
   const next=()=>{RQS.delete(svg);ric(rasStep)};
   im.onload=()=>{try{const c=document.createElement('canvas');c.width=c.height=320;c.getContext('2d').drawImage(im,0,0,320,320);
-    c.toBlob(b=>{if(b){const pu=URL.createObjectURL(b);RAS.set(svg,pu);document.querySelectorAll('img.lpt').forEach(i=>{if(i.getAttribute('src')===u)i.setAttribute('src',pu)})}next()},'image/webp',.92)}catch(e){next()}};
+    c.toBlob(b=>{if(b){let pu=null;try{if(window.RDEIMG)pu=RDEIMG.put(pkey(svg),b)}catch(e){}if(!pu)pu=URL.createObjectURL(b);RAS.set(svg,pu);document.querySelectorAll('img.lpt').forEach(i=>{if(i.getAttribute('src')===u)i.setAttribute('src',pu)})}next()},'image/webp',.92)}catch(e){next()}};
   im.onerror=next;im.src=u}
 window.RDElight=light;
 for(const n of['pHeros','pAdv']){try{const f=window[n];if(typeof f!=='function')continue;window[n]=function(){return light(f.apply(this,arguments))}}catch(e){}}
@@ -27375,6 +27385,334 @@ try{const it=[
   I18N_EN[it[0]]="🔥 <b>Arena: no more endless fights.</b> Between two hero teams (arena, tournament, War of the Skies, guild wars), <b>Arena Fury</b> rises from turn 6: every turn, <b>+20 % damage</b> and <b>−15 % healing and shields</b>. And a shield can no longer exceed <b>50 % of the hero's max HP</b>.";
   I18N_EN[it[1]]="🛡️ Before, an Aegis + Corvin + Lyra team against its own copy ended at 100 % HP on both sides after 20 turns. Now the fight ends by KO, in 10 turns on average. Nothing changes against monsters, bosses and raids."}}catch(e){}
 }catch(e){console.warn('v440',e)}})();
+/* ================= V441 : FLUIDITÉ (d'après les vidéos du 16 novembre) =================
+   Mesures faites sur le jeu (processeur ralenti ×4 pour imiter un téléphone) :
+   · les portraits dans les listes étaient des dessins animés dans des images : tant qu'ils n'étaient pas
+     « photographiés », le téléphone redessinait chaque portrait à chaque image (Classement, Arène…) ;
+   · ces photos (portraits, avatars, décors, cut-in ultra) étaient refaites à CHAQUE lancement du jeu,
+     souvent en plein combat ou pendant qu'on fait défiler ;
+   · au début d'un combat, les portraits des cartes étaient convertis en PNG (encodage lent) ;
+   · les grands voiles des ultimes (Kaïros, l'Hiver Immobile…) repeignaient tout le canvas à chaque image,
+     et le canvas des effets couvrait aussi tout le journal du combat ;
+   · le petit hibou des en-têtes battait des ailes en redessinant son dessin à chaque image, partout ;
+   · faire défiler la page recalculait le style de TOUT l'écran au début et à la fin de chaque geste.
+   Corrections ci-dessous. */
+(function(){try{
+const T=(fr,en)=>(typeof LANG!=='undefined'&&LANG==='en')?en:fr;
+const inBattle=()=>{try{return typeof B!=='undefined'&&!!B&&!B.done}catch(e){return false}};
+const ric=window.requestIdleCallback?f=>requestIdleCallback(f,{timeout:4000}):f=>setTimeout(f,500);
+const calm=f=>{const go=()=>{try{if((typeof scrollBusy==='function'&&scrollBusy())||inBattle())return setTimeout(()=>ric(go),1500)}catch(e){}f()};ric(go)};
+
+/* ---------- 1. cache d'images permanent : chaque photo n'est faite qu'une seule fois, pour toujours ---------- */
+const IMG=window.RDEIMG=(function(){
+  const M=new Map();let db=null,n=0;
+  const hash=str=>{let h1=0xdeadbeef,h2=0x41c6ce57;for(let i=0,ch;i<str.length;i++){ch=str.charCodeAt(i);h1=Math.imul(h1^ch,2654435761);h2=Math.imul(h2^ch,1597334677)}
+    h1=Math.imul(h1^(h1>>>16),2246822507)^Math.imul(h2^(h2>>>13),3266489909);h2=Math.imul(h2^(h2>>>16),2246822507)^Math.imul(h1^(h1>>>13),3266489909);
+    return(4294967296*(2097151&h2)+(h1>>>0)).toString(36)+'.'+str.length.toString(36)};
+  const ready=new Promise(res=>{try{if(!window.indexedDB)return res();const rq=indexedDB.open('rde-img',1);
+    rq.onupgradeneeded=()=>{try{rq.result.createObjectStore('i')}catch(e){}};
+    rq.onsuccess=()=>{db=rq.result;try{const st=db.transaction('i','readonly').objectStore('i');const cur=st.openCursor();
+      cur.onsuccess=()=>{const c=cur.result;if(c){try{if(c.value instanceof Blob&&!M.has(c.key)){M.set(c.key,URL.createObjectURL(c.value));n++}}catch(e){}c.continue()}else{
+        /* trop d'anciennes photos (dessins qui ont changé depuis) : on repart de zéro */
+        if(n>1600){try{db.transaction('i','readwrite').objectStore('i').clear();n=0}catch(e){}}res()}};
+      cur.onerror=()=>res()}catch(e){res()}};
+    rq.onerror=()=>res();rq.onblocked=()=>res()}catch(e){res()}});
+  return{hash,ready,get:k=>M.get(k),has:k=>M.has(k),
+    put(k,blob){if(!blob)return null;let u=M.get(k);if(u)return u;u=URL.createObjectURL(blob);M.set(k,u);
+      try{if(db&&n<1800){db.transaction('i','readwrite').objectStore('i').put(blob,k);n++}}catch(e){}return u},
+    size:()=>M.size}})();
+
+/* ---------- 2. dessins figés pour les images (plus d'animation interne qui force à redessiner) ---------- */
+const STILL='<style>*{animation:none!important;transition:none!important}</style>';
+const still=window.RDEnoanim=s=>{try{s=String(s);if(typeof svgStill==='function')s=svgStill(s);return s.replace(/<svg\b[^>]*>/,m=>m+STILL)}catch(e){return s}};
+
+/* ---------- 3. avatars et portraits des cartes de combat (v357) : photo WebP mise en cache pour toujours ---------- */
+try{if(typeof avRaster==='function'&&typeof AVR!=='undefined'){
+  avRaster=function(h){const k=avKey(h);if(AVR.c.has(k)||AVR.busy.has(k))return;
+    const ik='a'+IMG.hash(h),hit=IMG.get(ik);
+    if(hit){AVR.c.set(k,hit);requestAnimationFrame(()=>{try{avSwap(document)}catch(e){}});return}
+    const p=new Promise(res=>{const im=new Image();
+      im.onload=()=>{try{const c=document.createElement('canvas');c.width=c.height=256;c.getContext('2d').drawImage(im,0,0,256,256);
+        c.toBlob(b=>{AVR.c.set(k,b?IMG.put(ik,b):null);res()},'image/png')}catch(e){AVR.c.set(k,null);res()}};
+      im.onerror=()=>{AVR.c.set(k,null);res()};
+      let s=h;if(!/xmlns=/.test(s))s=s.replace('<svg','<svg xmlns="http://www.w3.org/2000/svg"');s=s.replace(/<svg([^>]*?)>/,(m,a)=>/\bwidth=/.test(a)?m:'<svg'+a+' width="256" height="256">');
+      im.src=URL.createObjectURL(new Blob([still(s)],{type:'image/svg+xml'}))});
+    AVR.busy.set(k,p);p.then(()=>{AVR.busy.delete(k);try{avSwap(document)}catch(e){}})}}}catch(e){console.warn('v441 av',e)}
+
+/* ---------- 4. photos des décors (v434) : cache permanent, jamais pendant un combat ---------- */
+try{if(typeof lbStatic==='function'&&typeof LBST!=='undefined'){
+  const apply=(u,p)=>{LBST.set(u,p);document.querySelectorAll('.lobby>img.lbanim').forEach(a=>{if(a.getAttribute('src')===u&&!(a.previousElementSibling&&a.previousElementSibling.classList.contains('lbst')))a.insertAdjacentHTML('beforebegin',`<img class="lbimg lbst" src="${p}" alt="" aria-hidden="true" draggable="false">`)})};
+  lbStatic=function(u){LBST.set(u,null);
+    fetch(u).then(r=>r.text()).then(txt=>{const k='l'+IMG.hash(txt),hit=IMG.get(k);if(hit){apply(u,hit);return}
+      calm(()=>{const im=new Image();im.onload=()=>calm(()=>{try{const c=document.createElement('canvas');c.width=900;c.height=540;c.getContext('2d').drawImage(im,0,0,900,540);
+        c.toBlob(b=>{if(b)apply(u,IMG.put(k,b))},'image/webp',.85)}catch(e){}});im.src=u})}).catch(()=>{})}}}catch(e){console.warn('v441 lb',e)}
+
+/* ---------- 5. image du cut-in ultra : cache permanent (avant : refaite en PNG au début de chaque combat) ---------- */
+try{if(typeof uxPrep==='function'&&typeof UXB!=='undefined'){
+  uxPrep=function(hid){if(UXB[hid]||UXB['p'+hid])return;UXB['p'+hid]=1;
+    try{const h=HEROES[hid],raw=portraitU(h,Math.min(3,(S.heroes[hid]||{}).u||1)),k='u'+IMG.hash(raw),hit=IMG.get(k);if(hit){UXB[hid]=hit;return}
+      const im=new Image();im.decoding='async';
+      im.onload=()=>{try{const c=document.createElement('canvas');c.width=c.height=480;c.getContext('2d').drawImage(im,0,0,480,480);c.toBlob(b=>{if(b)UXB[hid]=IMG.put(k,b)},'image/png')}catch(e){}};
+      im.src=URL.createObjectURL(new Blob([still(raw)],{type:'image/svg+xml'}))}catch(e){}}}}catch(e){console.warn('v441 ux',e)}
+
+/* ---------- 6. combat : canvas des effets limité à la zone des cartes, voiles en calques HTML, positions mémorisées ---------- */
+try{
+  const SB={t:0,v:0,h:null};
+  fxSetup=function(){const host=document.querySelector('#battle .bw');if(!host)return;host.style.position='relative';
+    let cv=host.querySelector('#fxc');if(!cv){cv=document.createElement('canvas');cv.id='fxc';host.appendChild(cv)}
+    const r=host.getBoundingClientRect(),dpr=Math.min(1.5,window.devicePixelRatio||1),W=Math.round(r.width);
+    /* le journal du combat grandit à chaque action : avant, le canvas était refait à chaque nouvelle ligne */
+    let H=Math.round(r.height);try{const now=performance.now();if(!SB.t||now-SB.t>1000||SB.h!==host){let bot=0;host.querySelectorAll('.side').forEach(s=>{const q=s.getBoundingClientRect();bot=Math.max(bot,q.bottom-r.top)});SB.v=bot;SB.t=now;SB.h=host}if(SB.v>200)H=Math.min(H,Math.round(SB.v+70))}catch(e){}
+    if(FXS.cv!==cv||!FXS.ctx||Math.abs((FXS.w||0)-W)>1||Math.abs((FXS.h||0)-H)>1){cv.width=Math.round(W*dpr);cv.height=Math.round(H*dpr);cv.style.width=W+'px';cv.style.height=H+'px';cv.style.bottom='auto';
+      FXS.ctx=cv.getContext('2d');FXS.ctx.setTransform(dpr,0,0,dpr,0,0);host.style.setProperty('--fxh',H+'px')}
+    FXS.cv=cv;FXS.box=r;FXS.w=W;FXS.h=H};
+  const U=new WeakMap();
+  uc=function(u){const el=document.getElementById('u-'+u.key);if(!el||!FXS.box)return{x:FXS.w/2,y:FXS.h/2,s:60};
+    const now=performance.now(),c=U.get(el);if(c&&now-c.t<20&&c.b===FXS.box)return{x:c.x,y:c.y,s:c.s};
+    const r=el.getBoundingClientRect(),v={x:r.left-FXS.box.left+r.width/2,y:r.top-FXS.box.top+r.width*.48,s:r.width};U.set(el,{t:now,b:FXS.box,...v});return v};
+  /* un voile plein écran = un calque HTML que la carte graphique fond toute seule */
+  const veilEl=(col)=>{const host=document.querySelector('#battle .bw');if(!host)return null;const d=document.createElement('div');d.className='fxveil';d.style.background=col;host.appendChild(d);
+    const born=Date.now(),chk=setInterval(()=>{if(!document.contains(d)||!inBattle()||(B&&B.skip)||Date.now()-born>9000){clearInterval(chk);d.remove()}},400);return d};
+  window.RDEveil=function(col,max){if(typeof B!=='undefined'&&B&&B.skip)return null;const d=veilEl(col);if(!d)return null;const sp=S.speed||1;let a=null;
+    try{a=d.animate([{opacity:0},{opacity:max}],{duration:200/sp,fill:'forwards',easing:'ease-out'})}catch(e){d.style.opacity=max}
+    let done=false;return{end(){if(done)return;done=true;const sp=S.speed||1;try{const cur=+getComputedStyle(d).opacity||0;if(a)a.cancel();d.style.opacity=cur;const b=d.animate([{opacity:cur},{opacity:0}],{duration:340/sp,fill:'forwards'});b.onfinish=()=>d.remove()}catch(e){d.remove()}setTimeout(()=>d.remove(),1600)}}};
+  const pulse=(col,dur,max,delay,peak)=>{if(typeof B!=='undefined'&&B&&B.skip)return true;const d=veilEl(col);if(!d)return false;const sp=S.speed||1;
+    try{const a=d.animate([{opacity:0},{opacity:max,offset:peak},{opacity:0}],{duration:Math.max(40,dur/sp),delay:(delay||0)/sp,fill:'both',easing:'linear'});a.onfinish=()=>d.remove()}catch(e){d.remove();return false}return true};
+  {const f0=flash;flash=function(col='#ffffff',dur=220,max=.6,delay=0){if(!pulse(col,dur,max,delay,.25))return f0.apply(this,arguments)}}
+  {const t0=fxTint;fxTint=function(col,dur=500,max=.45){if(!pulse(col,dur,max,0,.5))return t0.apply(this,arguments)}}
+}catch(e){console.warn('v441 fx',e)}
+
+/* ---------- 7. animations qui forçaient à redessiner ---------- */
+const st=document.createElement('style');st.id='v441css';st.textContent=`
+/* le hibou des en-têtes : ailes et yeux figés, un petit balancement calculé par la carte graphique */
+.plumeb .plw,.plumeb .pls{animation:none!important}
+.plumeb svg{animation:plbob 3.4s ease-in-out infinite;transform-origin:50% 85%}
+@keyframes plbob{0%,100%{transform:none}50%{transform:translateY(-1.5px) rotate(-5deg)}}
+/* chroniques : la case « en cours » pulse sans repeindre */
+.hcpips i.cur{animation:none!important;position:relative;overflow:hidden}
+.hcpips i.cur::after{content:'';position:absolute;inset:0;border-radius:inherit;background:var(--hc,#9fe8c8);opacity:0;animation:hcpu2 1.6s ease-in-out infinite}
+@keyframes hcpu2{50%{opacity:1}}
+/* combat : barre de vie basse — lueur fixe au lieu d'un filtre animé */
+#battle .u .hp>i.lo{animation:none!important;box-shadow:0 0 7px rgba(255,90,100,.7)}
+#battle .fxveil{position:absolute;left:0;top:0;width:100%;height:var(--fxh,100%);pointer-events:none;z-index:6;opacity:0;will-change:opacity;
+ -webkit-mask-image:linear-gradient(#000 calc(100% - 64px),transparent);mask-image:linear-gradient(#000 calc(100% - 64px),transparent)}
+`;document.head.appendChild(st);
+
+/* ---------- 8. défilement : plus de recalcul de tout l'écran au début et à la fin de chaque geste ---------- */
+const dropScrollPause=()=>{try{for(const sh of document.styleSheets){let rs;try{rs=sh.cssRules}catch(e){continue}
+  for(let i=rs.length-1;i>=0;i--){const r=rs[i];if(r.selectorText&&/html\.scrl #app \*/.test(r.selectorText))sh.deleteRule(i)}}}catch(e){}};
+dropScrollPause();setTimeout(dropScrollPause,2000);
+
+/* ---------- notes de version ---------- */
+try{const it=[
+ "⚡ <b>Fluidité</b> : les portraits, avatars, décors et images des ultimes ne sont plus recalculés à chaque lancement du jeu. Ils sont gardés pour toujours dans le téléphone : listes, classement et arène s'affichent et défilent sans à-coups.",
+ "🎞️ Les portraits dans les listes ne se redessinent plus à chaque image (ils étaient animés en cachette).",
+ "⚔️ Combats plus fluides : les grands voiles des ultimes (Kaïros, l'Hiver Immobile et les autres apparences) sont calculés par la carte graphique, le canvas des effets ne couvre plus le journal, et le début du combat ne fige plus l'écran.",
+ "🦉 Le petit hibou des en-têtes ne redessine plus tout son dessin à chaque image, et faire défiler ne recalcule plus tout l'écran."];
+ PATCH.unshift({v:'v67',d:Date.now(),t:'Fluidité',items:it});
+ if(typeof I18N_EN!=='undefined'){I18N_EN['Fluidité']='Smoothness';
+  I18N_EN[it[0]]="⚡ <b>Smoothness</b>: portraits, avatars, scenery and ultimate images are no longer recomputed every time the game starts. They're kept on your phone for good: lists, rankings and the arena display and scroll without stutter.";
+  I18N_EN[it[1]]="🎞️ Portraits in lists no longer redraw on every frame (they were secretly animated).";
+  I18N_EN[it[2]]="⚔️ Smoother battles: big ultimate veils (Kairos, the Still Winter and other skins) are handled by the graphics chip, the effects canvas no longer covers the battle log, and the start of a battle no longer freezes the screen.";
+  I18N_EN[it[3]]="🦉 The little owl in headers no longer redraws itself on every frame, and scrolling no longer recomputes the whole screen."}}catch(e){}
+}catch(e){console.warn('v441',e)}})();
+/* ================= V442 : INTERFACE « NUIT D'ÉTHER » =================
+   Le plus beau possible sans rien ralentir :
+   · chaque quartier s'ouvre sur son décor, d'un bord à l'autre de l'écran, qui se fond dans la nuit ;
+     le nom du lieu s'inscrit en lettres d'or au pied du décor, comme une arrivée dans le quartier ;
+   · chaque lieu a sa pierre (rubis pour l'arène, émeraude pour les raids, saphir pour la caserne…) :
+     médaillon serti d'or et lueur de la même couleur, jusque dans l'en-tête de la page du lieu ;
+   · invocation : le héros en vedette en grand, dans un halo de rayons ;
+   · marges plus fines sur téléphone (le corps de page gardait 8 px de marge du navigateur en plus des 16 px) ;
+   · boutons en relief qui s'enfoncent sous le doigt.
+   Que du CSS fixe (aucun flou d'arrière-plan) ; une seule animation ajoutée : les rayons de la bannière. */
+(function(){try{
+const MOB='not all and (min-width:900px) and (min-aspect-ratio:5/4)';
+/* ---------- pierres des lieux : une couleur par lieu, la même sur la tuile, l'étiquette du décor et l'en-tête de la page ---------- */
+const JW={'#ff6178':['arena','teams','pass','poste'],'#ffa24a':['sboss','inv','tower'],'#ffd257':['flash','rank','ach'],'#4fe3a1':['raid','mk','meta'],
+ '#6fe8ff':['eth','mp','wb'],'#73a0ff':['col','av','monde'],'#b48cff':['cas','nm','dg'],'#ff8ad8':['dress','amis']};
+const JWCSS='.lpl,.lbh,#main .lzbar{--jw:#b48cff}\n'+Object.entries(JW).map(([c,ids])=>ids.map(v=>`.lpl[data-v="${v}"],.lbh[data-v="${v}"],body[data-lz="${v}"] #main .lzbar`).join(',')+`{--jw:${c}}`).join('\n');
+const BAN='#main .banner:not(.alban)';
+const css=`
+:root{--nx-gold:#ffd257;--nx-ivory:#f8f2ff;--nx-lav:#bdb1e3}
+${JWCSS}
+
+/* ---------- lieux : plaques émaillées ---------- */
+.lpl{border:1px solid transparent!important;
+ background:linear-gradient(180deg,rgba(255,255,255,.075),rgba(255,255,255,0) 46%) padding-box,
+  linear-gradient(180deg,#2c2165,#1c1546) padding-box,
+  linear-gradient(180deg,rgba(255,226,150,.38),rgba(160,130,255,.16) 40%,rgba(255,255,255,.05)) border-box!important;
+ box-shadow:0 10px 22px -14px #000,inset 0 1px 0 rgba(255,255,255,.07)!important;
+ transition:transform .12s ease-out,filter .12s ease-out}
+.lpl:active{transform:scale(.982);filter:brightness(1.12)}
+.lpl .li{position:relative;box-shadow:0 0 0 2px #e6b64a,0 0 0 3.5px rgba(20,12,48,.95),0 0 0 4.5px rgba(255,230,160,.35),0 8px 14px -6px #000,inset 0 2px 0 rgba(255,255,255,.3),inset 0 -6px 10px rgba(0,0,0,.35)!important;filter:none!important}
+.lpl .li::after{content:'';position:absolute;inset:3px 8px auto;height:38%;border-radius:50% 50% 45% 45%;background:linear-gradient(180deg,rgba(255,255,255,.38),rgba(255,255,255,0));pointer-events:none}
+.lpl b{font-weight:900;font-size:15px!important;letter-spacing:.005em;color:var(--nx-ivory)}
+.lpl small{color:var(--nx-lav)}
+.lpl::after{border-color:var(--nx-gold)!important;filter:drop-shadow(0 0 4px rgba(255,210,87,.55))}
+@supports (color:color-mix(in srgb,red,blue)){
+ .lpl{background:radial-gradient(90px 64px at 30px 50%,color-mix(in srgb,var(--jw) 30%,transparent),transparent 72%) padding-box,
+  linear-gradient(180deg,rgba(255,255,255,.075),rgba(255,255,255,0) 46%) padding-box,
+  linear-gradient(180deg,#2c2165,#1c1546) padding-box,
+  linear-gradient(180deg,color-mix(in srgb,var(--jw) 55%,#ffe39a),rgba(160,130,255,.16) 42%,rgba(255,255,255,.05)) border-box!important}
+ .lpl .li{background:radial-gradient(circle at 50% 30%,color-mix(in srgb,var(--jw) 78%,#fff),color-mix(in srgb,var(--jw) 55%,#1a0f3a) 58%,color-mix(in srgb,var(--jw) 22%,#120a2c) 100%)!important}
+ .lbh .lbl{box-shadow:0 0 0 1px color-mix(in srgb,var(--jw) 60%,transparent),0 4px 12px rgba(0,0,0,.55),inset 0 1px 0 rgba(255,255,255,.18)!important}
+}
+
+/* ---------- étiquettes sur les décors ---------- */
+.lbh .lbl{background:linear-gradient(180deg,rgba(40,28,92,.92),rgba(16,10,40,.92))!important;border:1.5px solid rgba(255,214,110,.75)!important;color:#fff8e6!important;letter-spacing:.01em}
+
+/* ---------- en-tête des quartiers ---------- */
+.evh .lphase{background:linear-gradient(180deg,rgba(255,255,255,.1),rgba(255,255,255,.03))!important;border:1px solid rgba(255,255,255,.16)!important;color:#ece6ff!important;
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.12),0 3px 8px -4px rgba(0,0,0,.6)}
+.evh .lphase.tubtn{background:linear-gradient(180deg,rgba(255,214,110,.22),rgba(255,214,110,.06))!important;border-color:rgba(255,214,110,.6)!important;color:#ffe9a8!important}
+
+/* ---------- en-tête des pages d'un lieu : la pierre du lieu ---------- */
+#main .lzbar{position:relative;overflow:hidden}
+@supports (color:color-mix(in srgb,red,blue)){
+ #main .lzbar{background:radial-gradient(190px 110px at 100% 0%,color-mix(in srgb,var(--jw) 30%,transparent),transparent 72%),linear-gradient(180deg,rgba(54,40,112,.94),rgba(26,18,56,.96))!important;
+  border-color:color-mix(in srgb,var(--jw) 50%,rgba(255,216,74,.25))!important}
+ #main .lzbar .lzt small{color:color-mix(in srgb,var(--jw) 50%,#e2d8ff)!important}
+}
+
+/* ---------- boutons en relief ---------- */
+.btn.p,.btn.g{box-shadow:inset 0 1px 0 rgba(255,255,255,.65),inset 0 -3px 0 rgba(0,0,0,.16),0 7px 16px -9px rgba(0,0,0,.8)!important}
+.btn.p:not(:disabled){box-shadow:inset 0 1px 0 rgba(255,255,255,.65),inset 0 -3px 0 rgba(120,60,0,.28),0 7px 18px -9px rgba(255,180,40,.75)!important}
+.btn.g:not(:disabled){box-shadow:inset 0 1px 0 rgba(255,255,255,.65),inset 0 -3px 0 rgba(0,70,60,.3),0 7px 18px -9px rgba(60,230,200,.6)!important}
+.btn{transition:transform .1s ease-out,filter .1s ease-out}
+.btn:not(:disabled):active{transform:translateY(1.5px) scale(.985);filter:brightness(1.08)}
+
+/* ---------- nom du quartier : lettres d'or cerclées de nuit (ombres de texte : rien à recalculer à chaque image) ---------- */
+#main .stack:has(>.lobby)>div:first-child .h{color:#ffe39a!important;background:none!important;filter:none!important;
+ text-shadow:0 2px 0 #241044,0 -1px 0 #241044,1.5px 0 0 #241044,-1.5px 0 0 #241044,1.5px 1.5px 0 #241044,-1.5px 1.5px 0 #241044,0 0 16px rgba(255,196,80,.32),0 7px 12px rgba(0,0,0,.55)!important}
+#main .stack:has(>.lobby)>div:first-child .h>*{text-shadow:none!important}
+
+/* ---------- couleur de chaque bannière d'invocation ---------- */
+${BAN}{--bnr:#ffd84a}${BAN}.bwk{--bnr:#58e4d3}${BAN}.garban{--bnr:#ff5a6e}${BAN}.orgban{--bnr:#f0c457}${BAN}.evban:not(.garban):not(.orgban){--bnr:#ff9a3c}
+
+/* =================== ordinateur : bannière en vedette et titres dorés =================== */
+@media (min-width:900px) and (min-aspect-ratio:5/4){
+ ${BAN}{grid-template-columns:minmax(0,1fr) 340px!important;position:relative;isolation:isolate;
+  background:radial-gradient(70% 130% at 84% 50%,rgba(70,50,140,.95),#150f33 72%)!important}
+ ${BAN}>.pt{height:330px!important;min-height:0!important;position:relative;display:grid;place-items:center}
+ ${BAN}>.pt>:is(img,svg){width:272px!important;height:272px!important;max-height:none!important;border-radius:26px;object-fit:cover;
+  box-shadow:0 0 0 2px var(--bnr),0 0 0 5px rgba(12,6,32,.85),0 0 0 6px rgba(255,255,255,.14),0 20px 38px -12px rgba(0,0,0,.8)}
+ ${BAN}.stdban>.pt{width:230px;height:300px!important;justify-self:center;overflow:visible!important}
+ ${BAN}>.pt::before{content:'';position:absolute;left:50%;top:50%;width:720px;height:720px;margin:-360px 0 0 -360px;z-index:-1;pointer-events:none;
+  background:repeating-conic-gradient(from 0deg,rgba(255,255,255,0) 0deg 9deg,rgba(255,255,255,.08) 9deg 12deg);
+  -webkit-mask-image:radial-gradient(closest-side,#000 16%,rgba(0,0,0,.55) 42%,transparent 70%);mask-image:radial-gradient(closest-side,#000 16%,rgba(0,0,0,.55) 42%,transparent 70%);
+  animation:nxrays 90s linear infinite}
+ ${BAN}>.pt::after{content:'';position:absolute;left:50%;top:50%;width:340px;height:340px;margin:-170px 0 0 -170px;border-radius:50%;z-index:-1;pointer-events:none;
+  background:radial-gradient(closest-side,rgba(255,236,170,.4),rgba(255,236,170,0))}
+ ${BAN} .h{font-size:38px!important;line-height:1.04!important;color:transparent!important;
+  background-image:linear-gradient(180deg,#fff 18%,var(--bnr) 78%)!important;-webkit-background-clip:text;background-clip:text;
+  filter:drop-shadow(0 2px 0 rgba(10,4,30,.9)) drop-shadow(0 0 1px rgba(10,4,30,.9))}
+ @supports (color:color-mix(in srgb,red,blue)){
+  ${BAN}{background:radial-gradient(70% 130% at 84% 50%,color-mix(in srgb,var(--bnr) 30%,#2a1d63),#140e30 72%)!important}
+  ${BAN}>.pt::before{background:repeating-conic-gradient(from 0deg,rgba(255,255,255,0) 0deg 9deg,color-mix(in srgb,var(--bnr) 30%,transparent) 9deg 12deg)}
+  ${BAN}>.pt::after{background:radial-gradient(closest-side,color-mix(in srgb,var(--bnr) 55%,transparent),transparent)}
+ }
+ #main .stack:has(>.lobby)>div:first-child .h{font-size:32px!important}
+}
+
+/* =================== téléphone (et tablette en portrait) =================== */
+@media ${MOB}{
+ body{margin:0!important}
+ #app{padding-inline:14px!important}
+
+ /* le décor d'abord, d'un bord à l'autre, puis le nom du lieu */
+ #main .stack:has(>.lobby)>.lobby{order:-1;margin:-6px -14px 0;border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;overflow:visible}
+ #main .stack:has(>.lobby)>.lobby::after{display:none!important}
+ #main .stack:has(>.lobby)>.lobby>img.lbimg,#main .stack:has(>.lobby)>.lobby>svg{
+  -webkit-mask-image:linear-gradient(180deg,transparent 0,#000 11%,#000 70%,transparent 100%);mask-image:linear-gradient(180deg,transparent 0,#000 11%,#000 70%,transparent 100%)}
+ #main .stack:has(>.lobby)>div:first-child{position:relative;z-index:3;margin-top:-58px;pointer-events:none}
+ #main .stack:has(>.lobby)>div:first-child :is(button,a,.lphase){pointer-events:auto}
+ #main .stack:has(>.lobby)>div:first-child .evh{display:block}
+ #main .stack:has(>.lobby)>div:first-child .h{display:flex!important;flex-wrap:wrap;align-items:center;margin:0!important;font-size:30px!important;line-height:1.08!important;letter-spacing:.01em}
+ #main .stack:has(>.lobby)>div:first-child .h::after{content:''!important;display:block!important;flex-basis:100%;order:1;height:0!important;width:auto!important;margin:0!important;background:none!important}
+ #main .stack:has(>.lobby)>div:first-child .h .lphase{order:2}
+ #main .stack:has(>.lobby)>div:first-child .plumeb{width:40px;height:40px;margin-right:4px;vertical-align:-8px}
+ #main .stack:has(>.lobby)>div:first-child .lphase{margin:8px 6px 0 0!important;font-size:11.5px;padding:3px 10px}
+ #main .stack:has(>.lobby)>div:first-child .h .lphase:first-of-type{margin-left:0!important}
+ #main .stack:has(>.lobby)>div:first-child .sub{margin:8px 0 2px!important;color:var(--nx-lav)}
+
+ /* invocation : le héros en vedette, en grand, dans un halo */
+ ${BAN}{grid-template-columns:minmax(0,1fr)!important;position:relative;isolation:isolate;text-align:center;
+  background:radial-gradient(130% 62% at 50% 24%,rgba(70,50,140,.95),#150f33 72%)!important}
+ ${BAN}>.pt{order:-1;height:auto!important;min-height:0!important;position:relative;display:grid;place-items:center;padding:18px 0 14px}
+ ${BAN}.stdban>.pt{width:196px;height:232px!important;justify-self:center;padding:0;margin:20px 0 10px;overflow:visible!important}
+ ${BAN}.stdban .stdp{border-radius:16px}
+ ${BAN}>.pt>:is(img,svg){width:226px!important;height:226px!important;max-height:none!important;border-radius:24px;object-fit:cover;
+  box-shadow:0 0 0 2px var(--bnr),0 0 0 5px rgba(12,6,32,.85),0 0 0 6px rgba(255,255,255,.14),0 18px 34px -10px rgba(0,0,0,.8)}
+ ${BAN}>.pt::before{content:'';position:absolute;left:50%;top:50%;width:600px;height:600px;margin:-300px 0 0 -300px;z-index:-1;pointer-events:none;
+  background:repeating-conic-gradient(from 0deg,rgba(255,255,255,0) 0deg 9deg,rgba(255,255,255,.09) 9deg 12deg);
+  -webkit-mask-image:radial-gradient(closest-side,#000 16%,rgba(0,0,0,.55) 42%,transparent 70%);mask-image:radial-gradient(closest-side,#000 16%,rgba(0,0,0,.55) 42%,transparent 70%);
+  animation:nxrays 90s linear infinite}
+ ${BAN}>.pt::after{content:'';position:absolute;left:50%;top:50%;width:300px;height:300px;margin:-150px 0 0 -150px;border-radius:50%;z-index:-1;pointer-events:none;
+  background:radial-gradient(closest-side,rgba(255,236,170,.42),rgba(255,236,170,0))}
+ ${BAN}>.tx{padding:4px 16px 18px!important}
+ ${BAN} .tag{position:static!important;transform:none!important;display:inline-block;margin:0 auto 9px;white-space:nowrap;max-width:100%;overflow:hidden;text-overflow:ellipsis;vertical-align:top;
+  font-size:10.5px;letter-spacing:.06em;padding:4px 11px;border-radius:99px;background:rgba(10,6,28,.72)!important;border:1px solid rgba(255,255,255,.2)!important}
+ ${BAN} .h{display:block;font-size:31px!important;line-height:1.04!important;margin:0 0 6px!important;color:transparent!important;text-wrap:balance;
+  background-image:linear-gradient(180deg,#fff 18%,var(--bnr) 78%)!important;-webkit-background-clip:text;background-clip:text;
+  filter:drop-shadow(0 2px 0 rgba(10,4,30,.9)) drop-shadow(0 0 1px rgba(10,4,30,.9))}
+ ${BAN} .sub{margin:0 auto 12px!important;max-width:34ch}
+ ${BAN} .row{justify-content:center;flex-wrap:wrap;gap:8px}
+ ${BAN} .row>.btn{flex:1 1 0;min-width:0;padding-block:11px}
+ ${BAN} .row>.btn:first-child:nth-last-child(3){flex-basis:100%}
+ ${BAN} .muted{margin-top:10px}
+ @supports (color:color-mix(in srgb,red,blue)){
+  ${BAN}{background:radial-gradient(130% 62% at 50% 24%,color-mix(in srgb,var(--bnr) 34%,#2a1d63),#140e30 72%)!important}
+  ${BAN}>.pt::before{background:repeating-conic-gradient(from 0deg,rgba(255,255,255,0) 0deg 9deg,color-mix(in srgb,var(--bnr) 34%,transparent) 9deg 12deg)}
+  ${BAN}>.pt::after{background:radial-gradient(closest-side,color-mix(in srgb,var(--bnr) 60%,transparent),transparent)}
+ }
+}
+@media (max-width:345px){
+ #main .stack:has(>.lobby)>div:first-child .h{font-size:24.5px!important}
+ #main .stack:has(>.lobby)>div:first-child .plumeb{width:32px;height:32px;margin-right:2px}
+ ${BAN} .h{font-size:27px!important}
+ ${BAN}>.pt>:is(img,svg){width:200px!important;height:200px!important}
+}
+@keyframes nxrays{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){${BAN}>.pt::before{animation:none}}
+body.rdlite ${BAN}>.pt::before{animation:none}
+`;
+const st=document.createElement('style');st.id='v442css';st.textContent=css;document.head.appendChild(st);
+
+/* ---------- notes de version ---------- */
+try{const it=[
+ "🏞️ <b>Nouvelle interface « Nuit d'Éther »</b> : chaque quartier s'ouvre sur son décor, d'un bord à l'autre de l'écran, qui se fond dans la nuit, et le nom du lieu s'écrit en lettres d'or au pied du décor.",
+ "💎 Chaque lieu a sa pierre : rubis pour l'Arène, émeraude pour les raids, saphir pour la Caserne, ambre pour la Forge… Médaillons sertis d'or, et la même couleur dans l'en-tête de la page du lieu.",
+ "✨ Invocation : le héros en vedette s'affiche en grand, net, dans un halo de rayons, avec les boutons d'invocation côte à côte.",
+ "📱 Sur téléphone, l'écran gagne de la place (marges plus fines) et les boutons s'enfoncent sous le doigt. Le nom des quartiers ne se redessine plus à chaque image : encore un peu plus fluide."];
+ PATCH.unshift({v:'v68',d:Date.now(),t:"Interface « Nuit d'Éther »",items:it});
+ if(typeof I18N_EN!=='undefined'){I18N_EN["Interface « Nuit d'Éther »"]='“Aether Night” interface';
+  I18N_EN[it[0]]="🏞️ <b>New “Aether Night” interface</b>: every district opens on its scenery, edge to edge, fading into the night, with the place's name written in gold at the foot of the scene.";
+  I18N_EN[it[1]]="💎 Every place has its gem: ruby for the Arena, emerald for raids, sapphire for the Barracks, amber for the Forge… Gold-set medallions, and the same colour in the place's page header.";
+  I18N_EN[it[2]]="✨ Summon: the featured hero is shown big and sharp in a halo of light rays, with the summon buttons side by side.";
+  I18N_EN[it[3]]="📱 On phones the screen gets more room (thinner margins) and buttons press in under your finger. District names no longer redraw on every frame: a little smoother still."}}catch(e){}
+
+/* ---------- l'en-tête d'une page de lieu connaît son lieu (pour sa couleur) ---------- */
+const markPlace=()=>{try{const v=(typeof UI!=='undefined'&&UI.lz&&typeof TAB!=='undefined'&&UI.lz[TAB])||'';if(document.body.dataset.lz!==v)document.body.dataset.lz=v}catch(e){}};
+try{const r0=render;render=function(){const x=r0.apply(this,arguments);markPlace();return x}}catch(e){}
+markPlace();
+
+/* ---------- invocation : le portrait en vedette est rendu en grand (768 px) au lieu de la vignette de 256 px ---------- */
+try{if(typeof avSwap==='function'&&window.RDEIMG){
+  const IMG=window.RDEIMG,BB=new Map();
+  const put=(sv,u)=>{const i=document.createElement('img');i.src=u;i.alt=sv.getAttribute('aria-label')||'';i.className='avimg nxbig';i.draggable=false;i.decoding='async';sv.replaceWith(i)};
+  const big=()=>{for(const sv of document.querySelectorAll('#main .banner>.pt>svg')){const h=sv.outerHTML;if(h.length<1500)continue;const k='B'+IMG.hash(h),u=IMG.get(k)||BB.get(k);
+    if(u){put(sv,u);continue}if(BB.has(k))continue;BB.set(k,null);
+    const im=new Image();im.onload=()=>{try{const c=document.createElement('canvas');c.width=c.height=768;c.getContext('2d').drawImage(im,0,0,768,768);
+      c.toBlob(b=>{if(!b)return;const url=IMG.put(k,b);BB.set(k,url);
+        /* la vignette provisoire déjà affichée est remplacée sur place */
+        const cur=document.querySelector('#main .banner>.pt>img.avimg:not(.nxbig)');if(cur){cur.src=url;cur.classList.add('nxbig')}},'image/png')}catch(e){}};
+    let s=h;if(!/xmlns=/.test(s))s=s.replace('<svg','<svg xmlns="http://www.w3.org/2000/svg"');s=s.replace(/<svg([^>]*?)>/,(m,a)=>/\bwidth=/.test(a)?m:'<svg'+a+' width="768" height="768">');
+    try{if(window.RDEnoanim)s=RDEnoanim(s)}catch(e){}
+    im.src=URL.createObjectURL(new Blob([s],{type:'image/svg+xml'}))}};
+  const s0=avSwap;avSwap=function(root){try{big()}catch(e){}return s0.apply(this,arguments)};
+}}catch(e){console.warn('v442 big',e)}
+}catch(e){console.warn('v442',e)}})();
 /* ================= toujours en dernier : l'écran de chargement reprend les dessins à jour ================= */
 (function(){try{
   /* Livre III : le Roi de Cendre (nouveau design) au premier rang, et le souvenir du jeune Éryndel au-dessus de la couronne */

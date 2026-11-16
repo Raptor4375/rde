@@ -25,8 +25,9 @@ SHAPES.ash=(c,s,f)=>{c.fillStyle=f;c.beginPath();c.moveTo(-s,-s*.2);c.lineTo(-s*
 
 /* ---------- briques communes ---------- */
 function layer(X,draw){const it={t0:performance.now(),dur:60000,draw:null};it.draw=c=>{const now=performance.now(),sp=S.speed||1;let al=Math.min(1,(now-it.t0)/(200/sp));if(it.e)al*=Math.max(0,1-(now-it.e)/(340/sp));if(al<=0)return;draw(c,al,(now-it.t0)/1000*sp)};FXS.items.push(it);fxRun();(X.L=X.L||[]).push(it);return it}
-function endLayers(X){const now=performance.now(),sp=S.speed||1;for(const it of X.L||[])if(!it.e){it.e=now;it.dur=now-it.t0+360/sp}}
-function veil(X,col,max=.6){layer(X,(c,al)=>{c.globalCompositeOperation='source-over';c.globalAlpha=al*max;c.fillStyle=col;c.fillRect(0,0,FXS.w,FXS.h)})}
+function endLayers(X){const now=performance.now(),sp=S.speed||1;for(const it of X.L||[])if(!it.e){it.e=now;it.dur=now-it.t0+360/sp}for(const v of X.V||[])try{v.end()}catch(e){}X.V=[]}
+/* voile plein écran : calque HTML (carte graphique) plutôt que de repeindre tout le canvas à chaque image (v441) */
+function veil(X,col,max=.6){try{const v=window.RDEveil&&RDEveil(col,max);if(v){(X.V=X.V||[]).push(v);return}}catch(e){}layer(X,(c,al)=>{c.globalCompositeOperation='source-over';c.globalAlpha=al*max;c.fillStyle=col;c.fillRect(0,0,FXS.w,FXS.h)})}
 function finTitle(X,col){const m=rowMid(1-X.u.side),t=String(X.A.fin);textPop(FXS.w/2,m.y-m.s*.35,t,col,Math.max(16,Math.min(28,FXS.w*.9/(t.length*.68))),1100);for(const t of X.tg)cardFlash(t,true)}
 
 /* ================= VALKYR, REINE DU GIVRE : nuit polaire, aurore, pics de glace ================= */
