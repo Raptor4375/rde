@@ -27044,13 +27044,14 @@ body{background:transparent!important}
 /* ---------- titres ---------- */
 .h{background-image:linear-gradient(180deg,#fff 30%,#ffe4a8)}
 .h3{color:#fff}
+#main .h:first-child:has(+.sub)::after{content:'';display:block;width:46px;height:3px;margin-top:7px;border-radius:3px;background:linear-gradient(90deg,#ffd84a,rgba(255,216,74,0))}
 .h3::before{box-shadow:0 0 8px rgba(244,195,79,.55)}
 
 /* ---------- cartes : liseré doré en haut, verre sombre ---------- */
 .card{border:1px solid transparent!important;
  background:linear-gradient(160deg,rgba(255,255,255,.065),rgba(255,255,255,.012) 45%) padding-box,
   linear-gradient(var(--panel),var(--panel)) padding-box,
-  linear-gradient(180deg,rgba(255,222,140,.34),rgba(170,140,255,.16) 28%,rgba(255,255,255,.05) 62%,rgba(255,255,255,.09)) border-box!important;
+  linear-gradient(180deg,rgba(255,222,140,.5),rgba(170,140,255,.18) 26%,rgba(255,255,255,.05) 62%,rgba(255,255,255,.09)) border-box!important;
  box-shadow:0 12px 26px -18px #000,inset 0 1px 0 rgba(255,255,255,.05)!important}
 
 /* ---------- en-tête de sous-page (← Retour + titre) ---------- */
