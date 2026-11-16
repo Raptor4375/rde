@@ -12,7 +12,7 @@ const toUrl=svg=>{let u=PURL.get(svg);if(u)return u;
   return u};
 const RX=/<svg\b[^>]*viewBox="0 0 100 100"[\s\S]*?<\/svg>/g;
 function light(h){if(typeof h!=='string'||h.length<20000)return h;
-  try{return h.replace(RX,m=>{if(m.length<2500)return m;const k=m.indexOf('<svg',4);if(k>0)return m;
+  try{return h.replace(RX,m=>{if(m.length<2500)return m;const k=m.indexOf('<svg',4);if(k>0)return m;const op=m.slice(0,m.indexOf('>')+1);if(/preserveAspectRatio/.test(op))return m;
     /* portrait déjà « emballé » (une image dans un SVG) : on garde seulement l'image du dedans, un seul décodage */
     const w=/^<svg[^>]*><image href="data:image\/svg\+xml;charset=utf-8,([^"]+)"[^>]*\/><\/svg>$/.exec(m);
     let src=m;if(w){try{src=decodeURIComponent(w[1])}catch(e){src=m}}
@@ -26,14 +26,16 @@ function rasStep(){const svg=RQ.shift();if(!svg){rBusy=false;return}
   try{if(typeof scrollBusy==='function'&&scrollBusy()){RQ.unshift(svg);setTimeout(()=>ric(rasStep),800);return}}catch(e){}
   const u=toUrl(svg),im=new Image();
   const next=()=>{RQS.delete(svg);ric(rasStep)};
-  im.onload=()=>{try{const c=document.createElement('canvas');c.width=c.height=200;c.getContext('2d').drawImage(im,0,0,200,200);
+  im.onload=()=>{try{const c=document.createElement('canvas');c.width=c.height=320;c.getContext('2d').drawImage(im,0,0,320,320);
     c.toBlob(b=>{if(b){const pu=URL.createObjectURL(b);RAS.set(svg,pu);document.querySelectorAll('img.lpt').forEach(i=>{if(i.getAttribute('src')===u)i.setAttribute('src',pu)})}next()},'image/webp',.92)}catch(e){next()}};
   im.onerror=next;im.src=u}
 window.RDElight=light;
 for(const n of['pHeros','pAdv']){try{const f=window[n];if(typeof f!=='function')continue;window[n]=function(){return light(f.apply(this,arguments))}}catch(e){}}
 const st=document.createElement('style');st.textContent=`#app .chatcard,#app .chatcard *{content-visibility:visible!important}
 .chat,#chat,#wchat,#dmth{overscroll-behavior:contain;overflow-anchor:none}
-img.lpt{width:100%;height:100%;display:block;pointer-events:none;-webkit-user-drag:none}`;document.head.appendChild(st);
+
+.orgbanfx i{opacity:.12!important;filter:blur(.6px)}
+img.lpt{width:100%;height:100%;display:block;object-fit:contain;pointer-events:none;-webkit-user-drag:none}`;document.head.appendChild(st);
 /* --- « Efficacité par mode » : la meilleure équipe n'est recalculée que si tes héros changent --- */
 try{const mb=myBest,C={};
   const sig=()=>{let s='';for(const i in S.heroes){const o=S.heroes[i];s+=i+':'+(o.l|0)+':'+(o.e|0)+':'+(o.u|0)+':'+(o.aw|0)+':'+(o.st|0)+',';}return s+'|'+(S.items?S.items.length:0)};
