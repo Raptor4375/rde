@@ -11,8 +11,8 @@
 (function(){try{
 const MOB='not all and (min-width:900px) and (min-aspect-ratio:5/4)';
 /* ---------- pierres des lieux : une couleur par lieu, la même sur la tuile, l'étiquette du décor et l'en-tête de la page ---------- */
-const JW={'#ff6178':['arena','teams','pass','poste'],'#ffa24a':['sboss','inv','tower'],'#ffd257':['flash','rank','ach'],'#4fe3a1':['raid','mk','meta'],
- '#6fe8ff':['eth','mp','wb'],'#73a0ff':['col','av','monde'],'#b48cff':['cas','nm','dg'],'#ff8ad8':['dress','amis']};
+const JW={'#ff6178':['arena','teams','pass','poste'],'#ffa24a':['sboss','inv','tower','vil','forgeg'],'#ffd257':['flash','rank','ach','chat'],'#4fe3a1':['raid','mk','meta','shop'],
+ '#6fe8ff':['eth','mp','wb','hall'],'#73a0ff':['col','av','monde','boss'],'#b48cff':['cas','nm','dg','hw'],'#ff8ad8':['dress','amis','rose']};
 const JWCSS='.lpl,.lbh,#main .lzbar{--jw:#b48cff}\n'+Object.entries(JW).map(([c,ids])=>ids.map(v=>`.lpl[data-v="${v}"],.lbh[data-v="${v}"],body[data-lz="${v}"] #main .lzbar`).join(',')+`{--jw:${c}}`).join('\n');
 const BAN='#main .banner:not(.alban)';
 const css=`
