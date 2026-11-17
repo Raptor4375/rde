@@ -9,6 +9,8 @@ const PURL=new Map();
 const toUrl=svg=>{let u=PURL.get(svg);if(u)return u;
   /* version fixe : un dessin animé dans une image se redessinait à chaque image (v441) */
   let fx=svg;try{if(window.RDEnoanim)fx=RDEnoanim(svg)}catch(e){}
+  /* une image SVG seule doit déclarer son espace de noms, sinon elle ne s'affiche pas (case vide) */
+  if(!/<svg[^>]*\sxmlns=/.test(fx))fx=fx.replace('<svg','<svg xmlns="http://www.w3.org/2000/svg"');if(/xlink:/.test(fx)&&!/xmlns:xlink=/.test(fx))fx=fx.replace('<svg','<svg xmlns:xlink="http://www.w3.org/1999/xlink"');
   u=URL.createObjectURL(new Blob([fx],{type:'image/svg+xml'}));PURL.set(svg,u);
   if(PURL.size>1500){let n=0;for(const [k,v] of PURL){if(n++>=500)break;PURL.delete(k);setTimeout(()=>{try{URL.revokeObjectURL(v)}catch(e){}},30000)}}
   return u};
