@@ -73,10 +73,10 @@ try{
   const SB={t:0,v:0,h:null};
   fxSetup=function(){const host=document.querySelector('#battle .bw');if(!host)return;host.style.position='relative';
     let cv=host.querySelector('#fxc');if(!cv){cv=document.createElement('canvas');cv.id='fxc';host.appendChild(cv)}
-    const r=host.getBoundingClientRect(),dpr=Math.min(1.5,window.devicePixelRatio||1),W=Math.round(r.width);
+    const r=host.getBoundingClientRect(),dpr=(window.RDEFXL&&RDEFXL.on)?Math.min(RDEFXL.dpr,window.devicePixelRatio||1):Math.min(1.5,window.devicePixelRatio||1),W=Math.round(r.width);
     /* le journal du combat grandit à chaque action : avant, le canvas était refait à chaque nouvelle ligne */
     let H=Math.round(r.height);try{const now=performance.now();if(!SB.t||now-SB.t>1000||SB.h!==host){let bot=0;host.querySelectorAll('.side').forEach(s=>{const q=s.getBoundingClientRect();bot=Math.max(bot,q.bottom-r.top)});SB.v=bot;SB.t=now;SB.h=host}if(SB.v>200)H=Math.min(H,Math.round(SB.v+70))}catch(e){}
-    if(FXS.cv!==cv||!FXS.ctx||Math.abs((FXS.w||0)-W)>1||Math.abs((FXS.h||0)-H)>1){cv.width=Math.round(W*dpr);cv.height=Math.round(H*dpr);cv.style.width=W+'px';cv.style.height=H+'px';cv.style.bottom='auto';
+    if(FXS.cv!==cv||!FXS.ctx||FXS.dpr!==dpr||Math.abs((FXS.w||0)-W)>1||Math.abs((FXS.h||0)-H)>1){FXS.dpr=dpr;cv.width=Math.round(W*dpr);cv.height=Math.round(H*dpr);cv.style.width=W+'px';cv.style.height=H+'px';cv.style.bottom='auto';
       FXS.ctx=cv.getContext('2d');FXS.ctx.setTransform(dpr,0,0,dpr,0,0);host.style.setProperty('--fxh',H+'px')}
     FXS.cv=cv;FXS.box=r;FXS.w=W;FXS.h=H};
   const U=new WeakMap();
