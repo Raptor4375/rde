@@ -41,6 +41,15 @@ window.RDEG={
  /* e-mail + mot de passe : mode 'new' (créer) ou 'in' (se connecter) */
  email:async(mode,mail,pw)=>{const [Au,a2]=await G2();const r=mode==='new'?await Au.createUserWithEmailAndPassword(a2,mail,pw):await Au.signInWithEmailAndPassword(a2,mail,pw);const out={key:r.user.uid,email:r.user.email||mail};try{await Au.signOut(a2)}catch(e){}return out},
  reset:async mail=>{const [Au,a2]=await G2();try{a2.languageCode='fr'}catch(e){}await Au.sendPasswordResetEmail(a2,mail)},
+ /* espace créateur : connexion Google gardée en mémoire le temps de la visite, puis lecture/suppression des signalements (les règles Firebase décident qui a le droit) */
+ admin:async()=>{const [Au,a2]=await G2();let u=a2.currentUser;
+  if(!u){const pr=new Au.GoogleAuthProvider();try{pr.setCustomParameters({prompt:'select_account'})}catch(e){}u=(await Au.signInWithPopup(a2,pr)).user}
+  const F=await import(U('firestore'));const fs2=F.getFirestore(a2.app);
+  const err=e=>{const o=new Error(e&&e.message||String(e));o.code=String(e&&e.code||'').replace(/-/g,'_');return o};
+  return{uid:u.uid,
+   list:async c=>{try{const s=await F.getDocs(F.query(F.collection(fs2,c),F.orderBy('t','desc'),F.limit(150)));return s.docs.map(d=>Object.assign({id:d.id},dec(d.data())))}catch(e){throw err(e)}},
+   del:async(c,id)=>{try{await F.deleteDoc(F.doc(fs2,c+'/'+id))}catch(e){throw err(e)}},
+   out:async()=>{try{await Au.signOut(a2)}catch(e){}}}},
  signIn:async()=>{const [Au,a2]=await G2();const pr=new Au.GoogleAuthProvider();try{pr.setCustomParameters({prompt:'select_account'})}catch(e){}
   const r=await Au.signInWithPopup(a2,pr);const out={key:r.user.uid,email:r.user.email||''};try{await Au.signOut(a2)}catch(e){}return out}};
 window.claude={use:async k=>{if(k==='db'||k==='user'){try{const F=await window.RDEF();return k==='db'?F.db:F.user}catch(e){return null}}return null}};

@@ -5,7 +5,7 @@
    Jour 7 : titre « Pionnier d'Éther ». Jour 14 : cadre animé « Pionnier » (jamais redonné) + œuf légendaire.
    Sur le site web, rien ne s'affiche et rien ne peut être récupéré. */
 (function(){try{
-const T=(f,e)=>{try{return (window.RDE_LANG||document.documentElement.lang)==='en'?e:f}catch(x){return f}};
+const T=(fr,en)=>(typeof LANG!=='undefined'&&LANG==='en')?en:fr;
 const PIO_CUT=Date.UTC(2027,1,1); // on peut commencer le calendrier jusqu'au 1er février 2027
 const dk=()=>{const d=new Date();return d.getFullYear()*1e4+(d.getMonth()+1)*100+d.getDate()};
 const EGGN=['commun','rare','épique','légendaire'];
@@ -57,7 +57,8 @@ function pioModal(){const p=st();if(!p)return;const can=canClaim(),fin=done();
   <div class="piogrid">${tiles()}</div>
   ${fin?`<p class="sub" style="text-align:center;margin-top:10px">🏆 ${T('Calendrier terminé ! Tu es un vrai Pionnier du royaume.','Calendar complete! You are a true Pioneer of the realm.')}</p>`
    :can?`<button class="btn pro piogo" data-a="pioclaim">🎁 ${T('Récupérer le cadeau du jour','Claim today\'s gift')}</button>`
-   :`<p class="sub" style="text-align:center;margin-top:10px">✅ ${T('Cadeau du jour récupéré. Reviens demain !','Today\'s gift claimed. Come back tomorrow!')}</p>`}`)}
+   :`<p class="sub" style="text-align:center;margin-top:10px">✅ ${T('Cadeau du jour récupéré. Reviens demain !','Today\'s gift claimed. Come back tomorrow!')}</p>`}
+  <button class="btn sm piobug" data-a="bugrep">🐞 ${T('Un bug pendant le test ? Signale-le','Found a bug? Report it')}</button>`)}
 
 function claim(){if(!canClaim())return;const p=P(),r=R[p.n];const out=give(r.g);p.n++;p.last=dk();save();
   try{ttCheck()}catch(e){}try{renderTop()}catch(e){}try{render()}catch(e){}pioModal();
@@ -87,7 +88,9 @@ const st0=document.createElement('style');st0.id='v447css';st0.textContent=`
 .fav.frm-pionnier::before{background:linear-gradient(160deg,rgba(255,255,255,.45),transparent 42%,rgba(0,0,0,.28)),conic-gradient(from var(--fa),#5ef0c0,#0a6a52,#e8fff6,#ffd84a,#5ef0c0,#0b4a5a,#8fd8ff,#5ef0c0);animation:fspin 6s linear infinite}
 .piohd{display:flex;gap:12px;align-items:center;margin-bottom:10px}
 .piosub{font-size:13px;line-height:1.4;opacity:.92;margin:0 0 8px}
-.piomini{display:inline-block;width:40px;height:40px;vertical-align:middle}
+.piot .piomini{display:inline-block!important;width:40px!important;height:40px!important;min-width:0!important;vertical-align:middle}
+.piot .piomini>*{width:100%!important;height:100%!important}
+.piot .pi:has(.piomini){margin:6px 0 10px;line-height:0}
 .piofr{width:62px;height:62px;flex:0 0 62px}
 .piobar{position:relative;height:16px;border-radius:9px;background:rgba(0,0,0,.35);border:1px solid rgba(94,240,192,.35);overflow:hidden;margin:4px 0 10px}
 .piobar i{position:absolute;inset:0 auto 0 0;background:linear-gradient(90deg,#1aa880,#5ef0c0);border-radius:9px;transition:width .6s}
@@ -108,6 +111,7 @@ const st0=document.createElement('style');st0.id='v447css';st0.textContent=`
 .piot.pop{animation:piopop .7s cubic-bezier(.3,1.6,.5,1)}
 @keyframes piopop{0%{transform:scale(.6)}100%{transform:scale(1)}}
 .piogo{width:100%;margin-top:12px;display:flex;justify-content:center}
+.piobug{display:flex!important;width:fit-content;margin:12px auto 0!important;background:transparent!important;border:1px dashed rgba(94,240,192,.45)!important;color:#bff5e4!important}
 .piowon{margin-top:10px;text-align:center;font-weight:800;color:#5ef0c0;font-size:13.5px}
 .pioconf{position:absolute;inset:0;pointer-events:none;overflow:hidden;border-radius:inherit}
 .pioconf i{position:absolute;top:-10px;width:7px;height:11px;border-radius:2px;animation:piofall 1.6s ease-in forwards}
@@ -118,7 +122,7 @@ window.RDEpio={open:pioModal,can:canClaim};
 /* ================= NOTES DE VERSION ================= */
 try{const it=[
  "🎁 <b>Calendrier des Pionniers</b> : réservé aux testeurs de l'<b>appli Android</b> (Google Play). Un cadeau par jour de connexion pendant 14 jours : gemmes, baies, œufs, le titre « Pionnier d'Éther », et au bout le <b>cadre animé Pionnier</b>, qui ne sera jamais redonné. Merci de tester le jeu 💚"];
- PATCH.unshift({v:'v72',d:now(),t:'Calendrier des Pionniers',items:it});
+ PATCH.unshift({v:'v72',d:Date.now(),t:'Calendrier des Pionniers',items:it});
  if(typeof I18N_EN!=='undefined'){I18N_EN['Calendrier des Pionniers']='Pioneer Calendar';
   I18N_EN[it[0]]="🎁 <b>Pioneer Calendar</b>: for testers of the <b>Android app</b> (Google Play) only. One gift per day you log in for 14 days: gems, berries, eggs, the “Pioneer of Ether” title, and at the end the animated <b>Pioneer frame</b>, which will never be given again. Thanks for testing the game 💚"}}catch(e){}
 }catch(e){console.warn('v447',e)}})();
