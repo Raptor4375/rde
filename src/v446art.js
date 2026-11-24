@@ -237,6 +237,33 @@ grandduc(st){let b='';const w='#fbfdff',sh='#d4e2f2',ice='#9fe6ff';
  const flake=(x,y,s)=>`<g transform="translate(${x} ${y})" stroke="#e8fbff" stroke-width="${s*.34}" stroke-linecap="round">${[0,60,120].map(a=>`<path d="M0 ${-s}L0 ${s}" transform="rotate(${a})"/>`).join('')}</g>`;
  if(st>=2)b+=flake(18,30,4.6)+flake(102,84,4);
  if(st===3)b+=flake(104,30,5.4)+flake(14,88,4.2);
+ return PA.g(st,b)},
+/* 🦇 Écho, chauve-souris du Donjon des Échos (exclusif à la Boutique des Échos) */
+echo(st){let b='';const fur=['#7f62d0','#5e40b0','#3e2680'][st-1],sh=['#5e44a8','#432c88','#2a185e'][st-1],mem=['#a68cec','#8a6ae0','#6a48c8'][st-1],bel='#e2d8ff',ear='#ff9ac8';
+ if(st===3)b+=PA.aura('ech','#b48aff');
+ b+=PA.shadow(30);
+ /* les ondes d'écho */
+ if(st>=2)b+=[0,1,2].map(i=>`<path d="M${22-i*7} ${44-i*4}Q${14-i*8} ${58} ${22-i*7} ${72+i*4}" fill="none" stroke="#e0d0ff" stroke-width="${2.6-i*.5}" stroke-linecap="round" opacity="${.85-i*.22}"/><path d="M${98+i*7} ${44-i*4}Q${106+i*8} ${58} ${98+i*7} ${72+i*4}" fill="none" stroke="#e0d0ff" stroke-width="${2.6-i*.5}" stroke-linecap="round" opacity="${.85-i*.22}"/>`).join('');
+ /* ailes */
+ const ws=[.78,.98,1.14][st-1];
+ const wing=sx=>`<g transform="translate(60 74) scale(${(sx*ws).toFixed(2)} ${ws.toFixed(2)})"><path d="M12 -6Q22 -34 50 -38Q50 -28 46 -22Q52 -18 50 -10Q42 -12 38 -4Q34 -8 26 -2Q20 -6 12 4Z" fill="${mem}" ${S3}/><path d="M16 -6L48 -36M20 -4L48 -12M24 -2L37 -5" fill="none" stroke="${st===3?'#f0e0ff':sh}" stroke-width="${st===3?1.8:1.5}" stroke-linecap="round" opacity="${st===3?.95:.7}"/></g>`;
+ b+=wing(1)+wing(-1);
+ /* pattes */
+ b+=[[50,103],[70,103]].map(([x,y])=>`<path d="M${x-5} ${y}Q${x} ${y-6} ${x+5} ${y}" fill="${sh}" ${S2}/><path d="M${x-3} ${y}l-1 3M${x} ${y}l0 3.4M${x+3} ${y}l1 3" stroke="${PO}" stroke-width="1.4" stroke-linecap="round"/>`).join('');
+ /* corps */
+ b+=`<ellipse cx="60" cy="84" rx="20" ry="19" fill="${fur}" ${S3}/><ellipse cx="60" cy="88" rx="12.5" ry="12" fill="${bel}"/><path d="M53 80q3 3 0 6M60 82q3 3 0 6M67 80q3 3 0 6" stroke="#b8a8e8" stroke-width="1.4" fill="none" stroke-linecap="round"/>`;
+ /* oreilles */
+ b+=`<path d="M41 44L30 ${[12,8,4][st-1]}L54 34Z" fill="${fur}" ${S3}/><path d="M42 40L35 ${[20,16,12][st-1]}L50 35Z" fill="${ear}"/><path d="M79 44L90 ${[12,8,4][st-1]}L66 34Z" fill="${fur}" ${S3}/><path d="M78 40L85 ${[20,16,12][st-1]}L70 35Z" fill="${ear}"/>`;
+ /* tête */
+ b+=`<ellipse cx="60" cy="55" rx="28" ry="24" fill="${fur}" ${S3}/><path d="M34 60Q60 82 86 60Q82 75 60 77Q38 75 34 60Z" fill="${sh}" opacity=".5"/><ellipse cx="60" cy="61" rx="15" ry="11" fill="${bel}" opacity=".9"/>`;
+ if(st>=2)b+=`<path d="M56 36Q60 30 64 36Q60 33 56 36Z" fill="#ffe8a0" ${S2}/>`;
+ if(st===3)b+=`<path d="M48 34L46 22L52 28L56 14L60 26L64 14L68 28L74 22L72 34Z" fill="#c89aff" ${S2}/><circle cx="60" cy="27" r="2.6" fill="#fff4b0"/><circle cx="51" cy="29" r="1.6" fill="#ffe0ff"/><circle cx="69" cy="29" r="1.6" fill="#ffe0ff"/>`;
+ b+=PA.eye(49,54,7.6)+PA.eye(71,54,7.6);
+ b+=`<path d="M57.4 61.4Q60 59.4 62.6 61.4Q60 64.6 57.4 61.4Z" fill="#ff7aa8" stroke="${PO}" stroke-width="1.2"/>`;
+ b+=`<path d="M53.5 66.5Q60 71 66.5 66.5" fill="none" stroke="${PO}" stroke-width="2.2" stroke-linecap="round"/><path d="M55.6 67.8L56.8 71L58.2 68.6Z M64.4 67.8L63.2 71L61.8 68.6Z" fill="#fff" stroke="${PO}" stroke-width=".9" stroke-linejoin="round"/>`;
+ b+=PA.blush(39,64,.75)+PA.blush(81,64,.75);
+ if(st>=2)b+=PA.spk(104,24,4,'#e0d0ff')+PA.spk(14,92,3,'#e0d0ff');
+ if(st===3)b+=PA.spk(18,26,5,'#fff')+PA.spk(102,96,4,'#ffe8a0');
  return PA.g(st,b)}
 };
 

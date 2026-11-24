@@ -28167,6 +28167,33 @@ grandduc(st){let b='';const w='#fbfdff',sh='#d4e2f2',ice='#9fe6ff';
  const flake=(x,y,s)=>`<g transform="translate(${x} ${y})" stroke="#e8fbff" stroke-width="${s*.34}" stroke-linecap="round">${[0,60,120].map(a=>`<path d="M0 ${-s}L0 ${s}" transform="rotate(${a})"/>`).join('')}</g>`;
  if(st>=2)b+=flake(18,30,4.6)+flake(102,84,4);
  if(st===3)b+=flake(104,30,5.4)+flake(14,88,4.2);
+ return PA.g(st,b)},
+/* 🦇 Écho, chauve-souris du Donjon des Échos (exclusif à la Boutique des Échos) */
+echo(st){let b='';const fur=['#7f62d0','#5e40b0','#3e2680'][st-1],sh=['#5e44a8','#432c88','#2a185e'][st-1],mem=['#a68cec','#8a6ae0','#6a48c8'][st-1],bel='#e2d8ff',ear='#ff9ac8';
+ if(st===3)b+=PA.aura('ech','#b48aff');
+ b+=PA.shadow(30);
+ /* les ondes d'écho */
+ if(st>=2)b+=[0,1,2].map(i=>`<path d="M${22-i*7} ${44-i*4}Q${14-i*8} ${58} ${22-i*7} ${72+i*4}" fill="none" stroke="#e0d0ff" stroke-width="${2.6-i*.5}" stroke-linecap="round" opacity="${.85-i*.22}"/><path d="M${98+i*7} ${44-i*4}Q${106+i*8} ${58} ${98+i*7} ${72+i*4}" fill="none" stroke="#e0d0ff" stroke-width="${2.6-i*.5}" stroke-linecap="round" opacity="${.85-i*.22}"/>`).join('');
+ /* ailes */
+ const ws=[.78,.98,1.14][st-1];
+ const wing=sx=>`<g transform="translate(60 74) scale(${(sx*ws).toFixed(2)} ${ws.toFixed(2)})"><path d="M12 -6Q22 -34 50 -38Q50 -28 46 -22Q52 -18 50 -10Q42 -12 38 -4Q34 -8 26 -2Q20 -6 12 4Z" fill="${mem}" ${S3}/><path d="M16 -6L48 -36M20 -4L48 -12M24 -2L37 -5" fill="none" stroke="${st===3?'#f0e0ff':sh}" stroke-width="${st===3?1.8:1.5}" stroke-linecap="round" opacity="${st===3?.95:.7}"/></g>`;
+ b+=wing(1)+wing(-1);
+ /* pattes */
+ b+=[[50,103],[70,103]].map(([x,y])=>`<path d="M${x-5} ${y}Q${x} ${y-6} ${x+5} ${y}" fill="${sh}" ${S2}/><path d="M${x-3} ${y}l-1 3M${x} ${y}l0 3.4M${x+3} ${y}l1 3" stroke="${PO}" stroke-width="1.4" stroke-linecap="round"/>`).join('');
+ /* corps */
+ b+=`<ellipse cx="60" cy="84" rx="20" ry="19" fill="${fur}" ${S3}/><ellipse cx="60" cy="88" rx="12.5" ry="12" fill="${bel}"/><path d="M53 80q3 3 0 6M60 82q3 3 0 6M67 80q3 3 0 6" stroke="#b8a8e8" stroke-width="1.4" fill="none" stroke-linecap="round"/>`;
+ /* oreilles */
+ b+=`<path d="M41 44L30 ${[12,8,4][st-1]}L54 34Z" fill="${fur}" ${S3}/><path d="M42 40L35 ${[20,16,12][st-1]}L50 35Z" fill="${ear}"/><path d="M79 44L90 ${[12,8,4][st-1]}L66 34Z" fill="${fur}" ${S3}/><path d="M78 40L85 ${[20,16,12][st-1]}L70 35Z" fill="${ear}"/>`;
+ /* tête */
+ b+=`<ellipse cx="60" cy="55" rx="28" ry="24" fill="${fur}" ${S3}/><path d="M34 60Q60 82 86 60Q82 75 60 77Q38 75 34 60Z" fill="${sh}" opacity=".5"/><ellipse cx="60" cy="61" rx="15" ry="11" fill="${bel}" opacity=".9"/>`;
+ if(st>=2)b+=`<path d="M56 36Q60 30 64 36Q60 33 56 36Z" fill="#ffe8a0" ${S2}/>`;
+ if(st===3)b+=`<path d="M48 34L46 22L52 28L56 14L60 26L64 14L68 28L74 22L72 34Z" fill="#c89aff" ${S2}/><circle cx="60" cy="27" r="2.6" fill="#fff4b0"/><circle cx="51" cy="29" r="1.6" fill="#ffe0ff"/><circle cx="69" cy="29" r="1.6" fill="#ffe0ff"/>`;
+ b+=PA.eye(49,54,7.6)+PA.eye(71,54,7.6);
+ b+=`<path d="M57.4 61.4Q60 59.4 62.6 61.4Q60 64.6 57.4 61.4Z" fill="#ff7aa8" stroke="${PO}" stroke-width="1.2"/>`;
+ b+=`<path d="M53.5 66.5Q60 71 66.5 66.5" fill="none" stroke="${PO}" stroke-width="2.2" stroke-linecap="round"/><path d="M55.6 67.8L56.8 71L58.2 68.6Z M64.4 67.8L63.2 71L61.8 68.6Z" fill="#fff" stroke="${PO}" stroke-width=".9" stroke-linejoin="round"/>`;
+ b+=PA.blush(39,64,.75)+PA.blush(81,64,.75);
+ if(st>=2)b+=PA.spk(104,24,4,'#e0d0ff')+PA.spk(14,92,3,'#e0d0ff');
+ if(st===3)b+=PA.spk(18,26,5,'#fff')+PA.spk(102,96,4,'#ffe8a0');
  return PA.g(st,b)}
 };
 
@@ -28216,7 +28243,9 @@ const PETS={
  jeton:{r:2,ic:'🐱',col:'#ff5fb4',n:['Jeton','Jeton Fripon','Chat du Destin'],en:['Token','Rascal Token','Cat of Fate'],sp:["chat d'Aléa","Aléa's cat"],sk:['Pile ou face','Heads or Tails']},
  plumet:{r:2,ic:'🦉',col:'#5fe0d6',n:['Plumet','Plumet Étoilé','Duc des Constellations'],en:['Plumet','Starry Plumet','Constellation Duke'],sp:["petit-duc d'éther",'aether scops owl'],sk:['Œil de nuit','Night Eye'],owl:1},
  fumerolle:{r:3,ic:'🐉',col:'#ff6a4a',n:['Fumerolle','Fumerolle Cendrée','Dragon des Braises'],en:['Smokelet','Ashen Smokelet','Ember Dragon'],sp:['bébé dragon','baby dragon'],sk:['Souffle de braises','Ember Breath']},
- grandduc:{r:3,ic:'🦉',col:'#bfe8ff',n:['Grand-Duc des Neiges','Grand-Duc Givré','Grand-Duc Blizzard'],en:['Snow Eagle-Owl','Frosted Eagle-Owl','Blizzard Eagle-Owl'],sp:['chouette des neiges','snowy owl'],sk:['Blizzard','Blizzard'],owl:1}};
+ grandduc:{r:3,ic:'🦉',col:'#bfe8ff',n:['Grand-Duc des Neiges','Grand-Duc Givré','Grand-Duc Blizzard'],en:['Snow Eagle-Owl','Frosted Eagle-Owl','Blizzard Eagle-Owl'],sp:['chouette des neiges','snowy owl'],sk:['Blizzard','Blizzard'],owl:1},
+ /* exclusif : seulement dans la Boutique des Échos du donjon (jamais dans un œuf) */
+ echo:{r:3,ic:'🦇',col:'#b48aff',n:['Écho','Écho Nocturne','Seigneur des Échos'],en:['Echo','Night Echo','Lord of Echoes'],sp:['chauve-souris du donjon','dungeon bat'],sk:["Morsure d'écho",'Echo Bite'],ex:1}};
 const KEYS=Object.keys(PETS);
 window.RDEPETS=PETS;
 const pn=(k,st)=>{const P=PETS[k];return T(P.n[st-1],P.en[st-1])};
@@ -28230,6 +28259,8 @@ function PS(){S.pets=S.pets||{};const p=S.pets;p.own=p.own||{};p.eggs=p.eggs||[]
   if(!p.wel){p.wel=1;p.eggs.push({id:p.nid++,r:1,w:1})}
   if(p.act&&!p.own[p.act])p.act=null;return p}
 window.RDEpetState=PS;
+/* donner un familier (Boutique des Échos) : nouveau, ou une étoile de plus, ou des baies s'il est déjà au maximum */
+window.RDEpetGive=function(k){const p=PS();if(!PETS[k])return null;let res;if(!p.own[k]){p.own[k]={l:1,x:0,s:0};res={k,kind:'new'}}else if(p.own[k].s<5){p.own[k].s++;res={k,kind:'star',s:p.own[k].s}}else{p.b+=80;res={k,kind:'ber',b:80}}if(!p.act)p.act=k;save();return res};
 const today=()=>{const d=new Date();return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate()};
 function addEgg(r){const p=PS();const e={id:p.nid++,r};p.eggs.push(e);return e}
 function roll(w){let x=Math.random()*w.reduce((a,b)=>a+b,0);for(let i=0;i<w.length;i++){if((x-=w[i])<0)return i}return 0}
@@ -28260,7 +28291,8 @@ function effNums(k,l,s){const P=powOf(k,l,s),st=stOf(l);
    case 'jeton':return{hit:62*P,tail:st>=2?5:0};
    case 'plumet':return{hit:18*P,mk:st===3?2:1};
    case 'fumerolle':return{hit:6.2*P};
-   case 'grandduc':return{hit:4.6*P,en:15,n:st===3?2:1}}
+   case 'grandduc':return{hit:4.6*P,en:15,n:st===3?2:1};
+   case 'echo':return{hit:26*P,ls:st===3?60:50,n:st===3?2:1}}
   return{}}
 function effText(k,l,s){const E=effNums(k,l,s);const A=T("de l'ATQ moyenne de ton équipe","of your team's average ATK");
   switch(k){
@@ -28272,6 +28304,7 @@ function effText(k,l,s){const E=effNums(k,l,s);const A=T("de l'ATQ moyenne de to
    case 'jeton':return T(`Lance une pièce. Face : grosse frappe (${pc(E.hit)} ${A}). Pile : ${E.tail?`+${E.tail} d'énergie pour toute l'équipe`:'rien… (au stade 2 : de l\'énergie)'}.`,`Flips a coin. Heads: big hit (${pc(E.hit)} ${A}). Tails: ${E.tail?`+${E.tail} energy for the whole team`:'nothing… (stage 2: energy)'}.`);
    case 'plumet':return T(`Marque l'ennemi le plus affaibli jusqu'à ${E.mk>1?'ses 2 prochains tours':'son prochain tour'} : il subit +30 % de dégâts et ton équipe le vise plus souvent. Petit coup de bec (${pc(E.hit)}).`,`Marks the weakest enemy until ${E.mk>1?'its next 2 turns':'its next turn'}: it takes +30 % damage and your team targets it more often. Small peck (${pc(E.hit)}).`);
    case 'fumerolle':return T(`Souffle sur tous les ennemis : ${pc(E.hit)} ${A} chacun.`,`Breathes on all enemies: ${pc(E.hit)} ${A} each.`);
+   case 'echo':return T(`Fond sur ${E.n>1?'les 2 ennemis les plus affaiblis':"l'ennemi le plus affaibli"} (${pc(E.hit)} ${A}) et rend ${E.ls} % des dégâts en PV à ton héros le plus blessé.`,`Swoops on ${E.n>1?'the 2 weakest enemies':'the weakest enemy'} (${pc(E.hit)} ${A}) and gives ${E.ls} % of the damage back as HP to your most wounded hero.`);
    case 'grandduc':return T(`Givre sur tous les ennemis (${pc(E.hit)} chacun) et ralentit ${E.n>1?'les 2 ennemis les plus chargés':"l'ennemi le plus chargé"} : −${E.en} d'énergie, il joue en dernier au tour suivant.`,`Frost on all enemies (${pc(E.hit)} each) and slows ${E.n>1?'the 2 most charged enemies':'the most charged enemy'}: −${E.en} energy, acts last next turn.`)}
   return''}
 const owlNote=()=>T(" Lien de plumes : avec Corvin dans l'équipe, Corvin gagne +10 % d'ATQ."," Feather bond: with Corvin in the team, Corvin gains +10 % ATK.");
@@ -28282,7 +28315,7 @@ function gainXP(k,n){const p=PS(),o=p.own[k];if(!o)return{up:0,evo:0};let up=0,e
   if(o.l>=MAXL){o.l=MAXL;o.x=0}
   if(stOf(o.l)>st0)evo=stOf(o.l);return{up,evo}}
 function hatchSlot(i){const p=PS(),s=p.inc[i];if(!s||incLeft(s)>0)return null;p.inc[i]=null;
-  const pool=KEYS.filter(k=>PETS[k].r===s.r);let k=pool[Math.floor(Math.random()*pool.length)];
+  const pool=KEYS.filter(k=>PETS[k].r===s.r&&!PETS[k].ex);let k=pool[Math.floor(Math.random()*pool.length)];
   let res;
   if(!p.own[k]){p.own[k]={l:1,x:0,s:0};res={k,kind:'new'}}
   else if(p.own[k].s<MAXS){p.own[k].s++;res={k,kind:'star',s:p.own[k].s}}
@@ -28311,7 +28344,7 @@ function petsPage(){const p=PS();const own=Object.keys(p.own);const sel=UI.ptSel
         ${has?`<div class="row ptbtns"><button class="btn p" data-a="ptfeed" data-v="${sel}" ${p.b<1||l>=MAXL?'disabled':''}>${BER} ${T('Nourrir','Feed')}</button><button class="btn" data-a="ptfeedall" data-v="${sel}" ${p.b<1||l>=MAXL?'disabled':''}>${T('Tout donner','Feed all')} (${p.b})</button></div>
           ${act?'':`<button class="btn g ptgo" data-a="ptact" data-v="${sel}">🐾 ${T('Emmener au combat','Take into battle')}</button>`}
           <p class="muted ptpat">${p.pat===today()?T('💕 Déjà câliné aujourd\'hui.','💕 Already cuddled today.'):T('👆 Touche-le pour le caresser : +2 baies une fois par jour.','👆 Tap to pet it: +2 berries once a day.')}</p>`
-        :`<p class="muted" style="margin:6px 0 0">🔒 ${T('Pas encore obtenu : il peut sortir d\'un œuf','Not obtained yet: it can hatch from an egg')} ${rn(P.r).toLowerCase()}.</p>`}
+        :P.ex?`<p class="muted" style="margin:6px 0 0">🔒 ${T('Familier exclusif : on ne le trouve que dans la Boutique des Échos du Donjon des Échos.','Exclusive familiar: only found in the Echo Shop of the Echo Dungeon.')}</p>`:`<p class="muted" style="margin:6px 0 0">🔒 ${T('Pas encore obtenu : il peut sortir d\'un œuf','Not obtained yet: it can hatch from an egg')} ${rn(P.r).toLowerCase()}.</p>`}
       </div></div>`}
   /* couveuse */
   const nest=(s,i)=>{if(!s)return`<div class="ptnest empty"><div class="ptnimg">🪺</div><small>${T('Libre','Empty')}</small></div>`;
@@ -28419,7 +28452,7 @@ const LAUNCH=Date.UTC(2026,10,18);
 function hashStr(s){let h=2166136261>>>0;for(const ch of String(s)){h^=ch.charCodeAt(0);h=Math.imul(h,16777619)>>>0}return h}
 function botPet(row){let h=hashStr('pet:'+(row.id||row.n||'x'));const R=()=>{h=(Math.imul(h,1664525)+1013904223)>>>0;return h/4294967296};
   const rr=(()=>{let x=R()*100,i=0;const w=[34,30,24,12];while(i<3&&(x-=w[i])>0)i++;return i})();
-  const pool=KEYS.filter(k=>PETS[k].r===rr);const k=pool[Math.floor(R()*pool.length)];
+  const pool=KEYS.filter(k=>PETS[k].r===rr&&!PETS[k].ex);const k=pool[Math.floor(R()*pool.length)];
   const days=Math.max(0,(now()-LAUNCH)/864e5);const act=typeof row.act==='number'?Math.max(0,Math.min(1,row.act)):R();
   const l=Math.max(1,Math.min(MAXL,Math.floor(1+days*(.9+1.7*act)+R()*3)));const s=Math.min(MAXS,Math.floor(days/9*(.5+R())));
   return{k,l,s}}
@@ -28472,6 +28505,9 @@ const EFF={
   const L=aliveS(P.side);return{tg:L,kind:'heal',tag:T('🪙 Pile','🪙 Tails'),ap:()=>{for(const u of L)u.en=Math.min(100,(u.en||0)+E.tail);return T(`Pile : toute l'équipe ⚡ +${E.tail}`,`Tails: whole team ⚡ +${E.tail}`)}}},
  plumet(P,E){const t=weakest(aliveS(1-P.side));if(!t)return null;return{tg:[t],kind:'hit',ap:()=>{const d=petHit(P,t,E.hit);if(t.hp>0){t.markT=Math.max(t.markT||0,E.mk);P.focus=t;float(t,'🎯','crit')}return`${nm(t)} ${T('marqué','marked')} 🎯 −${fmt(d)}`}}},
  fumerolle(P,E){const L=aliveS(1-P.side);if(!L.length)return null;return{tg:L,kind:'hit',ap:()=>{let s=0;for(const t of L)s+=petHit(P,t,E.hit);return T(`tous les ennemis, −${fmt(s)} au total`,`all enemies, −${fmt(s)} total`)}}},
+ echo(P,E){const L=aliveS(1-P.side);if(!L.length)return null;const tg=L.slice().sort((a,b)=>a.hp/a.max-b.hp/b.max).slice(0,E.n);
+  return{tg,kind:'hit',ap:()=>{let s=0;const parts=tg.map(t=>{const d=petHit(P,t,E.hit);s+=d;return`${nm(t)} −${fmt(d)}`});const A=aliveS(P.side).sort((a,b)=>a.hp/a.max-b.hp/b.max)[0];let hv=0;
+   if(A&&s>0){const h0=A.hp;heal(A,s*E.ls/100);hv=Math.max(0,A.hp-h0)}return parts.join(', ')+(hv?` · ${nm(A)} +${fmt(hv)} ${T('PV','HP')}`:'')}}},
  grandduc(P,E){const L=aliveS(1-P.side);if(!L.length)return null;const sl=L.slice().sort((a,b)=>(b.en||0)-(a.en||0)).slice(0,E.n);
   return{tg:L,kind:'hit',ap:()=>{let s=0;for(const t of L)s+=petHit(P,t,E.hit);
    for(const t of sl){if(t.hp<=0)continue;t.en=Math.max(0,(t.en||0)-E.en);if(!t.ptSlow){t.ptSpd=t.spd;t.spd=Math.round(t.spd*.3)}t.ptSlow=B.round+1;float(t,'❄️','info')}
@@ -30454,6 +30490,737 @@ ${Object.keys(T).map(k=>`.seafx .t-${k}{background-image:${T[k][2]}}`).join('\n'
 html.scrl .seafx *,html.bgpause .seafx *,html.rdlite .seafx *,body.rdlite .seafx *,html.scrl .seafx *::before,html.bgpause .seafx *::before{animation-play-state:paused!important}
 @media (prefers-reduced-motion:reduce){.seafx{display:none}}`;document.head.appendChild(st);
 }catch(e){console.warn('bannières animées',e)}})();
+
+/* ================= V453 : LE DONJON DES ÉCHOS 2.0 =================
+   Pourquoi personne n'y allait : 18 salles d'un coup, et tout se gagnait seulement à la toute fin.
+   - Deux descentes : complète (3 étages, 18 salles) ou rapide (1 étage, 6 salles). Chacune coûte une clé.
+   - Un coffre à chaque gardien d'étage (gemmes + échos gardés), même si l'expédition s'arrête après.
+   - La moitié des échos qui restent à la sortie est gardée pour la Boutique des Échos (en plus des gemmes et de l'or habituels).
+   - La Boutique des Échos : le familier exclusif « Écho », un cadre, un titre, un fond de profil, et des objets utiles.
+   - Une malédiction par semaine : une règle spéciale, avec un bonus. */
+(function(){try{
+if(typeof DG!=='function'||typeof dgEnd!=='function'||typeof dgPage!=='function')return;
+const EN={};
+/* les traductions : texte par texte (sans les balises), nombres remplacés par #, enregistrées tout de suite */
+const sp=x=>String(x).split(/<[^>]+>/).map(y=>y.trim()).filter(y=>/[A-Za-zÀ-ÿ]/.test(y));
+const put=(fr,en)=>{try{const f=sp(fr),g=sp(en);if(f.length!==g.length)return;f.forEach((x,i)=>{if(!/[A-Za-zÀ-ÿ]{2}/.test(x))return;const k=x.replace(NUMRX,'#');if(!(k in I18N_EN))I18N_EN[k]=g[i].replace(NUMRX,'#')})}catch(e){}};
+const tr=(fr,en)=>{if(en&&!(fr in EN)){EN[fr]=en;put(fr,en)}return fr};
+const nfmt=n=>(+n).toLocaleString('fr-FR');
+
+/* ---------- la malédiction de la semaine ---------- */
+const DGC=[
+ {k:'faim',ic:'🍖',n:tr('Ombres affamées','Starving Shadows'),d:tr("Les ennemis ont +20 % d'ATQ. Échos +35 %.",'Enemies have +20% ATK. Echoes +35%.'),atk:.2,echo:.35},
+ {k:'sang',ic:'🩸',n:tr('Écho sanglant','Bloody Echo'),d:tr('Tes héros perdent 6 % de PV après chaque combat. Échos +50 %.','Your heroes lose 6% HP after each fight. Echoes +50%.'),drain:.06,echo:.5},
+ {k:'riche',ic:'💰',n:tr('Marchand généreux','Generous Merchant'),d:tr('Le marchand des ombres fait −35 %. Les élites ont +30 % de PV.','The shadow merchant gives −35%. Elites have +30% HP.'),shop:.65,elite:.3},
+ {k:'colere',ic:'💀',n:tr('Gardiens en colère','Angry Guardians'),d:tr("Les gardiens d'étage ont +25 % de PV et d'ATQ, mais leurs coffres valent double.",'Floor guardians have +25% HP and ATK, but their chests are worth double.'),boss:.25,chest:2},
+ {k:'vif',ic:'⚡',n:tr('Vitesse folle','Mad Speed'),d:tr('Tout le monde a +20 % de vitesse. Échos +25 %.','Everyone has +20% speed. Echoes +25%.'),spd:.2,echo:.25},
+ {k:'reliq',ic:'🔮',n:tr('Reliques capricieuses','Fickle Relics'),d:tr('Les reliques rares et légendaires sortent bien plus souvent, mais les ennemis ont +15 % de PV.','Rare and legendary relics show up much more often, but enemies have +15% HP.'),rel:1,hp:.15}];
+const curse=()=>{const w=weekKey(Date.now());return DGC[((w%DGC.length)+DGC.length)%DGC.length]};
+const curseLeft=()=>{const wk=weekKey(Date.now());let t=Date.now();while(weekKey(t)===wk)t+=36e5;return t-Date.now()};
+window.dgCurse=curse;
+function XB(){const X=DG();if(X.bank==null)X.bank=0;X.own=X.own||{};X.sw=X.sw||{};X.sd=X.sd||{};const wk=weekKey(Date.now()),d=today();if(X.sw.wk!==wk)X.sw={wk,n:{}};if(X.sd.d!==d)X.sd={d,n:{}};return X}
+
+/* les monstres et les héros sous la malédiction */
+{const eb=evBattle;evBattle=function(){const go=DGX.go;const r=eb.apply(this,arguments);try{if(go&&DGX.active&&r&&r.foes){const C=curse(),R=dgRun(),nd=DGX.node,t=R.maps[R.fl][nd[0]][nd[1]].t;
+  for(const f of r.foes){let hp=1+(C.hp||0),atk=1+(C.atk||0);if(C.elite&&t==='elite')hp*=1+C.elite;if(C.boss&&t==='boss'){hp*=1+C.boss;atk*=1+C.boss}
+   if(C.spd)f.spd=Math.round((f.spd||100)*(1+C.spd));f.max=Math.round(f.max*hp);f.hp=f.max;f.atk=Math.round(f.atk*atk)}
+  r.sub=(r.sub||'')+(R.quick?' · ⚡ '+tr('rapide','quick'):'')}}catch(e){}return r}}
+{const am=applyMeta;applyMeta=function(units,mk){const r=am.apply(this,arguments);try{const C=curse();if(DGX.active&&C.spd)for(const u of units)if(u.side===0&&u.hid!=null)u.spd=Math.round(u.spd*(1+C.spd))}catch(e){}return r}}
+{const de=dgEcho;dgEcho=function(n){const C=curse();return de.call(this,Math.round(n*(1+(C.echo||0))))}}
+{const ds=dgShop;dgShop=function(){try{const R=dgRun(),C=curse();if(R&&R.shop&&C.shop)for(const x of R.shop)if(!x.cz){x.c=Math.round(x.c*C.shop);x.cz=1}}catch(e){}return ds.apply(this,arguments)}}
+{const rc=dgRelChoices;dgRelChoices=function(minR=0){const C=curse();if(!C.rel)return rc.apply(this,arguments);const R=dgRun();const n=dgHas('carte')?4:3;const P=RELICS.filter(r=>!R.rel.includes(r.k)&&r.r>=Math.min(minR,2)-1);const out=[];
+  while(out.length<n&&P.length){const w=P.map(r=>[2,4,4][r.r]+(r.r>=minR?2:0));const t=w.reduce((a,b)=>a+b,0);let x=Math.random()*t,j=0;for(;j<P.length;j++){x-=w[j];if(x<=0)break}out.push(P.splice(Math.min(j,P.length-1),1)[0].k)}return out}}
+
+/* ---------- coffres d'étage, descente rapide, échos gardés ---------- */
+const CHEST=[[40,15],[70,25],[110,40]];
+function quickEnd(rw){const X=DG(),R=X.run;if(!R)return rw;rw=rw.filter(x=>!/^⬇️/.test(String(x)));const n0=news;news=function(){};let out=rw;try{out=dgEnd(false,rw)||rw}finally{news=n0}
+  const g=60;S.gems+=g;out.push(`⚡ ${tr('Bonus de descente rapide','Quick descent bonus')} : ${GEM}${g} ${tr('gemmes','gems')}`);X.qwins=(X.qwins||0)+1;if(X.last){X.last.quick=1}save();
+  try{news(Date.now(),`${S.name||'Voyageur'} a réussi une descente rapide dans le Donjon des Échos.`)}catch(e){}return out}
+{const ef=evFinish;evFinish=function(dmg,rw){if(!DGX.active)return ef.apply(this,arguments);
+  const R0=dgRun(),nd=DGX.node;let t=null,fl0=0,quick=false;try{t=R0.maps[R0.fl][nd[0]][nd[1]].t;fl0=R0.fl;quick=!!R0.quick}catch(e){}
+  let res=ef.apply(this,arguments);
+  try{const win=res!=='Défaite dans le donjon',C=curse(),X=XB();
+   if(win&&t==='boss'){const k=C.chest||1,[g,e]=CHEST[fl0]||CHEST[0];S.gems+=g*k;X.bank+=e*k;X.earned=(X.earned||0)+e*k;
+     rw.push(`🎁 ${tr("Coffre de l'étage",'Floor chest')} ${fl0+1} : ${GEM}${g*k} ${tr('gemmes','gems')} · 🔮 ${e*k} ${tr('échos gardés','echoes kept')}`);
+     if(quick&&fl0===0&&dgRun()){const out=quickEnd(rw);rw.length=0;out.forEach(x=>rw.push(x));res=tr('Descente rapide réussie !','Quick descent cleared!')}}
+   else if(win&&C.drain&&dgRun()){dgHurtAll(C.drain);rw.push(`${C.ic} −${Math.round(C.drain*100)} % ${tr('PV pour tes héros (malédiction)','HP for your heroes (curse)')}`)}
+   save()}catch(e){console.warn('donjon 2',e)}
+  return res}}
+{const de=dgEnd;dgEnd=function(win,rw){const X=XB(),R=X.run;const e=R?R.echo:0;const out=de.apply(this,arguments);
+  try{if(R){const keep=Math.round(e*.5);X.bank+=keep;X.earned=(X.earned||0)+keep;if(keep>0)(out||rw||[]).push(`🔮 ${keep} ${tr('échos gardés pour la Boutique des Échos','echoes kept for the Echo Shop')}`);save()}}catch(er){}return out}}
+function startRun(quick){const X=DG();if(X.run)return;dgStart();const R=dgRun();if(R&&quick){R.quick=1;save();render();toast(tr('⚡ Descente rapide : un seul étage, 6 salles !','⚡ Quick descent: one floor, 6 rooms!'))}}
+
+/* ---------- la Boutique des Échos ---------- */
+const PET=()=>{try{return window.RDEpetState().own.echo||null}catch(e){return null}};
+const SHOP=[
+ {k:'pet',ic:'🦇',n:tr('Familier « Écho »','“Echo” familiar'),d:tr("Familier légendaire exclusif : il fond sur l'ennemi le plus affaibli et soigne ton héros le plus blessé.",'Exclusive legendary familiar: swoops on the weakest enemy and heals your most wounded hero.'),c:6000,ok:()=>!PET(),done:()=>!!PET()},
+ {k:'star',ic:'⭐',n:tr("Étoile d'Écho",'Echo Star'),d:tr('+1 étoile pour ton familier Écho (5 au maximum).','+1 star for your Echo familiar (5 max).'),c:2500,ok:()=>{const p=PET();return!!p&&p.s<5},need:()=>PET()?'':tr('Il faut d\'abord le familier Écho','You need the Echo familiar first')},
+ {k:'pbg',ic:'🌌',n:tr('Fond « Donjon des Échos »','“Echo Dungeon” background'),d:tr('Un fond de profil animé : la porte du donjon et ses chauves-souris.','An animated profile background: the dungeon gate and its bats.'),c:2500,once:1},
+ {k:'frame',ic:'🖼️',n:tr('Cadre « Écho du Donjon »','“Dungeon Echo” frame'),d:tr('Un cadre de profil violet et argent, avec des ondes qui tournent.','A violet and silver profile frame with turning waves.'),c:2000,once:1},
+ {k:'title',ic:'🏷️',n:tr('Titre « Seigneur des Échos »','“Lord of Echoes” title'),d:tr('À afficher sous ton pseudo.','To show under your name.'),c:1500,once:1},
+ {k:'key',ic:'🗝️',n:tr('Clé du donjon','Dungeon key'),d:tr("Une descente de plus aujourd'hui (1 par jour).",'One more descent today (1 per day).'),c:300,day:1},
+ {k:'ush',ic:'🌟',n:tr("Éclat d'ultra-évolution",'Ultra-evolution shard'),d:tr('3 par semaine.','3 per week.'),c:700,week:3},
+ {k:'shards',ic:'💎',n:tr('3 éclats légendaires','3 legendary shards'),d:tr('3 fois par semaine.','3 times per week.'),c:500,week:3},
+ {k:'egg',ic:'🥚',n:tr('Œuf épique','Epic egg'),d:tr('2 par semaine.','2 per week.'),c:900,week:2},
+ {k:'ber',ic:'🫐',n:tr('40 baies','40 berries'),d:tr('Pour nourrir tes familiers (5 fois par semaine).','To feed your familiars (5 times per week).'),c:250,week:5}];
+const owned=k=>!!XB().own[k];
+function canBuy(it){const X=XB();if(it.once&&owned(it.k))return false;if(it.ok&&!it.ok())return false;if(it.week&&(X.sw.n[it.k]||0)>=it.week)return false;if(it.day&&(X.sd.n[it.k]||0)>=it.day)return false;return true}
+function stateTxt(it){const X=XB();if(it.done&&it.done())return tr('✔ Obtenu','✔ Owned');if(it.once&&owned(it.k))return tr('✔ Obtenu','✔ Owned');if(it.need&&it.need())return it.need();
+  if(it.week)return`${it.week-(X.sw.n[it.k]||0)}/${it.week} ${tr('cette semaine','this week')}`;if(it.day)return`${it.day-(X.sd.n[it.k]||0)}/${it.day} ${tr("aujourd'hui",'today')}`;if(it.k==='star'){const p=PET();return p?`★ ${p.s}/5`:''}return''}
+function give(it){const X=XB();
+  if(it.k==='pet'||it.k==='star'){const r=window.RDEpetGive&&window.RDEpetGive('echo');return r?(r.kind==='new'?tr('🦇 Écho rejoint ta Ménagerie !','🦇 Echo joins your Menagerie!'):r.kind==='star'?`⭐ Écho : ${r.s} ★`:`🫐 +${r.b}`):''}
+  if(it.k==='pbg'){X.own.pbg=1;try{cosGive('bg','donjon')}catch(e){S.pbgs=S.pbgs||[];if(!S.pbgs.includes('donjon'))S.pbgs.push('donjon')}return tr('🌌 Nouveau fond de profil !','🌌 New profile background!')}
+  if(it.k==='frame'){X.own.frame=1;S.evFrames=S.evFrames||[];if(!S.evFrames.includes('echodg'))S.evFrames.push('echodg');return tr('🖼️ Nouveau cadre : « Écho du Donjon » !','🖼️ New frame: “Dungeon Echo”!')}
+  if(it.k==='title'){X.own.title=1;try{ttCheck()}catch(e){}return tr('🏷️ Titre « Seigneur des Échos » débloqué !','🏷️ “Lord of Echoes” title unlocked!')}
+  if(it.k==='key'){X.keys=(X.keys||0)+1;return tr('🗝️ +1 clé du donjon','🗝️ +1 dungeon key')}
+  if(it.k==='ush'){S.ush=(S.ush||0)+1;return tr("🌟 +1 éclat d'ultra-évolution",'🌟 +1 ultra-evolution shard')}
+  if(it.k==='shards'){S.shards+=3;return tr('💎 +3 éclats légendaires','💎 +3 legendary shards')}
+  if(it.k==='egg'){try{const p=window.RDEpetState();p.eggs.push({id:p.nid++,r:2})}catch(e){}return tr('🥚 Un œuf épique est dans ta Ménagerie !','🥚 An epic egg is in your Menagerie!')}
+  if(it.k==='ber'){try{window.RDEpetState().b+=40}catch(e){}return tr('🫐 +40 baies','🫐 +40 berries')}return''}
+function buy(k,ok){const it=SHOP.find(x=>x.k===k),X=XB();if(!it||!canBuy(it))return;if(X.bank<it.c)return toast(tr("Pas assez d'échos… Descends dans le donjon pour en gagner !",'Not enough echoes… Go down into the dungeon to earn some!'));
+  if(it.c>=1500&&!ok)return modal(`<div class="dgroom shop"><div class="dgri big">${it.ic}</div><div class="h">${esc(it.n)}</div><p class="sub">${esc(it.d)}</p><p class="sub"><span>${tr('Prix','Price')}</span> <b>🔮 ${nfmt(it.c)}</b> · <span>${tr('tu as','you have')}</span> <b>🔮 ${nfmt(X.bank)}</b></p><div class="row" style="gap:8px"><button class="btn" data-a="close">${tr('Annuler','Cancel')}</button><button class="btn p" data-a="dgsbuyok" data-v="${k}">${tr('Acheter','Buy')}</button></div></div>`);
+  X.bank-=it.c;if(it.week)X.sw.n[k]=(X.sw.n[k]||0)+1;if(it.day)X.sd.n[k]=(X.sd.n[k]||0)+1;const msg=give(it);save();try{closeModal()}catch(e){}render();toast(msg||tr('Acheté !','Bought!'))}
+function shopCard(){const X=XB();const img=k=>{try{return window.RDEpetImg('echo',1)}catch(e){return''}};
+  const tiles=SHOP.map(it=>{const can=canBuy(it),aff=X.bank>=it.c,st=stateTxt(it),own=(it.done&&it.done())||(it.once&&owned(it.k));
+    return`<button class="dgsi ${it.k==='pet'?'big':''} ${own?'own':''}" data-a="dgsbuy" data-v="${it.k}" ${can&&aff?'':'aria-disabled="true"'} ${can?'':'disabled'}>${it.k==='pet'?`<img class="dgspet" src="${img()}" alt="">`:`<span class="dgsic">${it.ic}</span>`}<b>${esc(it.n)}</b><small>${esc(it.d)}</small><span class="dgsp ${aff||own?'':'no'}">${own?st:`🔮 ${nfmt(it.c)}`}</span>${!own&&st?`<em>${esc(st)}</em>`:''}</button>`}).join('');
+  return`<div class="card dgshop"><div class="row" style="justify-content:space-between;align-items:center"><div class="h3" style="margin:0">🛒 <span>${tr('Boutique des Échos','Echo Shop')}</span></div><b class="dgbank">🔮 ${nfmt(X.bank)}</b></div>
+   <p class="muted" style="font-size:12.5px;margin:4px 0 8px">${tr("Tu gardes des échos à chaque coffre d'étage, et la moitié de ceux qui te restent à la sortie.",'You keep echoes from every floor chest, plus half of what you still have when you leave.')}</p><div class="dgsgrid">${tiles}</div></div>`}
+function curseCard(){const C=curse();return`<div class="card dgcurse"><div class="dgcic">${C.ic}</div><div style="min-width:0"><small>${tr('MALÉDICTION DE LA SEMAINE','CURSE OF THE WEEK')}</small><b>${esc(C.n)}</b><p>${esc(C.d)}</p><small class="muted"><span>${tr('Change dans','Changes in')}</span> <span>${dur(curseLeft())}</span></small></div></div>`}
+
+/* ---------- la page ---------- */
+{const dp=dgPage;dgPage=function(){let h=dp.apply(this,arguments);try{const X=XB(),R=X.run,C=curse();
+  if(!R){h=h.replace('data-a="dgrules"','data-a="dgrules2"');h=h.replace(/<button class="btn p" data-a="dgstart"([^>]*)>[^<]*<\/button>/,(m,attrs)=>`<button class="btn p" data-a="dgmode"${attrs}>🕯️ ${tr('Descendre dans le donjon','Go down into the dungeon')}</button>`);
+    h=h.replace('<div class="dgstats">',`<div class="dgstats"><div><b>🔮 ${nfmt(X.bank)}</b><small>${tr('échos gardés','echoes kept')}</small></div>`);
+    if(X.last&&X.last.quick)h=h.replace(/Dernière expédition : [^·]*·/,`Dernière expédition : ⚡ ${tr('descente rapide réussie','quick descent cleared')} ·`);
+    h=h.replace(/<div class="card"><div class="h3" style="margin:0">💎 Récompenses<\/div>[\s\S]*?<\/p><\/div>/,`<div class="card"><div class="h3" style="margin:0">💎 ${tr('Récompenses','Rewards')}</div><p class="muted" style="font-size:12.5px;margin:4px 0 0">${tr("Un <b>coffre à chaque gardien d'étage</b> (gemmes + échos gardés), même si tu tombes ensuite. À la sortie, tes échos deviennent des gemmes et de l'or, et tu en gardes la moitié pour la Boutique des Échos. Conquérir le Trône du Néant donne en plus <b>2 éclats légendaires</b>, <b>150 gemmes</b> et un équipement légendaire.",'A <b>chest at every floor guardian</b> (gems + kept echoes), even if you fall later. When you leave, your echoes turn into gems and gold, and you keep half of them for the Echo Shop. Conquering the Throne of the Void also gives <b>2 legendary shards</b>, <b>150 gems</b> and a legendary item.')}</p></div>`);
+    const i=h.indexOf('<div class="card"><div class="h3" style="margin:0">💎');h=i>=0?h.slice(0,i)+curseCard()+h.slice(i)+shopCard():h+curseCard()+shopCard()}
+  else{h=h.replace(/(<b>🔮 \d+ échos<\/b>)/,`$1<span class="dgtag">${R.quick?'⚡':'🕯️'} <span>${R.quick?tr('Rapide','Quick'):tr('Complète','Full')}</span></span><span class="dgtag cu" title="${esc(C.d)}">${C.ic} <span>${esc(C.n)}</span></span>`)}}catch(e){console.warn('donjon page',e)}return h}}
+function modeModal(){const X=DG(),C=curse();if(X.keys<=0)return toast(tr("Plus de clé aujourd'hui. Elles reviennent à minuit.",'No keys left today. They come back at midnight.'));
+  modal(`<button class="x" data-a="close" aria-label="Fermer">×</button><div class="h">🕯️ <span>${tr('Quelle descente ?','Which descent?')}</span></div><p class="sub"><span>${tr('Chaque descente utilise une clé','Each descent uses a key')}</span> <b>(${X.keys}/${DG_KEYS})</b><br><span>${tr('Malédiction de la semaine','Curse of the week')}</span> ${C.ic} <b>${esc(C.n)}</b></p>
+   <div class="dgmodes"><button class="dgmode" data-a="dgstartm" data-v="quick"><span class="dgri">⚡</span><b>${tr('Descente rapide','Quick descent')}</b><small>${tr("1 étage, 6 salles, environ 5 minutes. Coffre d'étage + 60 gemmes de bonus.",'1 floor, 6 rooms, about 5 minutes. Floor chest + 60 bonus gems.')}</small></button>
+   <button class="dgmode full" data-a="dgstartm" data-v="full"><span class="dgri">🕯️</span><b>${tr('Descente complète','Full descent')}</b><small>${tr("3 étages, 18 salles. 3 coffres d'étage, et la conquête du Trône du Néant.",'3 floors, 18 rooms. 3 floor chests, and the conquest of the Throne of the Void.')}</small></button></div>`)}
+function rulesModal(){const C=curse();modal(`<button class="x" data-a="close" aria-label="Fermer">×</button><div class="h">📜 ${tr('Règles du donjon','Dungeon rules')}</div><ul class="dgul">
+  <li>${tr('<b>Descente rapide</b> : 1 étage de 6 salles. <b>Descente complète</b> : 3 étages de 6 salles. Chacune coûte une clé (2 par jour).','<b>Quick descent</b>: 1 floor of 6 rooms. <b>Full descent</b>: 3 floors of 6 rooms. Each costs a key (2 per day).')}</li>
+  <li>${tr('Tu choisis ton chemin : combats, élites, trésors, feux de camp, marchands et salles mystère.','You choose your path: fights, elites, treasures, campfires, merchants and mystery rooms.')}</li>
+  <li>${tr('Les PV de tes héros <b>ne remontent pas</b> entre les combats : soigne-les aux feux de camp.','Your heroes\' HP <b>does not refill</b> between fights: heal them at campfires.')}</li>
+  <li>${tr("Chaque gardien d'étage vaincu ouvre un <b>coffre</b> que tu gardes quoi qu'il arrive.",'Every floor guardian you beat opens a <b>chest</b> that you keep no matter what.')}</li>
+  <li>${tr('Les <b>reliques</b> te rendent plus fort jusqu\'à la fin de l\'expédition.','The <b>relics</b> make you stronger until the end of the expedition.')}</li>
+  <li>${tr('À la sortie, tes échos deviennent des gemmes et de l\'or, et tu en gardes la moitié pour la <b>Boutique des Échos</b>.','When you leave, your echoes turn into gems and gold, and you keep half of them for the <b>Echo Shop</b>.')}</li>
+  <li>${C.ic} <b>${esc(C.n)}</b><br><span>${esc(C.d)}</span></li></ul>`)}
+document.addEventListener('click',e=>{const t=e.target.closest('[data-a]');if(!t)return;const a=t.dataset.a,v=t.dataset.v;
+  if(!['dgmode','dgstartm','dgsbuy','dgsbuyok','dgrules2'].includes(a))return;e.preventDefault();e.stopImmediatePropagation();
+  if(a==='dgmode')modeModal();else if(a==='dgstartm'){try{closeModal()}catch(er){}startRun(v==='quick')}
+  else if(a==='dgsbuy'){if(t.disabled)return;buy(v,false)}else if(a==='dgsbuyok')buy(v,true);else if(a==='dgrules2')rulesModal()},true);
+
+/* ---------- les récompenses cosmétiques ---------- */
+function gateArt(){return`<defs><radialGradient id="dgpb1" cx="50%" cy="72%" r="60%"><stop offset="0" stop-color="#9a4aff" stop-opacity=".9"/><stop offset=".6" stop-color="#3a0a6a" stop-opacity=".55"/><stop offset="1" stop-color="#07040f" stop-opacity="0"/></radialGradient><linearGradient id="dgpb2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#140c26"/><stop offset="1" stop-color="#05030c"/></linearGradient></defs>
+  <rect width="400" height="200" fill="url(#dgpb2)"/>${[...Array(40)].map((_,i)=>`<circle cx="${(i*97)%400}" cy="${(i*53)%120}" r="${(i%3)*.4+.5}" fill="#d8c8ff" opacity="${(.2+(i%5)*.12).toFixed(2)}"/>`).join('')}
+  <path d="M0 200V128Q70 70 140 98T260 78T400 116V200Z" fill="#1c1430"/><path d="M128 200V104Q128 42 200 38Q272 42 272 104V200Z" fill="#3a3050" stroke="#140c24" stroke-width="3"/>
+  <path d="M148 200V110Q148 64 200 62Q252 64 252 110V200Z" fill="#05030a"/><ellipse cx="200" cy="152" rx="74" ry="62" fill="url(#dgpb1)"/>${[0,1,2,3,4].map(i=>`<path d="M${154+i*4} ${200-i*10}H${246-i*4}" stroke="#2a2040" stroke-width="7"/>`).join('')}
+  ${[[110,100],[290,100]].map(([x,y])=>`<g transform="translate(${x} ${y})"><circle r="26" fill="#ffb03a" opacity=".22"/><path d="M-3 0h6v26h-6z" fill="#5a3a1a"/><path d="M0 0Q-8 -10 0 -24Q8 -10 0 0Z" fill="#ffb03a"/></g>`).join('')}
+  ${[[60,46,1],[330,38,-1],[250,24,1],[96,22,-1]].map(([x,y,s])=>`<path transform="translate(${x} ${y}) scale(${s} 1)" d="M0 0Q-6 -7 -14 -5Q-10 -2 -11 2Q-6 0 -3 4Q-1 1 0 3Q1 1 3 4Q6 0 11 2Q10 -2 14 -5Q6 -7 0 0Z" fill="#0a0614" stroke="#6a4aa8" stroke-width=".8"/>`).join('')}
+  ${[0,1,2,3,4,5].map(i=>`<text x="${142+i*24}" y="${80+Math.abs(2.5-i)*6}" font-size="11" fill="#c070ff" opacity=".85">ᚱ</text>`).join('')}`}
+try{if(typeof PBG!=='undefined'){PBG.donjon={n:tr('Fond « Donjon des Échos »','“Echo Dungeon” background'),art:gateArt,how:tr('Boutique des Échos (Donjon des Échos)','Echo Shop (Echo Dungeon)'),fx:1}}}catch(e){}
+try{FRAMES.echodg=tr('Écho du Donjon','Dungeon Echo');try{FHINT.echodg=tr('Boutique des Échos (Donjon des Échos)','Echo Shop (Echo Dungeon)')}catch(e){}
+  {const fl=frameList;frameList=function(){const L=fl.apply(this,arguments).filter(f=>f!=='echodg'||frameUnlocked(f));if(!L.includes('echodg')&&frameUnlocked('echodg'))L.push('echodg');return L}}}catch(e){}
+try{TITLES.push({k:'dgseig',n:tr('Seigneur des Échos','Lord of Echoes'),c:'#b48aff',d:tr('Boutique des Échos','Echo Shop'),ok:()=>!!(S.dg&&S.dg.own&&S.dg.own.title)})}catch(e){}
+/* le fond animé (chauves-souris) dans le profil */
+{const pf=pbgFx;pbgFx=function(k){if(k==='donjon'){let o='<div class="pbgfx dgbats" aria-hidden="true">';for(let i=0;i<7;i++)o+=`<i style="--x:${(8+i*13)%92}%;--y:${10+(i*17)%50}%;--t:${(5+i%3*1.7).toFixed(1)}s;--l:${(-i*1.3).toFixed(1)}s"></i>`;return o+'</div>'}return pf.apply(this,arguments)}}
+
+/* ---------- styles ---------- */
+const st=document.createElement('style');st.textContent=`
+.dghero .dgstats{grid-template-columns:repeat(4,minmax(0,1fr))}.dghero .dgstats small{text-align:center;line-height:1.15}
+.dgcurse{display:flex;gap:12px;align-items:center;border-color:#6a3aa8!important;background:linear-gradient(100deg,rgba(138,58,255,.18),var(--panel) 55%)!important}
+.dgcurse .dgcic{font-size:34px;width:54px;height:54px;display:grid;place-items:center;border-radius:14px;background:rgba(0,0,0,.25);flex:none}
+.dgcurse small{display:block;font-size:11px;letter-spacing:.06em;color:#c8a8ff;font-weight:800}.dgcurse b{display:block;font-size:16px}.dgcurse p{margin:2px 0;font-size:12.5px}
+.dgcurse small.muted{font-weight:600;letter-spacing:0;color:var(--muted)}
+.dgtag{display:inline-block;margin-left:6px;padding:2px 8px;border-radius:999px;background:rgba(138,58,255,.25);font-size:11.5px;font-weight:800;vertical-align:middle}
+.dgtag.cu{background:rgba(255,90,90,.18)}
+.dgmodes{display:grid;gap:10px;margin-top:10px}
+.dgmode{display:grid;grid-template-columns:auto 1fr;gap:2px 12px;align-items:center;text-align:left;padding:12px 14px;border-radius:16px;border:2px solid #6a4aa8;background:linear-gradient(135deg,#2a1a4a,#140c26);color:#fff;cursor:pointer}
+.dgmode .dgri{grid-row:span 2;font-size:30px}.dgmode b{font-size:16px}.dgmode small{color:#d8c8ff;font-size:12.5px}
+.dgmode.full{border-color:#c03aff;background:linear-gradient(135deg,#3a1a5a,#140c26)}
+.dgmode:active{transform:scale(.98)}
+.dgshop .dgbank{font-size:16px;padding:3px 10px;border-radius:999px;background:rgba(138,58,255,.25)}
+.dgsgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.dgsi{position:relative;display:flex;flex-direction:column;align-items:center;text-align:center;gap:2px;padding:10px 8px 8px;border-radius:14px;border:1.5px solid rgba(180,138,255,.4);background:linear-gradient(180deg,rgba(138,58,255,.16),rgba(0,0,0,.15));color:inherit;cursor:pointer;min-width:0}
+.dgsi.big{grid-column:1/-1;border-color:#ffd84a;background:radial-gradient(120% 120% at 50% 0%,rgba(180,138,255,.35),rgba(20,12,38,.6))}
+.dgsi .dgsic{font-size:28px;line-height:1.1}.dgsi .dgspet{width:96px;height:96px;filter:drop-shadow(0 4px 10px rgba(180,138,255,.6))}
+.dgsi b{font-size:13px;line-height:1.2}.dgsi small{font-size:11px;color:var(--muted);line-height:1.25}
+.dgsi .dgsp{margin-top:4px;font-weight:900;font-size:13px;padding:2px 10px;border-radius:999px;background:rgba(0,0,0,.3)}.dgsi .dgsp.no{color:#ff8a8a}
+.dgsi em{font-style:normal;font-size:10.5px;color:#c8b8ff}
+.dgsi[disabled]{opacity:.55;cursor:default}.dgsi.own{opacity:.75;border-style:dashed}
+.pbgfx.dgbats i{position:absolute;left:var(--x);top:var(--y);width:16px;height:8px;animation:dgbat var(--t) ease-in-out var(--l) infinite;will-change:transform}
+.pbgfx.dgbats i::before,.pbgfx.dgbats i::after{content:"";position:absolute;top:0;width:8px;height:7px;background:#0a0614;border-radius:80% 10% 60% 20%;animation:dgflap .35s ease-in-out infinite alternate}
+.pbgfx.dgbats i::before{left:0;transform-origin:100% 60%}.pbgfx.dgbats i::after{right:0;transform-origin:0 60%;border-radius:10% 80% 20% 60%}
+@keyframes dgbat{0%{transform:translate3d(0,0,0)}25%{transform:translate3d(40px,-10px,0)}50%{transform:translate3d(10px,12px,0)}75%{transform:translate3d(-30px,-6px,0)}100%{transform:translate3d(0,0,0)}}
+@keyframes dgflap{from{transform:scaleY(1)}to{transform:scaleY(.35)}}
+.fav.frm-echodg{--fd:#140c26;--gc:#b48aff}
+.fav.frm-echodg::before{background:linear-gradient(160deg,rgba(255,255,255,.45),transparent 42%,rgba(0,0,0,.3)),repeating-conic-gradient(from var(--fa),#b48aff 0 12deg,#3a1a6a 12deg 24deg,#e8e0ff 24deg 30deg,#3a1a6a 30deg 42deg);animation:fspin 9s linear infinite}
+html.scrl .pbgfx.dgbats i,html.bgpause .pbgfx.dgbats i{animation-play-state:paused}
+@media (prefers-reduced-motion:reduce){.pbgfx.dgbats i{animation:none}}`;document.head.appendChild(st);
+
+/* ---------- anglais ---------- */
+try{Object.assign(EN,{'Donjon des Échos':'Echo Dungeon','Descente rapide réussie !':'Quick descent cleared!','⚡ Bonus de descente rapide : # gemmes':'⚡ Quick descent bonus: # gems',
+  '#/# cette semaine':'#/# this week',"#/# aujourd'hui":'#/# today','🔮 # échos':'🔮 # echoes','Salles franchies : #':'Rooms cleared: #','🚪 Sortir':'🚪 Leave','📜 Règles':'📜 Rules','📜 JOURNAL DU COMBAT':'📜 BATTLE LOG',
+  '🔮 +# échos':'🔮 +# echoes','🎁 Coffre de l\'étage # :':'🎁 Floor # chest:','# gemmes · 🔮 # échos gardés':'# gems · 🔮 # echoes kept','🔮 # échos gardés pour la Boutique des Échos':'🔮 # echoes kept for the Echo Shop',
+  '⚡ Bonus de descente rapide :':'⚡ Quick descent bonus:','# gemmes':'# gems',
+  'Prix':'Price','tu as':'you have','Dernière expédition : ⚡ descente rapide réussie ·':'Last expedition: ⚡ quick descent cleared ·','clés aujourd\'hui':'keys today','record /#':'best /#','conquêtes':'conquests',
+  '🕯️ Descendre dans le donjon':'🕯️ Go down into the dungeon'});
+ for(const F of (typeof DG_FLOORS!=='undefined'?DG_FLOORS:[])){const fe={'Cryptes oubliées':'Forgotten Crypts','Forges englouties':'Sunken Forges','Trône du Néant':'Throne of the Void'}[F.n];if(fe){EN[F.ic+' Étage # · '+F.n]=F.ic+' Floor # · '+fe;EN[F.n]=fe}}
+ for(const C of DGC){EN[C.ic+' '+C.n]=C.ic+' '+EN[C.n]}
+ for(const k in EN)put(k,EN[k])}catch(e){}
+}catch(e){console.warn('donjon 2',e)}})();
+
+/* ================= MODE CAUCHEMAR : les dessins =================
+   5 créatures inédites (Poupée Fêlée, Croque-Mitaine, Horloge Hurlante, Masque Rieur, Somnar le Dévoreur de Rêves)
+   et 5 nouveaux calques « cauchemar » pour habiller les autres monstres (yeux rouges dans l'ombre, fumée, coutures, chaînes, couronne d'épines). */
+(function(){try{
+if(typeof MONS==='undefined')return;
+let CID=0;
+const A=(v,d,b)=>`<animate attributeName="opacity" values="${v}" dur="${d}s"${b!=null?` begin="${b}s"`:''} repeatCount="indefinite"/>`;
+const O='#140c22';
+
+/* ---------- les calques ---------- */
+try{if(typeof OVL!=='undefined')Object.assign(OVL,{
+ nmeyes:c=>[[13,24,1],[87,30,1.1],[12,80,.9],[88,76,1]].map(([x,y,s],i)=>`<g transform="translate(${x} ${y}) scale(${s})"><circle r="7" fill="${c||'#ff2a4a'}" opacity=".18"/><ellipse cx="-2.6" cy="0" rx="1.9" ry="1.2" fill="${c||'#ff3a5a'}"/><ellipse cx="2.6" cy="0" rx="1.9" ry="1.2" fill="${c||'#ff3a5a'}"/>${A('1;1;.1;1',(3.2+i*.7).toFixed(1))}</g>`).join(''),
+ nmsmoke:c=>`<g opacity=".62">`+[[6,100,-1],[94,100,1],[26,100,-1],[74,100,1]].map(([x,y,d],i)=>`<path d="M${x} ${y}Q${x+d*10} ${y-16} ${x} ${y-28}Q${x-d*8} ${y-40} ${x+d*4} ${y-52}Q${x+d*10} ${y-40} ${x+d*6} ${y-28}Q${x+d*16} ${y-14} ${x+d*8} ${y}Z" fill="${c||'#1c0a30'}"><animate attributeName="opacity" values=".5;.95;.5" dur="${(3+i*.6).toFixed(1)}s" repeatCount="indefinite"/></path>`).join('')+`</g>`,
+ nmstitch:c=>`<path d="M30 30L37 38L33 44L41 52L37 58" fill="none" stroke="${O}" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M30 30L37 38L33 44L41 52L37 58" fill="none" stroke="${c||'#e8dcd0'}" stroke-width=".9" stroke-linecap="round"/>`+[[32,33],[35,41],[37,48],[39,55]].map(([x,y])=>`<path d="M${x-3.4} ${y-1.6}L${x+3.4} ${y+1.6}" stroke="${c||'#b8222a'}" stroke-width="1.5" stroke-linecap="round"/>`).join('')+`<path d="M62 64L70 70M64 70L70 64" stroke="${c||'#b8222a'}" stroke-width="1.6" stroke-linecap="round"/>`,
+ nmchain:c=>`<g fill="none" stroke="${O}" stroke-width="3.2">`+[...Array(9)].map((_,i)=>`<ellipse cx="${8+i*10.5}" cy="${88-i*5}" rx="5" ry="3" transform="rotate(${i%2?-28:-28+90} ${8+i*10.5} ${88-i*5})"/>`).join('')+`</g><g fill="none" stroke="${c||'#a8a2b8'}" stroke-width="1.6">`+[...Array(9)].map((_,i)=>`<ellipse cx="${8+i*10.5}" cy="${88-i*5}" rx="5" ry="3" transform="rotate(${i%2?-28:-28+90} ${8+i*10.5} ${88-i*5})"/>`).join('')+`</g>`,
+ nmcrown:c=>`<path d="M33 24L30 8L38 17L42 2L48 15L50 0L52 15L58 2L62 17L70 8L67 24Z" fill="${c||'#1a0a1e'}" stroke="#5a1a3a" stroke-width="1.4" stroke-linejoin="round"/><path d="M36 20L64 20" stroke="#5a1a3a" stroke-width="1"/><circle cx="50" cy="18.5" r="2.6" fill="#ff2a4a"><animate attributeName="r" values="2.2;3;2.2" dur="2s" repeatCount="indefinite"/></circle><circle cx="50" cy="18.5" r="6" fill="#ff2a4a" opacity=".25"/>`})}catch(e){}
+
+/* les calques restent immobiles : ils sont dessinés dans la page (pas en image), et chaque petite animation y coûtait cher au téléphone */
+try{const still=x=>String(x).replace(/<(animate|animateMotion|animateTransform|set)\b[^>]*\/>/g,'').replace(/<(animate|animateTransform)\b[^>]*>[\s\S]*?<\/(animate|animateTransform)>/g,'');
+  for(const k of ['nmeyes','nmsmoke','nmstitch','nmchain','nmcrown']){const f=OVL[k];if(typeof f==='function')OVL[k]=c=>still(f(c))}}catch(e){}
+
+/* ---------- Poupée Fêlée ---------- */
+MONS['Poupée Fêlée']=()=>{const q='pp'+(CID++),s=`stroke="${O}" stroke-width="1.4" stroke-linejoin="round"`;
+ return`<defs><radialGradient id="${q}f" cx="45%" cy="40%" r="65%"><stop offset="0" stop-color="#fbf6ee"/><stop offset="1" stop-color="#d8ccc4"/></radialGradient><linearGradient id="${q}d" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6a5a8a"/><stop offset="1" stop-color="#3a2c52"/></linearGradient></defs>
+ <ellipse cx="50" cy="95" rx="20" ry="3.5" fill="#000" opacity=".3"/>
+ <g><animateTransform attributeName="transform" type="translate" values="0 0;0 -2.5;0 0" dur="3.2s" repeatCount="indefinite"/>
+ <path d="M50 54Q34 58 28 86Q38 92 50 91Q62 92 72 86Q66 58 50 54Z" fill="url(#${q}d)" ${s}/>
+ <path d="M29 84Q33 80 37 85Q41 80 45 85Q49 80 53 85Q57 80 61 85Q65 80 71 85" fill="none" stroke="#efe6ff" stroke-width="2" stroke-linecap="round"/>
+ <path d="M44 58L50 66L56 58" fill="#efe6ff" ${s}/><circle cx="50" cy="70" r="1.6" fill="#efe6ff"/><circle cx="50" cy="76" r="1.6" fill="#efe6ff"/>
+ <path d="M36 62Q26 70 30 80" fill="none" stroke="${O}" stroke-width="5" stroke-linecap="round"/><path d="M36 62Q26 70 30 80" fill="none" stroke="#efe6dc" stroke-width="3" stroke-linecap="round"/>
+ <path d="M64 62Q72 66 74 72" fill="none" stroke="${O}" stroke-width="5" stroke-linecap="round"/><path d="M64 62Q72 66 74 72" fill="none" stroke="#efe6dc" stroke-width="3" stroke-linecap="round"/>
+ <path d="M74 72L76 82" stroke="#e8dcd0" stroke-width=".6" stroke-dasharray="1.4 1.2"/><g transform="translate(77 86)"><circle r="3" fill="#efe6dc" ${s}/></g>
+ <g><animateTransform attributeName="transform" type="rotate" values="-6 50 54;5 50 54;-6 50 54" dur="4.6s" repeatCount="indefinite"/>
+ <path d="M28 30Q22 20 30 14Q26 26 36 26Z" fill="#2a1a24" ${s}/><path d="M72 30Q78 20 70 14Q74 26 64 26Z" fill="#2a1a24" ${s}/>
+ <path d="M24 34Q18 46 26 52Q24 42 30 38Z" fill="#2a1a24" ${s}/><path d="M76 34Q82 46 74 52Q76 42 70 38Z" fill="#2a1a24" ${s}/>
+ <ellipse cx="50" cy="36" rx="22" ry="20" fill="url(#${q}f)" ${s}/>
+ <path d="M30 26Q50 6 70 26Q62 18 50 18Q38 18 30 26Z" fill="#2a1a24" ${s}/>
+ <path d="M28 22L22 16L28 14L30 18Z M72 22L78 16L72 14L70 18Z" fill="#a8223a" ${s}/>
+ ${[[42,35],[58,35]].map(([x,y])=>`<circle cx="${x}" cy="${y}" r="5" fill="#140c22" ${s}/><circle cx="${x-1.6}" cy="${y-1.6}" r=".9" fill="#5a4a6a"/><circle cx="${x+1.6}" cy="${y-1.6}" r=".9" fill="#5a4a6a"/><circle cx="${x-1.6}" cy="${y+1.6}" r=".9" fill="#5a4a6a"/><circle cx="${x+1.6}" cy="${y+1.6}" r=".9" fill="#5a4a6a"/><path d="M${x-2.4} ${y-2.4}L${x+2.4} ${y+2.4}M${x+2.4} ${y-2.4}L${x-2.4} ${y+2.4}" stroke="#a8223a" stroke-width=".9"/>`).join('')}
+ <circle cx="58" cy="35" r="7" fill="#ff2a4a" opacity="0">${A('0;0;.35;0',5,1)}</circle>
+ <ellipse cx="38" cy="45" rx="4" ry="2.2" fill="#e88a9a" opacity=".45"/><ellipse cx="62" cy="45" rx="4" ry="2.2" fill="#e88a9a" opacity=".45"/>
+ <path d="M42 47Q50 52 58 47" fill="none" stroke="#a8223a" stroke-width="1.3"/>${[44,47,50,53,56].map(x=>`<path d="M${x} ${46.6+Math.abs(x-50)*-.06}v3" stroke="#a8223a" stroke-width=".9"/>`).join('')}
+ <path d="M47 17L49 24L45 29L48 33L44 39" fill="none" stroke="${O}" stroke-width="1.3" stroke-linejoin="round"/><path d="M45 29L40 30" fill="none" stroke="${O}" stroke-width=".9"/>
+ </g></g>`};
+
+/* ---------- Croque-Mitaine ---------- */
+MONS['Croque-Mitaine']=()=>{const q='cm'+(CID++),s=`stroke="${O}" stroke-width="1.5" stroke-linejoin="round"`;
+ return`<defs><radialGradient id="${q}g" cx="50%" cy="45%" r="55%"><stop offset="0" stop-color="#5a2a8a" stop-opacity=".55"/><stop offset="1" stop-color="#5a2a8a" stop-opacity="0"/></radialGradient><linearGradient id="${q}b" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2a1640"/><stop offset="1" stop-color="#0a0612"/></linearGradient></defs>
+ <circle cx="50" cy="46" r="46" fill="url(#${q}g)"/>
+ <path d="M24 98Q18 62 30 44Q38 30 50 30Q62 30 70 44Q82 62 76 98Z" fill="url(#${q}b)" ${s}/>
+ ${[30,40,50,60,70].map((x,i)=>`<path d="M${x-5} 98Q${x} ${88-i%2*4} ${x+5} 98" fill="#0a0612" ${s}/>`).join('')}
+ <g><animateTransform attributeName="transform" type="rotate" values="0 32 58;-6 32 58;0 32 58" dur="2.6s" repeatCount="indefinite"/>
+ <path d="M32 56Q14 58 8 72" fill="none" stroke="${O}" stroke-width="5" stroke-linecap="round"/><path d="M32 56Q14 58 8 72" fill="none" stroke="#2a1640" stroke-width="3" stroke-linecap="round"/>
+ ${[[8,72,-30],[8,72,-5],[8,72,20],[8,72,45]].map(([x,y,a])=>`<path transform="rotate(${a} ${x} ${y})" d="M${x} ${y}Q${x-3} ${y+8} ${x-1} ${y+16}" fill="none" stroke="#d8d0e0" stroke-width="1.6" stroke-linecap="round"/>`).join('')}</g>
+ <g><animateTransform attributeName="transform" type="rotate" values="0 68 58;6 68 58;0 68 58" dur="2.9s" repeatCount="indefinite"/>
+ <path d="M68 56Q86 58 92 72" fill="none" stroke="${O}" stroke-width="5" stroke-linecap="round"/><path d="M68 56Q86 58 92 72" fill="none" stroke="#2a1640" stroke-width="3" stroke-linecap="round"/>
+ ${[[92,72,30],[92,72,5],[92,72,-20],[92,72,-45]].map(([x,y,a])=>`<path transform="rotate(${a} ${x} ${y})" d="M${x} ${y}Q${x+3} ${y+8} ${x+1} ${y+16}" fill="none" stroke="#d8d0e0" stroke-width="1.6" stroke-linecap="round"/>`).join('')}</g>
+ <path d="M32 26L36 6Q50 2 62 6L68 26Z" fill="#160c22" ${s} transform="rotate(-8 50 16)"/><path d="M28 27Q50 22 72 27L70 31Q50 27 30 31Z" fill="#160c22" ${s} transform="rotate(-8 50 28)"/><path d="M34 22Q50 18 66 22" fill="none" stroke="#6a2a4a" stroke-width="2.2" transform="rotate(-8 50 20)"/>
+ <ellipse cx="41" cy="40" rx="5" ry="3.4" fill="#ffd84a"/><ellipse cx="59" cy="40" rx="5" ry="3.4" fill="#ffd84a"/><ellipse cx="41" cy="40" rx="1.4" ry="3" fill="#140c22"/><ellipse cx="59" cy="40" rx="1.4" ry="3" fill="#140c22"/>
+ <ellipse cx="50" cy="40" rx="14" ry="4" fill="#ffd84a" opacity="0">${A('0;0;0;.3;0',4)}</ellipse>
+ <rect x="34" y="36" width="32" height="8" fill="#2a1640" opacity="0"><animate attributeName="opacity" values="0;0;0;0;0;0;0;0;1;0" dur="4.4s" repeatCount="indefinite"/></rect>
+ <path d="M32 48Q50 64 68 48Q62 58 50 59Q38 58 32 48Z" fill="#f4ecf8" ${s}/>${[36,40,44,48,52,56,60,64].map((x,i)=>`<path d="M${x} ${49+Math.abs(x-50)*-.08+ (i%2?1:0)}L${x+2} ${53+ (x>44&&x<56?3:1)}L${x+4} ${49+Math.abs(x-48)*-.08}" fill="none" stroke="${O}" stroke-width=".9"/>`).join('')}
+ ${[[16,24],[84,20],[20,90],[82,92]].map(([x,y],i)=>`<circle cx="${x}" cy="${y}" r="${1.2+i%2*.6}" fill="#c8a8ff">${A('.2;1;.2',(2+i*.5).toFixed(1))}</circle>`).join('')}`};
+
+/* ---------- Horloge Hurlante ---------- */
+MONS['Horloge Hurlante']=()=>{const q='hh'+(CID++),s=`stroke="${O}" stroke-width="1.5" stroke-linejoin="round"`;
+ return`<defs><linearGradient id="${q}w" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#4a2a1a"/><stop offset=".5" stop-color="#7a4a2a"/><stop offset="1" stop-color="#3a1e12"/></linearGradient><radialGradient id="${q}d" cx="50%" cy="45%" r="60%"><stop offset="0" stop-color="#f4ecd8"/><stop offset="1" stop-color="#c8b898"/></radialGradient></defs>
+ <ellipse cx="50" cy="96" rx="20" ry="3" fill="#000" opacity=".3"/>
+ <g><animateTransform attributeName="transform" type="translate" values="0 0;0 -3;0 0;0 0" dur="1.4s" repeatCount="indefinite"/>
+ <path d="M30 20Q30 6 50 4Q70 6 70 20V92H30Z" fill="url(#${q}w)" ${s}/><path d="M30 20Q50 10 70 20" fill="none" stroke="#c8a060" stroke-width="1.6"/>
+ <rect x="38" y="52" width="24" height="34" rx="3" fill="#1a0e08" ${s}/>
+ <g><animateTransform attributeName="transform" type="rotate" values="-22 50 52;22 50 52;-22 50 52" dur="1.4s" repeatCount="indefinite"/><path d="M50 52V76" stroke="#c8a060" stroke-width="1.6"/><circle cx="50" cy="79" r="5" fill="#e0b860" ${s}/><circle cx="48.6" cy="77.6" r="1.4" fill="#fff6d0"/></g>
+ <circle cx="50" cy="30" r="16" fill="url(#${q}d)" ${s}/>
+ ${[...Array(12)].map((_,i)=>{const a=i*Math.PI/6;return`<path d="M${(50+Math.sin(a)*13.2).toFixed(1)} ${(30-Math.cos(a)*13.2).toFixed(1)}L${(50+Math.sin(a)*15).toFixed(1)} ${(30-Math.cos(a)*15).toFixed(1)}" stroke="${O}" stroke-width="${i%3?1:1.8}"/>`}).join('')}
+ <ellipse cx="44" cy="26" rx="3.4" ry="4" fill="#140c22"/><ellipse cx="56" cy="26" rx="3.4" ry="4" fill="#140c22"/><circle cx="44" cy="26.6" r="1.2" fill="#ff2a4a"/><circle cx="56" cy="26.6" r="1.2" fill="#ff2a4a"/>
+ <path d="M39 20L47 23M61 20L53 23" stroke="${O}" stroke-width="1.8" stroke-linecap="round"/>
+ <ellipse cx="50" cy="37" rx="5" ry="6" fill="#2a0a12" ${s}><animate attributeName="ry" values="5;7;5" dur="1.4s" repeatCount="indefinite"/></ellipse><path d="M47 34L48 36L49 34M51 34L52 36L53 34" stroke="#f4ecd8" stroke-width=".7" fill="none"/>
+ <path d="M50 30L50 18" stroke="${O}" stroke-width="1.8" stroke-linecap="round"><animateTransform attributeName="transform" type="rotate" from="0 50 30" to="360 50 30" dur="2s" repeatCount="indefinite"/></path><circle cx="50" cy="30" r="1.6" fill="${O}"/>
+ <path d="M58 44L62 50L59 56" fill="none" stroke="${O}" stroke-width="1.1"/><path d="M34 60L37 66" stroke="${O}" stroke-width="1.1"/></g>
+ ${[[14,30,1],[86,44,-1],[18,70,1]].map(([x,y,d],i)=>`<path d="M${x} ${y}q${d*4} -3 ${d*6} -9" fill="none" stroke="#f4ecd8" stroke-width="1.4" stroke-linecap="round" opacity=".7">${A('0;.9;0',1.4,i*.3)}</path>`).join('')}
+ ${[[12,14,6],[88,84,7]].map(([x,y,r])=>`<circle cx="${x}" cy="${y}" r="${r}" fill="none" stroke="#a07a3a" stroke-width="3" stroke-dasharray="2.6 2"><animateTransform attributeName="transform" type="rotate" from="0 ${x} ${y}" to="360 ${x} ${y}" dur="6s" repeatCount="indefinite"/></circle>`).join('')}`};
+
+/* ---------- Masque Rieur ---------- */
+MONS['Masque Rieur']=()=>{const q='mr'+(CID++),s=`stroke="${O}" stroke-width="1.5" stroke-linejoin="round"`;
+ return`<defs><radialGradient id="${q}m" cx="40%" cy="35%" r="70%"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#d4ccd8"/></radialGradient></defs>
+ <ellipse cx="50" cy="95" rx="18" ry="3" fill="#000" opacity=".28"/>
+ <g><animateTransform attributeName="transform" type="rotate" values="-8 50 50;8 50 50;-8 50 50" dur="3s" repeatCount="indefinite"/>
+ <path d="M30 60Q16 74 22 92Q28 80 34 72Z" fill="#a8223a" ${s}/><path d="M70 60Q84 74 78 92Q72 80 66 72Z" fill="#1a0a1e" ${s}/>
+ <path d="M36 66Q30 80 40 90Q38 80 42 72Z" fill="#1a0a1e" ${s}/><path d="M64 66Q70 80 60 90Q62 80 58 72Z" fill="#a8223a" ${s}/>
+ <circle cx="22" cy="92" r="2.6" fill="#ffd84a" ${s}/><circle cx="78" cy="92" r="2.6" fill="#ffd84a" ${s}/>
+ <path d="M18 36Q18 12 50 10Q82 12 82 36Q82 62 50 74Q18 62 18 36Z" fill="url(#${q}m)" ${s}/>
+ <path d="M22 30Q50 4 78 30" fill="none" stroke="#e0b84a" stroke-width="2.2"/><path d="M50 10V16" stroke="#e0b84a" stroke-width="2"/><circle cx="50" cy="18" r="2.4" fill="#ff2a4a" ${s}/>
+ <path d="M28 34Q35 25 42 34Q35 31 28 34Z" fill="#0a0612" ${s}/><path d="M58 34Q65 25 72 34Q65 31 58 34Z" fill="#0a0612" ${s}/>
+ <circle cx="35" cy="32" r="1.3" fill="#ff2a4a">${A('.2;1;.2',1.6)}</circle><circle cx="65" cy="32" r="1.3" fill="#ff2a4a">${A('.2;1;.2',1.6)}</circle>
+ <path d="M28 46Q50 72 72 46Q66 54 50 56Q34 54 28 46Z" fill="#0a0612" ${s}/>${[34,40,46,52,58,64].map(x=>`<path d="M${x} ${48+Math.abs(x-50)*-.12+3}l2.4 3.6l2.4 -3.4" fill="#f4ecf8" stroke="${O}" stroke-width=".6"/>`).join('')}
+ <path d="M30 42Q34 44 36 48M70 42Q66 44 64 48" fill="none" stroke="#c8a8b8" stroke-width="1.2"/>
+ <path d="M60 14L56 24L62 30L57 40" fill="none" stroke="${O}" stroke-width="1.3" stroke-linejoin="round"/>
+ <ellipse cx="26" cy="44" rx="3.6" ry="2" fill="#ff8aa8" opacity=".5"/><ellipse cx="74" cy="44" rx="3.6" ry="2" fill="#ff8aa8" opacity=".5"/></g>
+ ${[[12,18],[88,16],[90,60],[10,58]].map(([x,y],i)=>`<text x="${x}" y="${y}" font-size="7" font-family="serif" fill="#e8d8ff" text-anchor="middle" opacity=".8">${['ha','HA','hi','ha'][i]}${A('0;.9;0',(1.8+i*.4).toFixed(1),(i*.5).toFixed(1))}</text>`).join('')}`};
+
+/* ---------- Somnar, le Dévoreur de Rêves ---------- */
+MONS['Somnar, le Dévoreur de Rêves']=()=>{const q='so'+(CID++),s=`stroke="${O}" stroke-width="1.5" stroke-linejoin="round"`;
+ const stars=[[30,62],[38,74],[46,58],[56,70],[64,80],[36,88],[60,92],[44,84],[70,64],[28,78]].map(([x,y],i)=>`<circle cx="${x}" cy="${y}" r="${(.7+i%3*.35).toFixed(2)}" fill="#fff">${A('.3;1;.3',(1.6+i%4*.5).toFixed(1))}</circle>`).join('');
+ return`<defs><linearGradient id="${q}c" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2a1a5a"/><stop offset=".6" stop-color="#140a34"/><stop offset="1" stop-color="#06040e"/></linearGradient>
+  <radialGradient id="${q}m" cx="35%" cy="40%" r="70%"><stop offset="0" stop-color="#fffbe8"/><stop offset="1" stop-color="#d8cca0"/></radialGradient>
+  <radialGradient id="${q}a"><stop offset="0" stop-color="#7a5aff" stop-opacity=".55"/><stop offset="1" stop-color="#7a5aff" stop-opacity="0"/></radialGradient>
+  <radialGradient id="${q}d" cx="40%" cy="35%" r="65%"><stop offset="0" stop-color="#ffffff" stop-opacity=".95"/><stop offset=".6" stop-color="#bfe8ff" stop-opacity=".55"/><stop offset="1" stop-color="#8ab8ff" stop-opacity=".25"/></radialGradient></defs>
+ <circle cx="50" cy="50" r="50" fill="url(#${q}a)"/>
+ <path d="M16 100Q12 60 26 42Q36 28 50 26Q66 28 76 44Q90 64 86 100Z" fill="url(#${q}c)" ${s}/>${stars}
+ <path d="M20 100Q26 90 32 100Q38 90 44 100Q50 90 56 100Q62 90 68 100Q74 90 80 100" fill="#06040e"/>
+ <path d="M26 44Q18 20 36 8Q34 22 44 28Z" fill="url(#${q}c)" ${s}/><circle cx="36" cy="8" r="3.6" fill="#ffd84a" ${s}><animate attributeName="r" values="3.2;4.2;3.2" dur="2.4s" repeatCount="indefinite"/></circle>
+ <g><animateTransform attributeName="transform" type="rotate" values="-3 54 40;3 54 40;-3 54 40" dur="4s" repeatCount="indefinite"/>
+ <path d="M42 18Q70 14 76 40Q74 64 50 66Q66 56 66 40Q64 24 42 18Z" fill="url(#${q}m)" ${s}/>
+ <path d="M66 40Q64 24 42 18Q56 28 56 42Q56 54 50 66Q66 56 66 40Z" fill="#c8bc90" opacity=".35"/>
+ <ellipse cx="62" cy="32" rx="3.4" ry="4.2" fill="#140c22"/><circle cx="62.6" cy="31" r="1.4" fill="#ff3a5a">${A('.4;1;.4',1.8)}</circle>
+ <path d="M54 46Q60 52 66 46" fill="none" stroke="${O}" stroke-width="1.6"/>${[55,58,61,64].map((x,i)=>`<path d="M${x} ${46.6+(i%2?.8:0)}l1.4 3l1.4 -3" fill="#fff" stroke="${O}" stroke-width=".6"/>`).join('')}</g>
+ <path d="M76 66Q90 58 92 46" fill="none" stroke="${O}" stroke-width="5" stroke-linecap="round"/><path d="M76 66Q90 58 92 46" fill="none" stroke="#2a1a5a" stroke-width="3" stroke-linecap="round"/>
+ ${[[92,46,-60],[92,46,-30],[92,46,0]].map(([x,y,a])=>`<path transform="rotate(${a} ${x} ${y})" d="M${x} ${y}Q${x+2} ${y-6} ${x} ${y-11}" fill="none" stroke="#d8d0f0" stroke-width="1.5" stroke-linecap="round"/>`).join('')}
+ <g><animateTransform attributeName="transform" type="translate" values="0 0;-1.5 -2;0 0" dur="3s" repeatCount="indefinite"/><circle cx="86" cy="30" r="9" fill="url(#${q}d)" stroke="#e8f6ff" stroke-width="1"/><path d="M82 32Q86 26 90 32Q86 30 82 32Z" fill="#7a5aff"/><circle cx="83" cy="27" r="1.6" fill="#fff"/></g>
+ ${[[72,16,3],[80,8,2],[64,10,2.4]].map(([x,y,r],i)=>`<circle cx="${x}" cy="${y}" r="${r}" fill="url(#${q}d)" stroke="#e8f6ff" stroke-width=".6"><animate attributeName="cy" values="${y};${y+4};${y}" dur="${(2.6+i*.6).toFixed(1)}s" repeatCount="indefinite"/></circle>`).join('')}
+ <path d="M24 66Q12 70 8 82" fill="none" stroke="${O}" stroke-width="5" stroke-linecap="round"/><path d="M24 66Q12 70 8 82" fill="none" stroke="#2a1a5a" stroke-width="3" stroke-linecap="round"/>
+ ${[[8,82,20],[8,82,-10],[8,82,45]].map(([x,y,a])=>`<path transform="rotate(${a} ${x} ${y})" d="M${x} ${y}Q${x-2} ${y+6} ${x} ${y+11}" fill="none" stroke="#d8d0f0" stroke-width="1.5" stroke-linecap="round"/>`).join('')}`};
+}catch(e){console.warn('cauchemar art',e)}})();
+
+/* ---------- les 10 décors du mode Cauchemar (600×600, comme les autres décors de combat) ---------- */
+(function(){try{
+const SC={};let SID=0;
+const f1=v=>(+v).toFixed(1);
+const lg=(id,st,v)=>`<linearGradient id="${id}" x1="0" y1="0" x2="${v?0:1}" y2="${v?1:0}">${st.map(([o,c,a])=>`<stop offset="${o}" stop-color="${c}"${a!=null?` stop-opacity="${a}"`:''}/>`).join('')}</linearGradient>`;
+const rg=(id,c,a=.9,cx=.5,cy=.5)=>`<radialGradient id="${id}" cx="${cx}" cy="${cy}" r=".5"><stop offset="0" stop-color="${c}" stop-opacity="${a}"/><stop offset=".45" stop-color="${c}" stop-opacity="${(a*.35).toFixed(2)}"/><stop offset="1" stop-color="${c}" stop-opacity="0"/></radialGradient>`;
+const rnd=s=>()=>{s=(s*16807)%2147483647;return(s-1)/2147483646};
+const stars=(R,n,y0,y1,c='#fff')=>{let o='';for(let i=0;i<n;i++)o+=`<circle cx="${f1(R()*600)}" cy="${f1(y0+R()*(y1-y0))}" r="${f1(.6+R()*1.6)}" fill="${c}" opacity="${(.3+R()*.6).toFixed(2)}"/>`;return o};
+const blink=(d,b)=>`<animate attributeName="opacity" values="1;1;.05;1;1" keyTimes="0;.86;.9;.94;1" dur="${d}s" begin="${b||0}s" repeatCount="indefinite"/>`;
+const eyes=(x,y,s,c='#ff2a4a',d=4,b=0)=>`<g transform="translate(${x} ${y}) scale(${s})"><circle r="16" fill="${c}" opacity=".16"/><path d="M-11 0Q-7 -4 -3 0Q-7 3 -11 0ZM3 0Q7 -4 11 0Q7 3 3 0Z" fill="${c}">${blink(d,b)}</path></g>`;
+const fog=(R,y,c,n=5,op=.12)=>{let o='';for(let i=0;i<n;i++)o+=`<ellipse cx="${f1(R()*600)}" cy="${f1(y+R()*40)}" rx="${f1(120+R()*140)}" ry="${f1(14+R()*14)}" fill="${c}" opacity="${op}"/>`;return o};
+const tree=(x,y,h,s,c)=>`<path d="M${x-10*s} ${y}C${x-6*s} ${y-h*.4} ${x-16*s} ${y-h*.7} ${x-4*s} ${y-h}L${x+3*s} ${y-h}C${x-4*s} ${y-h*.7} ${x+9*s} ${y-h*.4} ${x+10*s} ${y}Z" fill="${c}"/><path d="M${x-6*s} ${y-h*.55}Q${x-34*s} ${y-h*.7} ${x-52*s} ${y-h*.62}M${x-38*s} ${y-h*.68}Q${x-46*s} ${y-h*.82} ${x-40*s} ${y-h*.92}M${x+1*s} ${y-h*.78}Q${x+28*s} ${y-h*.94} ${x+46*s} ${y-h*1.04}M${x+30*s} ${y-h*.95}Q${x+44*s} ${y-h*.9} ${x+52*s} ${y-h*.8}M${x-2*s} ${y-h*.98}Q${x-12*s} ${y-h*1.12} ${x-6*s} ${y-h*1.22}" fill="none" stroke="${c}" stroke-width="${f1(5*s)}" stroke-linecap="round"/>`;
+const gear=(cx,cy,r,n,t,c,op=1)=>{let d='';const N=n*4;for(let i=0;i<N;i++){const a=i/N*Math.PI*2,rr=(i%4<2)?r+t:r;d+=(i?'L':'M')+f1(cx+rr*Math.cos(a))+' '+f1(cy+rr*Math.sin(a))}return`<path d="${d}Z" fill="${c}" opacity="${op}"/><circle cx="${cx}" cy="${cy}" r="${f1(r*.42)}" fill="#0c0604" opacity="${op}"/>`};
+const spin=(cx,cy,d,rev)=>`<animateTransform attributeName="transform" type="rotate" from="${rev?360:0} ${cx} ${cy}" to="${rev?0:360} ${cx} ${cy}" dur="${d}s" repeatCount="indefinite"/>`;
+const B={
+/* 1 · La Chambre Sans Fin */
+1:q=>{const R=rnd(11);let d=lg(q+'w',[[0,'#140a26'],[.55,'#2a1646'],[1,'#0c0616']],1)+rg(q+'m','#cbb8ff',.8)+rg(q+'v','#000',1);
+ let s=`<rect width="600" height="600" fill="url(#${q}w)"/>`;for(let i=0;i<15;i++)s+=`<rect x="${i*42}" y="0" width="14" height="430" fill="#3a2260" opacity=".2"/>`;
+ for(let i=0;i<15;i++)for(let j=0;j<5;j++)s+=`<path d="M${i*42+28} ${40+j*80}l5 7l-5 7l-5 -7z" fill="#4a2a78" opacity=".35"/>`;
+ s+=`<g transform="translate(46 140)"><circle cx="64" cy="76" r="130" fill="url(#${q}m)"/><path d="M0 160V64Q0 0 64 0Q128 0 128 64V160Z" fill="#0a0a26"/>${stars(R,10,10,150).replace(/cx="(\d+(\.\d)?)"/g,(m,x)=>`cx="${f1(8+(+x)/600*112)}"`)}<circle cx="84" cy="52" r="24" fill="#efe6ff"/><circle cx="95" cy="45" r="21" fill="#0a0a26"/><path d="M0 160V64Q0 0 64 0Q128 0 128 64V160ZM64 0V160M0 86H128" fill="none" stroke="#4a3070" stroke-width="7"/></g>`;
+ const fy=[430,418,408,400,394,390];
+ for(let i=0;i<6;i++){const k=1-i*.16,w=220*k,h=300*k,x=300-w/2,y=fy[i]-h;s+=`<rect x="${f1(x)}" y="${f1(y)}" width="${f1(w)}" height="${f1(h)}" fill="${i===5?'#05020a':'#1a0e30'}" stroke="#6a4a9a" stroke-opacity="${(.85-i*.12).toFixed(2)}" stroke-width="${f1(9*k)}"/>`}
+ s+=`<rect x="262" y="300" width="76" height="90" fill="url(#${q}v)" opacity=".9"/>`+eyes(300,336,.9,'#ff3a5a',5);
+ s+=`<path d="M0 600V430H600V600Z" fill="#120a20"/>`;for(let i=-7;i<=7;i++)s+=`<path d="M${300+i*16} 430L${300+i*120} 600" stroke="#2c1a48" stroke-width="2"/>`;for(const y of [446,468,498,540,596])s+=`<path d="M0 ${y}H600" stroke="#2c1a48" stroke-width="2"/>`;
+ s+=`<g fill="#07040e"><path d="M408 520V452Q408 432 428 432H560Q584 432 590 452L600 470V520Z"/><rect x="416" y="410" width="12" height="112" rx="5"/><rect x="420" y="470" width="180" height="20" fill="#1c1032"/><path d="M432 470Q446 444 478 452Q500 458 500 470Z" fill="#2a1a44"/></g>`;
+ s+=`<g fill="#07040e" transform="translate(80 470)"><path d="M-46 52Q0 70 46 52" fill="none" stroke="#07040e" stroke-width="7" stroke-linecap="round"/><path d="M-22 50L-18 12M22 50L18 12" stroke="#07040e" stroke-width="6"/><path d="M-30 14Q-26 -8 0 -6Q14 -6 22 2L40 -4L36 10Q30 18 22 14L-30 18Z"/><path d="M30 -2L40 -26L46 -4Z"/><circle cx="34" cy="-2" r="2" fill="#ff3a5a"/></g>`;
+ s+=fog(R,520,'#8a6aff',4,.07);return{d,s}},
+/* 2 · Le Bois des Murmures */
+2:q=>{const R=rnd(22);let d=lg(q+'k',[[0,'#04120e'],[.55,'#0e2a22'],[1,'#06100c']],1)+rg(q+'m','#d8ffe8',.75);
+ let s=`<rect width="600" height="600" fill="url(#${q}k)"/>`+stars(R,22,0,220,'#d8ffe8')+`<circle cx="430" cy="150" r="140" fill="url(#${q}m)"/><circle cx="430" cy="150" r="42" fill="#e8fff2"/><circle cx="416" cy="140" r="7" fill="#c8e8d8" opacity=".6"/><circle cx="444" cy="166" r="5" fill="#c8e8d8" opacity=".5"/>`;
+ s+=`<path d="M0 420Q150 380 300 400T600 380V600H0Z" fill="#0a1e18"/>`;
+ for(const [x,h,sc] of [[60,330,1.3],[180,260,1],[420,280,1.05],[540,340,1.35]])s+=tree(x,440,h,sc,'#061410');
+ for(const [x,h,sc] of [[120,200,.8],[300,230,.9],[480,190,.75]])s+=tree(x,430,h,sc,'#0c2620');
+ s+=`<g fill="#ccff6a">${[[60,250],[540,240],[180,300]].map(([x,y],i)=>`<g transform="translate(${x} ${y})"><path d="M-9 0Q-6 -4 -2 0Q-6 3 -9 0ZM2 0Q6 -4 9 0Q6 3 2 0Z">${blink(4+i,i)}</path><path d="M-7 14Q0 24 7 14Q0 18 -7 14Z" fill="#020604"/></g>`).join('')}</g>`;
+ s+=`<path d="M0 600V470Q150 440 300 462T600 450V600Z" fill="#030a08"/>`+fog(R,400,'#bfffe0',6,.09)+fog(R,470,'#bfffe0',5,.08);return{d,s}},
+/* 3 · Le Carnaval Brisé */
+3:q=>{const R=rnd(33);let d=lg(q+'k',[[0,'#16040e'],[.6,'#3a0a26'],[1,'#10040a']],1)+rg(q+'g','#ff6a9a',.55);
+ let s=`<rect width="600" height="600" fill="url(#${q}k)"/>`+stars(R,30,0,260)+`<path d="M470 70A40 40 0 1 0 500 140A32 32 0 1 1 470 70Z" fill="#ffe8f0"/>`;
+ s+=`<g transform="translate(110 300)" fill="none" stroke="#2a0818" stroke-width="5"><circle r="110"/><circle r="12" fill="#2a0818"/>${[...Array(12)].map((_,i)=>{const a=i*30*Math.PI/180;return i===4||i===5?'':`<path d="M0 0L${f1(110*Math.cos(a))} ${f1(110*Math.sin(a))}"/><rect x="${f1(110*Math.cos(a)-9)}" y="${f1(110*Math.sin(a))}" width="18" height="14" fill="#2a0818"/>`}).join('')}<path d="M-40 230L0 0L40 230"/></g>`;
+ s+=`<circle cx="330" cy="330" r="240" fill="url(#${q}g)"/>`;
+ let tent='';for(let i=0;i<10;i++){const x0=190+i*30,x1=x0+30;tent+=`<path d="M330 150L${x0} 300L${x1} 300Z" fill="${i%2?'#e8d8c8':'#a8142e'}" opacity="${i%2?.55:.85}"/>`}
+ s+=tent+`<path d="M190 300Q215 318 240 300Q265 318 290 300Q315 318 340 300Q365 318 390 300Q415 318 440 300Q465 318 490 300" fill="#6a0a1e"/><rect x="200" y="300" width="260" height="140" fill="#3a0814"/><path d="M300 440V330Q330 300 360 330V440Z" fill="#0a0206"/>${eyes(330,370,.8,'#ffd84a',3.6)}<path d="M330 150V112" stroke="#2a0818" stroke-width="4"/><path d="M330 112L364 120L342 130L360 140L330 134Z" fill="#a8142e"/>`;
+ s+=`<path d="M0 150Q150 230 300 160T600 170" fill="none" stroke="#2a0818" stroke-width="2"/>`;for(let i=0;i<14;i++){const t=i/13,x=t*600,y=150+(t<.5?Math.sin(t*2*Math.PI)*45:-Math.sin((t-.5)*2*Math.PI)*-8)+((t<.5)?20:0);s+=`<circle cx="${f1(x)}" cy="${f1(165+Math.sin(t*6.28)*30)}" r="5" fill="${['#ffd84a','#ff5a8a','#8affd8','#c08aff'][i%4]}" opacity=".85">${i%3===0?`<animate attributeName="opacity" values=".9;.2;.9" dur="${1.4+i%4*.3}s" repeatCount="indefinite"/>`:''}</circle>`}
+ s+=`<path d="M0 600V440H600V600Z" fill="#14040c"/>`;for(let i=0;i<18;i++)s+=`<rect x="${f1(R()*600)}" y="${f1(450+R()*140)}" width="10" height="6" transform="rotate(${f1(R()*90)})" fill="${['#ffd84a','#ff5a8a','#c08aff'][i%3]}" opacity=".5"/>`;return{d,s}},
+/* 4 · L'Horlogerie Folle */
+4:q=>{const R=rnd(44);let d=lg(q+'k',[[0,'#120802'],[.55,'#2e1a08'],[1,'#0c0602']],1)+rg(q+'g','#ffb84a',.5)+`<radialGradient id="${q}f" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#e8dcc0"/><stop offset=".85" stop-color="#b8a07a"/><stop offset="1" stop-color="#6a4a24"/></radialGradient>`;
+ let s=`<rect width="600" height="600" fill="url(#${q}k)"/><circle cx="300" cy="270" r="260" fill="url(#${q}g)"/>`;
+ s+=`<g>${spin(90,140,40)}${gear(90,140,70,10,16,'#3a2410')}</g><g>${spin(520,120,30,1)}${gear(520,120,54,8,14,'#3a2410')}</g><g>${spin(540,330,50)}${gear(540,330,80,12,16,'#2a1a0a')}</g><g>${spin(60,360,36,1)}${gear(60,360,56,9,14,'#2a1a0a')}</g>`;
+ s+=`<circle cx="300" cy="260" r="150" fill="#5a3a14"/><circle cx="300" cy="260" r="136" fill="url(#${q}f)"/>`;
+ for(let i=0;i<60;i++){const a=i*6*Math.PI/180,r0=i%5?126:116;s+=`<path d="M${f1(300+r0*Math.sin(a))} ${f1(260-r0*Math.cos(a))}L${f1(300+130*Math.sin(a))} ${f1(260-130*Math.cos(a))}" stroke="#3a2410" stroke-width="${i%5?2:5}"/>`}
+ s+=`<g stroke="#2a1608" stroke-linecap="round"><path d="M300 260L300 160" stroke-width="7"><animateTransform attributeName="transform" type="rotate" values="0 300 260;-30 300 260;10 300 260;0 300 260" dur="2.4s" repeatCount="indefinite"/></path><path d="M300 260L376 300" stroke-width="5">${spin(300,260,6,1)}</path></g><circle cx="300" cy="260" r="9" fill="#2a1608"/>`;
+ s+=`<path d="M232 190L262 226L248 250L286 284M352 330L330 306L346 290" fill="none" stroke="#fff" stroke-width="1.6" opacity=".55"/>`;
+ s+=`<g><animateTransform attributeName="transform" type="rotate" values="-18 300 412;18 300 412;-18 300 412" dur="2.8s" repeatCount="indefinite"/><path d="M300 412V540" stroke="#3a2410" stroke-width="5"/><circle cx="300" cy="548" r="22" fill="#a87a2a" stroke="#3a2410" stroke-width="4"/></g><rect x="250" y="400" width="100" height="18" rx="6" fill="#3a2410"/>`;
+ s+=`<path d="M0 600V560H600V600Z" fill="#0c0602"/>`;return{d,s}},
+/* 5 · Le Lac des Reflets */
+5:q=>{const R=rnd(55);let d=lg(q+'k',[[0,'#020a16'],[1,'#0e2a3e']],1)+lg(q+'w',[[0,'#0c2a3c'],[1,'#02060c']],1)+rg(q+'m','#bfe8ff',.75);
+ let s=`<rect width="600" height="340" fill="url(#${q}k)"/>`+stars(R,40,0,300,'#dff4ff');
+ const tl=[[50,250,1.2],[150,200,.9],[470,230,1],[560,260,1.25]];s+=`<circle cx="300" cy="170" r="150" fill="url(#${q}m)"/><circle cx="300" cy="170" r="44" fill="#eaf8ff"/>`;
+ s+=`<path d="M0 340V300Q100 270 200 296T400 288T600 292V340Z" fill="#06141e"/>`;for(const [x,h,k] of tl)s+=tree(x,340,h,k,'#040e16');
+ s+=`<rect y="340" width="600" height="260" fill="url(#${q}w)"/><g opacity=".32" transform="matrix(1 0 0 -1 0 680)"><path d="M0 340V300Q100 270 200 296T400 288T600 292V340Z" fill="#06141e"/>${tl.map(([x,h,k])=>tree(x,340,h,k,'#040e16')).join('')}<circle cx="300" cy="170" r="44" fill="#eaf8ff"/></g>`;
+ for(let i=0;i<12;i++){const y=360+i*20,w=40+i*14;s+=`<path d="M${300-w} ${y}H${300+w}" stroke="#bfe8ff" stroke-width="2" opacity="${(.4-i*.025).toFixed(2)}"><animate attributeName="opacity" values="${(.4-i*.025).toFixed(2)};.05;${(.4-i*.025).toFixed(2)}" dur="${(2.4+i*.2).toFixed(1)}s" repeatCount="indefinite"/></path>`}
+ s+=`<path d="M0 340H600" stroke="#bfe8ff" stroke-width="1.5" opacity=".35"/>`+eyes(150,420,.8,'#7affe8',5)+eyes(470,452,.7,'#7affe8',6,2)+fog(R,320,'#bfe8ff',6,.08);return{d,s}},
+/* 6 · Le Manoir des Pas Perdus */
+6:q=>{const R=rnd(66);let d=lg(q+'k',[[0,'#14040a'],[.6,'#2e0c1a'],[1,'#0c0206']],1)+rg(q+'c','#ffc86a',.7);
+ let s=`<rect width="600" height="600" fill="url(#${q}k)"/>`;for(let i=0;i<10;i++)s+=`<rect x="${i*64}" y="0" width="30" height="460" fill="#3a1222" opacity=".25"/>`;
+ for(const [x,y,w,h] of [[40,150,90,120],[470,140,96,130],[150,110,64,84],[392,104,60,80]])s+=`<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="#1a0610" stroke="#8a6a2a" stroke-width="6"/><circle cx="${x+w/2}" cy="${y+h*.42}" r="${w*.26}" fill="#3a1a24"/><path d="M${x+w*.2} ${y+h}Q${x+w/2} ${y+h*.55} ${x+w*.8} ${y+h}Z" fill="#3a1a24"/>${eyes(x+w/2,y+h*.42,w/110,'#ff4a5a',4+(x%3),x%2)}`;
+ let st='';for(let i=0;i<9;i++){const y=600-i*28,w=380-i*30;st+=`<rect x="${300-w/2}" y="${y-28}" width="${w}" height="28" fill="${i%2?'#24081a':'#2e0c20'}"/>`}
+ s+=st+`<path d="M110 600L245 348M490 600L355 348" stroke="#5a3a1a" stroke-width="8"/>${[...Array(8)].map((_,i)=>{const t=i/7;return`<path d="M${f1(110+135*t)} ${f1(600-252*t)}v-40M${f1(490-135*t)} ${f1(600-252*t)}v-40" stroke="#5a3a1a" stroke-width="4"/>`}).join('')}<path d="M110 560L245 308M490 560L355 308" stroke="#7a5a2a" stroke-width="5"/>`;
+ s+=`<rect x="250" y="250" width="100" height="98" fill="#07020a"/>`+eyes(300,300,.7,'#ff4a5a',5,1);
+ s+=`<circle cx="300" cy="120" r="140" fill="url(#${q}c)"/><path d="M300 0V70" stroke="#3a2410" stroke-width="3"/><path d="M220 96Q300 140 380 96M240 80Q300 112 360 80" fill="none" stroke="#8a6a2a" stroke-width="5"/>${[220,250,280,320,350,380].map((x,i)=>`<rect x="${x-3}" y="${i%5?84:90}" width="6" height="14" fill="#efe0c0"/><path d="M${x} ${i%5?84:90}q-4 -8 0 -14q4 6 0 14z" fill="#ffc84a"><animate attributeName="opacity" values="1;.6;1" dur="${(.5+i*.1).toFixed(1)}s" repeatCount="indefinite"/></path>`).join('')}`;return{d,s}},
+/* 7 · Le Théâtre des Masques */
+7:q=>{const R=rnd(77);let d=lg(q+'k',[[0,'#0a0206'],[1,'#1e0610']],1)+lg(q+'c',[[0,'#6a0a1a'],[.5,'#a8142e'],[1,'#4a0612']])+`<linearGradient id="${q}l" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff2c8" stop-opacity=".55"/><stop offset="1" stop-color="#fff2c8" stop-opacity="0"/></linearGradient>`;
+ let s=`<rect width="600" height="600" fill="url(#${q}k)"/><path d="M300 0L170 470H430Z" fill="url(#${q}l)"/><ellipse cx="300" cy="470" rx="140" ry="22" fill="#fff2c8" opacity=".2"/>`;
+ s+=`<path d="M0 0H170Q150 120 168 260Q140 400 160 520H0Z" fill="url(#${q}c)"/><path d="M600 0H430Q450 120 432 260Q460 400 440 520H600Z" fill="url(#${q}c)"/>`;
+ for(let i=0;i<6;i++)s+=`<path d="M${i*28+10} 0Q${i*28+20} 260 ${i*28+8} 520M${590-i*28} 0Q${580-i*28} 260 ${592-i*28} 520" stroke="#3a0410" stroke-width="3" fill="none" opacity=".6"/>`;
+ s+=`<path d="M0 0H600V60Q540 90 480 60Q420 90 360 60Q300 90 240 60Q180 90 120 60Q60 90 0 60Z" fill="#8a0a22"/><path d="M0 60Q60 90 120 60Q180 90 240 60Q300 90 360 60Q420 90 480 60Q540 90 600 60" fill="none" stroke="#ffd84a" stroke-width="3"/>`;
+ const mask=(x,y,sad)=>`<g transform="translate(${x} ${y})"><path d="M0 -60V-30" stroke="#2a0a10" stroke-width="2"/><path d="M-26 -30Q0 -40 26 -30Q30 0 0 30Q-30 0 -26 -30Z" fill="#efe6d8"/><path d="M-16 -16q6 ${sad?-6:6} 12 0M4 -16q6 ${sad?-6:6} 12 0" fill="none" stroke="#1a0a10" stroke-width="3" stroke-linecap="round"/><path d="${sad?'M-12 14Q0 2 12 14':'M-12 6Q0 20 12 6'}" fill="none" stroke="#1a0a10" stroke-width="3" stroke-linecap="round"/><animateTransform attributeName="transform" type="rotate" values="-6;6;-6" additive="sum" dur="${sad?3.4:2.8}s" repeatCount="indefinite"/></g>`;
+ s+=mask(240,180,0)+mask(360,170,1);
+ s+=`<path d="M0 520H600V600H0Z" fill="#0c0204"/>`;for(let r=0;r<3;r++)for(let i=0;i<14;i++)s+=`<circle cx="${i*46+(r%2)*23}" cy="${560+r*26}" r="20" fill="#05010a"/>`;
+ s+=eyes(160,560,.7,'#ffd84a',4)+eyes(436,578,.6,'#ffd84a',5,1.5);return{d,s}},
+/* 8 · La Forge des Peurs */
+8:q=>{const R=rnd(88);let d=lg(q+'k',[[0,'#0e0202'],[.6,'#2a0806'],[1,'#140302']],1)+rg(q+'g','#ff4a12',.8)+lg(q+'f',[[0,'#2a0603'],[.45,'#a8260a'],[.8,'#ff7a1a'],[1,'#ffc84a']],1);
+ let s=`<rect width="600" height="600" fill="url(#${q}k)"/><circle cx="300" cy="430" r="300" fill="url(#${q}g)"><animate attributeName="opacity" values=".75;1;.75" dur="2.2s" repeatCount="indefinite"/></circle>`;
+ s+=`<path d="M150 470V260Q150 150 300 150Q450 150 450 260V470Z" fill="#1a0604"/><path d="M190 470V280Q190 200 300 200Q410 200 410 280V470Z" fill="url(#${q}f)"/>`;
+ for(let i=0;i<7;i++){const x=205+i*32,h=60+((i*37)%5)*18;s+=`<path d="M${x-16} 470Q${x-14} ${470-h*.6} ${x} ${470-h}Q${x+14} ${470-h*.6} ${x+16} 470Z" fill="${i%2?'#ffd84a':'#ff8a2a'}" opacity=".75"><animateTransform attributeName="transform" type="scale" values="1 1;1 1.18;1 .9;1 1" additive="sum" dur="${(1.1+i%3*.3).toFixed(1)}s" repeatCount="indefinite"/></path>`}
+ for(let i=0;i<9;i++)s+=`<rect x="${150+i*34}" y="${150-((i%2)*10)}" width="30" height="18" fill="#2a0a06" opacity=".9"/>`;
+ const chain=(x,len,o)=>{let c='';for(let i=0;i<len;i++)c+=`<ellipse cx="${x}" cy="${i*22+8}" rx="${i%2?3:8}" ry="11" fill="none" stroke="#0a0202" stroke-width="5"/>`;return`<g opacity="${o}">${c}<animateTransform attributeName="transform" type="rotate" values="-3 ${x} 0;3 ${x} 0;-3 ${x} 0" dur="${3+len*.1}s" repeatCount="indefinite"/></g>`};
+ s+=chain(60,12,1)+chain(110,8,.8)+chain(500,10,1)+chain(552,14,.9);
+ s+=`<ellipse cx="300" cy="470" rx="150" ry="16" fill="#ffb03a" opacity=".35"/><path d="M200 520H400L380 490H440V470H160V490H220Z" fill="#0a0202"/><path d="M250 520L240 580H360L350 520Z" fill="#0a0202"/><path d="M430 470L470 400L480 406L444 474Z" fill="#0a0202"/><rect x="452" y="384" width="44" height="26" rx="4" transform="rotate(30 474 397)" fill="#0a0202"/>`;
+ s+=`<path d="M0 600V540H600V600Z" fill="#070101"/>`+eyes(90,520,.8,'#ff3a1a',4.4)+eyes(520,540,.7,'#ff3a1a',5.2,1.6);return{d,s}},
+/* 9 · Le Ciel Renversé */
+9:q=>{const R=rnd(99);let d=lg(q+'k',[[0,'#6a5aff'],[.25,'#2a1a7a'],[.7,'#0a0628'],[1,'#03020c']],1)+rg(q+'m','#e8e0ff',.7);
+ let s=`<rect width="600" height="600" fill="url(#${q}k)"/>`+stars(R,70,200,600,'#efe8ff');
+ s+=`<g transform="matrix(1 0 0 -1 0 260)"><path d="M0 0V60Q80 30 150 70T300 50T450 80T600 40V0Z" fill="#140c3a"/>${[[60,60,.8],[200,70,.9],[400,74,.85],[540,52,.7]].map(([x,y,k])=>tree(x,y+60,120*k,k*.9,'#140c3a')).join('')}</g>`;
+ s+=`<path d="M0 0H600V40Q520 70 440 50Q380 110 300 80Q220 120 150 70Q80 90 0 60Z" fill="#0c0628"/>`;
+ for(let i=0;i<6;i++){const x=60+i*96;s+=`<path d="M${x} 70V${110+i%3*30}" stroke="#2a1a6a" stroke-width="3"/><path d="M${x-12} ${110+i%3*30}h24l-12 22z" fill="#2a1a6a"/>`}
+ s+=`<circle cx="300" cy="470" r="180" fill="url(#${q}m)"/><circle cx="300" cy="470" r="70" fill="#efe8ff"/><circle cx="324" cy="452" r="62" fill="#0a0628"/>`;
+ s+=`<g fill="#d8ccff" opacity=".8">${[[120,300],[460,330],[250,250]].map(([x,y],i)=>`<g transform="translate(${x} ${y}) rotate(180)"><path d="M-8 -14Q0 -20 8 -14L10 6Q0 12 -10 6Z"/><path d="M-10 -4L-22 4M10 -4L22 4" stroke="#d8ccff" stroke-width="3"/><animateTransform attributeName="transform" type="translate" values="0 0;0 -8;0 0" additive="sum" dur="${3+i}s" repeatCount="indefinite"/></g>`).join('')}</g>`;return{d,s}},
+/* 10 · Le Trône de Somnar */
+10:q=>{const R=rnd(101);let d=`<radialGradient id="${q}k" cx=".5" cy=".4" r=".8"><stop offset="0" stop-color="#3a1a6a"/><stop offset=".5" stop-color="#140828"/><stop offset="1" stop-color="#030108"/></radialGradient>`+rg(q+'m','#c8b0ff',.7)+rg(q+'b','#9ad8ff',.8,.35,.35);
+ let s=`<rect width="600" height="600" fill="url(#${q}k)"/>`+stars(R,40,0,600,'#e0d4ff');
+ s+=`<g fill="none" stroke="#6a4aaa" opacity=".35">${[80,140,200,260].map((r,i)=>`<path d="M${300+r} 250A${r} ${r*.6} 0 1 1 ${300-r*.6} ${250+r*.5}" stroke-width="${4-i*.6}"/>`).join('')}${spin(300,250,60)}</g>`;
+ s+=`<mask id="${q}cm"><rect width="600" height="600" fill="#000"/><circle cx="300" cy="200" r="118" fill="#fff"/><circle cx="352" cy="168" r="108" fill="#000"/></mask><circle cx="300" cy="200" r="200" fill="url(#${q}m)"/><circle cx="300" cy="200" r="118" fill="#efe6ff" mask="url(#${q}cm)"/>`;
+ s+=`<path d="M220 480V240L240 200L254 250L270 170L286 236L300 140L314 236L330 170L346 250L360 200L380 240V480Z" fill="#0c0418"/><path d="M200 480V380H400V480Z" fill="#140828"/><path d="M230 380V330H370V380Z" fill="#1c0c34"/><circle cx="300" cy="200" r="6" fill="#ff2a5a"><animate attributeName="r" values="5;8;5" dur="2s" repeatCount="indefinite"/></circle>`;
+ for(let i=0;i<5;i++)s+=`<rect x="${150-i*30}" y="${480+i*24}" width="${300+i*60}" height="24" fill="${i%2?'#100620':'#180a2e'}"/>`;
+ for(const [x,y,r,dd] of [[90,150,26,5],[510,190,32,6],[140,330,18,4],[470,360,22,5.5],[60,420,14,4.5],[540,460,16,5]])s+=`<g><circle cx="${x}" cy="${y}" r="${r}" fill="url(#${q}b)" stroke="#e8f6ff" stroke-width="1.2" opacity=".85"/><path d="M${x-r*.5} ${y-r*.2}Q${x-r*.3} ${y-r*.6} ${x} ${y-r*.6}" stroke="#fff" stroke-width="2" fill="none" opacity=".8"/><animateTransform attributeName="transform" type="translate" values="0 0;0 -14;0 0" dur="${dd}s" repeatCount="indefinite"/></g>`;
+ s+=eyes(300,250,1.1,'#ff2a5a',5);return{d,s}}};
+window.RDEcmScene=function(w){if(SC[w])return SC[w];const f=B[w]||B[1];const q='cms'+w+'_'+(SID++);const o=f(q);return SC[w]=`<svg class="scsvg" viewBox="0 0 600 600" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><defs>${o.d}</defs>${o.s}</svg>`};
+}catch(e){console.warn('cauchemar décors',e)}})();
+
+/* ================= V454 : LE MODE CAUCHEMAR + LE VRAI CLASSEMENT « PROGRESSION » =================
+   Après le mode Difficile : 100 étapes dans 10 mondes de cauchemar, 60 monstres (dont 10 boss, et 5 dessinés de zéro),
+   une règle spéciale par monde, 10 nouveaux décors, et de nouvelles récompenses (cadre, fond de profil, titre, œufs).
+   Le classement « Progression » compte maintenant Facile + Normal + Difficile + Cauchemar (tout le monde était bloqué à « Étape 100 »).
+   Bonus : l'écran « Choisir ses héros » affichait la puissance conseillée du mauvais mode en Normal et en Difficile. */
+(function(){try{
+if(typeof HWORLDS==='undefined'||typeof NWORLDS==='undefined'||typeof hBattle!=='function'||typeof NMAP==='undefined'||typeof nmonArt!=='function')return;
+const EN={};const tr=(fr,en)=>{if(en!=null)EN[fr]=en;return fr};
+/* traductions d'un texte avec des balises : morceau par morceau, nombres remplacés par # */
+const spl=x=>String(x).split(/<[^>]+>/).map(y=>y.trim()).filter(y=>/[A-Za-zÀ-ÿ]/.test(y));
+const put=(fr,en)=>{try{const f=spl(fr),g=spl(en);if(f.length!==g.length)return;f.forEach((x,i)=>{if(!/[A-Za-zÀ-ÿ]{2}/.test(x))return;const k=x.replace(NUMRX,'#');if(!(k in I18N_EN))I18N_EN[k]=g[i].replace(NUMRX,'#')})}catch(e){}};
+let CMODE=0;
+
+/* ---------- la courbe de puissance (après le mode Difficile : 454 k à l'étape 100) ---------- */
+const CMT=[[1,385000],[25,430000],[50,480000],[75,540000],[90,580000],[100,610000]];
+const cRecRaw=n=>lerpT(CMT,n);
+function cRecD(n){return Math.round(cRecRaw(n)*(n%10===0?1.1:1)*1.25/1000)*1000}
+/* réglage fin (calibré sur des combats simulés, comme le mode Difficile) */
+const CT={k:1,cf:[[1,1.42],[50,1.5],[100,1.6]],wf:[.8,.76,.77,.82,.95,.95,.87,.72,.8,.8],wb:[.62,.68,.65,.79,.84,.85,.74,.65,.79,.78]};
+const cCf=s=>lerpT(CT.cf,s);
+const cOpen=()=>(S.hmax||0)>=100;
+function cInit(){if(S.cmax==null)S.cmax=0;S.cstage=Math.min(100,(S.cmax||0)+1)}
+
+/* ---------- les règles du cauchemar (une par monde) ---------- */
+const RULES={
+ rev:{ic:'🔁',n:tr('Ils reviennent','They come back'),d:tr('Chaque monstre se relève une fois, avec 30 % de ses PV.','Every monster gets back up once, with 30% of its HP.')},
+ heal:{ic:'🥀',n:tr('Les murmures','The whispers'),d:tr('Tous les soins sont réduits de 40 %.','All healing is reduced by 40%.'),hm:.6},
+ crit:{ic:'🎭',n:tr('Rires fous','Mad laughter'),d:tr('Les monstres ont +25 % de chances de coup critique.','Monsters have +25% critical hit chance.')},
+ en:{ic:'⏰',n:tr('Heures folles','Mad hours'),d:tr('Les monstres commencent avec la moitié de leur énergie : leurs ultimes arrivent bien plus tôt.','Monsters start with half their energy: their ultimates come much sooner.')},
+ shield:{ic:'🪞',n:tr('Reflets','Reflections'),d:tr("Les monstres commencent avec un bouclier de 25 % de leurs PV.",'Monsters start with a shield worth 25% of their HP.')},
+ fear:{ic:'👻',n:tr('La peur','Fear'),d:tr('Tes héros font 15 % de dégâts en moins.','Your heroes deal 15% less damage.')},
+ spd:{ic:'🎻',n:tr('Danse macabre','Danse macabre'),d:tr('Les monstres sont 30 % plus rapides.','Monsters are 30% faster.')},
+ dmg:{ic:'🔥',n:tr('Le feu des peurs','Fire of fears'),d:tr('Tes héros subissent 20 % de dégâts en plus.','Your heroes take 20% more damage.')},
+ ult:{ic:'🌌',n:tr('Ciel renversé','Upside-down sky'),d:tr('Les ultimes de tes héros font 25 % de dégâts en moins.',"Your heroes' ultimates deal 25% less damage.")},
+ final:{ic:'🌙',n:tr('Le Grand Sommeil','The Great Sleep'),d:tr('Soins réduits de 30 %, et chaque monstre se relève une fois (30 % de PV).','Healing reduced by 30%, and every monster gets back up once (30% HP).'),hm:.7}};
+
+/* ---------- les 10 mondes ---------- */
+const CW=[
+ {n:'La Chambre Sans Fin',en:'The Endless Bedroom',h:285,r:'rev',pf:9,m:[['Poupée Fêlée',0,0,0,'Cracked Doll'],['Ombre sous le Lit','Ombre Vorace',{to:285,sat:.7,light:.6},['nmeyes','nmsmoke'],'Shadow Under the Bed'],['Nounours Maudit','Ourse Ronce',{to:15,sat:.5,light:.8},['nmstitch','nmeyes'],'Cursed Teddy'],['Veilleuse Éteinte','Citrouille Maudite',{to:275,sat:.55,light:.7},['nmsmoke'],'Dead Night-Light'],['Araignée du Plafond','Araignée Sylvestre',{to:290,sat:.45,light:.55},['nmeyes'],'Ceiling Spider']],
+  b:['Croque-Mitaine',0,0,0,'The Bogeyman'],bs:['Sous ton lit','Under Your Bed']},
+ {n:'Le Bois des Murmures',en:'The Whispering Woods',h:160,r:'heal',pf:2,m:[['Arbre aux Visages','Ent Tordu',{to:150,sat:.5,light:.6},['nmeyes'],'Tree of Faces'],['Loup Sans Ombre','Loup Galeux',{to:200,sat:.3,light:.55},['spectral','nmsmoke'],'Shadowless Wolf'],['Corbeau Murmurant','Phénix Noir',{to:250,sat:.25,light:.5},['nmeyes'],'Whispering Crow'],['Feu Follet Menteur','Feu Follet',{to:140,sat:1.2},['eye3'],'Lying Will-o-Wisp'],['Faune Sans Sommeil','Faune Sauvage',{to:170,sat:.4,light:.6},['nmeyes','horns'],'Sleepless Faun']],
+  b:['La Dame des Murmures','Sorcière des Brumes',{to:150,sat:.6,light:.7},['spectral','nmcrown'],'The Lady of Whispers'],bs:['Mille murmures','A Thousand Whispers']},
+ {n:'Le Carnaval Brisé',en:'The Broken Carnival',h:340,r:'crit',pf:12,m:[['Masque Rieur',0,0,0,'Laughing Mask'],['Clown Triste','Arlequin du Néant',{to:220,sat:.5},['nmstitch'],'Sad Clown'],['Chapiteau Vivant','Champignon Rageur',{to:350,sat:1.1},['nmeyes'],'Living Big Top'],['Jongleur Fou','Diablotin',{to:320,sat:.9},['mask'],'Mad Juggler'],['Lion de Cirque Fou','Chimère',{to:330,sat:.6,light:.85},['nmstitch'],'Mad Circus Lion']],
+  b:['La Reine des Rires','Reine de Pique',{to:330,sat:1.1},['nmcrown','nmeyes'],'The Queen of Laughter'],bs:['Dernier tour de piste','Final Lap of the Ring']},
+ {n:"L'Horlogerie Folle",en:'The Mad Clockworks',h:38,r:'en',pf:8,m:[['Horloge Hurlante',0,0,0,'Howling Clock'],['Rouage Mordeur','Golem Runique',{metal:1},['gears','nmeyes'],'Biting Cog'],['Coucou Fou','Harpie des Cimes',{to:30,sat:.8},['gears'],'Mad Cuckoo'],['Pendule Pendu','Sangsue Géante',{to:40,sat:.7,light:1.1},['gears'],'Hanged Pendulum'],['Automate Brisé','Chevalier Déchu',{metal:1,light:.9},['gears','nmstitch'],'Broken Automaton']],
+  b:['Le Maître des Heures Mortes','Sphinx des Sabliers',{to:30,sat:.9},['gears','nmcrown'],'The Master of Dead Hours'],bs:['Minuit éternel','Eternal Midnight']},
+ {n:'Le Lac des Reflets',en:'The Lake of Reflections',h:195,r:'shield',pf:6,m:[['Noyé Souriant','Spectre Noyé',{to:190,sat:.6,light:.8},['nmeyes'],'Smiling Drowned'],['Reflet Trompeur','Ombre du Néant',{to:190,sat:.8},['spectral'],'Deceiving Reflection'],['Sirène Sans Voix','Sirène Hurlante',{to:200,sat:.4,light:.75},['nmstitch'],'Voiceless Siren'],['Kraken des Rêves Noyés','Kraken Juvénile',{to:220,sat:.5},['nmeyes'],'Kraken of Drowned Dreams'],['Crabe Miroir','Crabe Blindé',{to:195,sat:.4,light:1.1},['crystal'],'Mirror Crab']],
+  b:['La Reine du Miroir Noir','Givrelle',{to:250,sat:.6,light:.6},['nmcrown','spectral'],'The Queen of the Black Mirror'],bs:['Reflet brisé','Shattered Reflection']},
+ {n:'Le Manoir des Pas Perdus',en:'The Manor of Lost Steps',h:330,r:'fear',pf:7,m:[['Armure Vide','Vesperax',{to:330,sat:.4},['nmeyes'],'Empty Armor'],['Flamme de Chandelle','Djinn Mineur',{to:35,sat:1.2},['nmsmoke'],'Candle Flame'],['Majordome Squelette','Liche',{to:330,sat:.4},['nmstitch'],'Skeleton Butler'],["Fantôme de l'Escalier",'Écho de Cendre',{to:280,sat:.4,light:1.25},['spectral'],'Ghost of the Stairs'],['Gargouille du Perron','Gargouille',{to:320,sat:.4},['nmeyes'],'Porch Gargoyle']],
+  b:['Le Comte Sans Reflet','Empereur Malgor',{to:330,sat:.8},['nmcrown'],'The Reflectionless Count'],bs:['Morsure du miroir','Mirror Bite']},
+ {n:'Le Théâtre des Masques',en:'The Theatre of Masks',h:350,r:'spd',pf:8,m:[['Marionnette Sans Fil','Valet Masqué',{to:20,sat:.5},['nmstitch'],'Stringless Puppet'],['Souffleur Muet',"Héraut d'Umbra",{to:350,sat:.6},['nmstitch'],'Mute Prompter'],['Danseuse de Cendre','Archange Brisé',{to:20,sat:.4,light:.7},['nmsmoke'],'Ash Dancer'],['Rideau Vivant','Horreur Rampante',{to:350,sat:1.1},['nmeyes'],'Living Curtain'],['Spectateur Sans Visage','Goule',{to:300,sat:.3,light:.8},['mask'],'Faceless Spectator']],
+  b:['La Prima Donna Fêlée','Sylphéa Reine des Ronces',{to:340,sat:.8},['nmcrown','mask'],'The Cracked Prima Donna'],bs:["L'aria du silence",'Aria of Silence']},
+ {n:'La Forge des Peurs',en:'The Forge of Fears',h:10,r:'dmg',pf:7,m:[['Forgeron Sans Yeux','Golem de Magma',{to:0,sat:.6,light:.6},['nmchain'],'Eyeless Smith'],['Enclume Hurlante','Golem du Néant',{to:10,sat:.5,light:.7},['flame'],'Howling Anvil'],['Lame Vivante','Chevalier de Cendre',{to:0,sat:.9},['flame','nmeyes'],'Living Blade'],['Soufflet Cracheur','Salamandre',{to:0,sat:1.2,light:.6},['flame'],'Spitting Bellows'],['Chaîne Brûlante','Cerbère',{to:5,sat:1.2,light:.6},['nmchain','flame'],'Burning Chain']],
+  b:['Le Forgeur de Peurs','Gorgath le Dévoreur',{to:0,sat:1.1,light:.7},['nmcrown','flame'],'The Forger of Fears'],bs:['Marteau des cauchemars','Hammer of Nightmares']},
+ {n:'Le Ciel Renversé',en:'The Upside-down Sky',h:235,r:'ult',pf:5,m:[['Étoile Déchue','Élémentaire de Glace',{to:230,sat:.8},['stars'],'Fallen Star'],['Nuage Dévoreur','Slime Vert',{to:240,sat:.35,light:1.1},['nmeyes'],'Devouring Cloud'],['Comète Hurlante','Solarion',{to:220,sat:1},['stars'],'Howling Comet'],['Trou Noir Affamé','Rôdeur du Vide',{to:230,sat:.8},['stars'],'Hungry Black Hole'],['Ange Renversé','Sentinelle Céleste',{to:230,sat:.7},['nmeyes'],'Upside-down Angel']],
+  b:['Le Gardien du Ciel Renversé',"Colosse d'Éther",{to:240,sat:.9},['nmcrown','stars'],'The Keeper of the Upside-down Sky'],bs:['Chute des étoiles','Starfall']},
+ {n:'Le Trône de Somnar',en:"Somnar's Throne",h:265,r:'final',pf:9,m:[['Rêve Dévoré','Kraken Céleste',{to:270,sat:.6},['nmsmoke'],'Devoured Dream'],['Cauchemar Vivant','Seigneur du Néant',{to:270,sat:.8},['nmeyes'],'Living Nightmare'],['Garde de Somnar','Champion du Chaos',{to:265,sat:.7},['nmchain'],"Somnar's Guard"],['Œil Sans Sommeil','Œil Abyssal',{to:265,sat:1.1},['nmeyes'],'Sleepless Eye'],['Croque-Rêves',"Dragon d'Ombre",{to:270,sat:.9},['nmsmoke','horns'],'Dream Muncher']],
+  b:['Somnar, le Dévoreur de Rêves',0,0,0,'Somnar, the Dream Devourer'],bs:['Le Grand Sommeil','The Great Sleep']}];
+CW.forEach((W,wi)=>{[...W.m,W.b].forEach((x,i)=>{if(x[1])NMAP[x[0]]={base:x[1],o:x[2],ov:x[3],boss:i===5,w:wi}})});
+const ruleOf=s=>RULES[CW[Math.max(0,Math.min(9,Math.ceil(s/10)-1))].r];
+const cArt=(nm,h,b)=>nmonArt(nm,h,b);
+/* le décor reste immobile (comme les autres décors : seules les petites particules bougent), c'est bien plus léger pour le téléphone */
+const stillSvg=x=>String(x).replace(/<(animate|animateMotion|animateTransform|set)\b[^>]*\/>/g,'');
+function cScene(w,n,anim){const W=CW[w-1]||CW[0];let svg='';try{svg=window.RDEcmScene?window.RDEcmScene(w):'';const lite=document.documentElement.classList.contains('rdphone')||(document.body&&document.body.classList.contains('rdlite'));if(!anim||lite)svg=stillSvg(svg)}catch(e){}
+  if(!svg)return sceneHTML(9,n).replace('class="bscene ',`style="filter:hue-rotate(${W.h-270}deg) brightness(.7)" class="bscene `);
+  let parts='';try{parts=sceneParts(W.pf,n)}catch(e){}return`<div class="bscene sc-cm cm${w}">${svg}${parts}</div>`}
+
+/* ---------- les monstres en combat ---------- */
+function ruleFoe(u,r){if(r==='rev'||r==='final')u.cRev=1;else if(r==='crit')u.crit=(u.crit||.06)+.25;else if(r==='en')u.en=50;else if(r==='shield')u.sh=Math.round(u.max*.25);else if(r==='spd')u.spd=Math.round((u.spd||100)*1.3)}
+{const sf=stageFoes;stageFoes=function(s){
+  /* l'aperçu de l'écran « Choisir ses héros » */
+  try{const P=window.PKX;if(!CMODE&&!NMODE&&typeof PICK!=='undefined'&&PICK.on&&P&&P.ctx&&P.ctx.kind==='stage'&&P.ctx.mode==='c'&&P.ctx.s===s){CMODE=s;NMODE=s;try{return stageFoes(s)}finally{CMODE=0;NMODE=0}}}catch(e){}
+  const f=sf.apply(this,arguments);if(!CMODE)return f;
+  const w=Math.ceil(s/10),N=NWORLDS[w-1],C=CW[w-1],R=RULES[C.r],boss=s%10===0;
+  const k=CT.k*cCf(s)*(boss?CT.wb[w-1]:CT.wf[w-1])*cRecRaw(s)/lerpT(NMT,s);
+  for(const u of f){let nn=null,bs=false;if(u.boss){nn=C.b[0];bs=true;u.sk={...u.sk,n:C.bs[0]}}else{const i=N.m.findIndex(x=>x[0]===u.name);if(i>=0)nn=C.m[i][0]}
+    if(nn){u.name=nn;u.port=cArt(nn,C.h,bs)}
+    u.max=Math.round(u.max*k);u.hp=u.max;u.atk=Math.round(u.atk*k);u.def=Math.round(u.def*k);u.spd=(u.spd||100)+8;ruleFoe(u,C.r)}
+  return f}}
+/* les héros sous la règle du monde */
+{const am=applyMeta;applyMeta=function(units,mk){const r=am.apply(this,arguments);try{if(CMODE){const k=CW[Math.max(0,Math.min(9,Math.ceil(CMODE/10)-1))].r;
+  if(k==='fear'||k==='dmg'||k==='ult')for(const u of units)if(u.side===0&&u.hid!=null){if(k==='fear')u.dm=(u.dm||1)*.85;else if(k==='dmg')u.tm=(u.tm||1)*1.2;else if(k==='ult')u.skm=(u.skm||1)*.75}}}catch(e){}return r}}
+/* le combat sait qu'il est en Cauchemar avant le premier coup */
+{const r0=run;run=function(){try{if(CMODE&&typeof B!=='undefined'&&B&&B.mode==='stage'&&!B.cauch){B.cauch=CMODE;const R=ruleOf(CMODE);B.crule=CW[Math.ceil(CMODE/10)-1].r;if(R.hm)B.healMul=(B.healMul||1)*R.hm}}catch(e){}return r0.apply(this,arguments)}}
+/* « Ils reviennent » : un monstre vaincu se relève une fois */
+{const h0=hurt;hurt=function(t,d,c){const r=h0.apply(this,arguments);
+  try{if(typeof B!=='undefined'&&B&&B.cauch&&t&&t.side===1&&t.hp<=0&&t.cRev===1){t.cRev=2;t.hp=Math.max(1,Math.round(t.max*.3));t.stun=0;t.dot=null;t.sh=0;
+    log(`🌙 <b>${t.name}</b> se relève !`,'cs');float(t,'SE RELÈVE !','heal');
+    if(!B.skip)try{const el=document.getElementById('u-'+t.key);if(el){el.classList.add('cmrise');setTimeout(()=>el.classList.remove('cmrise'),900)}}catch(e){}
+    try{refreshOne(t)}catch(e){try{refreshUnits()}catch(e2){}}}}catch(e){}
+  return r}}
+/* la musique */
+{const bt=battleTheme;battleTheme=function(){try{if(typeof B!=='undefined'&&B&&B.cauch&&!B.done)return B.cauch%10===0?(SONGS.umbra?'umbra':'boss'):(SONGS.spooky?'spooky':'battle')}catch(e){}return bt.apply(this,arguments)}}
+
+function cBattle(n){cInit();if(!cOpen())return toast('Termine les 100 étapes du mode Difficile pour débloquer le mode Cauchemar.');if(n>S.cstage||n<1)return;
+  NMODE=n;CMODE=n;try{startBattle('stage',n)}finally{NMODE=0;CMODE=0}
+  if(typeof B!=='undefined'&&B&&B.cauch===n){try{const w=Math.ceil(n/10),C=CW[w-1],R=RULES[C.r];const t=$('#battle .bh .t');if(t&&t.firstChild)t.firstChild.textContent='🌙 Cauchemar · Étape '+n+(n%10===0?' · Boss':'');
+    const sm=$('#battle .bh .t small');if(sm)sm.innerHTML=sm.innerHTML.replace(WORLDS[w-1].n,C.n+' · '+R.ic+' '+R.n);
+    const sc=$('#battle .bscene');if(sc)sc.outerHTML=cScene(w,12);const bt=$('#battle');if(bt)bt.classList.add('cmode');
+    try{log(`${R.ic} <b>${R.n}</b> — <span>${R.d}</span>`,'cs')}catch(e){}}catch(e){}}}
+window.cBattle=cBattle;
+
+/* ---------- les récompenses ---------- */
+const egg=r=>{try{const p=window.RDEpetState();p.eggs.push({id:p.nid++,r});return true}catch(e){return false}};
+{const fi=finish;finish=function(res){
+  if(!B||B.done)return fi.apply(this,arguments);
+  if(!B.cauch){const hd=B.hard,h0=S.hmax||0;const r=fi.apply(this,arguments);
+    try{if(hd===100&&res===true&&h0<100&&(S.hmax||0)>=100){const rw=$('#battle .result .rw');if(rw)rw.insertAdjacentHTML('beforeend','<span class="cmunl">🌙 Le mode Cauchemar est débloqué ! (Aventure, flèche après Difficile)</span>')}}catch(e){}return r}
+  const n=B.cauch,m0=S.max,s0=S.stage;cInit();S.max=1e9;
+  try{fi.apply(this,arguments)}finally{S.max=m0;S.stage=s0}
+  const extra=[],w=Math.ceil(n/10),boss=n%10===0,C=CW[w-1];
+  if(res===true){const g=Math.round((6000+150*n)*(boss?3:1)*goldMul());S.gold+=g;extra.push(GOLD+fmt(g)+' or (bonus Cauchemar)');
+    if(n>(S.cmax||0)){S.cmax=n;S.cstage=Math.min(100,n+1);const gm=boss?350:75;S.gems+=gm;extra.push(GEM+gm+' gemmes (1re victoire Cauchemar)');
+      if(boss){S.shards+=4;S.ush=(S.ush||0)+2;extra.push(SHARD+'4 éclats légendaires',"🌟 2 éclats d'ultra-évolution");if(egg(2))extra.push('🥚 Un œuf épique pour ta Ménagerie');
+        try{news(Date.now(),`${S.name||'Voyageur'} a vaincu ${C.b[0]} en mode Cauchemar (étape ${n}).`);react('gg',{},2)}catch(e){}}
+      if(n===50){S.evFrames=S.evFrames||[];if(!S.evFrames.includes('cauch'))S.evFrames.push('cauch');extra.push('🖼️ Nouveau cadre : « Cauchemar » !')}
+      if(n===100){try{cosGive('bg','cauchemar')}catch(e){S.pbgs=S.pbgs||[];if(!S.pbgs.includes('cauchemar'))S.pbgs.push('cauchemar')}egg(3);extra.push("🌙 Mode Cauchemar terminé ! Titre « Celui qui ne dort plus », fond « Cauchemar » et un œuf légendaire.")}}
+    const it=dropItem(rollRarity(10,boss?3.6:2));extra.push(itemChip(it))}
+  else extra.push(`Puissance conseillée en Cauchemar : ${fmt(cRecD(n))}.`);
+  save();try{ttCheck()}catch(e){}
+  try{if(res!==true)document.querySelectorAll('#battle .result .rw span').forEach(x=>{if(/^Puissance conseillée : /.test(x.textContent))x.remove()});
+    const rw=$('#battle .result .rw');if(rw)rw.insertAdjacentHTML('beforeend',extra.map(x=>`<span>${x}</span>`).join(''));
+    const ns=$('#battle .result [data-a="nextstage"]');if(ns&&(res!==true||n>=100))ns.remove();
+    const h=$('#battle .result .h');if(h)h.insertAdjacentHTML('beforeend','<small class="nmtag cmtag">MODE CAUCHEMAR</small>')}catch(e){}}}
+document.addEventListener('click',e=>{const t=e.target.closest('[data-a]');if(!t||typeof B==='undefined'||!B||!B.cauch)return;const a=t.dataset.a;
+  if(a==='nextstage'||a==='retry'){e.stopImmediatePropagation();e.preventDefault();const n=a==='retry'?B.cauch:B.cauch+1;closeBattle();cBattle(n)}},true);
+
+/* ---------- le sélecteur : Facile ‹ › Normal ‹ › Difficile ‹ › Cauchemar ---------- */
+const DF=['e','n','h','c'],DL={e:'Facile',n:'Normal',h:'Difficile',c:'Cauchemar'},DI={e:'🌱',n:'⚔️',h:'💀',c:'🌙'},DC={e:'te',n:'tn',h:'th',c:'tc'};
+diffSw=function(d){if(!DF.includes(d))d='e';const i=DF.indexOf(d),p=DF[(i+3)%4],nx=DF[(i+1)%4];
+  const sub=d==='e'?`Étape ${Math.min(100,S.stage)} / 100${nOpen()?' · Normal débloqué !':''}`:d==='n'?(!nOpen()?'🔒 Termine le mode Facile pour débloquer':`Étape ${Math.min(100,(S.nmax||0)+1)} / 100${hOpen()?' · Difficile débloqué !':' · monstres bien plus coriaces'}`)
+    :d==='h'?(!hOpen()?'🔒 Termine le mode Normal pour débloquer':`Étape ${Math.min(100,(S.hmax||0)+1)} / 100${cOpen()?' · Cauchemar débloqué !':' · le défi ultime'}`):(!cOpen()?'🔒 Termine le mode Difficile pour débloquer':`Étape ${Math.min(100,(S.cmax||0)+1)} / 100 · la nuit sans fin`);
+  return`<div class="diffsw v2 d${d}" id="diffsw"><button class="navarr big nl ${DC[p]}" data-a="diff" data-v="${p}" aria-label="Passer en mode ${DL[p]}">${CHEV_L}<small>${DL[p]}</small></button>
+  <div class="dft"><span class="dfic">${DI[d]}</span><b>Mode ${DL[d]}</b><small>${sub}</small><span class="dfd">${DF.map(x=>`<i class="${x===d?'on '+x:''}"></i>`).join('')}</span></div>
+  <button class="navarr big nr ${DC[nx]}" data-a="diff" data-v="${nx}" aria-label="Passer en mode ${DL[nx]}">${CHEV_R}<small>${DL[nx]}</small></button></div>`};
+/* glisser le doigt : on avance ou on recule d'un mode (avant, ça n'allait que de Facile à Normal) */
+{let sx=null,sy=null,sw=null;
+  window.addEventListener('touchstart',e=>{try{if(TAB!=='adv'||(typeof B!=='undefined'&&B)){sx=null;return}const el=e.target.closest&&e.target.closest('#diffsw,.wbanner');if(!el){sx=null;return}sx=e.touches[0].clientX;sy=e.touches[0].clientY}catch(er){sx=null}},{passive:true,capture:true});
+  window.addEventListener('touchend',e=>{try{if(sx==null)return;const dx=e.changedTouches[0].clientX-sx,dy=e.changedTouches[0].clientY-sy;sx=null;if(Math.abs(dx)>55&&Math.abs(dx)>Math.abs(dy)*1.5)sw={dir:dx<0?1:-1,t:Date.now()}}catch(er){}},{passive:true,capture:true});
+  const sd=setDiff;setDiff=function(d){let dir=0;if(sw&&Date.now()-sw.t<400){const i=Math.max(0,DF.indexOf(UI.diff||'e'));dir=sw.dir;d=DF[(i+dir+4)%4];sw=null}
+    else{const i=DF.indexOf(UI.diff||'e'),j=DF.indexOf(d);if(i>=0&&j>=0)dir=(j-i+4)%4===1?1:-1}
+    const r=sd.call(this,d);try{const s=$('#diffsw');if(s&&dir){s.classList.remove('swl','swr');s.classList.add(dir>0?'swl':'swr')}}catch(e){}return r}}
+
+/* ---------- la page du mode Cauchemar ---------- */
+function myAvS(){try{return myAv()}catch(e){return''}}
+function rewCard(){let pb='';try{pb=`<span class="pbgmini"><svg viewBox="0 0 400 200" preserveAspectRatio="xMidYMid slice">${PBG.cauchemar.art()}</svg></span>`}catch(e){pb='<span>🌙</span>'}
+  return`<div class="card cmrew"><div class="h3" style="margin:0">🎁 Récompenses du mode Cauchemar</div><div class="cmrl">
+  <div class="cmri"><span>💰</span><p>Beaucoup d'or à chaque victoire, et le meilleur équipement du jeu.</p></div>
+  <div class="cmri"><span>💎</span><p><b>75 gemmes</b> par 1re victoire, <b>350</b> sur les boss.</p></div>
+  <div class="cmri"><span>👹</span><p>Chaque boss : <b>4 éclats légendaires</b>, <b>2 éclats d'ultra-évolution</b> et <b>un œuf épique</b>.</p></div>
+  <div class="cmri ${(S.cmax||0)>=50?'ok':''}"><span class="av fav frm-cauch">${myAvS()}</span><p>Étape 50 : le cadre <b>« Cauchemar »</b>.</p></div>
+  <div class="cmri ${(S.cmax||0)>=100?'ok':''}">${pb}<p>Étape 100 : le titre <b>« Celui qui ne dort plus »</b>, le fond <b>« Cauchemar »</b> et <b>un œuf légendaire</b>.</p></div></div></div>`}
+function pAdvC(sw){cInit();const lock=!cOpen();const cw=Math.max(1,Math.min(10,Math.ceil(S.cstage/10)));const w=Math.max(1,Math.min(10,UI.cworld??cw));const Wd=CW[w-1],R=RULES[Wd.r];
+  let nodes='';for(let k=1;k<=10;k++){const s=(w-1)*10+k,done=s<=S.cmax,cur=s===S.cstage&&S.cmax<100,lk=lock||s>S.cstage;nodes+=`<button class="node ${done?'done':''} ${cur?'now':''} ${lk?'lock':''} ${k===10?'boss':''}" data-a="cstage" data-v="${s}" ${lk?'disabled':''} aria-label="Étape ${s} cauchemar">${s}</button>`}
+  const tp=idsPower(teamIdsFor('pve')),rp=cRecD(S.cstage),fin=S.cmax>=100;
+  return`<div class="stack nmpage hmpage cmpage">
+  <div class="card row" style="justify-content:space-between"><div><div class="h3" style="margin:0">Coffre d'expédition</div><div class="muted">Tes héros rapportent ${idleRate()} or/min, même hors ligne (8 h max).</div></div><button class="btn p" data-a="idle">${GOLD} Récolter ${fmt(idleGold())}</button></div>
+  ${sw}
+  <div class="worlds">${CW.map((x,i)=>`<button class="chip ${w===i+1?'on':''}" data-a="cworld" data-v="${i+1}">${i+1}. ${x.n}</button>`).join('')}</div>
+  <div class="wbanner sc nmban cmban">${cScene(w,10)}<div class="wtx"><span class="nmbadge cmbadge">CAUCHEMAR · MONDE INÉDIT</span>
+    <div class="h">Monde ${w} · ${Wd.n}</div>
+    <p>Étapes ${(w-1)*10+1} à ${w*10} en Cauchemar. Boss du monde : <b>${Wd.b[0]}</b>. Puissance conseillée de ${fmt(cRecD((w-1)*10+1))} à ${fmt(cRecD(w*10))}.</p>
+    <div class="bestiary">${[...Wd.m,Wd.b].map((x,i)=>`<span class="bst ${i===5?'boss':''}" title="${esc(x[0])}${i===5?' (boss)':''}">${cArt(x[0],Wd.h,i===5)}</span>`).join('')}</div></div>${lock?`<div class="nmlock"><b>🔒 Mode Cauchemar verrouillé</b><span>Termine les 100 étapes du mode Difficile (tu es à l'étape ${Math.min(100,(S.hmax||0)+1)}).</span></div>`:''}</div>
+  <div class="card cmrule"><span class="cmric">${R.ic}</span><div style="min-width:0"><small>RÈGLE DU MONDE ${w}</small><b>${R.n}</b><p>${R.d}</p></div></div>
+  <div class="path">${nodes}</div>
+  <div class="card stack"><div class="row" style="justify-content:space-between"><div><div class="h3" style="margin:0">Ton équipe d'aventure</div><div class="muted">Puissance ${fmt(tp)}</div></div>${teamStrip(teamIdsFor('pve'))}</div>${teamPick('pve')}
+  ${lock?'':fin?`<div class="muted">Les 100 étapes du mode Cauchemar sont terminées. Tu ne dors plus jamais ! Rejoue-les pour l'équipement.</div>`:`<div class="row"><span class="${tp<rp*.85?'warn':'muted'}">Puissance conseillée : <b class="num">${fmt(rp)}</b>${tp<rp*.85?' · ton équipe est trop faible, renforce-la !':''}</span></div><button class="btn p big nmgo cmgo" data-a="cstage" data-v="${S.cstage}">🌙 Combattre l'étape ${S.cstage} Cauchemar${S.cstage%10===0?' · BOSS':''}</button>`}</div>
+  ${rewCard()}</div>`}
+window.pAdvC=pAdvC;
+{const pa=pAdv;pAdv=function(){let d='e';try{d=localStorage.getItem('royaumes-diff')||'e'}catch(e){}UI.diff=UI.diff||d;if(UI.diff!=='c')return pa.apply(this,arguments);
+  /* on passe par le chemin du mode Difficile, pour garder tout ce qui habille la page (mode histoire, images allégées…) */
+  const ph=pAdvH;pAdvH=()=>pAdvC(diffSw('c'));UI.diff='h';try{return pa.apply(this,arguments)}finally{pAdvH=ph;UI.diff='c'}}}
+document.addEventListener('click',e=>{const t=e.target.closest('[data-a]');if(!t||t.disabled)return;const a=t.dataset.a,v=t.dataset.v;
+  if(a==='cstage')cBattle(+v);else if(a==='cworld'){UI.cworld=+v;render()}});
+/* l'écran « Choisir ses héros » : Cauchemar, et la bonne puissance conseillée en Normal et en Difficile */
+window.addEventListener('click',e=>{try{const t=e.target&&e.target.closest&&e.target.closest('[data-a="cstage"],[data-a="nstage"],[data-a="hstage"]');if(!t||t.disabled||(typeof B!=='undefined'&&B)||!t.closest('#main')||typeof window.pkOpen!=='function')return;
+  const a=t.dataset.a,s=+t.dataset.v;if(!s)return;if(a==='cstage'&&(!cOpen()||s>(cInit(),S.cstage)))return;e.preventDefault();e.stopImmediatePropagation();
+  const mode=a==='cstage'?'c':a==='hstage'?'h':'n';let rec=0;try{rec=mode==='c'?cRecD(s):mode==='h'?hRecD(s):nRecD(s)}catch(er){}
+  const title=(mode==='c'?'Mode Cauchemar · ':mode==='h'?'Mode Difficile · ':'Mode Normal · ')+'Étape '+s+(s%10===0?' · Boss':'');
+  window.pkOpen({kind:'stage',mode,s,rec,trials:false,title,go:()=>{if(mode==='c')cBattle(s);else if(mode==='h')hBattle(s);else nBattle(s)}})}catch(er){console.warn('pk cauchemar',er)}},true);
+
+/* ---------- les récompenses cosmétiques ---------- */
+let PBI=0;
+function nightArt(){const q='cmpb'+(PBI++);let st='';for(let i=0;i<46;i++)st+=`<circle cx="${(i*89)%400}" cy="${(i*37)%130}" r="${((i%3)*.45+.45).toFixed(2)}" fill="#e8dcff" opacity="${(.25+(i%5)*.13).toFixed(2)}"/>`;
+  return`<defs><linearGradient id="${q}a" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#05020c"/><stop offset=".6" stop-color="#1c0a36"/><stop offset="1" stop-color="#3a0e3a"/></linearGradient><radialGradient id="${q}g" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#d8c4ff" stop-opacity=".8"/><stop offset=".5" stop-color="#8a5aff" stop-opacity=".2"/><stop offset="1" stop-color="#8a5aff" stop-opacity="0"/></radialGradient><radialGradient id="${q}b" cx=".35" cy=".35" r=".6"><stop offset="0" stop-color="#ffffff" stop-opacity=".7"/><stop offset=".5" stop-color="#9ad8ff" stop-opacity=".2"/><stop offset="1" stop-color="#c08aff" stop-opacity=".35"/></radialGradient>
+  <mask id="${q}m"><rect width="400" height="200" fill="#000"/><circle cx="92" cy="66" r="40" fill="#fff"/><circle cx="110" cy="54" r="36" fill="#000"/></mask></defs>
+  <rect width="400" height="200" fill="url(#${q}a)"/>${st}<circle cx="92" cy="66" r="80" fill="url(#${q}g)"/><circle cx="92" cy="66" r="40" fill="#f2ebff" mask="url(#${q}m)"/>
+  <path d="M0 200V150Q60 132 120 146T240 140T400 144V200Z" fill="#12061e"/>
+  <g fill="#07030e"><path d="M40 200V150L58 134L76 150V200Z"/><path d="M96 200V140L118 120L140 140V200Z"/><rect x="150" y="150" width="34" height="50"/><path d="M196 200V128L214 108L232 128V200Z"/><path d="M226 200V146L250 130L274 146V200Z"/><rect x="290" y="140" width="30" height="60"/><path d="M330 200V150L352 132L374 150V200Z"/></g>
+  <rect x="207" y="140" width="8" height="10" fill="#ffd86a"/><rect x="110" y="152" width="7" height="9" fill="#ffd86a" opacity=".7"/>
+  ${[[300,60,16],[350,96,11],[262,40,8],[170,84,10]].map(([x,y,r])=>`<circle cx="${x}" cy="${y}" r="${r}" fill="url(#${q}b)" stroke="#e8f6ff" stroke-width=".8" opacity=".9"/>`).join('')}
+  ${[[332,34],[380,70]].map(([x,y])=>`<g transform="translate(${x} ${y})"><circle r="9" fill="#ff2a5a" opacity=".15"/><path d="M-6 0Q-4 -2 -1.6 0Q-4 1.6 -6 0ZM1.6 0Q4 -2 6 0Q4 1.6 1.6 0Z" fill="#ff3a5a"/></g>`).join('')}`}
+try{if(typeof PBG!=='undefined')PBG.cauchemar={n:'Fond « Cauchemar »',art:nightArt,how:'Mode Cauchemar : étape 100',fx:1}}catch(e){}
+{const pf=pbgFx;pbgFx=function(k){if(k==='cauchemar'){let o='<div class="pbgfx cmbub" aria-hidden="true">';for(let i=0;i<7;i++)o+=`<i style="--x:${(6+i*14)%94}%;--s:${8+(i*5)%12}px;--t:${(7+i%3*2.2).toFixed(1)}s;--l:${(-i*1.7).toFixed(1)}s"></i>`;return o+'</div>'}return pf.apply(this,arguments)}}
+try{FRAMES.cauch='Cauchemar';try{FHINT.cauch='Mode Cauchemar : étape 50'}catch(e){}}catch(e){}
+try{TITLES.push({k:'nodorm',n:'Celui qui ne dort plus',c:'#ff5a8a',d:'Terminer les 100 étapes du mode Cauchemar',ok:()=>(S.cmax||0)>=100})}catch(e){}
+
+/* ================= LE CLASSEMENT « PROGRESSION » =================
+   Facile (1 à 100), puis Normal (101 à 200), Difficile (201 à 300) et Cauchemar (301 à 400). */
+const pgMine=()=>Math.min(100,S.max||0)+Math.min(100,S.nmax||0)+Math.min(100,S.hmax||0)+Math.min(100,S.cmax||0);
+let TH=null;const thr=()=>TH||(TH={n:[...Array(100)].map((_,i)=>nRecD(i+1)),h:[...Array(100)].map((_,i)=>hRecD(i+1)),c:[...Array(100)].map((_,i)=>cRecD(i+1))});
+const BYC=new Map();
+/* pour les bots : jusqu'où leur puissance les emmène après l'étape 100 du mode Facile */
+/* le mode Cauchemar vient de sortir : les bots le découvrent petit à petit (3 étapes par jour au plus) */
+const CM_REL=Date.UTC(2026,10,24,22);const cCap=()=>Math.max(0,Math.min(100,Math.floor((Date.now()-CM_REL)/864e5*3)));
+function beyond(pw){const cap=cCap(),k=Math.round(pw/500)+'|'+cap;if(BYC.has(k))return BYC.get(k);const T=thr();let v=0;
+  const run=a=>{let n=0;for(let i=0;i<100;i++){if(a[i]<=pw)n=i+1;else break}return n};
+  const n=run(T.n);if(n<100)v=n;else{const h=run(T.h);if(h<100)v=100+h;else v=200+Math.min(cap,run(T.c))}
+  if(BYC.size>4000)BYC.clear();BYC.set(k,v);return v}
+function pgOf(p){if(!p)return 0;if(p.me)return pgMine();
+  if(p.real){try{const d=NET.players&&NET.players[p.pid];if(d&&typeof d.pg==='number'&&isFinite(d.pg))return Math.max(0,Math.min(400,Math.round(d.pg)))}catch(e){}return Math.min(100,p.st||0)}
+  const st=Math.min(100,p.st||0);return st<100?st:100+beyond(p.pw||0)}
+function pgLabel(pg){pg=Math.max(0,Math.round(pg||0));if(pg<=100)return`🌱 Facile ${pg}`;if(pg<=200)return`⚔️ Normal ${pg-100}`;if(pg<=300)return`💀 Difficile ${pg-200}`;return`🌙 Cauchemar ${Math.min(100,pg-300)}`}
+const pgCls=pg=>pg<=100?'e':pg<=200?'n':pg<=300?'h':'c';
+window.RDEprog={mine:pgMine,of:pgOf,label:pgLabel};
+RKV.st=p=>pgOf(p)*1e7+(p.pw||0);
+{const pt=pTop;pTop=function(){if(UI.rk!=='st')return pt.apply(this,arguments);const rl=rankList,L={};let n=0;
+  rankList=function(cat){const r=rl.apply(this,arguments);if(cat!=='st')return r;return r.map(p=>{const k='§'+(n++)+'§',g=pgOf(p);L[k]=`<span class="pgv pg-${pgCls(g)}">${pgLabel(g)}</span>`;return Object.assign({},p,{st:k})})};
+  let h;try{h=pt.apply(this,arguments)}finally{rankList=rl}
+  h=h.replace(/Étape (§\d+§)/g,(m,k)=>L[k]||m);
+  const note=`<p class="muted pgnote">🏆 La progression compte toutes les difficultés : 🌱 Facile, puis ⚔️ Normal, 💀 Difficile et 🌙 Cauchemar.</p>`;
+  const i=h.indexOf('<div class="list">');return i>=0?h.slice(0,i)+note+h.slice(i):h}}
+/* le profil : « Progression » au lieu de « Étape max » */
+{const pm=profileModal;profileModal=function(id){const r=pm.apply(this,arguments);try{const p=id==='me'?{me:1}:rowById(id);if(p){const g=pgOf(p);
+  const st=[...document.querySelectorAll('#ovl .modal .stat')].find(x=>{const s=x.querySelector('span');return s&&/^(Étape max|Max stage)$/.test(s.textContent.trim())});
+  if(st){st.querySelector('span').textContent='Progression';const b=st.querySelector('b');if(b){b.textContent=pgLabel(g);b.classList.add('pgb','pg-'+pgCls(g))}}}}catch(e){}return r}}
+/* on envoie sa progression avec le reste (comme les autres petits champs du profil) */
+{const pm=pushMe;pushMe=async function(){const db=NET&&NET.db;if(!db||typeof db.doc!=='function')return pm.apply(this,arguments);const g=pgMine();if(NET.pgSent!==g)NET.lastPush='';const od=db.doc;
+  db.doc=function(p){const r=od.apply(db,arguments);try{if(p==='players/'+NET.pid&&r&&r.set){const os=r.set;r.set=o=>os.call(r,Object.assign({},o,{pg:g}))}}catch(e){}return r};
+  const t0=NET.lastPushT;try{const res=await pm.apply(this,arguments);if(NET.lastPushT!==t0)NET.pgSent=g;return res}finally{db.doc=od}}}
+
+/* ---------- pour les tests ---------- */
+window.RDEcm={CW,RULES,CT,cRecD,cRecRaw,cOpen,cInit,cBattle,cScene,set mode(v){CMODE=v},get mode(){return CMODE}};
+
+/* ---------- styles ---------- */
+const st=document.createElement('style');st.id='v454css';st.textContent=`
+.diffsw.dc{background:linear-gradient(90deg,rgba(255,40,100,.22),var(--panel) 40%,var(--panel) 60%,rgba(255,40,100,.22));border-color:#7a1a3a}.diffsw.dc .dft b{color:#ff8aa8}
+.navarr.tc{--a1:#ff6a8a;--a2:#5a0a28;--ag:rgba(255,40,100,.5)}.dfd i.on.c{background:#ff6a8a}
+.nmbadge.cmbadge{background:linear-gradient(90deg,#3a0a2a,#c0144a)}.cmban{box-shadow:inset 0 0 0 2px rgba(255,60,110,.55),0 0 26px rgba(255,40,100,.22)}
+.btn.nmgo.cmgo,.btn.p.cmgo{background:linear-gradient(180deg,#ff5a86,#6a0a2e)!important;color:#fff!important}.cmpage .node.now{box-shadow:0 0 0 3px #ff3a6a,0 0 16px rgba(255,40,100,.5)}
+.cmtag{color:#ff8aa8!important}#battle.cmode .bh .t{color:#ff8aa8}
+.cmrule{display:flex;gap:12px;align-items:center;border-color:#7a1a3a!important;background:linear-gradient(100deg,rgba(255,40,100,.16),var(--panel) 60%)!important}
+.cmrule .cmric{font-size:30px;width:52px;height:52px;display:grid;place-items:center;border-radius:14px;background:rgba(0,0,0,.3);flex:none}
+.cmrule small{display:block;font-size:11px;letter-spacing:.06em;color:#ff8aa8;font-weight:800}.cmrule b{display:block;font-size:16px}.cmrule p{margin:2px 0 0;font-size:12.5px}
+.cmrl{display:grid;gap:8px;margin-top:8px}
+.cmri{display:flex;gap:10px;align-items:center;padding:6px 8px;border-radius:12px;background:rgba(0,0,0,.18)}
+.cmri>span:first-child{font-size:22px;width:44px;height:44px;display:grid;place-items:center;flex:none;border-radius:12px}
+.cmri p{margin:0;font-size:12.5px;line-height:1.35}.cmri.ok{box-shadow:inset 0 0 0 1.5px #58e4a0}
+.cmri>.pbgmini{width:64px!important;height:40px!important;border-radius:8px;overflow:hidden;display:block}.cmri .pbgmini svg{width:100%;height:100%;display:block}
+.cmri>.av{width:44px;height:44px;border-radius:50%}.cmri>.av img,.cmri>.av svg{width:100%;height:100%;border-radius:50%}
+.cmunl{color:#ff8aa8;font-weight:800}
+.u.cmrise{animation:cmrise .9s ease-out}@keyframes cmrise{0%{filter:brightness(.2) saturate(0)}40%{filter:brightness(1.8) drop-shadow(0 0 10px #ff3a6a)}100%{filter:none}}
+.bscene.sc-cm::after{background:linear-gradient(0deg,rgba(8,3,16,.94),rgba(8,3,16,.45) 60%,rgba(8,3,16,.15))}
+.pgnote{font-size:12px;margin:0}
+.pgv{white-space:nowrap;font-weight:800}.pgv.pg-e{color:#8ae08a}.pgv.pg-n{color:#ff9aa6}.pgv.pg-h{color:#d4a0ff}.pgv.pg-c{color:#ff6a96}
+.pgb.pg-n{color:#ff9aa6}.pgb.pg-h{color:#d4a0ff}.pgb.pg-c{color:#ff6a96}
+.fav.frm-cauch{--fd:#12040c;--gc:#ff3a6a}
+.fav.frm-cauch::before{background:linear-gradient(160deg,rgba(255,255,255,.35),transparent 42%,rgba(0,0,0,.35)),repeating-conic-gradient(from var(--fa),#ff2a5a 0 9deg,#1a0612 9deg 20deg,#8a5aff 20deg 27deg,#1a0612 27deg 40deg);animation:fspin 7s linear infinite}
+.pbgfx.cmbub i{position:absolute;left:var(--x);bottom:-20px;width:var(--s);height:var(--s);border-radius:50%;background:radial-gradient(circle at 35% 35%,rgba(255,255,255,.8),rgba(154,216,255,.15) 55%,rgba(192,138,255,.4));box-shadow:inset 0 0 0 1px rgba(232,246,255,.6);animation:cmbub var(--t) linear var(--l) infinite;will-change:transform,opacity}
+@keyframes cmbub{0%{transform:translate3d(0,0,0);opacity:0}10%{opacity:.9}90%{opacity:.8}100%{transform:translate3d(10px,-240px,0);opacity:0}}
+html.scrl .pbgfx.cmbub i,html.bgpause .pbgfx.cmbub i{animation-play-state:paused}
+@media (prefers-reduced-motion:reduce){.pbgfx.cmbub i,.u.cmrise{animation:none}}`;document.head.appendChild(st);
+
+/* ---------- notes de version ---------- */
+try{const it=[
+  "🌙 <b>Nouveau : le mode Cauchemar</b>, débloqué en terminant les 100 étapes du mode Difficile. 100 étapes dans 10 mondes de cauchemar, de la Chambre Sans Fin au Trône de Somnar, chacun avec son décor.",
+  "👻 <b>60 nouveaux monstres</b>, dont 5 dessinés de zéro (la Poupée Fêlée, le Croque-Mitaine, l'Horloge Hurlante, le Masque Rieur et Somnar, le Dévoreur de Rêves), et <b>une règle spéciale par monde</b> : des monstres qui se relèvent, des soins réduits, des coups critiques, des boucliers…",
+  "🎁 Récompenses : beaucoup d'or, 75 gemmes par 1re victoire (350 sur les boss), 4 éclats légendaires, 2 éclats d'ultra-évolution et un œuf épique par boss, le cadre « Cauchemar » à l'étape 50, et à l'étape 100 le titre « Celui qui ne dort plus », le fond « Cauchemar » et un œuf légendaire.",
+  "🕯️ <b>Donjon des Échos 2.0</b> : une descente rapide (1 étage, 6 salles), un coffre à chaque gardien d'étage, une malédiction par semaine, et la <b>Boutique des Échos</b> avec le familier exclusif « Écho ».",
+  "🏆 <b>Classement « Progression » corrigé</b> : il compte maintenant Facile, Normal, Difficile et Cauchemar (🌱 ⚔️ 💀 🌙), au lieu de s'arrêter à l'étape 100 pour tout le monde.",
+  "🎯 L'écran « Choisir ses héros » affiche maintenant la bonne puissance conseillée en Normal et en Difficile."];
+ PATCH.unshift({v:78,d:'25 novembre 2026',t:'Le mode Cauchemar',items:it});
+ /* les notes depuis la v67 affichaient « Vv77 » et une date en chiffres : on remet le numéro et la vraie date */
+ try{const PD={67:'16 novembre 2026',68:'16 novembre 2026',69:'16 novembre 2026',70:'17 novembre 2026',71:'18 novembre 2026',72:'19 novembre 2026',73:'23 novembre 2026',74:'24 novembre 2026',75:'24 novembre 2026',76:'24 novembre 2026',77:'24 novembre 2026'};
+  for(const p of PATCH){if(typeof p.v==='string'&&/^v\d+$/.test(p.v))p.v=+p.v.slice(1);if(typeof p.d==='number')p.d=PD[p.v]||''}}catch(e){}
+ Object.assign(I18N_EN,{'Le mode Cauchemar':'Nightmare mode',
+  [it[0]]:"🌙 <b>New: Nightmare mode</b>, unlocked by finishing the 100 stages of Hard mode. 100 stages across 10 nightmare worlds, from the Endless Bedroom to Somnar's Throne, each with its own scenery.",
+  [it[1]]:"👻 <b>60 new monsters</b>, including 5 drawn from scratch (the Cracked Doll, the Bogeyman, the Howling Clock, the Laughing Mask and Somnar, the Dream Devourer), and <b>a special rule in every world</b>: monsters that get back up, reduced healing, critical hits, shields…",
+  [it[2]]:"🎁 Rewards: lots of gold, 75 gems per 1st win (350 on bosses), 4 legendary shards, 2 ultra-evolution shards and an epic egg per boss, the “Nightmare” frame at stage 50, and at stage 100 the “The One Who No Longer Sleeps” title, the “Nightmare” background and a legendary egg.",
+  [it[3]]:"🕯️ <b>Echo Dungeon 2.0</b>: a quick descent (1 floor, 6 rooms), a chest at every floor guardian, a curse every week, and the <b>Echo Shop</b> with the exclusive “Echo” familiar.",
+  [it[4]]:"🏆 <b>“Progress” leaderboard fixed</b>: it now counts Easy, Normal, Hard and Nightmare (🌱 ⚔️ 💀 🌙), instead of stopping at stage 100 for everyone.",
+  [it[5]]:"🎯 The “Choose your heroes” screen now shows the right recommended power in Normal and Hard."});
+ /* les notes avec du gras se traduisent morceau par morceau (les v75 à v78) */
+ for(const p of PATCH.filter(x=>x.v>=75&&x.v<=78))for(const x of p.items)if(I18N_EN[x])put(x,I18N_EN[x])}catch(e){}
+
+/* ---------- anglais ---------- */
+try{const X={'Cauchemar':'Nightmare','Mode Cauchemar':'Nightmare mode','Passer en mode Cauchemar':'Switch to Nightmare mode','Passer en mode Difficile':'Switch to Hard mode',
+ 'Étape # / # · la nuit sans fin':'Stage # / # · the endless night','Étape # / # · Cauchemar débloqué !':'Stage # / # · Nightmare unlocked!','🔒 Termine le mode Difficile pour débloquer':'🔒 Finish Hard mode to unlock',
+ 'CAUCHEMAR · MONDE INÉDIT':'NIGHTMARE · NEW WORLD','Étapes # à # en Cauchemar. Boss du monde :':'Stages # to # in Nightmare. World boss:','RÈGLE DU MONDE #':'WORLD # RULE',
+ '🔒 Mode Cauchemar verrouillé':'🔒 Nightmare mode locked',"Termine les # étapes du mode Difficile (tu es à l'étape #).":"Finish the # stages of Hard mode (you're at stage #).",
+ 'Termine les # étapes du mode Difficile pour débloquer le mode Cauchemar.':'Finish the # stages of Hard mode to unlock Nightmare mode.',
+ "🌙 Combattre l'étape # Cauchemar":'🌙 Fight Nightmare stage #',"🌙 Combattre l'étape # Cauchemar · BOSS":'🌙 Fight Nightmare stage # · BOSS','Étape # cauchemar':'Nightmare stage #',
+ "Les # étapes du mode Cauchemar sont terminées. Tu ne dors plus jamais ! Rejoue-les pour l'équipement.":"All # Nightmare stages cleared. You never sleep again! Replay them for gear.",
+ '🌙 Cauchemar · Étape #':'🌙 Nightmare · Stage #','🌙 Cauchemar · Étape # · Boss':'🌙 Nightmare · Stage # · Boss','MODE CAUCHEMAR':'NIGHTMARE MODE',
+ 'Mode Cauchemar · Étape #':'Nightmare mode · Stage #','Mode Cauchemar · Étape # · Boss':'Nightmare mode · Stage # · Boss','Mode Difficile · Étape #':'Hard mode · Stage #','Mode Difficile · Étape # · Boss':'Hard mode · Stage # · Boss','Mode Normal · Étape #':'Normal mode · Stage #','Mode Normal · Étape # · Boss':'Normal mode · Stage # · Boss',
+ '# k or (bonus Cauchemar)':'# k gold (Nightmare bonus)','# M or (bonus Cauchemar)':'# M gold (Nightmare bonus)','# or (bonus Cauchemar)':'# gold (Nightmare bonus)','# gemmes (1re victoire Cauchemar)':'# gems (first Nightmare win)',
+ '# éclats légendaires':'# legendary shards',"🌟 # éclats d'ultra-évolution":'🌟 # ultra-evolution shards','🥚 Un œuf épique pour ta Ménagerie':'🥚 An epic egg for your Menagerie','🖼️ Nouveau cadre : « Cauchemar » !':'🖼️ New frame: “Nightmare”!',
+ '🌙 Mode Cauchemar terminé ! Titre « Celui qui ne dort plus », fond « Cauchemar » et un œuf légendaire.':'🌙 Nightmare mode complete! “The One Who No Longer Sleeps” title, “Nightmare” background and a legendary egg.',
+ 'Puissance conseillée en Cauchemar : # k.':'Recommended power in Nightmare: # k.','Puissance conseillée en Cauchemar : # M.':'Recommended power in Nightmare: # M.','Puissance conseillée en Cauchemar : #.':'Recommended power in Nightmare: #.',
+ '🌙 Le mode Cauchemar est débloqué ! (Aventure, flèche après Difficile)':'🌙 Nightmare mode is unlocked! (Adventure, arrow after Hard)',
+ 'se relève !':'gets back up!','SE RELÈVE !':'BACK UP!',
+ '🎁 Récompenses du mode Cauchemar':'🎁 Nightmare mode rewards',"Beaucoup d'or à chaque victoire, et le meilleur équipement du jeu.":'Lots of gold for every win, and the best gear in the game.',
+ '# gemmes':'# gems','par #re victoire,':'per first win,','sur les boss.':'on bosses.','Chaque boss :':'Every boss:',"# éclats d'ultra-évolution":'# ultra-evolution shards','et':'and','un œuf épique':'an epic egg',
+ 'Étape # : le cadre':'Stage #: the frame','« Cauchemar »':'“Nightmare”','Étape # : le titre':'Stage #: the title','« Celui qui ne dort plus »':'“The One Who No Longer Sleeps”',', le fond':', the background','un œuf légendaire':'a legendary egg',
+ 'Fond « Cauchemar »':'“Nightmare” background','Mode Cauchemar : étape #':'Nightmare mode: stage #','Celui qui ne dort plus':'The One Who No Longer Sleeps','Terminer les # étapes du mode Cauchemar':'Finish the # stages of Nightmare mode',
+ '🌱 Facile #':'🌱 Easy #','⚔️ Normal #':'⚔️ Normal #','💀 Difficile #':'💀 Hard #','🌙 Cauchemar #':'🌙 Nightmare #',
+ '🏆 La progression compte toutes les difficultés : 🌱 Facile, puis ⚔️ Normal, 💀 Difficile et 🌙 Cauchemar.':'🏆 Progress counts every difficulty: 🌱 Easy, then ⚔️ Normal, 💀 Hard and 🌙 Nightmare.',
+ 'Étape # / # · Difficile débloqué !':'Stage # / # · Hard unlocked!','Étape # / # · le défi ultime':'Stage # / # · the ultimate challenge'};
+ for(const W of CW){X[W.n]=W.en;X['#. '+W.n]='#. '+W.en;X['Monde # · '+W.n]='World # · '+W.en;X[W.n+' · Équipe principale ·']=W.en+' · Main team ·';
+   for(const m of [...W.m,W.b]){X[m[0]]=m[4];X[m[0]+' (boss)']=m[4]+' (boss)'}X[W.bs[0]]=W.bs[1];
+   const R=RULES[W.r];X[W.n+' · '+R.ic+' '+R.n]=W.en+' · '+R.ic+' '+EN[R.n];X[W.n+' · '+R.ic+' '+R.n+' · Équipe principale ·']=W.en+' · '+R.ic+' '+EN[R.n]+' · Main team ·'}
+ for(const k in EN){const kk=k.replace(NUMRX,'#');if(!(kk in X))X[kk]=String(EN[k]).replace(NUMRX,'#')}
+ X['# gemmes (#re victoire Difficile)']='# gems (first Hard win)';X['# gemmes (#re victoire Normal)']='# gems (first Normal win)';
+ for(const k in X){const kk=k.replace(NUMRX,'#');if(!(kk in I18N_EN))I18N_EN[kk]=String(X[k]).replace(NUMRX,'#')}}catch(e){console.warn('cauchemar en',e)}
+}catch(e){console.warn('cauchemar',e)}})();
 /* ================= toujours en dernier : l'écran de chargement reprend les dessins à jour ================= */
 (function(){try{
   /* Livre III : le Roi de Cendre (nouveau design) au premier rang, et le souvenir du jeune Éryndel au-dessus de la couronne */

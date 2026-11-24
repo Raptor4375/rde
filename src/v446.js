@@ -26,7 +26,9 @@ const PETS={
  jeton:{r:2,ic:'🐱',col:'#ff5fb4',n:['Jeton','Jeton Fripon','Chat du Destin'],en:['Token','Rascal Token','Cat of Fate'],sp:["chat d'Aléa","Aléa's cat"],sk:['Pile ou face','Heads or Tails']},
  plumet:{r:2,ic:'🦉',col:'#5fe0d6',n:['Plumet','Plumet Étoilé','Duc des Constellations'],en:['Plumet','Starry Plumet','Constellation Duke'],sp:["petit-duc d'éther",'aether scops owl'],sk:['Œil de nuit','Night Eye'],owl:1},
  fumerolle:{r:3,ic:'🐉',col:'#ff6a4a',n:['Fumerolle','Fumerolle Cendrée','Dragon des Braises'],en:['Smokelet','Ashen Smokelet','Ember Dragon'],sp:['bébé dragon','baby dragon'],sk:['Souffle de braises','Ember Breath']},
- grandduc:{r:3,ic:'🦉',col:'#bfe8ff',n:['Grand-Duc des Neiges','Grand-Duc Givré','Grand-Duc Blizzard'],en:['Snow Eagle-Owl','Frosted Eagle-Owl','Blizzard Eagle-Owl'],sp:['chouette des neiges','snowy owl'],sk:['Blizzard','Blizzard'],owl:1}};
+ grandduc:{r:3,ic:'🦉',col:'#bfe8ff',n:['Grand-Duc des Neiges','Grand-Duc Givré','Grand-Duc Blizzard'],en:['Snow Eagle-Owl','Frosted Eagle-Owl','Blizzard Eagle-Owl'],sp:['chouette des neiges','snowy owl'],sk:['Blizzard','Blizzard'],owl:1},
+ /* exclusif : seulement dans la Boutique des Échos du donjon (jamais dans un œuf) */
+ echo:{r:3,ic:'🦇',col:'#b48aff',n:['Écho','Écho Nocturne','Seigneur des Échos'],en:['Echo','Night Echo','Lord of Echoes'],sp:['chauve-souris du donjon','dungeon bat'],sk:["Morsure d'écho",'Echo Bite'],ex:1}};
 const KEYS=Object.keys(PETS);
 window.RDEPETS=PETS;
 const pn=(k,st)=>{const P=PETS[k];return T(P.n[st-1],P.en[st-1])};
@@ -40,6 +42,8 @@ function PS(){S.pets=S.pets||{};const p=S.pets;p.own=p.own||{};p.eggs=p.eggs||[]
   if(!p.wel){p.wel=1;p.eggs.push({id:p.nid++,r:1,w:1})}
   if(p.act&&!p.own[p.act])p.act=null;return p}
 window.RDEpetState=PS;
+/* donner un familier (Boutique des Échos) : nouveau, ou une étoile de plus, ou des baies s'il est déjà au maximum */
+window.RDEpetGive=function(k){const p=PS();if(!PETS[k])return null;let res;if(!p.own[k]){p.own[k]={l:1,x:0,s:0};res={k,kind:'new'}}else if(p.own[k].s<5){p.own[k].s++;res={k,kind:'star',s:p.own[k].s}}else{p.b+=80;res={k,kind:'ber',b:80}}if(!p.act)p.act=k;save();return res};
 const today=()=>{const d=new Date();return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate()};
 function addEgg(r){const p=PS();const e={id:p.nid++,r};p.eggs.push(e);return e}
 function roll(w){let x=Math.random()*w.reduce((a,b)=>a+b,0);for(let i=0;i<w.length;i++){if((x-=w[i])<0)return i}return 0}
@@ -70,7 +74,8 @@ function effNums(k,l,s){const P=powOf(k,l,s),st=stOf(l);
    case 'jeton':return{hit:62*P,tail:st>=2?5:0};
    case 'plumet':return{hit:18*P,mk:st===3?2:1};
    case 'fumerolle':return{hit:6.2*P};
-   case 'grandduc':return{hit:4.6*P,en:15,n:st===3?2:1}}
+   case 'grandduc':return{hit:4.6*P,en:15,n:st===3?2:1};
+   case 'echo':return{hit:26*P,ls:st===3?60:50,n:st===3?2:1}}
   return{}}
 function effText(k,l,s){const E=effNums(k,l,s);const A=T("de l'ATQ moyenne de ton équipe","of your team's average ATK");
   switch(k){
@@ -82,6 +87,7 @@ function effText(k,l,s){const E=effNums(k,l,s);const A=T("de l'ATQ moyenne de to
    case 'jeton':return T(`Lance une pièce. Face : grosse frappe (${pc(E.hit)} ${A}). Pile : ${E.tail?`+${E.tail} d'énergie pour toute l'équipe`:'rien… (au stade 2 : de l\'énergie)'}.`,`Flips a coin. Heads: big hit (${pc(E.hit)} ${A}). Tails: ${E.tail?`+${E.tail} energy for the whole team`:'nothing… (stage 2: energy)'}.`);
    case 'plumet':return T(`Marque l'ennemi le plus affaibli jusqu'à ${E.mk>1?'ses 2 prochains tours':'son prochain tour'} : il subit +30 % de dégâts et ton équipe le vise plus souvent. Petit coup de bec (${pc(E.hit)}).`,`Marks the weakest enemy until ${E.mk>1?'its next 2 turns':'its next turn'}: it takes +30 % damage and your team targets it more often. Small peck (${pc(E.hit)}).`);
    case 'fumerolle':return T(`Souffle sur tous les ennemis : ${pc(E.hit)} ${A} chacun.`,`Breathes on all enemies: ${pc(E.hit)} ${A} each.`);
+   case 'echo':return T(`Fond sur ${E.n>1?'les 2 ennemis les plus affaiblis':"l'ennemi le plus affaibli"} (${pc(E.hit)} ${A}) et rend ${E.ls} % des dégâts en PV à ton héros le plus blessé.`,`Swoops on ${E.n>1?'the 2 weakest enemies':'the weakest enemy'} (${pc(E.hit)} ${A}) and gives ${E.ls} % of the damage back as HP to your most wounded hero.`);
    case 'grandduc':return T(`Givre sur tous les ennemis (${pc(E.hit)} chacun) et ralentit ${E.n>1?'les 2 ennemis les plus chargés':"l'ennemi le plus chargé"} : −${E.en} d'énergie, il joue en dernier au tour suivant.`,`Frost on all enemies (${pc(E.hit)} each) and slows ${E.n>1?'the 2 most charged enemies':'the most charged enemy'}: −${E.en} energy, acts last next turn.`)}
   return''}
 const owlNote=()=>T(" Lien de plumes : avec Corvin dans l'équipe, Corvin gagne +10 % d'ATQ."," Feather bond: with Corvin in the team, Corvin gains +10 % ATK.");
@@ -92,7 +98,7 @@ function gainXP(k,n){const p=PS(),o=p.own[k];if(!o)return{up:0,evo:0};let up=0,e
   if(o.l>=MAXL){o.l=MAXL;o.x=0}
   if(stOf(o.l)>st0)evo=stOf(o.l);return{up,evo}}
 function hatchSlot(i){const p=PS(),s=p.inc[i];if(!s||incLeft(s)>0)return null;p.inc[i]=null;
-  const pool=KEYS.filter(k=>PETS[k].r===s.r);let k=pool[Math.floor(Math.random()*pool.length)];
+  const pool=KEYS.filter(k=>PETS[k].r===s.r&&!PETS[k].ex);let k=pool[Math.floor(Math.random()*pool.length)];
   let res;
   if(!p.own[k]){p.own[k]={l:1,x:0,s:0};res={k,kind:'new'}}
   else if(p.own[k].s<MAXS){p.own[k].s++;res={k,kind:'star',s:p.own[k].s}}
@@ -121,7 +127,7 @@ function petsPage(){const p=PS();const own=Object.keys(p.own);const sel=UI.ptSel
         ${has?`<div class="row ptbtns"><button class="btn p" data-a="ptfeed" data-v="${sel}" ${p.b<1||l>=MAXL?'disabled':''}>${BER} ${T('Nourrir','Feed')}</button><button class="btn" data-a="ptfeedall" data-v="${sel}" ${p.b<1||l>=MAXL?'disabled':''}>${T('Tout donner','Feed all')} (${p.b})</button></div>
           ${act?'':`<button class="btn g ptgo" data-a="ptact" data-v="${sel}">🐾 ${T('Emmener au combat','Take into battle')}</button>`}
           <p class="muted ptpat">${p.pat===today()?T('💕 Déjà câliné aujourd\'hui.','💕 Already cuddled today.'):T('👆 Touche-le pour le caresser : +2 baies une fois par jour.','👆 Tap to pet it: +2 berries once a day.')}</p>`
-        :`<p class="muted" style="margin:6px 0 0">🔒 ${T('Pas encore obtenu : il peut sortir d\'un œuf','Not obtained yet: it can hatch from an egg')} ${rn(P.r).toLowerCase()}.</p>`}
+        :P.ex?`<p class="muted" style="margin:6px 0 0">🔒 ${T('Familier exclusif : on ne le trouve que dans la Boutique des Échos du Donjon des Échos.','Exclusive familiar: only found in the Echo Shop of the Echo Dungeon.')}</p>`:`<p class="muted" style="margin:6px 0 0">🔒 ${T('Pas encore obtenu : il peut sortir d\'un œuf','Not obtained yet: it can hatch from an egg')} ${rn(P.r).toLowerCase()}.</p>`}
       </div></div>`}
   /* couveuse */
   const nest=(s,i)=>{if(!s)return`<div class="ptnest empty"><div class="ptnimg">🪺</div><small>${T('Libre','Empty')}</small></div>`;
@@ -229,7 +235,7 @@ const LAUNCH=Date.UTC(2026,10,18);
 function hashStr(s){let h=2166136261>>>0;for(const ch of String(s)){h^=ch.charCodeAt(0);h=Math.imul(h,16777619)>>>0}return h}
 function botPet(row){let h=hashStr('pet:'+(row.id||row.n||'x'));const R=()=>{h=(Math.imul(h,1664525)+1013904223)>>>0;return h/4294967296};
   const rr=(()=>{let x=R()*100,i=0;const w=[34,30,24,12];while(i<3&&(x-=w[i])>0)i++;return i})();
-  const pool=KEYS.filter(k=>PETS[k].r===rr);const k=pool[Math.floor(R()*pool.length)];
+  const pool=KEYS.filter(k=>PETS[k].r===rr&&!PETS[k].ex);const k=pool[Math.floor(R()*pool.length)];
   const days=Math.max(0,(now()-LAUNCH)/864e5);const act=typeof row.act==='number'?Math.max(0,Math.min(1,row.act)):R();
   const l=Math.max(1,Math.min(MAXL,Math.floor(1+days*(.9+1.7*act)+R()*3)));const s=Math.min(MAXS,Math.floor(days/9*(.5+R())));
   return{k,l,s}}
@@ -282,6 +288,9 @@ const EFF={
   const L=aliveS(P.side);return{tg:L,kind:'heal',tag:T('🪙 Pile','🪙 Tails'),ap:()=>{for(const u of L)u.en=Math.min(100,(u.en||0)+E.tail);return T(`Pile : toute l'équipe ⚡ +${E.tail}`,`Tails: whole team ⚡ +${E.tail}`)}}},
  plumet(P,E){const t=weakest(aliveS(1-P.side));if(!t)return null;return{tg:[t],kind:'hit',ap:()=>{const d=petHit(P,t,E.hit);if(t.hp>0){t.markT=Math.max(t.markT||0,E.mk);P.focus=t;float(t,'🎯','crit')}return`${nm(t)} ${T('marqué','marked')} 🎯 −${fmt(d)}`}}},
  fumerolle(P,E){const L=aliveS(1-P.side);if(!L.length)return null;return{tg:L,kind:'hit',ap:()=>{let s=0;for(const t of L)s+=petHit(P,t,E.hit);return T(`tous les ennemis, −${fmt(s)} au total`,`all enemies, −${fmt(s)} total`)}}},
+ echo(P,E){const L=aliveS(1-P.side);if(!L.length)return null;const tg=L.slice().sort((a,b)=>a.hp/a.max-b.hp/b.max).slice(0,E.n);
+  return{tg,kind:'hit',ap:()=>{let s=0;const parts=tg.map(t=>{const d=petHit(P,t,E.hit);s+=d;return`${nm(t)} −${fmt(d)}`});const A=aliveS(P.side).sort((a,b)=>a.hp/a.max-b.hp/b.max)[0];let hv=0;
+   if(A&&s>0){const h0=A.hp;heal(A,s*E.ls/100);hv=Math.max(0,A.hp-h0)}return parts.join(', ')+(hv?` · ${nm(A)} +${fmt(hv)} ${T('PV','HP')}`:'')}}},
  grandduc(P,E){const L=aliveS(1-P.side);if(!L.length)return null;const sl=L.slice().sort((a,b)=>(b.en||0)-(a.en||0)).slice(0,E.n);
   return{tg:L,kind:'hit',ap:()=>{let s=0;for(const t of L)s+=petHit(P,t,E.hit);
    for(const t of sl){if(t.hp<=0)continue;t.en=Math.max(0,(t.en||0)-E.en);if(!t.ptSlow){t.ptSpd=t.spd;t.spd=Math.round(t.spd*.3)}t.ptSlow=B.round+1;float(t,'❄️','info')}
