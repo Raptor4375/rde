@@ -50,7 +50,7 @@ try{const mb=myBest,C={};
   const sig=()=>{let s='';for(const i in S.heroes){const o=S.heroes[i];s+=i+':'+(o.l|0)+':'+(o.e|0)+':'+(o.u|0)+':'+(o.aw|0)+':'+(o.st|0)+',';}return s+'|'+(S.items?S.items.length:0)};
   myBest=function(mk){const g=sig();const c=C[mk];if(c&&c.g===g&&Date.now()-c.t<60000)return c.v;const v=mb.apply(this,arguments);C[mk]={g,v,t:Date.now()};return v}}catch(e){}
 /* --- écran de chargement : le nouveau Kaïros, l'Hiver Immobile --- */
-try{const upd=()=>{try{const im=document.querySelector('#boot .b3party .q2 img');if(!im||typeof vHero!=='function')return;
+try{const upd=()=>{try{if(!(window.RDE_GIVRE&&RDE_GIVRE()))return;const im=document.querySelector('#boot .b3party .q2 img');if(!im||typeof vHero!=='function')return;
     im.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svgStill(heroBody(vHero('ka_hiver'),0)))}catch(e){}};
   upd();setTimeout(upd,300)}catch(e){}
 try{PATCH.unshift({v:'v61',d:Date.now(),t:'Pages Héros allégées',items:[

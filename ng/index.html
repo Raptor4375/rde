@@ -20816,6 +20816,18 @@ const KXT={
   frost:(cx,cy,r,u)=>`<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="#D8F4FF" stroke-width="1.2" stroke-dasharray="1.5 5" opacity=".75"/>`+[...Array(6+u*2)].map((_,k)=>{const a=(k/(6+u*2))*6.283,x=R1(cx+Math.cos(a)*r),y=R1(cy+Math.sin(a)*r);return sp4(x,y,R1(1.6+(k%2)*.8),'#FFFFFF',.9).replace('/>',`><animate attributeName="opacity" values=".2;1;.2" dur="${R1(2+(k%3)*.7)}s" begin="${R1(-k*.4)}s" repeatCount="indefinite"/></path>`)}).join(''),
   crown:(x,y,k,u)=>[[0,0,11,0],[-5,2,7.5,-24],[5,2,7.5,24],[-9,5,5,-44],[9,5,5,44]].slice(0,u>=2?5:3).map(([dx,dy,h,r])=>KXT.xt(x+dx*k,y+dy*k,h*k,h*k*.3,r,1)).join('')+sp4(x,R1(y-11*k),R1(2.2*k),'#FFFFFF',.95),
   hem:u=>[[36,228,9,-24],[47,231,6,-8],[113,231,7,10],[124,228,10,24],[60,233,4.5,-4],[100,233,5,6]].slice(0,4+Math.min(2,u)).map(([x,y,h,r])=>KXT.xt(x,y,h,h*.28,r,.95)).join('')+`<ellipse cx="80" cy="231" rx="${56+u*4}" ry="6" fill="#E8F8FF" opacity=".2"/>`};
+/* l'éclipse pour « Orion, Chasseur d'Éclipse » (saison « L'Éclipse ») */
+const EXT={
+  ray:(cx,cy,R,a,L,w,c,op)=>{const r=a*Math.PI/180,ca=Math.cos(r),sa=Math.sin(r),px=-sa,py=ca;return`<path d="M${R1(cx+ca*R*.96+px*w)} ${R1(cy+sa*R*.96+py*w)}L${R1(cx+ca*L)} ${R1(cy+sa*L)}L${R1(cx+ca*R*.96-px*w)} ${R1(cy+sa*R*.96-py*w)}Z" fill="${c}" opacity="${op}"/>`},
+  sun:(cx,cy,R,u,anim)=>{let s=`<circle cx="${cx}" cy="${cy}" r="${R1(R*2.3)}" fill="#C890FF" opacity=".12"/><circle cx="${cx}" cy="${cy}" r="${R1(R*1.7)}" fill="#FFE8B0" opacity=".18"/><circle cx="${cx}" cy="${cy}" r="${R1(R*1.26)}" fill="#FFF6DC" opacity=".42"/>`;
+    const n=14+u*2;for(let k=0;k<n;k++){const a=k*360/n+(k%2?7:0)-90,L=R*(k%3===0?2.25+u*.15:k%2?1.5:1.85);s+=EXT.ray(cx,cy,R,a,L,R*(k%3===0?.16:.1),k%3===0?'#FFF4D8':'#E8D8FF',k%3===0?.75:.5)}
+    s+=`<circle cx="${cx}" cy="${cy}" r="${R}" fill="#07040F"/><circle cx="${cx}" cy="${cy}" r="${R}" fill="none" stroke="#FFF2C8" stroke-width="${R1(R*.08)}" opacity=".95"/><circle cx="${cx}" cy="${cy}" r="${R1(R*1.07)}" fill="none" stroke="#C890FF" stroke-width="${R1(R*.05)}" opacity=".6"/>`;
+    const da=-38*Math.PI/180,dx=R1(cx+Math.cos(da)*R),dy=R1(cy+Math.sin(da)*R);
+    s+=`<g>${anim?'<animate attributeName="opacity" values=".55;1;.55" dur="2.6s" repeatCount="indefinite"/>':''}<circle cx="${dx}" cy="${dy}" r="${R1(R*.42)}" fill="#FFFFFF" opacity=".35"/>${sp4(dx,dy,R1(R*.66),'#FFFFFF',1)}${sp4(dx,dy,R1(R*.3),'#FFF2C8',1)}</g>`;
+    return s},
+  cres:(x,y,r,rot,c,op)=>`<path transform="translate(${R1(x)} ${R1(y)}) rotate(${rot})" d="M0 ${-r}A${r} ${r} 0 1 0 0 ${r}A${R1(r*.78)} ${R1(r*.78)} 0 1 1 0 ${-r}Z" fill="${c}" opacity="${op==null?1:op}"/>`,
+  belt:(pts,c,op)=>`<path d="M${pts.map(p=>p.join(' ')).join('L')}" stroke="${c}" stroke-width=".7" fill="none" opacity="${R1(op*.6)}" stroke-dasharray="2 2.2"/>`+pts.map(([x,y],k)=>sp4(x,y,k%2?1.6:2.2,'#FFE8B0',op)).join(''),
+  hem:u=>[[34,229,5.2,-200],[50,232,4,-185],[110,232,4,-175],[126,229,5.2,-160],[66,234,3,-190],[94,234,3,-170]].slice(0,4+Math.min(2,u)).map(([x,y,r,rot])=>EXT.cres(x,y,r,rot,'#FFD884',.95)).join('')+`<ellipse cx="80" cy="231" rx="${58+u*4}" ry="6" fill="#C890FF" opacity=".16"/>`};
 /* ================= LE CATALOGUE ================= */
 /* fx : p (portrait, devant), pb (portrait, derrière le héros), b (corps, devant), bb (corps, tout derrière), ba (corps, après le décor) */
 const DEF=[
@@ -20955,6 +20967,17 @@ const DEF=[
     p:u=>KXT.crown(50,9.5,.62,u)+place([[10,14,3],[90,12,2.6],[8,70,2.2],[92,66,2.4]],SH.flake,['#FFFFFF','#D8F4FF'])+[[24,8,1.2],[80,30,1],[16,44,.9]].map(([x,y,r])=>sp4(x,y,r,'#FFFFFF',.9)).join(''),
     bb:u=>KXT.ring(80,58,54+u*2,12+u*2,14+u*2,.92)+KXT.cracks(80,58,46,u)+(u>=1?KXT.frost(80,58,78+u*4,u):''),
     b:u=>KXT.crown(80,15,1,u)+drift(7+u*2,SH.flake,{x0:8,x1:152,y:-16,dy:262,d0:6,d1:10,sw:12,c:['#FFFFFF','#D8F4FF','#BFE6FF'],r:[3.6,2.8,4.4],op:.92})+KXT.hem(u)}}
+,
+/* --- Pass Pro « L'Éclipse » : palier 60 (exclusivité) --- */
+{k:'or_eclipse',hero:63,rar:'l',ex:1,season:'p_eclipse',how:"Pass Pro « L'Éclipse » : palier 60",n:"Orion, Chasseur d'Éclipse",d:"À midi, le soleil s'est éteint. Tout le royaume a levé les yeux vers le ciel noir… sauf Orion, qui a levé son arc. Ses flèches sont taillées dans la couronne de lumière qui brille encore autour de l'astre éteint.",
+  map:[w(196,252,{h:42,k:.15,s:.85,lm:1.02},{lmin:.7}),w(196,252,{h:266,k:.25,sm:.95,lm:.62},{lmax:.7})],
+  gr:{bg:['#FFF4D8','#C890FF','#3A1A7A','#140A2E','#05030C'],gl:['#FFFFFF','#FFE8B0','#C890FF'],hd:['#3A1C6E','#170A33','#07040F'],tu:['#2A1452','#0C0618'],ln:['#FFE8A8','#C8902A'],
+    hr:['#FFFFFF','#E6DAFF','#8A74C8'],lb:['#FFFFFF','#FFE8B0','#E0A83A'],bt:['#4A3A78','#1E1438','#07040F'],sl:['#2E1658','#0E0720'],ag:['#FFFFFF','#F2E8FF','#9A88C8'],sg:['#FFFFFF','#FFE8B0','#C890FF'],bb:['#FFE8B0','#5A2A9A','#05030C']},
+  forms:["Chasseur d'Éclipse",'Couronne Noire','Anneau de Diamant','Totalité'],
+  fx:{pb:u=>EXT.sun(20,20,7.5+u*.6,u,0)+EXT.belt([[66,12],[73,16],[80,20]],'#FFE8B0',.8),
+    p:u=>place([[90,34,1.6],[8,58,1.3],[91,72,1.4],[12,86,1.1]],SH.star,['#FFE8B0','#E8D8FF'])+(u>=2?EXT.cres(88,12,4,-30,'#FFE8B0',.9):''),
+    bb:u=>EXT.sun(34,38,15+u*1.4,u,1)+EXT.belt([[112,22],[124,30],[136,38]],'#FFE8B0',.85)+(u>=1?EXT.belt([[16,96],[24,118],[14,140]],'#E8D8FF',.6):''),
+    b:u=>drift(6+u*2,SH.star,{x0:10,x1:150,y:-14,dy:262,d0:7,d1:11,sw:10,c:['#FFE8B0','#E8D8FF','#FFF6DC'],r:[2.2,1.6,2.8],op:.9})+EXT.hem(u)}}
 ];
 /* ---------- enregistrement ---------- */
 const SK2={},VK={},SKL=[];let vid=401;
@@ -26971,7 +26994,7 @@ try{const mb=myBest,C={};
   const sig=()=>{let s='';for(const i in S.heroes){const o=S.heroes[i];s+=i+':'+(o.l|0)+':'+(o.e|0)+':'+(o.u|0)+':'+(o.aw|0)+':'+(o.st|0)+',';}return s+'|'+(S.items?S.items.length:0)};
   myBest=function(mk){const g=sig();const c=C[mk];if(c&&c.g===g&&Date.now()-c.t<60000)return c.v;const v=mb.apply(this,arguments);C[mk]={g,v,t:Date.now()};return v}}catch(e){}
 /* --- écran de chargement : le nouveau Kaïros, l'Hiver Immobile --- */
-try{const upd=()=>{try{const im=document.querySelector('#boot .b3party .q2 img');if(!im||typeof vHero!=='function')return;
+try{const upd=()=>{try{if(!(window.RDE_GIVRE&&RDE_GIVRE()))return;const im=document.querySelector('#boot .b3party .q2 img');if(!im||typeof vHero!=='function')return;
     im.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svgStill(heroBody(vHero('ka_hiver'),0)))}catch(e){}};
   upd();setTimeout(upd,300)}catch(e){}
 try{PATCH.unshift({v:'v61',d:Date.now(),t:'Pages Héros allégées',items:[
@@ -29131,6 +29154,358 @@ try{const it=[
   I18N_EN[it[0]]="🐞 <b>New: “Report a bug”</b> in ⚙️ Settings. Explain what happened in a few words and it goes straight to the game's creator, with useful technical info (version, screen, device). No personal data.";
   I18N_EN[it[1]]="💻 <b>A real computer interface</b>: left bar with the realm's crest, districts with the scenery on the left and places on the right (hover a place: its building lights up), Adventure in 2 columns, quests and guilds in 2 columns. Nothing changes on phones."}}catch(e){}
 }catch(e){console.warn('v448 dk',e)}})();
+
+/* ================= APPARENCE LÉGENDAIRE · ORION, CHASSEUR D'ÉCLIPSE (Pass Pro « L'Éclipse », palier 60) =================
+   Un dessin refait dans le style maison, à partir du nouvel Orion :
+   capuche et cape de nuit doublées d'or, cheveux d'argent, yeux d'or, croissant sur la joue,
+   un anneau des phases de la lune derrière la tête, l'éclipse dans le ciel, des emblèmes de soleil noir (fermoirs,
+   broche, ceinture, bottes), un carquois de flèches à pointe de croissant, un arc d'or,
+   et en pied : une petite éclipse qui flotte au-dessus de sa main. */
+(function(){try{
+if(!window.SKX||!SKX.def('or_eclipse')||!window.LK)return;
+const {r1,P,L_,C_,E_,MI,MB,HG,lin,rad,U,STARP,star8,rays,frame,eye,sigilRing,footRing,feather,risers,halo,pOpen,pClose,bOpen,bStars}=LK;
+const defs=(q,u)=>rad(q+'bg',[[0,u>=3?'#3a2470':'#2a1656'],[.18,'#24104a'],[.45,'#160a33'],[.72,'#0a0520'],[1,'#030108']],'50%','32%','80%')
+ +rad(q+'gl',[[0,'#fff6dc',.9],[.5,'#e0ccff',.36],[1,'#8a5aff',0]])
+ +lin(q+'au',[[0,'#fff4c8'],[.5,'#ffcf4a'],[1,'#b07a14']],1,1)
+ +lin(q+'ag',[[0,'#ffffff'],[.5,'#f2e8ff'],[1,'#9a88c8']],1,1)
+ +lin(q+'hd',[[0,u>=3?'#4a2a8a':'#36196e'],[.55,'#1a0b3a'],[1,'#07030f']])
+ +lin(q+'tu',[[0,'#26124e'],[1,'#0a0518']])
+ +lin(q+'ln',[[0,'#ffe8a8'],[1,'#b88420']])
+ +lin(q+'sk',[[0,'#f6dcc6'],[.55,'#eac6aa'],[1,'#c99c80']],1,0)
+ +lin(q+'hr',[[0,'#ffffff'],[.5,'#e4d8ff'],[1,'#8a74c8']])
+ +lin(q+'lb',[[0,'#ffffff'],[.5,'#ffe8b0'],[1,'#e0a83a']],1,0)
+ +lin(q+'bt',[[0,'#6a5a9a'],[.5,'#2e2252'],[1,'#0c0820']],1,0)+lin(q+'sl',[[0,'#3c1e70'],[1,'#120828']])
+ +rad(q+'sg',[[0,'#ffffff',1],[.35,'#ffe8b0',.75],[1,'#c890ff',0]])
+ +rad(q+'co',[[0,'#000000',0],[.6,'#000000',0],[.68,'#ffffff',.95],[.8,'#ffe8b0',.6],[1,'#c890ff',0]])
+ +rad(q+'mo',[[0,'#22143e'],[.8,'#0a0618'],[1,'#000000']],'40%','38%','70%');
+const BT=q=>U(q,'bt'),SL=q=>U(q,'sl'),AU=q=>U(q,'au'),AG=q=>U(q,'ag'),HD=q=>U(q,'hd'),TU=q=>U(q,'tu'),LN=q=>U(q,'ln'),SK=q=>U(q,'sk'),HR=q=>U(q,'hr'),LB=q=>U(q,'lb'),SG=q=>U(q,'sg');
+const MI0=s=>s+`<g transform="scale(-1 1)">${s}</g>`;
+/* l'emblème : un soleil noir cerclé d'or, aux rayons courts */
+function oecl(q,x,y,R,n=8){let d='';for(let k=0;k<n;k++){const a=(k*360/n-90)*Math.PI/180,w=Math.PI/n*.42,L=R*(k%2?1.42:1.75);
+    d+=`M${r1(x+R*.98*Math.cos(a-w))} ${r1(y+R*.98*Math.sin(a-w))}L${r1(x+L*Math.cos(a))} ${r1(y+L*Math.sin(a))}L${r1(x+R*.98*Math.cos(a+w))} ${r1(y+R*.98*Math.sin(a+w))}Z`}
+  return P(d,AU(q),'stroke="#6a4a10" stroke-width=".2"')+C_(x,y,R,'#fff2c8','stroke="#b07a14" stroke-width=".25"')+C_(x,y,r1(R*.78),'#07040f')+C_(r1(x+R*.5),r1(y-R*.42),r1(R*.16),'#ffffff')}
+/* un croissant de lune */
+const cres=(x,y,r,rot,c,ex='')=>`<path transform="translate(${r1(x)} ${r1(y)}) rotate(${rot})" d="M0 ${r1(-r)}A${r} ${r} 0 1 0 0 ${r1(r)}A${r1(r*.76)} ${r1(r*.76)} 0 1 1 0 ${r1(-r)}Z" fill="${c}" ${ex}/>`;
+/* l'éclipse dans le ciel : couronne de lumière, longues flammèches, disque noir, anneau de diamant */
+function eclipse(q,cx,cy,R,u,op){op=op==null?.85:op;let s=`<g opacity="${op}">`+C_(cx,cy,r1(R*2.2),U(q,'co'));
+  let d='',d2='';for(let k=0;k<22;k++){const a=(k*360/22-90+(k%3)*3)*Math.PI/180,w=k%2?.03:.055,L=R*(k%4===0?2.5+u*.12:k%2?1.45:1.9);
+    const s1=`M${r1(cx+R*.98*Math.cos(a-w))} ${r1(cy+R*.98*Math.sin(a-w))}L${r1(cx+L*Math.cos(a))} ${r1(cy+L*Math.sin(a))}L${r1(cx+R*.98*Math.cos(a+w))} ${r1(cy+R*.98*Math.sin(a+w))}Z`;if(k%4===0)d+=s1;else d2+=s1}
+  s+=P(d,'#fff4d8','opacity=".8"')+P(d2,'#e0ccff','opacity=".55"');
+  s+=C_(cx,cy,R,U(q,'mo'))+C_(cx,cy,R,'none',`stroke="#fff2c8" stroke-width="${r1(R*.07)}"`)+C_(cx,cy,r1(R*1.08),'none',`stroke="#c890ff" stroke-width="${r1(R*.04)}" opacity=".7"`);
+  const da=-38*Math.PI/180,dx=r1(cx+Math.cos(da)*R),dy=r1(cy+Math.sin(da)*R);
+  s+=C_(dx,dy,r1(R*.45),'#ffffff','opacity=".35"')+P(`M${dx} ${r1(dy-R*.7)}Q${dx} ${dy} ${r1(dx+R*.7)} ${dy}Q${dx} ${dy} ${dx} ${r1(dy+R*.7)}Q${dx} ${dy} ${r1(dx-R*.7)} ${dy}Q${dx} ${dy} ${dx} ${r1(dy-R*.7)}Z`,'#ffffff')+C_(dx,dy,r1(R*.12),'#ffffff');
+  return s+'</g>'}
+/* l'anneau des phases de la lune, derrière la tête */
+function phases(q,cx,cy,R,u,op){op=op==null?.55+u*.1:op;let s=sigilRing(cx,cy,R,op,'#ffe08a','#e0ccff',36);
+  s+=C_(cx,cy,r1(R*1.12),'none',`stroke="#e0ccff" stroke-width="${r1(R*.012)}" stroke-dasharray="${r1(R*.04)} ${r1(R*.1)}" opacity="${r1(op*.8)}"`);
+  for(let k=0;k<8;k++){const a=(k*45-90)*Math.PI/180,x=r1(cx+R*.925*Math.cos(a)),y=r1(cy+R*.925*Math.sin(a)),r=r1(R*.07);
+    if(k===0){s+=C_(x,y,r1(R*.15),'#07040f',`stroke="#fff2c8" stroke-width="${r1(R*.025)}"`)+C_(x,y,r1(R*.2),'none',`stroke="#ffe8b0" stroke-width="${r1(R*.012)}" opacity=".8"`);continue}
+    if(k===4){s+=C_(x,y,r,'#fff6dc',`opacity="${r1(Math.min(1,op+.2))}"`);continue}
+    const f=k<4?k/4:(8-k)/4;s+=C_(x,y,r,'#fff6dc',`opacity="${r1(Math.min(1,op+.2))}"`)+C_(r1(+x+(k<4?-1:1)*r*f*1.6),y,r,'#160a33')}
+  return s}
+/* ---------- la tête ---------- */
+function hoodBack(q){return P('M29.4 52Q26.4 22 50 13.6Q73.6 22 70.6 52Q72.6 66 76.6 80L23.4 80Q27.4 66 29.4 52Z',HD(q))+P('M34 48Q33 28 50 22Q67 28 66 48Q60 36 50 34Q40 36 34 48Z','#05020c','opacity=".65"')
+  +L_('M26 72Q28.4 60 29.4 52Q26.4 22 50 13.6','#ffe8b0',.7,'opacity=".4"')
+  +[[32,30],[36,22],[44,17],[63,19],[68,28],[70,40],[28,42],[73,56],[26,62]].map(([x,y],k)=>k%3?C_(x,y,.55,'#ffe8b0','opacity=".85"'):cres(x,y,1.1,-30,'#ffe8b0','opacity=".85"')).join('')}
+function face(q,u){
+  let s=`<rect x="44" y="55" width="12" height="12" fill="${SK(q)}"/>`+P('M44 59.4Q50 63.2 56 59.4L56 64.6Q50 67 44 64.6Z','#a87a64','opacity=".6"');
+  s+=P('M36 44Q36 30.2 50 30.2Q64 30.2 64 44Q64 52 62.2 56.6Q59.8 62.4 54.8 64.8Q52.4 65.8 50 65.8Q47.6 65.8 45.2 64.8Q40.2 62.4 37.8 56.6Q36 52 36 44Z',SK(q));
+  s+=P('M59.4 45Q62.8 51.6 60.6 57Q58.4 61.8 53.6 64.2Q58.6 59 59.8 52.6Z','#a87a64','opacity=".45"');
+  s+=P('M38.4 54Q39.6 60.6 44.6 64Q47.4 65.6 50 65.6Q52.6 65.6 55.4 64Q60.4 60.6 61.6 54Q60.6 58.6 57.4 60.4Q54 61.6 50 61.2Q46 61.6 42.6 60.4Q39.4 58.6 38.4 54Z','#6a5a98','opacity=".24"')
+    +P('M45.6 56.6Q50 55.4 54.4 56.6Q52.4 57.6 50 57.4Q47.6 57.6 45.6 56.6Z','#6a5a98','opacity=".28"');
+  /* des yeux d'or, qui luisent dans la nuit */
+  const io=u>=3?{ir:'#fff6dc',ir2:'#e0a83a',glow:'#fff2c8'}:{ir:'#ffe08a',ir2:'#c8901a',glow:'#ffe8b0'};
+  s+=eye(44,Object.assign({lid:'#1a1030',open:.82,lw:1.3},io))+eye(56,Object.assign({lid:'#1a1030',open:.82,lw:1.3},io))+STARP(44.2,46.6,.42,'#ffffff')+STARP(55.8,46.6,.42,'#ffffff');
+  s+=MI(P('M39 42Q43.4 40.6 48.2 42L48 43.4Q43.6 42.2 39.4 43.4Z','#8a74c8'));
+  s+=L_('M50.6 47.6L49.4 53.4Q50.4 54.4 52 53.8','#a87a64',.8)+P('M48.6 53.8Q50.4 55 52.2 54Q50.6 54.8 48.6 53.8Z','#a87a64','opacity=".6"');
+  s+=L_('M46.4 58.4Q50 59.6 53.8 58','#7a3a3a',.95)+L_('M53.4 58.2L54.6 57.4','#7a3a3a',.6);
+  /* un croissant d'or sur la joue, et trois points d'éclipse */
+  s+=cres(58.8,52.2,2.1,-28,'#ffe08a','opacity=".95"')+[[57.4,56.4],[59.4,57.6],[61.2,56.6]].map(([x,y],k)=>C_(x,y,k===1?.5:.38,'#fff6dc')).join('');
+  /* cheveux d'argent en bataille, et favoris */
+  s+=P('M36.2 45Q35.2 32 43.6 27.4Q50 24.6 57 27.2Q65 31.4 63.8 45Q62.6 38.8 59.6 36.4Q58.6 39.4 55.6 40.4Q56.4 37.6 55.6 35.6Q52.4 38.6 47.6 39.4Q49.2 37.2 49 35.4Q45 38.6 40.8 39Q38 40.6 36.2 45Z',HR(q))
+    +MI(P('M36.4 44.2Q36 49 37 52.6L38.6 52.2Q38 48.6 38.4 44.6Z',HR(q)))
+    +L_('M42 30.4Q46.4 28.4 51 29M52.6 29.2Q58 30.4 61.4 34.6M44.4 34.6Q48 32.2 50.8 31.6','#ffffff',.45,'opacity=".85"');
+  return s}
+function hoodFront(q,u){let s=P('M31.6 52Q30 26 50 18.6Q70 26 68.4 52Q66.4 36 58.6 30.4Q50 26.6 41.4 30.4Q33.6 36 31.6 52Z',HD(q));
+  s+=P('M31.6 52Q33.6 36 41.4 30.4Q50 26.6 58.6 30.4Q66.4 36 68.4 52L66.9 52.4Q65.1 38.2 57.9 32.6Q50 29.2 42.1 32.6Q34.9 38.2 33.1 52.4Z',LN(q));
+  s+=L_('M31.9 51.6Q33.9 36.2 41.6 30.7Q50 27 58.4 30.7Q66.1 36.2 68.1 51.6',AU(q),.85)+L_('M31.3 51.2Q29.7 26.2 50 18.9Q70.3 26.2 68.7 51.2',AU(q),.75)
+    +L_('M32.3 47.4Q31.5 28.6 50 22.4Q68.5 28.6 67.7 47.4','#fff2c8',.6,'stroke-dasharray=".1 2.2" opacity=".95"');
+  /* le diadème : un croissant d'or qui tient un soleil noir */
+  s+=cres(50,22.6,4.4,90,AU(q),'stroke="#6a4a10" stroke-width=".25"')+oecl(q,50,21.4,2.1,8);
+  if(u>=1)s+=L_('M35 40Q38 28.4 47 24.2','#fff2c8',.45,`opacity="${.3+u*.15}"`);
+  return s}
+/* ---------- le buste ---------- */
+function bust(q,u){
+  let s=L_('M30 100Q12 76 22 46Q24 40 27 36','#ffe8b0',4.2,'opacity=".3"')+L_('M30 100Q12 76 22 46Q24 40 27 36',LB(q),2.2)+L_('M27 36Q28.2 32.6 31 31.8Q33.4 31.4 32.9 33.8',AU(q),1.2)+C_(27,36,1,'#ffffff')+L_('M27.6 35.4Q34 66 52 100','#fff6dc',.4,'opacity=".8"');
+  /* deux flèches à pointe de croissant derrière l'épaule droite */
+  const fl=(x,a)=>`<g transform="translate(${x} 70) rotate(${a})">${C_(0,-20,4.4,SG(q),'opacity=".8"')}<path d="M0 0V-17" stroke="#ffe8b0" stroke-width="1"/>${cres(0,-20,2.6,180,'#ffffff')}</g>`;
+  s+=fl(71,16)+fl(76,26);
+  /* la cape de nuit doublée d'or */
+  s+=P('M8 100Q10 80 24 73.6L76 73.6Q90 80 92 100Z',HD(q))+P('M12 100Q14 85 26 77.6L30 100Z',LN(q))+P('M88 100Q86 85 74 77.6L70 100Z',LN(q))
+    +L_('M12.4 99.6Q14.4 85.2 26 78.2M87.6 99.6Q85.6 85.2 74 78.2',AU(q),.7)+L_('M9 99.4Q11 81 24.6 74.4M91 99.4Q89 81 75.4 74.4',AU(q),.8)
+    +[[16,92],[20,84],[82,86],[86,94]].map(([x,y],k)=>k%2?STARP(x,y,.6,'#ffe9a0'):cres(x,y,1.3,-30,'#ffe9a0')).join('');
+  /* tunique de minuit, galon d'or, broche de soleil noir */
+  s+=P('M30 100L33.6 78Q40 72.4 50 72.4Q60 72.4 66.4 78L70 100Z',TU(q))+L_('M33.8 78.2Q40 72.8 50 72.8Q60 72.8 66.2 78.2',AU(q),.8)+L_('M50 74V100','#05020c',.8)
+    +L_('M41 82Q45 86 50 86Q55 86 59 82',AU(q),.5,'opacity=".8"')+C_(50,88,8,SG(q),`opacity="${.3+u*.12}"`)+oecl(q,50,88,3.6,10);
+  s+=L_('M34.6 77.6Q42 82 50 81.4Q58 82 65.4 77.6',AU(q),.45,'stroke-dasharray=".8 .8"')+oecl(q,34.6,77.6,1.7,8)+oecl(q,65.4,77.6,1.7,8);
+  return s}
+/* ultra II et III : une cape d'ombre aux bords d'or qui s'ouvre comme des ailes */
+function nightCape(q,u){const R=[36,64];let w='';
+  [[-174,44],[-156,50],[-137,53],[-118,48],[-100,40]].forEach(([a,l],k)=>{w+=feather(R,a,l,7.4,k%2?'#2a1458':'#1a0b3a',u>=3?'#fff2c8':'#ffd884',.7)});
+  [[-165,30],[-146,33],[-126,32],[-108,26]].forEach(([a,l])=>{w+=feather(R,a,l,5.4,'#3c1e70','#e0ccff',.45)});
+  const dots=[[-170,40],[-152,44],[-134,48],[-116,42],[-160,26],[-140,30],[-122,28]].map(([a,l])=>{const t=a*Math.PI/180;return C_(r1(R[0]+l*Math.cos(t)),r1(R[1]+l*Math.sin(t)),.6,'#fff2c8')}).join('');
+  return`<g opacity="${u>=3?.97:.92}">${MI(w+dots)}</g>`}
+/* ---------- portrait ---------- */
+function ePortrait(u){const q='eop'+u+'_';
+  let s=pOpen(q,"Orion, Chasseur d'Éclipse",defs(q,u));
+  s+=rays(50,34,12,80,.06,'#ffe8b0')+eclipse(q,20,19,6.8+u*.5,u,.95)+L_('M66 12L73 16L80 20','#ffe8b0',.35,'opacity=".55" stroke-dasharray="1.6 1.6"')+[[66,12],[73,16],[80,20]].map(([x,y])=>STARP(x,y,.6,'#ffe8b0')).join('')
+    +C_(50,34,30+u*2,U(q,'gl'),'opacity=".75"')+phases(q,50,34,28,u);
+  if(u>=1)s+=C_(50,34,32.4,'none',`stroke="#ffe08a" stroke-width=".7" stroke-dasharray="1.2 2.6" opacity="${.45+u*.15}"`);
+  if(u>=2)s+=nightCape(q,u);
+  s+=hoodBack(q)+bust(q,u)+face(q,u)+hoodFront(q,u);
+  if(u>=3)s+=halo(50,14.6,11,2.8);
+  s+=frame('#ffd884');
+  return s+pClose('Tireur',u,[[16,40,2],[84,40,1.8],[20,62,1.3],[80,60,1.5]])}
+/* ---------- corps entier ---------- */
+function eBody(u,bare){const q='eob'+u+(bare?'s':'')+'_';
+  let s=bOpen(q,"Orion, Chasseur d'Éclipse",defs(q,u)+rad(q+'bb',[[0,'#e0ccff',.3+u*.08],[.55,'#2a1458',.3],[1,'#030108',0]],'50%','40%','60%'));
+  const con='M18 40L30 28L44 36L38 52Z M122 30L136 22L146 38L132 50Z M20 150L32 138L40 154 M128 140L142 132L150 150';
+  if(bare)s+=`<g class="lgbk">${C_(80,36,40,U(q,'gl'),'opacity=".45"')}${phases(q,80,35,32,u,.42)}</g>`;
+  else{s+=`<g class="lgbk">${E_(80,96,80,116,U(q,'bb'))}${rays(80,36,14,120,.045,'#ffe8b0')}${eclipse(q,32,34,14+u*1.2,u,.95)}${L_(con,'#ffe8b0',.45,'opacity=".45"')}${[[122,30],[136,22],[146,38],[132,50],[20,150],[32,138],[40,154],[128,140],[142,132],[150,150]].map(([x,y],k)=>C_(x,y,k%3?.8:1.2,'#fff6dc','opacity=".85"')).join('')}${C_(80,36,42+u*3,U(q,'gl'),'opacity=".6"')}${phases(q,80,35,34,u)}`;
+    if(u>=1)s+=C_(80,35,47+u*3,'none','stroke="#ffe08a" stroke-width="1.1" stroke-dasharray="2 6" opacity=".6"');
+    s+=risers(['#fff2c8','#e0ccff'],(c,k)=>k%2?`<path d="M0 -2L.6 -.6L2 0L.6 .6L0 2L-.6 .6L-2 0L-.6 -.6Z" fill="${c}" opacity=".9"/>`:`<path d="M0 -2.2A2.2 2.2 0 1 0 0 2.2A1.7 1.7 0 1 1 0 -2.2Z" fill="${c}" opacity=".9"/>`)+`</g>`
+      +footRing(80,212,50,10,.9,'#ffe08a','#c890ff',(x,y,k)=>k%3?`M${x} ${r1(y-.9)}V${r1(y+.9)}M${r1(x-.9)} ${y}H${r1(x+.9)}`:`M${x} ${r1(y-1.2)}A1.2 1.2 0 1 0 ${x} ${r1(y+1.2)}A.9 .9 0 1 1 ${x} ${r1(y-1.2)}Z`)}
+  s+=E_(80,219,38,6,'#000','opacity=".45"');
+  if(u>=2)s+=`<g transform="translate(12.5 -14) scale(1.35)">${nightCape(q,u)}</g>`;
+  /* la grande cape de nuit, doublée d'or, brodée de croissants */
+  s+=P('M62 60Q46 110 40 206Q58 213 80 210Q102 213 120 206Q114 110 98 60Z',HD(q))+P('M62 62Q50 120 45 202L51 204Q56 128 67 68Z',LN(q))+P('M98 62Q110 120 115 202L109 204Q104 128 93 68Z',LN(q))
+    +L_('M51 203.6Q56 128 66.6 68.6M109 203.6Q104 128 93.4 68.6',AU(q),.8)+L_('M40 206Q58 213 80 210Q102 213 120 206',AU(q),1.4)
+    +[[48,170],[56,150],[46,130],[112,168],[104,146],[114,124],[60,190],[100,192]].map(([x,y],k)=>k%2?C_(x,y,.7,'#fff6dc','opacity=".85"'):cres(x,y,1.5,-30,'#ffe9a0')).join('')
+    +[[44,206],[58,210.6],[80,209.4],[102,210.6],[116,206]].map(([x,y],k)=>cres(x,y,2.2,k%2?160:200,AU(q),'stroke="#6a4a10" stroke-width=".2"')).join('');
+  /* le carquois de nuit au soleil noir, et ses flèches à pointe de croissant */
+  s+=`<g transform="rotate(24 99.5 76)"><rect x="94" y="56" width="11" height="40" rx="3" fill="${TU(q)}" stroke="#05020c" stroke-width=".6"/><rect x="93.2" y="55.4" width="12.6" height="3" rx="1.2" fill="${AU(q)}"/><rect x="93.4" y="92.4" width="12.2" height="3.4" rx="1.4" fill="${AU(q)}"/>${oecl(q,99.5,76,2.8,8)}</g>`;
+  [[104,60,24],[107.6,62,30],[110.6,65,36]].forEach(([x,y,a])=>{s+=`<g transform="translate(${x} ${y}) rotate(${a})">${C_(0,-34,5.6,SG(q),'opacity=".8"')}<path d="M0 0V-30" stroke="#ffe8b0" stroke-width="1.2"/>${cres(0,-34,3.2,180,'#ffffff')}</g>`});
+  s+=HG(hoodBack(q));
+  /* jambes : chausses de nuit, bottes d'obsidienne à boucle de soleil noir */
+  const leg=(x,f)=>{const o=f?1:-1,tx=f?x+17.6:x-6.6,bx=f?x-1.4:x+12.4;
+    return P(`M${x} 128L${x+11} 128L${x+10.4} 176L${x+.6} 176Z`,'#160a33')+L_(`M${x+.6} 150L${x+10.4} 151M${x+.6} 160L${x+10.4} 161`,'#3c1e70',.8,'opacity=".7"')
+    +P(`M${x-.6} 174L${x+11.6} 174L${x+12} 203L${x-1} 203Z`,BT(q),'stroke="#1a1030" stroke-width=".5"')+L_(`M${x+1.4} 182L${x+2} 200`,'#e0ccff',.6,'opacity=".5"')
+    +P(`M${f?x+12:x-1} 199L${bx} 199L${bx} 207.6Q${r1(x+5.5+o*1.5)} 210.2 ${tx} 209.4Q${r1(tx-o*.6)} 204.6 ${f?x+12:x-1} 202.6Z`,BT(q),'stroke="#1a1030" stroke-width=".5"')
+    +P(`M${x-1.4} 171.4L${x+12.4} 171.4L${x+12.2} 178.6Q${x+5.5} 180.6 ${x-1.2} 178.6Z`,TU(q),'stroke="#05020c" stroke-width=".45"')+L_(`M${x-1} 178.4Q${x+5.5} 180.2 ${x+11.8} 178.4`,AU(q),.8)+oecl(q,x+5.5,191,1.7,8)};
+  s+=leg(68,0)+leg(81,1);
+  /* longue tunique de minuit fendue, galons d'or */
+  s+=P('M63 64Q80 58.6 97 64L100 150L88 152L80 122L72 152L60 150Z',TU(q))+L_('M60.4 149.4L72 151.4L80 122.6L88 151.4L99.6 149.4',AU(q),.8)+L_('M66 66.4Q80 61.6 94 66.4',AU(q),.8);
+  s+=L_('M70 72Q80 80 90 72',AU(q),.5,'opacity=".8"')+C_(80,84,10,SG(q),`opacity="${.3+u*.12}"`)+oecl(q,80,84,4.6,10);
+  s+=P('M61.6 112Q80 119 98.4 112L98.4 117.6Q80 124.6 61.6 117.6Z','#07030f')+L_('M61.8 112.4Q80 119.4 98.2 112.4',AU(q),.6)+oecl(q,80,116,2.6,8);
+  /* bras droit : la main levée, une petite éclipse qui flotte au-dessus de la paume */
+  s+=P('M61 66Q50 74 44.6 86.6L51 90.4Q55 80.4 65.4 73Z',SL(q),'stroke="#05020c" stroke-width=".45"')+L_('M44.8 86.4L51 90.2','#ffe8b0',.8)
+    +P('M44.6 87.6L50.8 90.2L47.6 73.6L41.8 73Z',BT(q),'stroke="#1a1030" stroke-width=".45"')+L_('M43 79.6L49 80.2M43.8 84.4L49.8 85.2',AU(q),.6)
+    +E_(44.6,70.6,4,3,SK(q))+L_('M41.2 70.2Q44.6 68.6 48 70','#b08470',.45);
+  s+=`<g>${C_(44.6,59.6,12,SG(q),'opacity=".85"')}${eclipse(q,44.6,59.6,4.2,u,1)}<animateTransform attributeName="transform" type="translate" values="0 0;0 -2;0 0" dur="2.4s" repeatCount="indefinite"/></g>`;
+  /* épaulières d'obsidienne au filet d'or */
+  const lame=(d,rim)=>P(d,BT(q),'stroke="#1a1030" stroke-width=".4"')+L_(rim,AU(q),.75);
+  s+=lame('M64.8 72.6Q59.4 70.4 54 73.4Q50.4 75.8 49.4 81Q53.2 83 57 81.6Q62 79 64.8 72.6Z','M49.6 80.8Q53.2 82.6 57 81.2Q61.8 78.6 64.4 73')
+    +lame('M71 62Q63.8 57.4 56.8 60Q52.2 62.2 50.6 68Q54.8 70.6 59.6 69.4Q66 67.2 71 62Z','M50.8 67.8Q54.8 70.2 59.6 69Q65.8 66.8 70.6 62.4')+cres(60.2,64.6,2.2,-30,AU(q));
+  /* bras gauche : il tient l'arc d'or */
+  s+=P('M96 63Q109 72 113.4 95L105.4 98.6Q102 84 93.6 73Z',SL(q),'stroke="#05020c" stroke-width=".5"')+L_('M99 68Q107.6 76 110.6 92','#c890ff',.6,'opacity=".55"')
+    +P('M105.2 96.4L113.4 93.2L127.4 112.4L121 118.4Z',BT(q),'stroke="#1a1030" stroke-width=".5"')+L_('M108.4 98L122.6 114.6','#e0ccff',.5,'opacity=".5"')+L_('M110.6 102.6L116.8 99.4M117.6 111.8L123.4 107.6',AU(q),.7)
+    +P('M102.6 62.6Q97 61 93.4 64.6Q91.6 67.6 92.6 71Q96.6 71.4 99.6 69Q102.8 66.6 102.6 62.6Z',BT(q),'stroke="#1a1030" stroke-width=".4"');
+  s+=P('M118 30Q140 120 118 212','none','stroke="#ffe8b0" stroke-width="7" stroke-linecap="round" opacity=".26"')+P('M118 30Q140 120 118 212','none',`stroke="${LB(q)}" stroke-width="3.4" stroke-linecap="round"`)+L_('M117.6 30.6V211.4','#fff6dc',.6,'opacity=".9"');
+  s+=L_('M118 30Q115 25.4 117.4 22.4Q120 20 122 22.8',AU(q),1.6)+L_('M118 212Q115 216.6 117.4 219.6Q120 222 122 219.2',AU(q),1.6)+cres(118.2,29.6,2.6,0,'#ffffff')+cres(118.2,212.4,2.6,0,'#ffffff');
+  /* la poignée de l'arc : un soleil noir */
+  s+=oecl(q,129.6,120.6,2.6,8);
+  if(u)s+=P('M118 30Q140 120 118 212','none',`stroke="#fff2c8" stroke-width="1" opacity="${.2+u*.15}"`);
+  s+=E_(128.4,118,4.8,4.4,SK(q))+L_('M124.4 115.4L132 115.6M124.2 118.4L132.2 118.6M124.6 121.2L131.8 121.4','#b08470',.5);
+  s+=HG(face(q,u)+hoodFront(q,u));
+  if(u>=3)s+=halo(80,10.4,10,2.6);
+  s+=bStars(u,bare);
+  return s+'</svg>'}
+const C={};
+SKX.art('or_eclipse',{p:u=>C['p'+u]||(C['p'+u]=ePortrait(u)),b:u=>C['b'+u]||(C['b'+u]=eBody(u,false))});
+}catch(e){console.warn('orion eclipse art',e)}})();
+
+/* ================= V449 : saison « L'Éclipse » (24 novembre → 8 décembre 2026) =================
+   · bannière événement : Orion, « La Nuit de Midi »
+   · exclusivités du Pass Pro : fond (15), avatar (30), pseudo d'éclipse (45), apparence Orion, Chasseur d'Éclipse (60)
+   · animations de combat propres à l'apparence : l'ultime éteint le soleil, allume la couronne et en fait pleuvoir les flèches
+   · pendant la saison, le soleil du royaume est éclipsé en plein jour (ciel violet, étoiles à midi, lanternes allumées)
+   · écran de chargement de saison */
+(function(){try{
+const SK='or_eclipse',SEA='p_eclipse',FN="Pass Pro « L'Éclipse »";
+const ECL=()=>{try{return passSeason().k===SEA}catch(e){return false}};
+window.RDE_ECLIPSE=ECL;
+
+/* ---------- bannière ---------- */
+EVB.ev_eclipse={h:63,start:'2026-11-24',n:"La Nuit de Midi",d:"Le soleil s'est éteint en plein jour. Orion, lui, a levé son arc."};
+BANS.ev_eclipse={n:EVB.ev_eclipse.n,start:EVB.ev_eclipse.start};
+
+/* ---------- exclusivités du Pass Pro ---------- */
+try{
+  NFX.eclipse={n:"Pseudo d'éclipse",season:SEA,how:FN+' : palier 45'};
+  PBG.eclipse={n:"Fond « L'Éclipse »",season:SEA,art:()=>NART[SEA](),how:FN+' : palier 15'};
+  if(typeof AVX!=='undefined')AVX.or_eclipse_av={n:"Orion, Chasseur d'Éclipse",how:FN+' : palier 30',art:()=>{try{return portraitU(vHero(SK),2)}catch(e){return''}},hide:()=>!skinOn()};
+  SEASON_COS[SEA]={bg:[15,'eclipse'],av:[30,'or_eclipse_av'],nfx:[45,'eclipse'],skin:[60,SK]};
+  setTimeout(()=>{try{cosRetro()}catch(e){}},2500);
+}catch(e){console.warn('eclipse cos',e)}
+
+/* ---------- le soleil éclipsé, en plein jour, dans tout le royaume ---------- */
+const f1=n=>(+n).toFixed(1);
+function eclSun(x,y){const R=14;let s=`<circle cx="${x}" cy="${y}" r="50" fill="#c890ff" opacity=".14"/><circle cx="${x}" cy="${y}" r="31" fill="#ffe8b0" opacity=".2"/><circle cx="${x}" cy="${y}" r="19" fill="#fff6dc" opacity=".55"/>`;
+  for(let k=0;k<16;k++){const a=(k*22.5-90+(k%2?6:0))*Math.PI/180,L=R*(k%4===0?2.7:k%2?1.6:2.1),w=k%4===0?2.2:1.3,ca=Math.cos(a),sa=Math.sin(a);
+    s+=`<path d="M${f1(x+ca*R*.95-sa*w)} ${f1(y+sa*R*.95+ca*w)}L${f1(x+ca*L)} ${f1(y+sa*L)}L${f1(x+ca*R*.95+sa*w)} ${f1(y+sa*R*.95-ca*w)}Z" fill="${k%4===0?'#fff4d8':'#e8d8ff'}" opacity="${k%4===0?.8:.5}"/>`}
+  s+=`<circle cx="${x}" cy="${y}" r="${R}" fill="#07040f"/><circle cx="${x}" cy="${y}" r="${R}" fill="none" stroke="#fff2c8" stroke-width="1.4"/><circle cx="${x}" cy="${y}" r="${R+1.6}" fill="none" stroke="#c890ff" stroke-width=".8" opacity=".6"/>`;
+  const dx=x+Math.cos(-.66)*R,dy=y+Math.sin(-.66)*R;
+  s+=`<g><animate attributeName="opacity" values=".5;1;.5" dur="3s" repeatCount="indefinite"/><circle cx="${f1(dx)}" cy="${f1(dy)}" r="5" fill="#ffffff" opacity=".35"/><path d="M${f1(dx)} ${f1(dy-9)}Q${f1(dx)} ${f1(dy)} ${f1(dx+9)} ${f1(dy)}Q${f1(dx)} ${f1(dy)} ${f1(dx)} ${f1(dy+9)}Q${f1(dx)} ${f1(dy)} ${f1(dx-9)} ${f1(dy)}Q${f1(dx)} ${f1(dy)} ${f1(dx)} ${f1(dy-9)}Z" fill="#ffffff"/></g>`;
+  return s}
+window.RDEeclSun=eclSun;
+try{const l2=lbScene2;lbScene2=function(tab,places,E){if(!ECL()||!E||!(E.m>=405&&E.m<1155))return l2.apply(this,arguments);
+  const E2=Object.assign({},E,{dark:Math.max(E.dark||0,.62),warm:0,top:'#0b0726',bot:'#4a3486'});
+  let v=l2.call(this,tab,places,E2);
+  v=v.replace(/<circle cx="(-?\d+)" cy="(-?\d+)" r="40" fill="url\(#zsun\)"\/><circle cx="-?\d+" cy="-?\d+" r="15" fill="#fff3b0"\/>/,(m,x,y)=>eclSun(+x,+y));
+  return v};try{LSC2.clear()}catch(e){}}catch(e){console.warn('eclipse deco',e)}
+function eclHtml(){document.documentElement.classList.toggle('eclipse',ECL())}
+if(document.body)eclHtml();else document.addEventListener('DOMContentLoaded',eclHtml);
+setInterval(eclHtml,60000);
+
+/* ---------- écran de chargement ---------- */
+const skImgURI=(k,u)=>{try{return'data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svgStill(heroBody(vHero(k),u)))}catch(e){return''}};
+function btSceneEclipse(){const R=rng(Date.now()%7919);const r=(a,b)=>a+R()*(b-a);
+  let stars='';for(let k=0;k<26;k++)stars+=`<i style="left:${r(0,100).toFixed(1)}%;top:${r(0,46).toFixed(1)}%;animation-delay:${r(0,4).toFixed(1)}s;width:${r(1.4,3).toFixed(1)}px;height:${r(1.4,3).toFixed(1)}px"></i>`;
+  let motes='';for(let k=0;k<9;k++)motes+=`<i class="fk" style="left:${r(2,96).toFixed(1)}%;animation-delay:${r(-10,0).toFixed(1)}s;animation-duration:${r(9,14).toFixed(1)}s;width:${r(3,6).toFixed(0)}px;height:${r(3,6).toFixed(0)}px"></i>`;
+  const own=k=>{try{return!!SKINS[k]&&skOwned(k)}catch(e){return false}};
+  const T=[[own('so_noir')?'so_noir':null,57],[null,62],[own(SK)?SK:null,63],[null,64],[null,70]];
+  const party=T.map(([k,id],i)=>{const src=k?skImgURI(k,0):btImg(id,0);return`<div class="b3h q${i}"><i class="b3glow"></i><img src="${src}" alt=""></div>`}).join('');
+  let ray='';for(let i=0;i<24;i++){const a=i*15,L=i%3===0?118:i%2?74:92,w=i%3===0?5:3;ray+=`<path transform="rotate(${a})" d="M${-w} -46L0 -${L}L${w} -46Z" fill="${i%3===0?'#fff4d8':'#e0ccff'}" opacity="${i%3===0?.8:.5}"/>`}
+  const sun=`<svg class="eclsun" viewBox="-130 -130 260 260" aria-hidden="true"><defs><radialGradient id="eclg"><stop offset="0" stop-color="#fff6dc" stop-opacity=".95"/><stop offset=".32" stop-color="#ffe8b0" stop-opacity=".55"/><stop offset=".6" stop-color="#c890ff" stop-opacity=".22"/><stop offset="1" stop-color="#c890ff" stop-opacity="0"/></radialGradient></defs>
+    <circle r="128" fill="url(#eclg)"/><g class="eclrays">${ray}</g><circle r="47" fill="#07040f"/><circle r="47" fill="none" stroke="#fff2c8" stroke-width="3"/><circle r="51" fill="none" stroke="#c890ff" stroke-width="1.4" opacity=".7"/>
+    <g class="ecldia" transform="translate(36 -30)"><circle r="11" fill="#ffffff" opacity=".35"/><path d="M0 -20Q0 0 20 0Q0 0 0 20Q0 0 -20 0Q0 0 0 -20Z" fill="#ffffff"/><circle r="3.4" fill="#ffffff"/></g></svg>`;
+  const fr=(function(){try{return String(localStorage.getItem('rde-lang')||navigator.language||'fr').slice(0,2).toLowerCase()}catch(e){return'fr'}})()==='fr';
+  return`<div class="b2 b3 bs bse"><div class="bssky"></div><div class="bsstars">${stars}</div>${sun}
+   <svg class="b3hills" viewBox="0 0 400 200" preserveAspectRatio="none" aria-hidden="true"><path d="M0 112L52 70L96 98L150 46L206 96L262 58L318 92L366 66L400 84V200H0Z" fill="#2a1a5a"/><path d="M150 46L162 58L152 60L140 56ZM262 58L274 70L264 72L252 68Z" fill="#c8b0ff" opacity=".5"/><path d="M0 128Q100 104 200 124T400 116V200H0Z" fill="#1c1240"/><path d="M0 164Q120 142 220 158T400 152V200H0Z" fill="#110a2a"/>
+    <g fill="#ffd884" opacity=".85">${[[48,142],[64,146],[300,150],[318,146],[336,152]].map(([x,y])=>`<rect x="${x}" y="${y}" width="3" height="4" rx=".8"/>`).join('')}</g></svg>
+   <div class="bsfall eclfall">${motes}</div><div class="b3party">${party}</div><div class="bsplume">${plumeSVG('happy')}</div>
+   <div class="b2top"><div class="b2title">${fr?"Royaumes<span>d'Éther</span>":'Realms<span>of Ether</span>'}</div><div class="b3sub bsbook">🌑 ${fr?"Saison · L'Éclipse":'Season · The Eclipse'}</div><div class="bssub">${fr?'Le soleil s\'éteint en plein jour…':'The sun goes out at noon…'}</div></div>
+   <div class="b2bot"><div class="bt-bar"><i></i></div><div class="bt-s" id="bts">${fr?'Le soleil s\'éteint en plein jour…':'The sun goes out at noon…'}</div><div class="b2tap" id="b2tap" hidden>${fr?'Touche pour entrer dans le royaume':'Tap to enter the realm'}</div><div class="b2snd" id="b2snd">🔊 ${fr?"Touche l'écran pour le son":'Tap the screen for sound'}</div></div></div>`}
+window.btSceneEclipse=btSceneEclipse;
+{const s3=btSceneSaga3;btSceneSaga3=function(){if(ECL())try{return btSceneEclipse()}catch(e){}return s3.apply(this,arguments)}}
+{const sg=btSceneSaga;btSceneSaga=function(){if(ECL())try{return btSceneEclipse()}catch(e){}return sg.apply(this,arguments)}}
+(function(){try{if(BOOT.done||!ECL())return;const b=document.getElementById('boot');const rr=b&&b.querySelector('.b2');if(!rr)return;const st=rr.querySelector('#b2start'),bar=rr.querySelector('.bt-bar i'),w=bar?bar.style.width:'';
+  const tmp=document.createElement('div');tmp.innerHTML=btSceneEclipse();const n=tmp.firstElementChild;if(!n)return;if(st)n.appendChild(st);const nb=n.querySelector('.bt-bar i');if(nb&&w)nb.style.width=w;rr.replaceWith(n)}catch(e){console.warn('boot eclipse',e)}})();
+try{if(ECL()&&typeof BTIPS!=='undefined'){BTIPS.length=0;["Le soleil s'éteint en plein jour…","Les étoiles se lèvent à midi…","Orion tend son arc vers le ciel noir.","Astuce : la bannière « La Nuit de Midi » dure toute la saison.","Astuce : le palier 60 du Pass Pro offre Orion, Chasseur d'Éclipse.","Plume : « Hou… il fait nuit, je peux dormir ? »"].forEach(t=>BTIPS.push(t))}}catch(e){}
+
+/* ---------- animations de combat de l'apparence ---------- */
+try{if(window.SKANIM){
+  const ok=()=>typeof B!=='undefined'&&B&&!B.skip&&FXS.ctx;
+  const later=(ms,fn)=>setTimeout(()=>{if(!ok())return;try{fn()}catch(e){}},ms/(S.speed||1));
+  const snd=(n,k)=>{try{if(!AU||!AU.ctx||!cSnd.ok())return;SND[n](AU.F.v,NOW(),k||1)}catch(e){}};
+  function layer(X,draw){const it={t0:performance.now(),dur:60000,draw:null};it.draw=c=>{const now=performance.now(),sp=S.speed||1;let al=Math.min(1,(now-it.t0)/(200/sp));if(it.e)al*=Math.max(0,1-(now-it.e)/(340/sp));if(al<=0)return;draw(c,al,(now-it.t0)/1000*sp)};FXS.items.push(it);fxRun();(X.L=X.L||[]).push(it);return it}
+  function endLayers(X){const now=performance.now(),sp=S.speed||1;for(const it of X.L||[])if(!it.e){it.e=now;it.dur=now-it.t0+360/sp}for(const v of X.V||[])try{v.end()}catch(e){}X.V=[]}
+  function domVeil(X,col,max){try{const v=window.RDEveil&&RDEveil(col,max);if(v){(X.V=X.V||[]).push(v);return}}catch(e){}layer(X,(c,al)=>{c.globalAlpha=al*max;c.fillStyle=col;c.fillRect(0,0,FXS.w,FXS.h)})}
+  function finTitle(X,col){const m=rowMid(1-X.u.side),t=String(X.A.fin);textPop(FXS.w/2,m.y-m.s*.35,t,col,Math.max(16,Math.min(28,FXS.w*.9/(t.length*.68))),1100);for(const t2 of X.tg)cardFlash(t2,true)}
+  /* l'éclipse dans le ciel : le soleil, puis la lune qui glisse dessus ; la couronne s'allume à la totalité.
+     st.leave (secondes) : la lune repart ; st.burst : le soleil revient d'un coup */
+  function skyEclipse(X,cx,cy,R,st){return layer(X,(c,al,t)=>{const cov=Math.min(1,t/.85),e=ease(cov),out=st.leave!=null&&t>st.leave?Math.min(1,(t-st.leave)/.5):0;
+      const mx=cx-R*2.4*(1-e)+R*2.6*ease(out),my=cy+R*.3*(1-e)-R*.2*out,tot=e*(1-out);
+      c.globalCompositeOperation='lighter';
+      const g=R*(3+1.2*out);c.globalAlpha=al*(1-.6*tot);c.drawImage(spr('#ffd884'),cx-g,cy-g,g*2,g*2);
+      if(tot>.45){const ca=Math.min(1,(tot-.45)/.45);c.globalAlpha=al*ca*.85;c.save();c.translate(cx,cy);
+        for(let i=0;i<20;i++){const a=i/20*6.283+t*.1+(i%2?.08:0),L=R*(i%4===0?2.7:i%2?1.55:2.05)*(1+.07*Math.sin(t*2.4+i)),w=i%4===0?.07:.045;
+          c.fillStyle=i%4===0?'#fff4d8':i%3?'#e0ccff':'#c890ff';c.beginPath();c.moveTo(Math.cos(a-w)*R*.96,Math.sin(a-w)*R*.96);c.lineTo(Math.cos(a)*L,Math.sin(a)*L);c.lineTo(Math.cos(a+w)*R*.96,Math.sin(a+w)*R*.96);c.closePath();c.fill()}
+        c.globalAlpha=al*ca*.7;c.drawImage(spr('#c890ff'),-R*2.2,-R*2.2,R*4.4,R*4.4);c.restore()}
+      c.globalAlpha=al;c.fillStyle='#fff6c8';c.beginPath();c.arc(cx,cy,R,0,7);c.fill();
+      c.globalCompositeOperation='source-over';c.globalAlpha=al;c.fillStyle='#07040f';c.beginPath();c.arc(mx,my,R*1.03,0,7);c.fill();
+      if(tot>.9){c.globalCompositeOperation='lighter';c.globalAlpha=al*(tot-.9)*10;c.strokeStyle='#fff2c8';c.lineWidth=Math.max(1.6,R*.07);c.beginPath();c.arc(cx,cy,R*1.03,0,7);c.stroke()}
+      if(st.ring!=null&&t>st.ring&&t<st.ring+.7){const f=(t-st.ring)/.7,a=-.7,dx=cx+Math.cos(a)*R,dy=cy+Math.sin(a)*R,z=R*(1.1+1.4*Math.sin(Math.min(1,f*2)*Math.PI/2))*(1-f*.5);
+        c.globalCompositeOperation='lighter';c.globalAlpha=al*(1-f);c.drawImage(spr('#ffffff'),dx-z*1.6,dy-z*1.6,z*3.2,z*3.2);c.strokeStyle='#ffffff';c.lineWidth=2;c.beginPath();c.moveTo(dx-z*2.4,dy);c.lineTo(dx+z*2.4,dy);c.moveTo(dx,dy-z*2.4);c.lineTo(dx,dy+z*2.4);c.stroke()}})}
+  /* une flèche de lumière : trait doré, traîne violette, pointe en croissant */
+  function arrowFx(f,t,dur,k=1,col='#ffe8b0',tail='#c890ff'){fxItem(dur,(c,p)=>{const q=p<1?1-Math.pow(1-p,2):1,x=lerp(f.x,t.x,q),y=lerp(f.y,t.y,q),an=Math.atan2(t.y-f.y,t.x-f.x),L=Math.min(150,Math.hypot(t.x-f.x,t.y-f.y)*.45)*k;
+      c.globalCompositeOperation='lighter';c.translate(x,y);c.rotate(an);const g=c.createLinearGradient(-L,0,6,0);g.addColorStop(0,hexA(tail,0));g.addColorStop(.6,hexA(tail,.55));g.addColorStop(1,hexA(col,.95));
+      c.fillStyle=g;c.beginPath();c.moveTo(-L,-1.6*k);c.lineTo(2,-3*k);c.lineTo(2,3*k);c.lineTo(-L,1.6*k);c.closePath();c.fill();
+      c.fillStyle='#ffffff';c.beginPath();c.moveTo(14*k,0);c.quadraticCurveTo(2*k,-3*k,-2*k,-9*k);c.quadraticCurveTo(5*k,-2*k,4*k,0);c.quadraticCurveTo(5*k,2*k,-2*k,9*k);c.quadraticCurveTo(2*k,3*k,14*k,0);c.fill();
+      c.drawImage(spr(col),-14*k,-14*k,28*k,28*k)})}
+  /* petite éclipse à l'impact : un disque noir bordé d'or qui s'ouvre et s'éteint */
+  function eclRing(b,k=1,dur=380){fxItem(dur,(c,p)=>{const r=b.s*.3*k*(.55+.45*ease(p));c.translate(b.x,b.y);c.globalCompositeOperation='source-over';c.globalAlpha=(1-p)*.55;c.fillStyle='#07040f';c.beginPath();c.arc(0,0,r,0,7);c.fill();
+      c.globalCompositeOperation='lighter';c.globalAlpha=1-p;c.strokeStyle='#fff2c8';c.lineWidth=2.4;c.beginPath();c.arc(0,0,r,0,7);c.stroke();c.strokeStyle='#c890ff';c.lineWidth=1.2;c.beginPath();c.arc(0,0,r*1.18,0,7);c.stroke()})}
+  /* l'anneau de diamant : un éclat blanc en croix */
+  function diamond(x,y,s,dur=300){fxItem(dur,(c,p)=>{const z=s*(.4+.8*Math.sin(Math.min(1,p*2)*Math.PI/2))*(1-p*.4);c.globalCompositeOperation='lighter';c.globalAlpha=1-p;c.drawImage(spr('#ffffff'),x-z,y-z,z*2,z*2);
+      c.strokeStyle='#ffffff';c.lineWidth=1.8;c.beginPath();c.moveTo(x-z*1.6,y);c.lineTo(x+z*1.6,y);c.moveTo(x,y-z*1.6);c.lineTo(x,y+z*1.6);c.stroke()})}
+  function bowDraw(a,s,dir,dur){fxItem(dur,(c,p)=>{const o=ease(Math.min(1,p*2.2)),al=p>.75?(1-p)/.25:1;c.globalCompositeOperation='lighter';c.translate(a.x,a.y-s*.1);c.rotate(-1.05*dir);c.globalAlpha=al;
+      c.strokeStyle='#ffe8b0';c.lineWidth=3;c.beginPath();c.arc(0,0,s*.75,-1.15,1.15);c.stroke();c.strokeStyle='#ffffff';c.lineWidth=1.2;const pull=s*.32*o;
+      const x1=Math.cos(-1.15)*s*.75,y1=Math.sin(-1.15)*s*.75;c.beginPath();c.moveTo(x1,y1);c.lineTo(x1-pull,0);c.lineTo(x1,-y1);c.stroke();
+      c.drawImage(spr('#ffe8b0'),x1-pull-14,-14,28,28)})}
+  const motes=(n,dur)=>{for(let k=0;k<n;k++)later(k*dur/n,()=>emit(1,()=>({k:'shape',sh:'star',x:rnd(0,FXS.w),y:-10,vx:rnd(-.4,.4),vy:rnd(.9,1.8),life:120,max:120,s:rnd(2,4),c:k%2?'#ffe8b0':'#e0ccff',rot:rnd(0,6),vr:rnd(-.04,.04),fade:1.4,add:1})))};
+  SKANIM.reg(SK,{th:['#c890ff','#ffe8b0'],el:'astral',cut:['#2a1458','#ffe8b0'],fin:'ÉCLIPSE TOTALE',
+    aura(a){shapes(a.x,a.y,'star',['#ffe8b0','#e0ccff'],8,2.4,3.6,50,-.02,{add:1});ringFx(a.x,a.y,'#c890ff',a.s*.7,600,3,.5)},
+    async ult(X){const {u,ux}=X,a=uc(u),W=FXS.w,H=FXS.h,m=rowMid(1-u.side),dir=u.side?-1:1,cx=W/2,cy=H*.2,R=Math.min(W,H)*.085,st={},ct=it=>(performance.now()-it.t0)/1000*(S.speed||1);
+      domVeil(X,'#05030f',.64);motes(18+ux*4,1800);
+      FXD.sigil(a.x,a.y+a.s*.5,a.s*1.1,'#c890ff',1500,.38,12);glowPulse(a.x,a.y,'#ffe8b0',700,a.s*.5);
+      const SKY=skyEclipse(X,cx,cy,R,st);
+      try{FXD.constellation([[cx-W*.32,cy+R*.4],[cx-W*.22,cy-R*.6],[cx-W*.12,cy+R*.2],[cx+W*.12,cy-R*.3],[cx+W*.24,cy+R*.5],[cx+W*.33,cy-R*.2]],'#e0ccff',1600)}catch(e){}
+      await fxWait(900);if(!ok())return;
+      /* totalité : Orion tend son arc vers l'astre éteint */
+      snd('chime');flash('#c890ff',160,.25);bowDraw(a,a.s,dir,700);await fxWait(420);if(!ok())return;
+      snd('arrow',1.3);arrowFx(a,{x:cx+Math.cos(-.7)*R,y:cy+Math.sin(-.7)*R},240,1.3);await fxWait(230);if(!ok())return;
+      st.ring=ct(SKY);flash('#ffffff',200,.55);shake(2);snd('zap',1.2);ringFx(cx,cy,'#fff2c8',R*3.2,700,5,1);
+      await fxWait(260);if(!ok())return;
+      /* la couronne se brise en flèches : une par coup de l'ultime */
+      const seq=X.seq.length?X.seq:X.tg;
+      seq.forEach((t,i)=>later(i*105,()=>{const b=uc(t),an=-Math.PI/2+rnd(-1.1,1.1),o={x:cx+Math.cos(an)*R*1.9,y:cy+Math.sin(an)*R*1.9};snd('arrow');arrowFx(o,b,230,1.05);
+        later(225,()=>{hit(X,t,1.15);eclRing(b,1);crescent(b.x,b.y,b.s*.55,-.7,['#c890ff','#ffe8b0'],260,9);sparks(b.x,b.y,'#ffe8b0',9,5,1.6,18);ringFx(b.x,b.y+b.s*.3,'#c890ff',b.s*.4,340,3,.4)})}));
+      await fxWait(240+seq.length*105);if(!ok())return;shake(2);camPunch(m,1.06,340);await fxWait(420);if(!ok())return;
+      if(ux>0){for(let r=0;r<1+ux;r++){if(!ok())return;st.ring=ct(SKY);diamond(cx+Math.cos(-.7)*R,cy+Math.sin(-.7)*R,R*.9,320);
+          X.tg.forEach((t,i)=>later(i*60,()=>{const b=uc(t),o={x:cx+rnd(-R*1.6,R*1.6),y:cy+R*1.4};arrowFx(o,b,200,1.15);later(200,()=>{eclRing(b,1.2);diamond(b.x+b.s*.2,b.y-b.s*.2,b.s*.35,260);sparks(b.x,b.y,'#fff2c8',10,6);cardFlash(t,r===ux)})}));
+          try{ultraHitSnd()}catch(e){}await fxWait(330);if(!ok())return;shake(2)}
+        finTitle(X,'#ffe8b0');await fxWait(520);if(!ok())return}
+      /* le soleil revient */
+      st.leave=ct(SKY);await fxWait(320);if(!ok())return;flash('#fff4d8',260,.5);glowPulse(cx,cy,'#ffd884',500,R*2.2);await fxWait(260);
+      endLayers(X)},
+    basic(s,t,crit,ux){const a=uc(s),b=uc(t),k=(crit?1.3:1)*(1+ux*.12);try{cardMove(s,(b.x-a.x)*.1,(b.y-a.y)*.1,200)}catch(e){}
+      snd('arrow');arrowFx({x:a.x,y:a.y-a.s*.1},b,220,k);
+      later(210,()=>{eclRing(b,k);crescent(b.x,b.y,b.s*.52*k,-.7,['#c890ff','#ffe8b0'],240,9*k);sparks(b.x,b.y,'#ffe8b0',8,5,1.6,18);ringFx(b.x,b.y+b.s*.3,'#c890ff',b.s*.34*k,300,3,.4);
+        if(ux)shapes(b.x,b.y,'star',['#ffe8b0','#e0ccff'],2+ux,2.5,3.5,44,.02,{add:1});
+        if(crit){camPunch(b,1.04,220);diamond(b.x+b.s*.22,b.y-b.s*.22,b.s*.4,280);glowPulse(b.x,b.y,'#ffe8b0',300,b.s*.42)}})}});
+}}catch(e){console.warn('eclipse anim',e)}
+
+/* ---------- annonce de saison ---------- */
+try{const al=annList;annList=function(){const L=al.apply(this,arguments);try{if(ECL()&&Date.now()<passEndAt()&&!L.some(a=>a.k==='eclipse1'))L.unshift({k:'eclipse1',ac:'#c890ff',tag:'NOUVELLE SAISON',t:"L'Éclipse 🌑",
+  x:`À midi, le soleil s'est éteint : jusqu'au <b>8 décembre</b>, le royaume vit une nuit en plein jour. Nouvelle bannière <b>« La Nuit de Midi »</b> avec Orion, et dans le <b>Pass Pro</b> : un fond, un avatar, un pseudo d'éclipse et l'apparence légendaire <b>Orion, Chasseur d'Éclipse</b> au palier 60, avec ses propres animations de combat.`,
+  art:()=>{try{return`<div class="skann">${heroBody(vHero(SK),3)}</div>`}catch(e){return''}},go:'🌑 Voir le pass',fn:()=>{TAB='event';UI.evt='pass';try{UI.lz=UI.lz||{};UI.lz.event='pass'}catch(e){}}})}catch(e){}return L}}catch(e){}
+
+/* ---------- styles ---------- */
+const st=document.createElement('style');st.textContent=`
+.nfx-eclipse{background:linear-gradient(90deg,#ffe8b0 0%,#fff6dc 22%,#c890ff 48%,#8a5aff 62%,#ffe8b0 100%);-webkit-background-clip:text;background-clip:text;color:transparent!important;-webkit-text-fill-color:transparent;text-shadow:none;filter:drop-shadow(0 0 3px rgba(200,144,255,.75));font-weight:900}
+html.eclipse .tabbar,html.eclipse nav.tabs{box-shadow:inset 0 2px 0 rgba(255,232,176,.4),0 -6px 18px -8px rgba(200,144,255,.5)}
+html.eclipse .top,html.eclipse header.top{box-shadow:0 2px 0 rgba(255,232,176,.25),0 8px 22px -12px rgba(200,144,255,.6)}
+html.eclipse .lobby{box-shadow:inset 0 0 40px rgba(200,144,255,.25)}
+.gvcard{display:none}
+.bse .bssky{background:radial-gradient(70% 45% at 50% 20%,rgba(200,144,255,.28),transparent 70%),linear-gradient(180deg,#05030f 0%,#140a33 40%,#2a1a5a 70%,#3a2a6a 100%)}
+.bse .b2title{text-shadow:0 3px 0 #1a0a3a,0 0 26px rgba(255,232,176,.7)}
+.bse .bssub{color:#efe6ff}.bse .bsbook{color:#ffe8b0}
+.bse .b3glow{background:radial-gradient(ellipse,rgba(200,144,255,.55),transparent 70%)!important}
+.eclsun{position:absolute;left:50%;top:2%;width:min(62vw,250px);transform:translate(-50%,0);pointer-events:none;filter:drop-shadow(0 0 16px rgba(255,232,176,.45))}
+.eclsun .eclrays{transform-origin:0 0;animation:eclspin 60s linear infinite}
+.eclsun .ecldia{animation:ecldia 3.2s ease-in-out infinite}
+@keyframes eclspin{to{transform:rotate(360deg)}}
+@keyframes ecldia{0%,100%{opacity:.55}50%{opacity:1}}
+.eclfall i.fk{border-radius:50%;background:radial-gradient(circle,#fff6dc 0 40%,rgba(255,232,176,0) 72%)}
+@media(prefers-reduced-motion:reduce){.eclsun .eclrays,.eclsun .ecldia{animation:none}}`;document.head.appendChild(st);
+
+/* ---------- anglais ---------- */
+try{Object.assign(I18N_EN,{"La Nuit de Midi":'The Noon Night',"Orion, Chasseur d'Éclipse":'Orion, Eclipse Hunter',"Pseudo d'éclipse":'Eclipse name',"Fond « L'Éclipse »":'“The Eclipse” background','ÉCLIPSE TOTALE':'TOTAL ECLIPSE',
+  "L'Éclipse 🌑":'The Eclipse 🌑','🌑 Voir le pass':'🌑 See the pass','Couronne Noire':'Black Corona','Anneau de Diamant':'Diamond Ring','Totalité':'Totality',"Chasseur d'Éclipse":'Eclipse Hunter',
+  "Le soleil s'est éteint en plein jour. Orion, lui, a levé son arc.":'The sun went out at noon. Orion raised his bow.',
+  "À midi, le soleil s'est éteint. Tout le royaume a levé les yeux vers le ciel noir… sauf Orion, qui a levé son arc. Ses flèches sont taillées dans la couronne de lumière qui brille encore autour de l'astre éteint.":"At noon, the sun went out. The whole realm looked up at the black sky… except Orion, who raised his bow. His arrows are cut from the crown of light still shining around the dead star."})}catch(e){}
+
+/* ---------- notes de version ---------- */
+try{const I=["🌑 <b>Nouvelle saison : L'Éclipse</b>, jusqu'au 8 décembre. À midi, le soleil s'éteint : en journée, tout le royaume passe sous un ciel violet, avec une éclipse à la place du soleil et des étoiles en plein jour. Nouvel écran de chargement.",
+  "🏹 <b>Bannière « La Nuit de Midi »</b> : Orion, 50/50 puis garanti, pendant toute la saison.",
+  "🎟️ <b>Exclusivités du Pass Pro</b> : fond « L'Éclipse » (palier 15), avatar Orion (palier 30), pseudo d'éclipse (palier 45) et l'apparence légendaire <b>Orion, Chasseur d'Éclipse</b> (palier 60) : cape noire doublée d'or, arc de lumière, éclipse et constellations. Son ultime éteint le soleil, allume sa couronne et en fait pleuvoir les flèches sur les ennemis."];
+ PATCH.unshift({v:'v74',d:Date.now(),t:"Saison L'Éclipse",items:I});
+ const E=["🌑 <b>New season: The Eclipse</b>, until December 8. At noon the sun goes out: during the day, the whole realm sits under a violet sky, with an eclipse instead of the sun and stars in broad daylight. New loading screen.",
+  "🏹 <b>“The Noon Night” banner</b>: Orion, 50/50 then guaranteed, for the whole season.",
+  "🎟️ <b>Pro Pass exclusives</b>: “The Eclipse” background (tier 15), Orion avatar (tier 30), eclipse name (tier 45) and the legendary look <b>Orion, Eclipse Hunter</b> (tier 60): black cloak lined with gold, bow of light, eclipse and constellations. His ultimate puts out the sun, lights its corona and rains its arrows down on the enemies."];
+ I.forEach((x,i)=>{I18N_EN[x]=E[i]});I18N_EN["Saison L'Éclipse"]='The Eclipse season'}catch(e){}
+}catch(e){console.warn('saison eclipse',e)}})();
 /* ================= toujours en dernier : l'écran de chargement reprend les dessins à jour ================= */
 (function(){try{
   /* Livre III : le Roi de Cendre (nouveau design) au premier rang, et le souvenir du jeune Éryndel au-dessus de la couronne */

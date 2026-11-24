@@ -97,6 +97,18 @@ const KXT={
   frost:(cx,cy,r,u)=>`<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="#D8F4FF" stroke-width="1.2" stroke-dasharray="1.5 5" opacity=".75"/>`+[...Array(6+u*2)].map((_,k)=>{const a=(k/(6+u*2))*6.283,x=R1(cx+Math.cos(a)*r),y=R1(cy+Math.sin(a)*r);return sp4(x,y,R1(1.6+(k%2)*.8),'#FFFFFF',.9).replace('/>',`><animate attributeName="opacity" values=".2;1;.2" dur="${R1(2+(k%3)*.7)}s" begin="${R1(-k*.4)}s" repeatCount="indefinite"/></path>`)}).join(''),
   crown:(x,y,k,u)=>[[0,0,11,0],[-5,2,7.5,-24],[5,2,7.5,24],[-9,5,5,-44],[9,5,5,44]].slice(0,u>=2?5:3).map(([dx,dy,h,r])=>KXT.xt(x+dx*k,y+dy*k,h*k,h*k*.3,r,1)).join('')+sp4(x,R1(y-11*k),R1(2.2*k),'#FFFFFF',.95),
   hem:u=>[[36,228,9,-24],[47,231,6,-8],[113,231,7,10],[124,228,10,24],[60,233,4.5,-4],[100,233,5,6]].slice(0,4+Math.min(2,u)).map(([x,y,h,r])=>KXT.xt(x,y,h,h*.28,r,.95)).join('')+`<ellipse cx="80" cy="231" rx="${56+u*4}" ry="6" fill="#E8F8FF" opacity=".2"/>`};
+/* l'éclipse pour « Orion, Chasseur d'Éclipse » (saison « L'Éclipse ») */
+const EXT={
+  ray:(cx,cy,R,a,L,w,c,op)=>{const r=a*Math.PI/180,ca=Math.cos(r),sa=Math.sin(r),px=-sa,py=ca;return`<path d="M${R1(cx+ca*R*.96+px*w)} ${R1(cy+sa*R*.96+py*w)}L${R1(cx+ca*L)} ${R1(cy+sa*L)}L${R1(cx+ca*R*.96-px*w)} ${R1(cy+sa*R*.96-py*w)}Z" fill="${c}" opacity="${op}"/>`},
+  sun:(cx,cy,R,u,anim)=>{let s=`<circle cx="${cx}" cy="${cy}" r="${R1(R*2.3)}" fill="#C890FF" opacity=".12"/><circle cx="${cx}" cy="${cy}" r="${R1(R*1.7)}" fill="#FFE8B0" opacity=".18"/><circle cx="${cx}" cy="${cy}" r="${R1(R*1.26)}" fill="#FFF6DC" opacity=".42"/>`;
+    const n=14+u*2;for(let k=0;k<n;k++){const a=k*360/n+(k%2?7:0)-90,L=R*(k%3===0?2.25+u*.15:k%2?1.5:1.85);s+=EXT.ray(cx,cy,R,a,L,R*(k%3===0?.16:.1),k%3===0?'#FFF4D8':'#E8D8FF',k%3===0?.75:.5)}
+    s+=`<circle cx="${cx}" cy="${cy}" r="${R}" fill="#07040F"/><circle cx="${cx}" cy="${cy}" r="${R}" fill="none" stroke="#FFF2C8" stroke-width="${R1(R*.08)}" opacity=".95"/><circle cx="${cx}" cy="${cy}" r="${R1(R*1.07)}" fill="none" stroke="#C890FF" stroke-width="${R1(R*.05)}" opacity=".6"/>`;
+    const da=-38*Math.PI/180,dx=R1(cx+Math.cos(da)*R),dy=R1(cy+Math.sin(da)*R);
+    s+=`<g>${anim?'<animate attributeName="opacity" values=".55;1;.55" dur="2.6s" repeatCount="indefinite"/>':''}<circle cx="${dx}" cy="${dy}" r="${R1(R*.42)}" fill="#FFFFFF" opacity=".35"/>${sp4(dx,dy,R1(R*.66),'#FFFFFF',1)}${sp4(dx,dy,R1(R*.3),'#FFF2C8',1)}</g>`;
+    return s},
+  cres:(x,y,r,rot,c,op)=>`<path transform="translate(${R1(x)} ${R1(y)}) rotate(${rot})" d="M0 ${-r}A${r} ${r} 0 1 0 0 ${r}A${R1(r*.78)} ${R1(r*.78)} 0 1 1 0 ${-r}Z" fill="${c}" opacity="${op==null?1:op}"/>`,
+  belt:(pts,c,op)=>`<path d="M${pts.map(p=>p.join(' ')).join('L')}" stroke="${c}" stroke-width=".7" fill="none" opacity="${R1(op*.6)}" stroke-dasharray="2 2.2"/>`+pts.map(([x,y],k)=>sp4(x,y,k%2?1.6:2.2,'#FFE8B0',op)).join(''),
+  hem:u=>[[34,229,5.2,-200],[50,232,4,-185],[110,232,4,-175],[126,229,5.2,-160],[66,234,3,-190],[94,234,3,-170]].slice(0,4+Math.min(2,u)).map(([x,y,r,rot])=>EXT.cres(x,y,r,rot,'#FFD884',.95)).join('')+`<ellipse cx="80" cy="231" rx="${58+u*4}" ry="6" fill="#C890FF" opacity=".16"/>`};
 /* ================= LE CATALOGUE ================= */
 /* fx : p (portrait, devant), pb (portrait, derrière le héros), b (corps, devant), bb (corps, tout derrière), ba (corps, après le décor) */
 const DEF=[
@@ -236,6 +248,17 @@ const DEF=[
     p:u=>KXT.crown(50,9.5,.62,u)+place([[10,14,3],[90,12,2.6],[8,70,2.2],[92,66,2.4]],SH.flake,['#FFFFFF','#D8F4FF'])+[[24,8,1.2],[80,30,1],[16,44,.9]].map(([x,y,r])=>sp4(x,y,r,'#FFFFFF',.9)).join(''),
     bb:u=>KXT.ring(80,58,54+u*2,12+u*2,14+u*2,.92)+KXT.cracks(80,58,46,u)+(u>=1?KXT.frost(80,58,78+u*4,u):''),
     b:u=>KXT.crown(80,15,1,u)+drift(7+u*2,SH.flake,{x0:8,x1:152,y:-16,dy:262,d0:6,d1:10,sw:12,c:['#FFFFFF','#D8F4FF','#BFE6FF'],r:[3.6,2.8,4.4],op:.92})+KXT.hem(u)}}
+,
+/* --- Pass Pro « L'Éclipse » : palier 60 (exclusivité) --- */
+{k:'or_eclipse',hero:63,rar:'l',ex:1,season:'p_eclipse',how:"Pass Pro « L'Éclipse » : palier 60",n:"Orion, Chasseur d'Éclipse",d:"À midi, le soleil s'est éteint. Tout le royaume a levé les yeux vers le ciel noir… sauf Orion, qui a levé son arc. Ses flèches sont taillées dans la couronne de lumière qui brille encore autour de l'astre éteint.",
+  map:[w(196,252,{h:42,k:.15,s:.85,lm:1.02},{lmin:.7}),w(196,252,{h:266,k:.25,sm:.95,lm:.62},{lmax:.7})],
+  gr:{bg:['#FFF4D8','#C890FF','#3A1A7A','#140A2E','#05030C'],gl:['#FFFFFF','#FFE8B0','#C890FF'],hd:['#3A1C6E','#170A33','#07040F'],tu:['#2A1452','#0C0618'],ln:['#FFE8A8','#C8902A'],
+    hr:['#FFFFFF','#E6DAFF','#8A74C8'],lb:['#FFFFFF','#FFE8B0','#E0A83A'],bt:['#4A3A78','#1E1438','#07040F'],sl:['#2E1658','#0E0720'],ag:['#FFFFFF','#F2E8FF','#9A88C8'],sg:['#FFFFFF','#FFE8B0','#C890FF'],bb:['#FFE8B0','#5A2A9A','#05030C']},
+  forms:["Chasseur d'Éclipse",'Couronne Noire','Anneau de Diamant','Totalité'],
+  fx:{pb:u=>EXT.sun(20,20,7.5+u*.6,u,0)+EXT.belt([[66,12],[73,16],[80,20]],'#FFE8B0',.8),
+    p:u=>place([[90,34,1.6],[8,58,1.3],[91,72,1.4],[12,86,1.1]],SH.star,['#FFE8B0','#E8D8FF'])+(u>=2?EXT.cres(88,12,4,-30,'#FFE8B0',.9):''),
+    bb:u=>EXT.sun(34,38,15+u*1.4,u,1)+EXT.belt([[112,22],[124,30],[136,38]],'#FFE8B0',.85)+(u>=1?EXT.belt([[16,96],[24,118],[14,140]],'#E8D8FF',.6):''),
+    b:u=>drift(6+u*2,SH.star,{x0:10,x1:150,y:-14,dy:262,d0:7,d1:11,sw:10,c:['#FFE8B0','#E8D8FF','#FFF6DC'],r:[2.2,1.6,2.8],op:.9})+EXT.hem(u)}}
 ];
 /* ---------- enregistrement ---------- */
 const SK2={},VK={},SKL=[];let vid=401;
