@@ -129,11 +129,16 @@ document.addEventListener('click',e=>{const t=e.target.closest('[data-a]');if(!t
 /* ---------- le sélecteur : Facile ‹ › Normal ‹ › Difficile ‹ › Cauchemar ---------- */
 const DF=['e','n','h','c'],DL={e:'Facile',n:'Normal',h:'Difficile',c:'Cauchemar'},DI={e:'🌱',n:'⚔️',h:'💀',c:'🌙'},DC={e:'te',n:'tn',h:'th',c:'tc'};
 diffSw=function(d){if(!DF.includes(d))d='e';const i=DF.indexOf(d),p=DF[(i+3)%4],nx=DF[(i+1)%4];
-  const sub=d==='e'?`Étape ${Math.min(100,S.stage)} / 100${nOpen()?' · Normal débloqué !':''}`:d==='n'?(!nOpen()?'🔒 Termine le mode Facile pour débloquer':`Étape ${Math.min(100,(S.nmax||0)+1)} / 100${hOpen()?' · Difficile débloqué !':' · monstres bien plus coriaces'}`)
-    :d==='h'?(!hOpen()?'🔒 Termine le mode Normal pour débloquer':`Étape ${Math.min(100,(S.hmax||0)+1)} / 100${cOpen()?' · Cauchemar débloqué !':' · le défi ultime'}`):(!cOpen()?'🔒 Termine le mode Difficile pour débloquer':`Étape ${Math.min(100,(S.cmax||0)+1)} / 100 · la nuit sans fin`);
-  return`<div class="diffsw v2 d${d}" id="diffsw"><button class="navarr big nl ${DC[p]}" data-a="diff" data-v="${p}" aria-label="Passer en mode ${DL[p]}">${CHEV_L}<small>${DL[p]}</small></button>
-  <div class="dft"><span class="dfic">${DI[d]}</span><b>Mode ${DL[d]}</b><small>${sub}</small><span class="dfd">${DF.map(x=>`<i class="${x===d?'on '+x:''}"></i>`).join('')}</span></div>
-  <button class="navarr big nr ${DC[nx]}" data-a="diff" data-v="${nx}" aria-label="Passer en mode ${DL[nx]}">${CHEV_R}<small>${DL[nx]}</small></button></div>`};
+  /* un mode terminé : « Terminé · … » (plus court, ça ne passe plus sur deux lignes) */
+  const sub=d==='e'?((S.max||0)>=100?(nOpen()?'Terminé · Normal débloqué !':'Terminé !'):`Étape ${Math.min(100,S.stage)} / 100${nOpen()?' · Normal débloqué !':''}`)
+    :d==='n'?(!nOpen()?'🔒 Termine le mode Facile pour débloquer':(S.nmax||0)>=100?'Terminé · Difficile débloqué !':`Étape ${Math.min(100,(S.nmax||0)+1)} / 100${hOpen()?' · Difficile débloqué !':' · monstres bien plus coriaces'}`)
+    :d==='h'?(!hOpen()?'🔒 Termine le mode Normal pour débloquer':(S.hmax||0)>=100?'Terminé · Cauchemar débloqué !':`Étape ${Math.min(100,(S.hmax||0)+1)} / 100 · le défi ultime`)
+    :(!cOpen()?'🔒 Termine le mode Difficile pour débloquer':(S.cmax||0)>=100?'Terminé · tu ne dors plus jamais !':`Étape ${Math.min(100,(S.cmax||0)+1)} / 100 · la nuit sans fin`);
+  /* les points : « dk » + le mode (la classe « h » toute seule était celle des titres du jeu : le point du Difficile était invisible) */
+  const lab=x=>`<small${x==='c'?' class="lg"':''}>${DL[x]}</small>`;
+  return`<div class="diffsw v2 d${d}" id="diffsw"><button class="navarr big nl ${DC[p]}" data-a="diff" data-v="${p}" aria-label="Passer en mode ${DL[p]}">${CHEV_L}${lab(p)}</button>
+  <div class="dft"><span class="dfic">${DI[d]}</span><b>Mode ${DL[d]}</b><small>${sub}</small><span class="dfd">${DF.map(x=>`<i class="${x===d?'on dk'+x:''}"></i>`).join('')}</span></div>
+  <button class="navarr big nr ${DC[nx]}" data-a="diff" data-v="${nx}" aria-label="Passer en mode ${DL[nx]}">${CHEV_R}${lab(nx)}</button></div>`};
 /* glisser le doigt : on avance ou on recule d'un mode (avant, ça n'allait que de Facile à Normal) */
 {let sx=null,sy=null,sw=null;
   window.addEventListener('touchstart',e=>{try{if(TAB!=='adv'||(typeof B!=='undefined'&&B)){sx=null;return}const el=e.target.closest&&e.target.closest('#diffsw,.wbanner');if(!el){sx=null;return}sx=e.touches[0].clientX;sy=e.touches[0].clientY}catch(er){sx=null}},{passive:true,capture:true});
@@ -236,7 +241,9 @@ window.RDEcm={CW,RULES,CT,cRecD,cRecRaw,cOpen,cInit,cBattle,cScene,set mode(v){C
 /* ---------- styles ---------- */
 const st=document.createElement('style');st.id='v454css';st.textContent=`
 .diffsw.dc{background:linear-gradient(90deg,rgba(255,40,100,.22),var(--panel) 40%,var(--panel) 60%,rgba(255,40,100,.22));border-color:#7a1a3a}.diffsw.dc .dft b{color:#ff8aa8}
-.navarr.tc{--a1:#ff6a8a;--a2:#5a0a28;--ag:rgba(255,40,100,.5)}.dfd i.on.c{background:#ff6a8a}
+.navarr.tc{--a1:#ff6a8a;--a2:#5a0a28;--ag:rgba(255,40,100,.5)}
+.dfd i.on.dke{background:var(--good)}.dfd i.on.dkn{background:#ff8a96}.dfd i.on.dkh{background:#d4a0ff}.dfd i.on.dkc{background:#ff6a8a}
+.diffsw.v2 .navarr.big{width:54px}.diffsw.v2 .navarr.big small.lg{font-size:7.6px;letter-spacing:0}
 .nmbadge.cmbadge{background:linear-gradient(90deg,#3a0a2a,#c0144a)}.cmban{box-shadow:inset 0 0 0 2px rgba(255,60,110,.55),0 0 26px rgba(255,40,100,.22)}
 .btn.nmgo.cmgo,.btn.p.cmgo{background:linear-gradient(180deg,#ff5a86,#6a0a2e)!important;color:#fff!important}.cmpage .node.now{box-shadow:0 0 0 3px #ff3a6a,0 0 16px rgba(255,40,100,.5)}
 .cmtag{color:#ff8aa8!important}#battle.cmode .bh .t{color:#ff8aa8}
@@ -306,7 +313,8 @@ try{const X={'Cauchemar':'Nightmare','Mode Cauchemar':'Nightmare mode','Passer e
  'Fond « Cauchemar »':'“Nightmare” background','Mode Cauchemar : étape #':'Nightmare mode: stage #','Celui qui ne dort plus':'The One Who No Longer Sleeps','Terminer les # étapes du mode Cauchemar':'Finish the # stages of Nightmare mode',
  '🌱 Facile #':'🌱 Easy #','⚔️ Normal #':'⚔️ Normal #','💀 Difficile #':'💀 Hard #','🌙 Cauchemar #':'🌙 Nightmare #',
  '🏆 La progression compte toutes les difficultés : 🌱 Facile, puis ⚔️ Normal, 💀 Difficile et 🌙 Cauchemar.':'🏆 Progress counts every difficulty: 🌱 Easy, then ⚔️ Normal, 💀 Hard and 🌙 Nightmare.',
- 'Étape # / # · Difficile débloqué !':'Stage # / # · Hard unlocked!','Étape # / # · le défi ultime':'Stage # / # · the ultimate challenge'};
+ 'Étape # / # · Difficile débloqué !':'Stage # / # · Hard unlocked!','Étape # / # · le défi ultime':'Stage # / # · the ultimate challenge',
+ 'Terminé · Normal débloqué !':'Done · Normal unlocked!','Terminé · Difficile débloqué !':'Done · Hard unlocked!','Terminé · Cauchemar débloqué !':'Done · Nightmare unlocked!','Terminé · tu ne dors plus jamais !':'Done · you never sleep again!','Terminé !':'Done!'};
  for(const W of CW){X[W.n]=W.en;X['#. '+W.n]='#. '+W.en;X['Monde # · '+W.n]='World # · '+W.en;X[W.n+' · Équipe principale ·']=W.en+' · Main team ·';
    for(const m of [...W.m,W.b]){X[m[0]]=m[4];X[m[0]+' (boss)']=m[4]+' (boss)'}X[W.bs[0]]=W.bs[1];
    const R=RULES[W.r];X[W.n+' · '+R.ic+' '+R.n]=W.en+' · '+R.ic+' '+EN[R.n];X[W.n+' · '+R.ic+' '+R.n+' · Équipe principale ·']=W.en+' · '+R.ic+' '+EN[R.n]+' · Main team ·'}

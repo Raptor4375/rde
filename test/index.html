@@ -30967,11 +30967,16 @@ document.addEventListener('click',e=>{const t=e.target.closest('[data-a]');if(!t
 /* ---------- le sélecteur : Facile ‹ › Normal ‹ › Difficile ‹ › Cauchemar ---------- */
 const DF=['e','n','h','c'],DL={e:'Facile',n:'Normal',h:'Difficile',c:'Cauchemar'},DI={e:'🌱',n:'⚔️',h:'💀',c:'🌙'},DC={e:'te',n:'tn',h:'th',c:'tc'};
 diffSw=function(d){if(!DF.includes(d))d='e';const i=DF.indexOf(d),p=DF[(i+3)%4],nx=DF[(i+1)%4];
-  const sub=d==='e'?`Étape ${Math.min(100,S.stage)} / 100${nOpen()?' · Normal débloqué !':''}`:d==='n'?(!nOpen()?'🔒 Termine le mode Facile pour débloquer':`Étape ${Math.min(100,(S.nmax||0)+1)} / 100${hOpen()?' · Difficile débloqué !':' · monstres bien plus coriaces'}`)
-    :d==='h'?(!hOpen()?'🔒 Termine le mode Normal pour débloquer':`Étape ${Math.min(100,(S.hmax||0)+1)} / 100${cOpen()?' · Cauchemar débloqué !':' · le défi ultime'}`):(!cOpen()?'🔒 Termine le mode Difficile pour débloquer':`Étape ${Math.min(100,(S.cmax||0)+1)} / 100 · la nuit sans fin`);
-  return`<div class="diffsw v2 d${d}" id="diffsw"><button class="navarr big nl ${DC[p]}" data-a="diff" data-v="${p}" aria-label="Passer en mode ${DL[p]}">${CHEV_L}<small>${DL[p]}</small></button>
-  <div class="dft"><span class="dfic">${DI[d]}</span><b>Mode ${DL[d]}</b><small>${sub}</small><span class="dfd">${DF.map(x=>`<i class="${x===d?'on '+x:''}"></i>`).join('')}</span></div>
-  <button class="navarr big nr ${DC[nx]}" data-a="diff" data-v="${nx}" aria-label="Passer en mode ${DL[nx]}">${CHEV_R}<small>${DL[nx]}</small></button></div>`};
+  /* un mode terminé : « Terminé · … » (plus court, ça ne passe plus sur deux lignes) */
+  const sub=d==='e'?((S.max||0)>=100?(nOpen()?'Terminé · Normal débloqué !':'Terminé !'):`Étape ${Math.min(100,S.stage)} / 100${nOpen()?' · Normal débloqué !':''}`)
+    :d==='n'?(!nOpen()?'🔒 Termine le mode Facile pour débloquer':(S.nmax||0)>=100?'Terminé · Difficile débloqué !':`Étape ${Math.min(100,(S.nmax||0)+1)} / 100${hOpen()?' · Difficile débloqué !':' · monstres bien plus coriaces'}`)
+    :d==='h'?(!hOpen()?'🔒 Termine le mode Normal pour débloquer':(S.hmax||0)>=100?'Terminé · Cauchemar débloqué !':`Étape ${Math.min(100,(S.hmax||0)+1)} / 100 · le défi ultime`)
+    :(!cOpen()?'🔒 Termine le mode Difficile pour débloquer':(S.cmax||0)>=100?'Terminé · tu ne dors plus jamais !':`Étape ${Math.min(100,(S.cmax||0)+1)} / 100 · la nuit sans fin`);
+  /* les points : « dk » + le mode (la classe « h » toute seule était celle des titres du jeu : le point du Difficile était invisible) */
+  const lab=x=>`<small${x==='c'?' class="lg"':''}>${DL[x]}</small>`;
+  return`<div class="diffsw v2 d${d}" id="diffsw"><button class="navarr big nl ${DC[p]}" data-a="diff" data-v="${p}" aria-label="Passer en mode ${DL[p]}">${CHEV_L}${lab(p)}</button>
+  <div class="dft"><span class="dfic">${DI[d]}</span><b>Mode ${DL[d]}</b><small>${sub}</small><span class="dfd">${DF.map(x=>`<i class="${x===d?'on dk'+x:''}"></i>`).join('')}</span></div>
+  <button class="navarr big nr ${DC[nx]}" data-a="diff" data-v="${nx}" aria-label="Passer en mode ${DL[nx]}">${CHEV_R}${lab(nx)}</button></div>`};
 /* glisser le doigt : on avance ou on recule d'un mode (avant, ça n'allait que de Facile à Normal) */
 {let sx=null,sy=null,sw=null;
   window.addEventListener('touchstart',e=>{try{if(TAB!=='adv'||(typeof B!=='undefined'&&B)){sx=null;return}const el=e.target.closest&&e.target.closest('#diffsw,.wbanner');if(!el){sx=null;return}sx=e.touches[0].clientX;sy=e.touches[0].clientY}catch(er){sx=null}},{passive:true,capture:true});
@@ -31074,7 +31079,9 @@ window.RDEcm={CW,RULES,CT,cRecD,cRecRaw,cOpen,cInit,cBattle,cScene,set mode(v){C
 /* ---------- styles ---------- */
 const st=document.createElement('style');st.id='v454css';st.textContent=`
 .diffsw.dc{background:linear-gradient(90deg,rgba(255,40,100,.22),var(--panel) 40%,var(--panel) 60%,rgba(255,40,100,.22));border-color:#7a1a3a}.diffsw.dc .dft b{color:#ff8aa8}
-.navarr.tc{--a1:#ff6a8a;--a2:#5a0a28;--ag:rgba(255,40,100,.5)}.dfd i.on.c{background:#ff6a8a}
+.navarr.tc{--a1:#ff6a8a;--a2:#5a0a28;--ag:rgba(255,40,100,.5)}
+.dfd i.on.dke{background:var(--good)}.dfd i.on.dkn{background:#ff8a96}.dfd i.on.dkh{background:#d4a0ff}.dfd i.on.dkc{background:#ff6a8a}
+.diffsw.v2 .navarr.big{width:54px}.diffsw.v2 .navarr.big small.lg{font-size:7.6px;letter-spacing:0}
 .nmbadge.cmbadge{background:linear-gradient(90deg,#3a0a2a,#c0144a)}.cmban{box-shadow:inset 0 0 0 2px rgba(255,60,110,.55),0 0 26px rgba(255,40,100,.22)}
 .btn.nmgo.cmgo,.btn.p.cmgo{background:linear-gradient(180deg,#ff5a86,#6a0a2e)!important;color:#fff!important}.cmpage .node.now{box-shadow:0 0 0 3px #ff3a6a,0 0 16px rgba(255,40,100,.5)}
 .cmtag{color:#ff8aa8!important}#battle.cmode .bh .t{color:#ff8aa8}
@@ -31144,7 +31151,8 @@ try{const X={'Cauchemar':'Nightmare','Mode Cauchemar':'Nightmare mode','Passer e
  'Fond « Cauchemar »':'“Nightmare” background','Mode Cauchemar : étape #':'Nightmare mode: stage #','Celui qui ne dort plus':'The One Who No Longer Sleeps','Terminer les # étapes du mode Cauchemar':'Finish the # stages of Nightmare mode',
  '🌱 Facile #':'🌱 Easy #','⚔️ Normal #':'⚔️ Normal #','💀 Difficile #':'💀 Hard #','🌙 Cauchemar #':'🌙 Nightmare #',
  '🏆 La progression compte toutes les difficultés : 🌱 Facile, puis ⚔️ Normal, 💀 Difficile et 🌙 Cauchemar.':'🏆 Progress counts every difficulty: 🌱 Easy, then ⚔️ Normal, 💀 Hard and 🌙 Nightmare.',
- 'Étape # / # · Difficile débloqué !':'Stage # / # · Hard unlocked!','Étape # / # · le défi ultime':'Stage # / # · the ultimate challenge'};
+ 'Étape # / # · Difficile débloqué !':'Stage # / # · Hard unlocked!','Étape # / # · le défi ultime':'Stage # / # · the ultimate challenge',
+ 'Terminé · Normal débloqué !':'Done · Normal unlocked!','Terminé · Difficile débloqué !':'Done · Hard unlocked!','Terminé · Cauchemar débloqué !':'Done · Nightmare unlocked!','Terminé · tu ne dors plus jamais !':'Done · you never sleep again!','Terminé !':'Done!'};
  for(const W of CW){X[W.n]=W.en;X['#. '+W.n]='#. '+W.en;X['Monde # · '+W.n]='World # · '+W.en;X[W.n+' · Équipe principale ·']=W.en+' · Main team ·';
    for(const m of [...W.m,W.b]){X[m[0]]=m[4];X[m[0]+' (boss)']=m[4]+' (boss)'}X[W.bs[0]]=W.bs[1];
    const R=RULES[W.r];X[W.n+' · '+R.ic+' '+R.n]=W.en+' · '+R.ic+' '+EN[R.n];X[W.n+' · '+R.ic+' '+R.n+' · Équipe principale ·']=W.en+' · '+R.ic+' '+EN[R.n]+' · Main team ·'}
@@ -31152,6 +31160,73 @@ try{const X={'Cauchemar':'Nightmare','Mode Cauchemar':'Nightmare mode','Passer e
  X['# gemmes (#re victoire Difficile)']='# gems (first Hard win)';X['# gemmes (#re victoire Normal)']='# gems (first Normal win)';
  for(const k in X){const kk=k.replace(NUMRX,'#');if(!(kk in I18N_EN))I18N_EN[kk]=String(X[k]).replace(NUMRX,'#')}}catch(e){console.warn('cauchemar en',e)}
 }catch(e){console.warn('cauchemar',e)}})();
+
+/* ================= V455 : L'AFFICHAGE TIENT EN PLACE =================
+   Corrections vues sur les vidéos de Raptor :
+   · un réaffichage qui n'a pas été demandé par un geste (données en ligne, minuteur…) attend maintenant que le doigt
+     s'arrête de faire défiler, au lieu de redessiner la page sous le doigt ;
+   · l'onglet Aventure pesait 350 ko de texte à chaque affichage (les portraits des Chroniques des Héros
+     étaient recopiés dedans à chaque fois) : ils sont maintenant des images partagées, la page pèse ~45 ko ;
+   · en combat, les gros chiffres (« CRIT 671,9 k ») sortaient de l'écran sur les côtés : ils restent dedans. */
+(function(){try{
+/* ---------- 1. la page ne saute plus quand elle se réaffiche pendant qu'on fait défiler ---------- */
+const SB={t:0,u:0,pend:null};
+addEventListener('scroll',()=>{SB.t=performance.now()},{passive:true,capture:true});
+/* un vrai geste (toucher un bouton, taper au clavier) : pas le doigt qui fait défiler */
+for(const ev of ['click','keydown','input','change'])addEventListener(ev,()=>{SB.u=performance.now()},{passive:true,capture:true});
+const inBattle=()=>{try{return typeof B!=='undefined'&&!!B}catch(e){return false}};
+const r0=render;
+render=function(){
+  const now=performance.now();
+  /* un réaffichage « de fond » (données en ligne, minuteur…) pendant qu'on fait défiler : on attend la fin du geste */
+  if(now-SB.t<900&&now-SB.u>900&&!inBattle()){
+    if(!SB.pend)SB.pend=setTimeout(function go(){if(performance.now()-SB.t<700){SB.pend=setTimeout(go,300);return}SB.pend=null;try{render()}catch(e){}},300);
+    return}
+  if(SB.pend){clearTimeout(SB.pend);SB.pend=null}
+  return r0.apply(this,arguments)};
+window.RDEscrollDefer=SB;
+
+/* ---------- 2. les grandes images de l'Aventure ne sont plus recopiées dans la page à chaque affichage ---------- */
+try{const st0=window.RDEstill;if(typeof st0==='function'){const BU=new Map();
+  window.RDEstill=function(k,fn){const u=st0.apply(this,arguments);if(typeof u!=='string'||!u.startsWith('data:image/svg+xml'))return u;
+    const kk=k+'|'+u.length;let b=BU.get(kk);if(b)return b;
+    try{const i=u.indexOf(',');const head=u.slice(0,i);const txt=/;base64/.test(head)?atob(u.slice(i+1)):decodeURIComponent(u.slice(i+1));
+      b=URL.createObjectURL(new Blob([txt],{type:'image/svg+xml'}));BU.set(kk,b);return b}catch(e){return u}}}}catch(e){}
+
+/* ---------- 3. en combat, les chiffres restent dans l'écran ---------- */
+try{const fn0=floatNow;const RC=new WeakMap();
+  const FS=c=>/crit/.test(c)?(/sk/.test(c)?30:25):/sk/.test(c)?24:/heal/.test(c)?20:/info/.test(c)?13:/dot/.test(c)?15:18;
+  floatNow=function(u,t,c){const r=fn0.apply(this,arguments);
+    try{if(!B||B.skip)return r;const el=document.getElementById('u-'+u.key);if(!el)return r;const f=el.lastElementChild;if(!f||!f.classList||!f.classList.contains('fl'))return r;
+      /* « CRIT » en petit devant le nombre : le chiffre prend moins de place en largeur */
+      if(/^CRIT /.test(t)&&f.textContent===t){const num=t.slice(5),sm=document.createElement('small');sm.className='flc';sm.textContent='CRIT';f.textContent='';f.append(sm,document.createTextNode(num));t='CRI'+num}
+      const now=performance.now();let q=RC.get(el);
+      if(!q||now-q.t>2500){const a=el.getBoundingClientRect(),bt=document.getElementById('battle'),bb=bt?bt.getBoundingClientRect():{left:0,right:innerWidth};
+        q={l:a.left,w:a.width,min:Math.max(0,bb.left)+6,max:Math.min(innerWidth,bb.right)-6,t:now};RC.set(el,q)}
+      const w=String(t).length*FS(c)*.48*1.3,L=parseFloat(f.style.left)||50,cx=q.l+L/100*q.w;let dx=0;
+      if(w>=q.max-q.min)dx=(q.min+q.max)/2-cx;else if(cx-w/2<q.min)dx=q.min-(cx-w/2);else if(cx+w/2>q.max)dx=q.max-(cx+w/2);
+      if(Math.abs(dx)>1)f.style.left=`calc(${L.toFixed(1)}% + ${Math.round(dx)}px)`}catch(e){}
+    return r}}catch(e){}
+
+try{const st=document.createElement('style');st.id='v455css';st.textContent='.fl small.flc{font-size:.48em;letter-spacing:.05em;vertical-align:.62em;margin-right:3px;line-height:1}';document.head.appendChild(st)}catch(e){}
+
+/* ---------- notes de version ---------- */
+try{const it=[
+  "🎯 Le point du mode <b>Difficile</b> s'affiche enfin sous le sélecteur de mode, « Cauchemar » ne dépasse plus de sa flèche, et un mode terminé affiche « Terminé » (le texte ne passe plus sur deux lignes).",
+  "📜 La page ne <b>saute</b> plus quand elle se met à jour pendant que tu fais défiler (Arène, Grand-Place, guilde…) : elle attend que ton doigt s'arrête, et garde ta position.",
+  "⚡ L'onglet <b>Aventure</b> est bien plus léger (les portraits des Chroniques des Héros ne sont plus recopiés à chaque affichage) : changer de mode est plus rapide.",
+  "💥 En combat, les gros chiffres de dégâts restent dans l'écran au lieu de dépasser sur les côtés."];
+ PATCH.unshift({v:79,d:'25 novembre 2026',t:"L'affichage tient en place",items:it});
+ const E=[
+  "🎯 The <b>Hard</b> mode dot finally shows under the mode selector, “Nightmare” no longer sticks out of its arrow, and a finished mode shows “Done” (the text no longer wraps onto two lines).",
+  "📜 The page no longer <b>jumps</b> when it updates while you scroll (Arena, Grand Square, guild…): it waits for your finger to stop, and keeps your position.",
+  "⚡ The <b>Adventure</b> tab is much lighter (the Hero Chronicles portraits are no longer copied on every display): switching modes is faster.",
+  "💥 In battle, big damage numbers stay on screen instead of sticking out on the sides."];
+ const sp=x=>String(x).split(/<[^>]+>/).map(y=>y.trim()).filter(y=>/[A-Za-zÀ-ÿ]/.test(y));
+ const put=(fr,en)=>{const f=sp(fr),g=sp(en);if(f.length!==g.length)return;f.forEach((x,i)=>{if(!/[A-Za-zÀ-ÿ]{2}/.test(x))return;const k=x.replace(NUMRX,'#');if(!(k in I18N_EN))I18N_EN[k]=g[i].replace(NUMRX,'#')})};
+ it.forEach((x,i)=>{I18N_EN[x]=E[i];put(x,E[i])});
+ if(!("L'affichage tient en place" in I18N_EN))I18N_EN["L'affichage tient en place"]='The display stays put'}catch(e){}
+}catch(e){console.warn('v455',e)}})();
 /* ================= toujours en dernier : l'écran de chargement reprend les dessins à jour ================= */
 (function(){try{
   /* Livre III : le Roi de Cendre (nouveau design) au premier rang, et le souvenir du jeune Éryndel au-dessus de la couronne */
