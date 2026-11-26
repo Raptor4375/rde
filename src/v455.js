@@ -31,22 +31,7 @@ try{const st0=window.RDEstill;if(typeof st0==='function'){const BU=new Map();
     try{const i=u.indexOf(',');const head=u.slice(0,i);const txt=/;base64/.test(head)?atob(u.slice(i+1)):decodeURIComponent(u.slice(i+1));
       b=URL.createObjectURL(new Blob([txt],{type:'image/svg+xml'}));BU.set(kk,b);return b}catch(e){return u}}}}catch(e){}
 
-/* ---------- 3. en combat, les chiffres restent dans l'écran ---------- */
-try{const fn0=floatNow;const RC=new WeakMap();
-  const FS=c=>/crit/.test(c)?(/sk/.test(c)?30:25):/sk/.test(c)?24:/heal/.test(c)?20:/info/.test(c)?13:/dot/.test(c)?15:18;
-  floatNow=function(u,t,c){const r=fn0.apply(this,arguments);
-    try{if(!B||B.skip)return r;const el=document.getElementById('u-'+u.key);if(!el)return r;const f=el.lastElementChild;if(!f||!f.classList||!f.classList.contains('fl'))return r;
-      /* « CRIT » en petit devant le nombre : le chiffre prend moins de place en largeur */
-      if(/^CRIT /.test(t)&&f.textContent===t){const num=t.slice(5),sm=document.createElement('small');sm.className='flc';sm.textContent='CRIT';f.textContent='';f.append(sm,document.createTextNode(num));t='CRI'+num}
-      const now=performance.now();let q=RC.get(el);
-      if(!q||now-q.t>2500){const a=el.getBoundingClientRect(),bt=document.getElementById('battle'),bb=bt?bt.getBoundingClientRect():{left:0,right:innerWidth};
-        q={l:a.left,w:a.width,min:Math.max(0,bb.left)+6,max:Math.min(innerWidth,bb.right)-6,t:now};RC.set(el,q)}
-      const w=String(t).length*FS(c)*.48*1.3,L=parseFloat(f.style.left)||50,cx=q.l+L/100*q.w;let dx=0;
-      if(w>=q.max-q.min)dx=(q.min+q.max)/2-cx;else if(cx-w/2<q.min)dx=q.min-(cx-w/2);else if(cx+w/2>q.max)dx=q.max-(cx+w/2);
-      if(Math.abs(dx)>1)f.style.left=`calc(${L.toFixed(1)}% + ${Math.round(dx)}px)`}catch(e){}
-    return r}}catch(e){}
-
-try{const st=document.createElement('style');st.id='v455css';st.textContent='.fl small.flc{font-size:.48em;letter-spacing:.05em;vertical-align:.62em;margin-right:3px;line-height:1}';document.head.appendChild(st)}catch(e){}
+/* ---------- 3. (les chiffres du combat : remplacé par la v456) ---------- */
 
 /* ---------- notes de version ---------- */
 try{const it=[
