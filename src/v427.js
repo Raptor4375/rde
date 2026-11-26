@@ -102,7 +102,7 @@ window.RDEtrialMore=NEWS;
 /* …et, dans sa propre chronique, place déjà le héros dans l'équipe */
 window.RDEtrialFav=ctx=>{try{if(ctx&&ctx.kind==='story'&&window.RDEhc){const h=RDEhc.heroOfChapter(ctx.c);if(h!=null)return h}}catch(e){}return null};
 /* sur la fiche d'un nouveau héros qu'on n'a pas encore : « L'essayer » */
-const chronOf=id=>{try{return window.RDEhc?RDEhc.heroChron(id):-1}catch(e){return-1}};
+const chronOf=id=>-1; /* v457 : chroniques des héros retirées */
 {const hm=heroModal;heroModal=function(id){const r=hm.apply(this,arguments);
   try{id=+id;if(!S.heroes[id]&&NEWS().includes(id)){const ci=chronOf(id),mo=document.querySelector('#ovl .modal');
     if(mo&&!mo.querySelector('.hctry')){const btn=ci>=0

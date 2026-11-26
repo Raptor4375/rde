@@ -13,7 +13,7 @@ const put=(fr,en)=>{try{const f=spl(fr),g=spl(en);if(f.length!==g.length)return;
 let CMODE=0;
 
 /* ---------- la courbe de puissance (après le mode Difficile : 454 k à l'étape 100) ---------- */
-const CMT=[[1,385000],[25,430000],[50,480000],[75,540000],[90,580000],[100,610000]];
+const CMT=[[1,240000],[25,290000],[50,350000],[75,420000],[90,470000],[100,510000]];
 const cRecRaw=n=>lerpT(CMT,n);
 function cRecD(n){return Math.round(cRecRaw(n)*(n%10===0?1.1:1)*1.25/1000)*1000}
 /* réglage fin (calibré sur des combats simulés, comme le mode Difficile) */
@@ -93,12 +93,18 @@ function ruleFoe(u,r){if(r==='rev'||r==='final')u.cRev=1;else if(r==='crit')u.cr
 /* la musique */
 {const bt=battleTheme;battleTheme=function(){try{if(typeof B!=='undefined'&&B&&B.cauch&&!B.done)return B.cauch%10===0?(SONGS.umbra?'umbra':'boss'):(SONGS.spooky?'spooky':'battle')}catch(e){}return bt.apply(this,arguments)}}
 
+/* ---------- le Courage : chaque défaite sur une même étape donne +3 % de PV/ATQ/DÉF pour le prochain essai (10 fois max), remis à zéro à la victoire ---------- */
+const COUR_STEP=.03,COUR_MAX=10;
+const courOf=n=>{const c=S.ccour;return c&&c.s===n?Math.min(COUR_MAX,c.n||0):0};
+window.RDEcour=courOf;
 function cBattle(n){cInit();if(!cOpen())return toast('Termine les 100 étapes du mode Difficile pour débloquer le mode Cauchemar.');if(n>S.cstage||n<1)return;
   NMODE=n;CMODE=n;try{startBattle('stage',n)}finally{NMODE=0;CMODE=0}
   if(typeof B!=='undefined'&&B&&B.cauch===n){try{const w=Math.ceil(n/10),C=CW[w-1],R=RULES[C.r];const t=$('#battle .bh .t');if(t&&t.firstChild)t.firstChild.textContent='🌙 Cauchemar · Étape '+n+(n%10===0?' · Boss':'');
     const sm=$('#battle .bh .t small');if(sm)sm.innerHTML=sm.innerHTML.replace(WORLDS[w-1].n,C.n+' · '+R.ic+' '+R.n);
     const sc=$('#battle .bscene');if(sc)sc.outerHTML=cScene(w,12);const bt=$('#battle');if(bt)bt.classList.add('cmode');
-    try{log(`${R.ic} <b>${R.n}</b> — <span>${R.d}</span>`,'cs')}catch(e){}}catch(e){}}}
+    try{log(`${R.ic} <b>${R.n}</b> — <span>${R.d}</span>`,'cs')}catch(e){}}catch(e){}
+    try{const cn=courOf(n);if(cn){const m=1+COUR_STEP*cn;for(const u of B.units)if(u.side===0){u.max=Math.round(u.max*m);u.hp=u.max;u.atk=Math.round(u.atk*m);u.def=Math.round(u.def*m)}
+      try{refreshUnits()}catch(e){}try{log(`💪 <b>Courage</b> : ton équipe a +${Math.round(cn*COUR_STEP*100)} % de PV, d'ATQ et de DÉF sur cette étape.`,'cs')}catch(e){}}}catch(e){}}}
 window.cBattle=cBattle;
 
 /* ---------- les récompenses ---------- */
@@ -118,6 +124,9 @@ const egg=r=>{try{const p=window.RDEpetState();p.eggs.push({id:p.nid++,r});retur
       if(n===100){try{cosGive('bg','cauchemar')}catch(e){S.pbgs=S.pbgs||[];if(!S.pbgs.includes('cauchemar'))S.pbgs.push('cauchemar')}egg(3);extra.push("🌙 Mode Cauchemar terminé ! Titre « Celui qui ne dort plus », fond « Cauchemar » et un œuf légendaire.")}}
     const it=dropItem(rollRarity(10,boss?3.6:2));extra.push(itemChip(it))}
   else extra.push(`Puissance conseillée en Cauchemar : ${fmt(cRecD(n))}.`);
+  try{if(res===true){if(S.ccour&&S.ccour.s===n)S.ccour=null}
+    else{const c=(S.ccour&&S.ccour.s===n)?S.ccour:{s:n,n:0};c.n=Math.min(COUR_MAX,(c.n||0)+1);S.ccour=c;
+      extra.push(`💪 Courage : +${Math.round(c.n*COUR_STEP*100)} % de PV, d'ATQ et de DÉF à ton prochain essai de cette étape${c.n>=COUR_MAX?' (au maximum)':''}.`)}}catch(e){}
   save();try{ttCheck()}catch(e){}
   try{if(res!==true)document.querySelectorAll('#battle .result .rw span').forEach(x=>{if(/^Puissance conseillée : /.test(x.textContent))x.remove()});
     const rw=$('#battle .result .rw');if(rw)rw.insertAdjacentHTML('beforeend',extra.map(x=>`<span>${x}</span>`).join(''));
@@ -170,7 +179,7 @@ function pAdvC(sw){cInit();const lock=!cOpen();const cw=Math.max(1,Math.min(10,M
   <div class="card cmrule"><span class="cmric">${R.ic}</span><div style="min-width:0"><small>RÈGLE DU MONDE ${w}</small><b>${R.n}</b><p>${R.d}</p></div></div>
   <div class="path">${nodes}</div>
   <div class="card stack"><div class="row" style="justify-content:space-between"><div><div class="h3" style="margin:0">Ton équipe d'aventure</div><div class="muted">Puissance ${fmt(tp)}</div></div>${teamStrip(teamIdsFor('pve'))}</div>${teamPick('pve')}
-  ${lock?'':fin?`<div class="muted">Les 100 étapes du mode Cauchemar sont terminées. Tu ne dors plus jamais ! Rejoue-les pour l'équipement.</div>`:`<div class="row"><span class="${tp<rp*.85?'warn':'muted'}">Puissance conseillée : <b class="num">${fmt(rp)}</b>${tp<rp*.85?' · ton équipe est trop faible, renforce-la !':''}</span></div><button class="btn p big nmgo cmgo" data-a="cstage" data-v="${S.cstage}">🌙 Combattre l'étape ${S.cstage} Cauchemar${S.cstage%10===0?' · BOSS':''}</button>`}</div>
+  ${lock?'':fin?`<div class="muted">Les 100 étapes du mode Cauchemar sont terminées. Tu ne dors plus jamais ! Rejoue-les pour l'équipement.</div>`:`<div class="row"><span class="${tp<rp*.85?'warn':'muted'}">Puissance conseillée : <b class="num">${fmt(rp)}</b>${tp<rp*.85?' · ton équipe est trop faible, renforce-la !':''}</span></div>${courOf(S.cstage)?`<div class="cmcour">💪 <b>Courage +${Math.round(courOf(S.cstage)*COUR_STEP*100)} %</b> <span>sur cette étape, grâce à tes ${courOf(S.cstage)} essai${courOf(S.cstage)>1?'s':''}. Il repart à zéro quand tu gagnes.</span></div>`:''}<button class="btn p big nmgo cmgo" data-a="cstage" data-v="${S.cstage}">🌙 Combattre l'étape ${S.cstage} Cauchemar${S.cstage%10===0?' · BOSS':''}</button>`}</div>
   ${rewCard()}</div>`}
 window.pAdvC=pAdvC;
 {const pa=pAdv;pAdv=function(){let d='e';try{d=localStorage.getItem('royaumes-diff')||'e'}catch(e){}UI.diff=UI.diff||d;if(UI.diff!=='c')return pa.apply(this,arguments);

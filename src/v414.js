@@ -530,7 +530,7 @@ document.addEventListener('click',e=>{const o=e.target.closest('[data-a="hcopen"
  const b=e.target.closest('[data-a="hcplay"]');if(!b)return;e.preventDefault();e.stopImmediatePropagation();
  const [ci,ki]=b.dataset.v.split('_').map(Number);if(!hUn(ci,ki))return;try{closeModal()}catch(er){}
  const idx=HC0+HCH.slice(0,ci).reduce((a,C)=>a+C.ch.length,0)+ki;sagaOpen(idx,'intro')},true);
-{const sc=sagaCard;sagaCard=function(){const h=sc.apply(this,arguments);try{return hcCard()+h}catch(e){}return h}}
+/* (v457 : les Chroniques des Héros sont retirées de l'Aventure : les nouveaux héros arrivent désormais par un événement de saison) */
 
 const st=document.createElement('style');st.textContent=`.hccard2{background:radial-gradient(120% 120% at 100% 0%,rgba(159,232,200,.16),transparent 55%),var(--panel)!important;border-color:rgba(159,232,200,.35)!important}
 .hchd{display:flex;gap:10px;align-items:flex-start}.hchd p{font-size:12.5px;margin:3px 0 0;line-height:1.4}
