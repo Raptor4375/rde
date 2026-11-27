@@ -65,7 +65,7 @@ window.claude={use:async k=>{if(k==='db'||k==='user'){try{const F=await window.R
 window.RDEF();
 })();
 </script>
-<script>window.RDE_V='20261126224300';if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));</script>
+<script>window.RDE_V='20261127004025';if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));</script>
 </head><body>
 <title>RDE · Royaumes d'Éther</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -25427,6 +25427,31 @@ const st=document.createElement('style');st.textContent=`
 try{Object.assign(I18N_EN,{'Perrin le Dernier de la Garde':'Perrin the Last of the Guard','Je tiens':'I Hold','JE TIENS':'I HOLD','PERSONNE NE PASSE':'NOBODY GETS THROUGH','🛡️ Le mur qui reste':'🛡️ The Wall That Stays',
  "Pour <b>chaque allié tombé</b> : <b>+18 % de dégâts</b>, <b>−12 % de dégâts subis</b> et <b>+20 énergie</b> immédiatement. Plus il reste seul, plus il tient.":"For <b>every fallen ally</b>: <b>+18 % damage</b>, <b>−12 % damage taken</b> and <b>+20 energy</b> at once. The more alone he is, the harder he holds."})}catch(e){}
 }catch(e){console.warn('perrin mur',e)}})();
+
+/* ================= V417b : LES HÉROS DE LA RÉSERVE (événements de saison) =================
+   Un nouveau héros par saison du pass. Chaque héros n'existe dans le jeu qu'à partir de sa date :
+   avant, personne ne le voit (ni la collection, ni les bots, ni la méta). Les dates servent aussi
+   à l'événement (v458). Les données sont posées ici, tôt, pour que tout le reste du jeu les connaisse. */
+(function(){try{
+const HEVD=window.RDEHEVD={
+ 77:{s:Date.UTC(2026,10,26,20,0),e:Date.UTC(2026,11,8,7,10)},
+ 78:{s:Date.UTC(2026,11,8,7,10),e:Date.UTC(2026,11,22,7,10)},
+ 79:{s:Date.UTC(2026,11,22,7,10),e:Date.UTC(2027,0,5,7,10)}};
+const now=()=>window.__HEVNOW||Date.now();
+const own=i=>{try{return!!(S&&S.heroes&&S.heroes[i])}catch(e){return false}};
+const rel=i=>!!HEVD[i]&&(now()>=HEVD[i].s||own(i)||rel(i+1));
+window.RDEhevRel=i=>rel(i);
+const DEF={
+ 77:{i:77,n:'Lucan le Loup de Brume',c:'Assassin',r:4,ex:1,sk:{n:'Hurlement',tg:'low',fx:{dmg:300,exec:1,crit:15,howl:1}}},
+ 78:{i:78,n:'Veyra aux Mille Clés',c:'Guerrier',r:4,ex:1,sk:{n:"Toutes les portes s'ouvrent",tg:'all',fx:{dmg:180,unlock:1,cleanse:1}}},
+ 79:{i:79,n:'Ossian le Juge aux Yeux Bandés',c:'Mage',r:5,ex:1,sk:{n:'Verdict',tg:'all',fx:{dmg:180,verdict:1}}}};
+const LK={
+ 77:['#e2c6aa','#c8ccd8','#2a3a68','#6a6e80','#9fb0d8','#e8b84a','bg:smoke back:cape hair:messy eyes:sharp mouth:set body:slim ear:human prop:dagger'],
+ 78:['#f2d6c0','#2a2030','#1e4a5a','#5a6478','#7fd8ff','#7fd8ff','bg:spirit back:none hair:bob eyes:sharp mouth:set body:tunic ear:human prop:chain'],
+ 79:['#e6ccb0','#e8e4ea','#1a1420','#8a1a2a','#ffd77a','#ffd77a','bg:holy back:cape hair:long eyes:closed mouth:set body:robe ear:human prop:gavel']};
+for(const id of[77,78,79]){if(HEROES[id]||HEROES.length!==id||!rel(id))break;
+  const h=DEF[id];if(now()>=HEVD[id].e)delete h.ex;HEROES.push(h);try{LOOKS[id]=LK[id]}catch(e){}}
+}catch(e){console.warn('réserve de héros',e)}})();
 /* ================= V418 : DEUX CHRONIQUES DE PLUS =================
    « Le Dernier Duel » (Rouge-Garance) et « La Rose Brisée » (Orgemme).
    Perrin se débloque au bout de la chronique d'Aegis. */
@@ -31546,9 +31571,9 @@ const addRw=txt=>{try{const rw=document.querySelector('#battle .result .rw');if(
       if(n){save();addRw(`${LUNE} ${n} ${T('Larmes de Lune','Moon Tears')}`)}
       else if(S.lmd&&S.lmd.n>=DAYCAP)addRw(`${LUNE} ${T("Larmes de Lune : plafond du jour atteint (60)","Moon Tears: daily cap reached (60)")}`)}}catch(e){}
   return r}}
-if(typeof dgEnd==='function'){const de=dgEnd;dgEnd=function(win,rw){let depth=0;try{const R=DG().run;if(R)depth=R.fl*DG_ROWS+(R.pos?R.pos[0]+1:0)}catch(e){}
+if(typeof dgEnd==='function'){const de=dgEnd;dgEnd=function(win,rw){let depth=0,had=false;try{const R=DG().run;if(R){had=true;depth=R.fl*DG_ROWS+(R.pos?R.pos[0]+1:0)}}catch(e){}
   const out=de.apply(this,arguments);
-  try{const n=giveL(Math.min(25,2+Math.floor(depth/2))+(win?10:0),false);if(n){save();const t=`${LUNE} ${n} ${T('Larmes de Lune','Moon Tears')}`;if(Array.isArray(out))out.push(t);else if(Array.isArray(rw)&&rw!==out)rw.push(t)}}catch(e){}
+  try{if(!had)return out;const n=giveL(Math.min(25,2+Math.floor(depth/2))+(win?10:0),false);if(n){save();const t=`${LUNE} ${n} ${T('Larmes de Lune','Moon Tears')}`;if(Array.isArray(out))out.push(t);else if(Array.isArray(rw)&&rw!==out)rw.push(t)}}catch(e){}
   return out}}
 
 /* ---------- 3. les Chroniques des Héros s'en vont ---------- */
@@ -31593,6 +31618,934 @@ try{const it=[
  const X={'La Trempe et un Cauchemar jouable':'Tempering and a playable Nightmare'};
  for(const k in X)if(!(k in I18N_EN))I18N_EN[k]=X[k]}catch(e){}
 }catch(e){console.warn('v457',e)}})();
+
+/* ================= V458 : LES ÉVÉNEMENTS DE HÉROS — un nouveau héros à chaque saison, tout seul =================
+   Demandé par Raptor : plus de « Chroniques des Héros » ; chaque nouveau héros arrive avec un événement limité
+   (une monnaie et une boutique exclusives, sa bannière 50/50), et ça se déclenche tout seul à la date prévue.
+   · La réserve (HEV) : un héros par saison du pass. Avant sa date, le héros n'existe pas dans le jeu ;
+     pendant son événement il est « exclusif » (bannière + boutique) ; après, il rejoint l'invocation standard.
+   · La monnaie : +40 par jour (à réclamer), +5 par victoire (150 par jour), +20 par expédition au Donjon des Échos.
+     En jouant chaque jour, la boutique suffit pour avoir le héros gratuitement.
+   · À la fin : les tickets restants et la monnaie se changent en or.
+   · L'Espace créateur prévient quand la réserve est presque vide. */
+(function(){try{
+const T=(fr,en)=>(typeof LANG!=='undefined'&&LANG&&LANG!=='fr')?en:fr;
+const NOW=()=>window.__HEVNOW||Date.now();
+/* traduction des textes riches : chaque morceau entre deux balises a sa traduction */
+window.RDEput=window.RDEput||((fr,en)=>{try{I18N_EN[fr]=en;const sp=x=>String(x).split(/<[^>]+>/).map(y=>y.trim()).filter(y=>/[A-Za-zÀ-ÿ]/.test(y));const f=sp(fr),g=sp(en);if(f.length!==g.length){console.warn('i18n',f.length,g.length,String(fr).slice(0,60));return}f.forEach((x,i)=>{if(!/[A-Za-zÀ-ÿ]{2}/.test(x))return;const k=x.replace(NUMRX,'#');if(!(k in I18N_EN))I18N_EN[k]=g[i].replace(NUMRX,'#')})}catch(e){}});
+const HD=window.RDEHEVD||{77:{s:Date.UTC(2026,10,26,20,0),e:Date.UTC(2026,11,8,7,10)},78:{s:Date.UTC(2026,11,8,7,10),e:Date.UTC(2026,11,22,7,10)},79:{s:Date.UTC(2026,11,22,7,10),e:Date.UTC(2027,0,5,7,10)}};
+/* ---------- la réserve ---------- */
+const HEV=[
+ {k:'lucan',hid:77,ban:'ev_lucan',sn:'Lucan',ic:'🐺',col:'#9fb0d8',col2:'#2a2f48',start:HD[77].s,end:HD[77].e,price:1000,
+  cur:'Crocs de Brume',curEn:'Mist Fangs',cic:'🐾',
+  ttl:{k:'ev_lucan',n:'Loup de Brume',nEn:'Mist Wolf',d:"Boutique de l'événement de Lucan",dEn:"Lucan's event shop"},frm:{k:'brume',n:'Brume des Loups',nEn:'Mist Wolves'},
+  bn:'Le Loup de la Garde',bnEn:'The Wolf of the Guard',bd:"Il a ouvert la porte qu'il devait garder. Depuis, il vit dans la brume, avec les loups.",bdEn:'He opened the gate he was meant to guard. Since then he has lived in the mist, with the wolves.',
+  lore:"Il était le capitaine de la <b>Garde d'Éther</b>. Une nuit, il a ouvert la porte qu'il devait garder, et la Garde est tombée. Depuis, il vit dans la brume, avec les loups. Il dit qu'il veut réparer ce qu'il a fait. <b>Perrin</b>, le Dernier de la Garde, ne l'a jamais cru.",
+  loreEn:"He was the captain of the <b>Aether Guard</b>. One night he opened the door he was sworn to guard, and the Guard fell. Since then he has lived in the mist, with the wolves. He says he wants to make amends. <b>Perrin</b>, the Last of the Guard, never believed him."},
+ {k:'veyra',hid:78,f:1,ban:'ev_veyra',sn:'Veyra',ic:'🗝️',col:'#7fd8ff',col2:'#1a2a40',start:HD[78].s,end:HD[78].e,price:1150,
+  cur:'Clés Rouillées',curEn:'Rusty Keys',cic:'🔑',
+  ttl:{k:'ev_veyra',n:'Porte-Clés',nEn:'Keybearer',d:"Boutique de l'événement de Veyra",dEn:"Veyra's event shop"},frm:{k:'milcles',n:'Mille Clés',nEn:'Thousand Keys'},
+  bn:'Les Mille Clés',bnEn:'The Thousand Keys',bd:"Le soir où le Tribunal est tombé, elle a ouvert toutes les cellules. Elle ramène les évadés un par un.",bdEn:'The night the Court fell, she opened every cell. She brings the escapees back one by one.',
+  lore:"Geôlière de la prison du <b>Tribunal des Lames</b>, elle a ouvert toutes les cellules le soir où le Tribunal est tombé. Innocents et monstres sont partis ensemble dans la nuit. Depuis, elle les ramène un par un, avec la clé de chaque cellule à sa ceinture. Le dernier évadé a l'air si innocent…",
+  loreEn:"Jailer of the <b>Court of Blades</b> prison, she opened every cell the night the Court fell. Innocents and monsters fled together into the night. Since then she has been bringing them back one by one, with the key to each cell on her belt. The last escapee looks so innocent…"},
+ {k:'ossian',hid:79,ban:'ev_ossian',sn:'Ossian',ic:'⚖️',col:'#ffd77a',col2:'#2a2010',start:HD[79].s,end:HD[79].e,price:1500,
+  cur:'Sceaux du Tribunal',curEn:'Court Seals',cic:'🔏',
+  ttl:{k:'ev_ossian',n:'Juge Suprême',nEn:'High Judge',d:"Boutique de l'événement d'Ossian",dEn:"Ossian's event shop"},frm:{k:'balance',n:'Balance Brisée',nEn:'Broken Scales'},
+  bn:'Le Verdict',bnEn:'The Verdict',bd:"Trente ans juge suprême. Il a fermé les yeux une fois de trop ; maintenant il porte un bandeau.",bdEn:'Thirty years as high judge. He closed his eyes once too often; now he wears a blindfold.',
+  lore:"Pendant trente ans, il a été le juge suprême du <b>Tribunal des Lames</b>. Il a fermé les yeux sur les duels truqués, et <b>Rouge-Garance</b> a fait tomber son Tribunal. Depuis, il porte un bandeau et répare ses verdicts un à un, poursuivi par les Juges Célestes. On lui demande maintenant de juger <b>Lucan</b>…",
+  loreEn:"For thirty years he was the high judge of the <b>Court of Blades</b>. He turned a blind eye to rigged duels, and <b>Rouge-Garance</b> brought his Court down. Since then he wears a blindfold and mends his verdicts one by one, hunted by the Celestial Judges. Now he is asked to judge <b>Lucan</b>…"}];
+window.RDEhevList=HEV;
+const curE=()=>HEV.find(e=>NOW()>=e.start&&NOW()<e.end&&HEROES[e.hid])||null;
+window.RDEhevCur=curE;
+const ST=e=>{S.hev=S.hev||{};const o=S.hev[e.k]||(S.hev[e.k]={c:0,b:{},t:0});o.b=o.b||{};return o};
+const cn=e=>e?(LANG==='fr'||!LANG?e.cur:e.curEn):'';
+const deN=e=>(/^[AEIOUYÉÈÊaeiouyéèê]/.test(e.sn)?"d'":'de ')+e.sn;
+const his=e=>e&&e.f?'her':'his',him=e=>e&&e.f?'her':'him',HER=e=>e&&e.f?'Her':'His',NEWH=e=>e&&HEROES[e.hid]&&HEROES[e.hid].r>=5?T('HÉROS MYTHIQUE','MYTHIC HERO'):e&&e.f?T('NOUVELLE HÉROÏNE','NEW HEROINE'):T('NOUVEAU HÉROS','NEW HERO');
+const dk=()=>{try{return String(today())}catch(e){const d=new Date();return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate()}};
+const fdate=t=>{try{return new Date(t).toLocaleDateString(LANG==='fr'||!LANG?'fr-FR':'en-GB',{day:'numeric',month:'long'})}catch(e){return''}};
+
+/* ---------- avant, pendant, après ---------- */
+function gate(){for(const e of HEV){const h=HEROES[e.hid];if(!h)continue;
+  if(NOW()<e.end){h.ex=1;h.exd=T(`${e.f?'Héroïne':'Héros'} de l'événement « ${e.bn} » (jusqu'au ${fdate(e.end)}) : sa bannière et la boutique de l'événement, dans la Fête foraine.`,`Event ${e.f?'heroine':'hero'} “${e.bnEn}” (until ${fdate(e.end)}): ${his(e)} banner and the event shop, in the Fair.`)}
+  else{delete h.ex;delete h.exd}}}
+gate();
+/* fin d'un événement : tickets et monnaie restants → or */
+setTimeout(()=>{try{if(!S||!S.hev)return;let g=0;const L=[];for(const e of HEV){const o=S.hev[e.k];if(!o||o.done||NOW()<e.end)continue;
+  const n=(o.c|0)+(o.t|0)*90;if(n>0){const v=n*800;g+=v;L.push(`${e.cic} ${n}`)}o.c=0;o.t=0;o.done=1}
+  if(g){S.gold+=g;save();toast(T(`🎪 Fin de l'événement : ${L.join(', ')} changés en ${fmt(g)} or.`,`🎪 Event over: ${L.join(', ')} turned into ${fmt(g)} gold.`))}}catch(e){}},4000);
+
+/* ---------- la bannière ---------- */
+for(const e of HEV){if(!HEROES[e.hid])continue;const d=new Date(Math.max(e.start,Date.UTC(2026,10,27)));
+  EVB[e.ban]={h:e.hid,start:d.toISOString().slice(0,10),n:e.bn,d:e.bd};BANS[e.ban]={n:e.bn,start:EVB[e.ban].start}}
+{const bo=banOpen;banOpen=function(k){const e=HEV.find(x=>x.ban===k);if(e)return!!HEROES[e.hid]&&NOW()>=e.start&&NOW()<e.end;return bo.apply(this,arguments)}}
+{const be=banEnd;banEnd=function(k){const e=HEV.find(x=>x.ban===k);if(e)return e.end;return be.apply(this,arguments)}}
+
+/* ---------- gagner la monnaie ---------- */
+const WCAP=150,WIN=5,DGV=20,DAY=40;
+function earn(e,n,capped){const o=ST(e);if(capped){const d=dk();if(!o.w||o.w.d!==d)o.w={d,n:0};n=Math.min(n,WCAP-o.w.n);if(n<=0)return 0;o.w.n+=n}o.c=(o.c|0)+n;return n}
+{const fi=finish;finish=function(res){let live=false;try{live=typeof B!=='undefined'&&B&&!B.done&&!B.skipEv}catch(e){}
+  const r=fi.apply(this,arguments);
+  try{const e=curE();if(e&&live&&res===true){const n=earn(e,WIN,true);if(n){save();const rw=document.querySelector('#battle .result .rw');if(rw)rw.insertAdjacentHTML('beforeend',`<span class="hevrw">${e.cic} ${n} ${esc(cn(e))}</span>`)}}}catch(e){}
+  return r}}
+if(typeof dgEnd==='function'){const de=dgEnd;dgEnd=function(win,rw){let had=false;try{had=!!DG().run}catch(e){}const out=de.apply(this,arguments);
+  try{const e=curE();if(e&&had){const n=earn(e,DGV,false);if(n){save();const t=`${e.cic} ${n} ${cn(e)}`;if(Array.isArray(out))out.push(t)}}}catch(e){}return out}}
+
+/* ---------- la boutique ---------- */
+const own=e=>!!(S.heroes&&S.heroes[e.hid]);
+function items(e){const o=ST(e),h=HEROES[e.hid],nm=h?h.n.split(/[ ,]/)[0]:e.sn;
+  const L=[];
+  if(!own(e))L.push({k:'hero',ic:'✨',n:T(`${nm} rejoint ton équipe`,`${nm} joins your team`),d:T(e.f?"L'héroïne complète, niveau 1.":'Le héros complet, niveau 1.',e.f?'The full heroine, level 1.':'The full hero, level 1.'),c:e.price,lim:1,big:1,
+    give:()=>{S.heroes[e.hid]={l:1,e:0,f:0};try{news(Date.now(),`${S.name||'Voyageur'} a été rejoint par ${h.n}.`)}catch(er){}return T(`✨ ${h.n} rejoint ton équipe !`,`✨ ${h.n} joins your team!`)}});
+  else L.push({k:'frag',ic:'🧩',n:T(`15 fragments de ${nm}`,`15 ${nm} fragments`),d:T("Pour ses étoiles et son éveil.",`For ${his(e)} stars and awakening.`),c:220,lim:4,
+    give:()=>{S.heroes[e.hid].f=(S.heroes[e.hid].f||0)+15;return T(`🧩 +15 fragments de ${nm}`,`🧩 +15 ${nm} fragments`)}});
+  L.push({k:'tix',ic:'🎟️',n:T('Ticket de sa bannière','Banner ticket'),d:T('Une invocation gratuite sur sa bannière.','One free pull on his banner.'),c:90,lim:10,give:()=>{o.t=(o.t|0)+1;return T('🎟️ +1 ticket de bannière','🎟️ +1 banner ticket')}});
+  L.push({k:'frame',ic:'🖼️',n:T(`Cadre « ${e.frm.n} »`,`Frame “${e.frm.nEn}”`),d:T('Pour ta photo de profil.','For your profile picture.'),c:300,lim:1,
+    give:()=>{S.evFrames=S.evFrames||[];if(!S.evFrames.includes(e.frm.k))S.evFrames.push(e.frm.k);return T(`🖼️ Nouveau cadre : « ${e.frm.n} »`,`🖼️ New frame: “${e.frm.nEn}”`)}});
+  L.push({k:'title',ic:'🏷️',n:T(`Titre « ${e.ttl.n} »`,`Title “${e.ttl.nEn}”`),d:T('À afficher sur ton profil.','To show on your profile.'),c:250,lim:1,give:()=>{o.b.title=1;S.titles=S.titles||[];if(!S.titles.includes(e.ttl.k))S.titles.push(e.ttl.k);return T(`🏷️ Nouveau titre : « ${e.ttl.n} » (à choisir sur ton profil)`,`🏷️ New title: “${e.ttl.nEn}” (pick it on your profile)`)}});
+  L.push({k:'shard',ic:'💠',n:T('1 éclat légendaire','1 legendary shard'),d:'',c:130,lim:3,give:()=>{S.shards=(S.shards||0)+1;return'💠 +1'}});
+  L.push({k:'gems',ic:'💎',n:T('60 gemmes','60 gems'),d:'',c:70,lim:6,give:()=>{S.gems+=60;return'💎 +60'}});
+  L.push({k:'gold',ic:'🪙',n:T('150 000 or','150,000 gold'),d:'',c:40,lim:10,give:()=>{S.gold+=150000;return'🪙 +150 k'}});
+  return L}
+for(const e of HEV){try{TITLES.push({k:e.ttl.k,n:e.ttl.n,c:e.col,d:e.ttl.d,ok:()=>!!(S.hev&&S.hev[e.k]&&S.hev[e.k].b&&S.hev[e.k].b.title)})}catch(er){}
+  try{FRAMES[e.frm.k]=e.frm.n;FHINT[e.frm.k]=T(`Boutique de l'événement ${deN(e)}`,`${e.sn}'s event shop`)}catch(er){}
+  try{Object.assign(I18N_EN,{[e.frm.n]:e.frm.nEn,[e.ttl.n]:e.ttl.nEn,[e.ttl.d]:e.ttl.dEn,[e.bn]:e.bnEn,[e.bd]:e.bdEn,[e.cur]:e.curEn})}catch(er){}}
+
+/* ---------- la page ---------- */
+const scene=e=>{try{return heroBody(HEROES[e.hid],0)}catch(er){return''}};
+function hevPage(){const e=curE();if(!e)return`<div class="card"><p class="muted">${T("Pas d'événement de héros en ce moment.",'No hero event right now.')}</p></div>`;
+  const o=ST(e),h=HEROES[e.hid],left=e.end-NOW(),dOk=o.d!==dk(),w=(o.w&&o.w.d===dk())?o.w.n:0;
+  const nx=HEV.find(x=>x.start>=e.end);
+  const shop=items(e).map(it=>{const n=o.b[it.k]|0,rest=it.lim-n,can=rest>0&&(o.c|0)>=it.c;
+    return`<div class="hevit${it.big?' big':''}${rest<=0?' done':''}"><span class="hic">${it.ic}</span><div class="hin"><b>${esc(it.n)}</b>${it.d?`<small>${esc(it.d)}</small>`:''}<small class="hlim">${rest>0?T(`Encore ${rest}`,`${rest} left`):T('Épuisé','Sold out')}</small></div>
+      <button class="btn ${it.big?'p':'g'} sm" data-a="hevbuy" data-v="${it.k}" ${can?'':'disabled'}>${e.cic} ${fmt(it.c)}</button></div>`}).join('');
+  return`<div class="stack hevp" style="--hc:${e.col};--hc2:${e.col2}">
+  <div class="card hevhero"><div class="hevfig">${scene(e)}</div><div class="hevtx"><span class="hevtag">${e.ic} ${NEWH(e)} · ${T('ÉVÉNEMENT LIMITÉ','LIMITED EVENT')}</span>
+    <div class="h">${esc(h.n)}</div><p class="hevlore">${LANG==='fr'||!LANG?e.lore:e.loreEn}</p>
+    <p class="hevend">⏳ ${T('Se termine dans','Ends in')} <b>${dur(left)}</b> · ${T('le','on')} ${fdate(e.end)}</p></div></div>
+  <div class="card hevcur"><div class="hevamt"><span>${e.cic}</span><b class="num">${fmt(o.c|0)}</b><small>${esc(cn(e))}</small></div>
+    <div class="hevways"><button class="btn ${dOk?'p':''} sm" data-a="hevday" ${dOk?'':'disabled'}>${dOk?`🎁 +${DAY} ${T("aujourd'hui",'today')}`:T('✓ Récupéré aujourd\'hui','✓ Claimed today')}</button>
+      <span>⚔️ +${WIN} ${T('par victoire','per win')} (${w}/${WCAP} ${T("aujourd'hui",'today')})</span><span>🏰 +${DGV} ${T('par expédition au Donjon des Échos','per Echo Dungeon run')}</span></div></div>
+  <div class="card"><div class="h3">🛒 ${T('Boutique de l\'événement','Event shop')}</div><p class="muted" style="margin:2px 0 8px">${T(`En jouant chaque jour, tu peux t'offrir ${esc(h.n.split(/[ ,]/)[0])} gratuitement.`,`Play every day and you can get ${esc(h.n.split(/[ ,]/)[0])} for free.`)}</p><div class="hevshop">${shop}</div></div>
+  <div class="card hevban"><div><div class="h3" style="margin:0">✨ ${T('Sa bannière',HER(e)+' banner')} : « ${esc(T(e.bn,e.bnEn))} »</div><p class="muted">${T('50/50 puis garanti, jusqu\'à la fin de l\'événement.','50/50 then guaranteed, until the event ends.')}${o.t?` ${T('Tu as','You have')} <b>${o.t}</b> 🎟️.`:''}</p></div>
+    <div class="row">${o.t?`<button class="btn g sm" data-a="hevtix" data-v="1">🎟️ ×1</button>${o.t>=10?`<button class="btn g sm" data-a="hevtix" data-v="10">🎟️ ×10</button>`:''}`:''}<button class="btn sm" data-a="hevgo">${T('Voir la bannière','See the banner')} →</button></div></div>
+  ${nx?`<div class="card hevnext"><span>🔒</span><p>${T('Prochain héros','Next hero')} : <b>${T('le','on')} ${fdate(nx.start)}</b>. ${T('Une nouvelle histoire commence à chaque saison.','A new story begins every season.')}</p></div>`:''}
+  </div>`}
+window.hevPage=hevPage;
+function intro(e){const o=ST(e);if(o.seen)return;o.seen=1;save();const h=HEROES[e.hid];
+  try{modal(`<button class="x" data-a="close" aria-label="Fermer">×</button><div class="hevintro" style="--hc:${e.col};--hc2:${e.col2}"><div class="hevfig big">${scene(e)}</div>
+    <span class="hevtag">${e.ic} ${NEWH(e)}</span><div class="h">${esc(h.n)}</div><p class="hevlore">${LANG==='fr'||!LANG?e.lore:e.loreEn}</p>
+    <p class="muted" style="font-size:12.5px">${T(`Jusqu'au ${fdate(e.end)} : gagne des ${cn(e)} ${e.cic} pour l'obtenir gratuitement dans la boutique, ou tente sa bannière.`,`Until ${fdate(e.end)}: earn ${cn(e)} ${e.cic} to get ${him(e)} for free in the shop, or try ${his(e)} banner.`)}</p>
+    <button class="btn p" data-a="close" style="width:100%">${T("Découvrir l'événement",'Discover the event')}</button></div>`)}catch(er){}}
+
+/* ---------- dans la Fête foraine ---------- */
+const bld=()=>{const e=curE();const c=e?e.col:'#9fb0d8',c2=e?e.col2:'#2a2f48',ic=e?e.ic:'✨';
+  return`<g><path d="M-40 0V-44L0 -80L40 -44V0Z" fill="${c2}" stroke="${typeof LBO!=='undefined'?LBO:'#140c24'}" stroke-width="1.6"/><path d="M-40 -44L0 -80L40 -44" fill="none" stroke="${c}" stroke-width="2.4"/>
+   <path d="M-18 0V-30Q0 -46 18 -30V0Z" fill="${c}" opacity=".35"><animate attributeName="opacity" values=".25;.55;.25" dur="2.6s" repeatCount="indefinite"/></path>
+   <text x="0" y="-52" text-anchor="middle" font-size="20">${ic}</text><path d="M0 -80V-96" stroke="${c}" stroke-width="1.6"/><path d="M0 -96L14 -91L0 -86Z" fill="${c}"/></g>`};
+try{evB.hev={b:bld,sn:'Nouveau héros',ic:'✨',n:'Tente du nouveau héros',d:'Événement limité',bh:100}}catch(e){}
+{const et=evTabs;evTabs=function(){const a=et.apply(this,arguments);try{const e=curE();if(e&&!a.some(x=>x[0]==='hev')){
+  const o=ST(e),b=o.d!==dk()?'!':0;try{evB.hev.ic=e.ic;evB.hev.sn=e.sn;evB.hev.n=T(`L'événement ${deN(e)}`,`${e.sn}'s event`);evB.hev.d=T(e.f?'Nouvelle héroïne · boutique et bannière':'Nouveau héros · boutique et bannière',e.f?'New heroine · shop and banner':'New hero · shop and banner')}catch(er){}
+  a.splice(Math.min(1,a.length),0,['hev',`${e.ic} ${e.sn}`,b])}}catch(e){}return a}}
+{const pe=pEvents;pEvents=function(){try{const e=curE();if(e&&UI.lz&&UI.lz.event==='hev'){setTimeout(()=>{try{intro(e)}catch(er){}},250);
+  return`<div class="stack">${zoneBar('event','hev')}${hevPage()}</div>`}}catch(er){}return pe.apply(this,arguments)}}
+
+/* ---------- les boutons ---------- */
+document.addEventListener('click',ev=>{const b=ev.target.closest&&ev.target.closest('[data-a^="hev"]');if(!b)return;const a=b.dataset.a;
+  if(!['hevbuy','hevday','hevtix','hevgo'].includes(a))return;ev.preventDefault();ev.stopImmediatePropagation();
+  const e=curE();if(!e)return;const o=ST(e);
+  if(a==='hevday'){if(o.d===dk())return;o.d=dk();o.c=(o.c|0)+DAY;save();toast(`${e.cic} +${DAY} ${cn(e)}`);render();return}
+  if(a==='hevgo'){TAB='invoc';UI.iv='invoc';UI.ban=e.ban;try{render();scrollTo(0,0)}catch(er){}return}
+  if(a==='hevtix'){const n=+b.dataset.v;if((o.t|0)<n||!banOpen(e.ban))return;o.t-=n;save();TAB='invoc';UI.iv='invoc';UI.ban=e.ban;try{scrollTo(0,0)}catch(er){}try{pullX(n,{pay:'evt',ban:e.ban})}catch(er){console.warn(er)}
+    try{render()}catch(er){}return}
+  if(a==='hevbuy'){const it=items(e).find(x=>x.k===b.dataset.v);if(!it)return;const n=o.b[it.k]|0;if(n>=it.lim||(o.c|0)<it.c)return;
+    o.c-=it.c;o.b[it.k]=n+1;const msg=it.give();save();try{ttCheck()}catch(er){}toast(msg);try{TPX={t:0,v:0}}catch(er){}render()}},true);
+
+/* ---------- l'annonce ---------- */
+try{const al=annList;annList=function(){const L=al.apply(this,arguments);try{const e=curE();if(e&&!L.some(a=>a.k==='hev_'+e.k))L.splice(Math.min(1,L.length),0,{k:'hev_'+e.k,ac:e.col,tag:NEWH(e),t:`${e.ic} ${HEROES[e.hid].n}`,
+  x:(LANG==='fr'||!LANG?e.lore:e.loreEn)+'<br><br>'+T(`Son événement est ouvert jusqu'au <b>${fdate(e.end)}</b> dans la Fête foraine : une boutique pour l'avoir gratuitement en jouant, et sa bannière.`,`${HER(e)} event is open until <b>${fdate(e.end)}</b> in the Fair: a shop to get ${him(e)} for free by playing, and ${his(e)} banner.`),
+  art:()=>`<div class="skann">${scene(e)}</div>`,go:T("🎪 Voir l'événement",'🎪 See the event'),fn:()=>{TAB='event';try{UI.lz=UI.lz||{};UI.lz.event='hev'}catch(er){}UI.evt='hev'}})}catch(e){}return L}}catch(e){}
+
+/* ---------- l'Espace créateur : la réserve ---------- */
+function resNote(){const fut=HEV.filter(e=>e.start>NOW()),last=HEV[HEV.length-1];
+  if(fut.length>1)return'';
+  const txt=fut.length?`⚠️ Plus qu'<b>un héros en réserve</b> (${esc(fut[0].sn)}, le ${fdate(fut[0].start)}). Demande la suite à Claude pour qu'une saison ne reste pas sans nouveau héros.`
+    :`⚠️ <b>Plus aucun héros en réserve</b> après le ${fdate(last.end)}. Demande à Claude de préparer les prochains.`;
+  return`<div class="hevres">${txt}</div>`}
+try{const ovl=document.getElementById('ovl');if(ovl)new MutationObserver(()=>{try{const m=ovl.querySelector('.modal');if(!m||m.querySelector('.hevres'))return;const h=m.querySelector('.h');
+  if(h&&/Espace créateur|Creator space/.test(h.textContent)){const n=resNote();if(n)h.insertAdjacentHTML('afterend',n)}}catch(e){}}).observe(ovl,{childList:true,subtree:true})}catch(e){}
+
+/* ---------- styles ---------- */
+const fr=(k,c1,c2,c3)=>`.fav.frm-${k}{--fd:#0a0c18;--gc:${c1}}
+.fav.frm-${k}::before{background:linear-gradient(160deg,rgba(255,255,255,.4),transparent 42%,rgba(0,0,0,.32)),repeating-conic-gradient(from var(--fa),${c1} 0 10deg,${c2} 10deg 22deg,${c3} 22deg 28deg,${c2} 28deg 40deg);animation:fspin 8s linear infinite}`;
+try{const st=document.createElement('style');st.id='v458css';st.textContent=`
+.hevp .hevhero{display:flex;gap:12px;align-items:center;border-color:var(--hc)!important;background:radial-gradient(130% 120% at 0% 0%,color-mix(in srgb,var(--hc) 22%,transparent),transparent 60%),var(--panel)!important}
+.hevfig{flex:0 0 112px;height:170px;display:flex;align-items:flex-end;justify-content:center}.hevfig svg{height:100%;width:auto}
+.hevfig.big{height:220px;margin:0 auto 6px;flex:none}
+.hevtx{min-width:0}.hevtag{display:inline-block;font-size:10.5px;font-weight:900;letter-spacing:.6px;padding:3px 8px;border-radius:999px;background:var(--hc);color:#140c24}
+.hevtx .h,.hevintro .h{margin:6px 0 4px}.hevlore{font-size:13px;line-height:1.45;margin:0 0 6px}.hevend{font-size:12.5px;color:var(--muted);margin:0}
+.hevcur{display:flex;gap:12px;align-items:center;flex-wrap:wrap}.hevamt{display:flex;flex-direction:column;align-items:center;min-width:86px}
+.hevamt span{font-size:26px}.hevamt b{font-size:22px}.hevamt small{font-size:11px;color:var(--muted);text-align:center}
+.hevways{display:flex;flex-direction:column;gap:5px;flex:1;min-width:180px;font-size:12.5px;color:var(--muted)}.hevways .btn{align-self:flex-start}
+.hevshop{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:8px}
+.hevit{display:flex;gap:8px;align-items:center;padding:8px 10px;border-radius:12px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1)}
+.hevit.big{grid-column:1/-1;border-color:var(--hc);background:color-mix(in srgb,var(--hc) 14%,transparent)}.hevit.done{opacity:.5}
+.hevit .hic{font-size:24px}.hevit .hin{flex:1;min-width:0;display:flex;flex-direction:column}.hevit .hin small{font-size:11.5px;color:var(--muted)}.hevit .hlim{opacity:.8}
+.hevban{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between}.hevban .muted{margin:2px 0 0;font-size:12.5px}
+.hevnext{display:flex;gap:10px;align-items:center;opacity:.85}.hevnext span{font-size:22px}.hevnext p{margin:0;font-size:13px}
+.hevintro{text-align:center}.hevintro .hevlore{text-align:left}
+.hevres{margin:6px 0 10px;padding:9px 11px;border-radius:12px;background:rgba(255,200,80,.12);border:1px solid rgba(255,200,80,.4);font-size:13px}
+.hevrw{color:#ffe7a8}
+${fr('brume','#c8d2f4','#262c48','#ffe07a')}
+${fr('milcles','#7fd8ff','#14243a','#c8a24a')}
+${fr('balance','#ffd77a','#2a1a0a','#c83a4a')}
+`;document.head.appendChild(st)}catch(e){}
+}catch(e){console.warn('v458',e)}})();
+
+/* ================= V459 : LUCAN LE LOUP DE BRUME (héros de l'événement de saison) =================
+   Ancien capitaine de la Garde d'Éther. Une nuit, il a ouvert la porte qu'il devait garder.
+   Depuis, il vit dans la brume avec les loups, et il chasse comme eux : il attend que la proie saigne. */
+const LUC=77;
+(function(){try{
+if(!HEROES[LUC]||!window.HA)return;
+const {r1,P,L_,C_,E_,MI,MB,HG}=HA;
+const GC={};
+const defs=(q,u)=>HA.lin(q+'sk','#f2d6be','#e0bc9e','#b8906f')+HA.lin(q+'hr','#f6f8fc','#c6cad6','#868a9c',1)
+ +HA.lin(q+'fu',u>=2?'#b4b8c8':'#a2a6b6','#707486','#3e4254',1)+HA.lin(q+'le','#4e3e38','#34292a','#1c1416',1)
+ +HA.lin(q+'bl','#4068b4','#2c4c8c','#1a2c58',1)+HA.lin(q+'au','#fff2b0','#e8c05a','#a07418')
+ +HA.lin(q+'st','#ffffff','#dce0ea','#868ca0')+HA.rad(q+'mi',[[0,'#eef2ff',.6],[.6,'#dde4f8',.25],[1,'#dde4f8',0]]);
+const SK=q=>`url(#${q}sk)`,HR=q=>`url(#${q}hr)`,FU=q=>`url(#${q}fu)`,LE=q=>`url(#${q}le)`,BL=q=>`url(#${q}bl)`,AU=q=>`url(#${q}au)`,ST=q=>`url(#${q}st)`;
+/* ---------- la tête (repère du portrait) ---------- */
+function hood(q){/* la peau de loup, rabattue derrière la tête, oreilles dressées */
+  let s=P('M29.6 52Q27.4 30 38.6 19.8Q44 15.4 50 15.4Q56 15.4 61.4 19.8Q72.6 30 70.4 52Q70 62 65.6 68L61.4 61Q64.6 52 62.6 42L37.4 42Q35.4 52 38.6 61L34.4 68Q30 62 29.6 52Z',FU(q));
+  s+=P('M36.4 24L30.4 3.6L46.4 16.4Z',FU(q))+P('M63.6 24L69.6 3.6L53.6 16.4Z',FU(q));
+  s+=P('M37.2 20.6L33.4 8.4L42.8 16.6Z','#2e3038')+P('M62.8 20.6L66.6 8.4L57.2 16.6Z','#2e3038');
+  s+=L_('M31.6 7.6L33 11.4M30.8 4.6L32 9M68.4 7.6L67 11.4M69.2 4.6L68 9','#e2e6ee',.5,'opacity=".8"');
+  s+=L_('M33 34Q31.4 42 32.4 50M67 34Q68.6 42 67.6 50M40 18.6Q45 16.2 50 16.4Q55 16.2 60 18.6','#d8dce6',.5,'opacity=".7"');
+  s+=L_('M31.2 56Q32.4 62 34.6 66M68.8 56Q67.6 62 65.4 66','#d8dce6',.45,'opacity=".6"');
+  return s}
+function hairBack(q){return P('M35 46Q33.2 31 41.2 24.4Q50 19.6 58.8 24.4Q66.8 31 65 46Q65.6 55 62.6 60.6L60.4 52Q61 47 60.6 44L39.4 44Q39 47 39.6 52L37.4 60.6Q34.4 55 35 46Z',HR(q))}
+function face(q,u){
+  let s=`<rect x="45.2" y="55" width="9.6" height="13" fill="${SK(q)}"/>`+P('M45.2 59.6Q50 63 54.8 59.6L54.8 64.6Q50 66.4 45.2 64.6Z','#b88a70','opacity=".55"');
+  s+=MI(P('M36.8 44.6Q33.4 44.2 33.8 48.2Q34.4 51.8 37.4 51.4Z','#dcb294'));
+  s+=P('M37 44.2Q37 30.6 50 30.6Q63 30.6 63 44.2Q63 53.4 60.2 58.6Q56.4 64.2 50 64.8Q43.6 64.2 39.8 58.6Q37 53.4 37 44.2Z',SK(q));
+  s+=P('M58.4 46Q61.8 52.6 59.2 57.8Q56.6 61.6 52.6 63.4Q57.6 58.8 59 52.6Z','#b08068','opacity=".4"');
+  /* barbe de trois jours */
+  s+=P('M39.8 54.6Q42.2 62.6 50 64.8Q57.8 62.6 60.2 54.6Q59 60 55 62Q50 63.4 45 62Q41 60 39.8 54.6Z','#8a8696','opacity=".26"');
+  s+=P('M46.4 56.9Q50 56 53.6 56.9Q52.6 57.5 50 57.4Q47.4 57.5 46.4 56.9Z','#8a8696','opacity=".3"');
+  /* les yeux du loup : or pâle, plissés */
+  const eo={w:3.4,h:2.1,iris:u>=3?'#ffe890':'#e8b84a',iris2:'#9a6414',pupil:'#160c04',lid:'#2a2430',lidW:1.25,ir:1.55,look:.35,narrow:1,glow:u>=1?'#ffe07a':null,low:'#b0806a'};
+  s+=HA.eye(44,47.2,eo)+HA.eye(56,47.2,eo);
+  /* sourcils lourds, froncés */
+  s+=L_('M39.2 42.8Q43.2 40.4 47.8 42','#8a8ea0',1.7)+L_('M52.2 42Q56.8 40.4 60.8 42.8','#8a8ea0',1.7)+L_('M48.8 41.8L49.6 43.4M51.2 41.8L50.4 43.4','#b08068',.4,'opacity=".7"');
+  s+=L_('M50.4 47.8L49.3 53.2Q50.2 54.2 52 53.6','#b08068',.75);
+  s+=L_('M46.2 58.4Q50 59.3 53.8 58.2','#6a3a34',.9)+L_('M47.4 60Q50 60.9 52.6 60','#c08a7a',.45,'opacity=".7"');
+  /* trois griffures sur la joue */
+  s+=L_('M55.2 50.4L58.4 57.6M57.4 49.6L60.4 56.4M59.4 50L61.6 54.8','#c88a7c',.7)+L_('M55.2 50.4L58.4 57.6M57.4 49.6L60.4 56.4','#f6d6ca',.25);
+  /* cheveux d'argent, en arrière, mèches en dents de loup */
+  s+=P('M36.2 44.4Q34.8 30 43 25Q50.6 21.2 58.8 24.8Q66 29.4 64.2 44Q62.8 37 59 33.6Q56 36.4 52.4 34.4Q49.6 37.4 46 35Q42.8 38 40.2 36.4Q37.8 39.6 36.2 44.4Z',HR(q));
+  s+=P('M44.4 34.6L46.4 40.4L48.6 34.8Z',HR(q))+P('M52 34.4L53.4 39.4L55.8 34Z',HR(q));
+  s+=P('M36.4 41.8Q34.8 50 38 56.6Q38.4 49.4 40.4 44.4Z',HR(q))+P('M63.6 41.8Q65.2 50 62 56.6Q61.6 49.4 59.6 44.4Z',HR(q));
+  s+=L_('M42 27.6Q47 25 53 25.6M39.4 32Q44 28.6 50 28.6M53.6 28.4Q59 29.4 62.2 33.6','#ffffff',.5,'opacity=".8"');
+  return s}
+/* le museau du loup, posé sur son front */
+function snout(q,u){return P('M43.6 19.6Q50 16.6 56.4 19.6L54.2 27.6Q50 30.4 45.8 27.6Z',FU(q))+L_('M45 21Q50 19 55 21','#e2e6ee',.5,'opacity=".8"')
+  +P('M47.6 28.6L48.4 31.6L49.2 28.8Z','#f4f2ea')+P('M52.4 28.6L51.6 31.6L50.8 28.8Z','#f4f2ea')
+  +E_(50,28.2,2.4,1.5,'#16171e')+E_(49.4,27.7,.8,.4,'#8a8ea0')
+  +P('M41.4 21.8Q43.8 20.2 46.2 21.8Q43.8 22.8 41.4 21.8Z','#16171e')+P('M53.8 21.8Q56.2 20.2 58.6 21.8Q56.2 22.8 53.8 21.8Z','#16171e')
+  +(u>=2?C_(43.8,21.6,.7,'#ffe07a',`opacity="${.4+u*.15}"`)+C_(56.2,21.6,.7,'#ffe07a',`opacity="${.4+u*.15}"`):'')}
+/* ---------- buste ---------- */
+function ruff(q,cx,y,w){/* la fourrure en dents de scie sur les épaules */
+  const k=w/40,X=v=>r1(cx+v*k),Y=v=>r1(y+v);
+  return P(`M${X(-40)} ${Y(22)}Q${X(-34)} ${Y(6)} ${X(-14)} ${Y(0)}L${X(0)} ${Y(4)}L${X(14)} ${Y(0)}Q${X(34)} ${Y(6)} ${X(40)} ${Y(22)}L${X(34)} ${Y(18)}L${X(30)} ${Y(24)}L${X(24)} ${Y(15)}L${X(18)} ${Y(21)}L${X(12)} ${Y(13)}L${X(6)} ${Y(19)}L${X(0)} ${Y(13)}L${X(-6)} ${Y(19)}L${X(-12)} ${Y(13)}L${X(-18)} ${Y(21)}L${X(-24)} ${Y(15)}L${X(-30)} ${Y(24)}L${X(-34)} ${Y(18)}Z`,FU(q))
+   +L_(`M${X(-34)} ${Y(18)}Q${X(-30)} ${Y(10)} ${X(-20)} ${Y(6)}M${X(34)} ${Y(18)}Q${X(30)} ${Y(10)} ${X(20)} ${Y(6)}M${X(-12)} ${Y(4)}Q${X(0)} ${Y(7)} ${X(12)} ${Y(4)}`,'#dfe2ea',.6,'opacity=".75"')}
+function emblem(q,x,y,s){return P(`M${x} ${r1(y-7.4*s)}L${r1(x+5*s)} ${y}L${x} ${r1(y+7.4*s)}L${r1(x-5*s)} ${y}Z`,AU(q),'opacity=".85"')+P(`M${x} ${r1(y-4*s)}L${r1(x+2.6*s)} ${y}L${x} ${r1(y+4*s)}L${r1(x-2.6*s)} ${y}Z`,'#2a4a8a','opacity=".6"')
+  +L_(`M${r1(x-6.6*s)} ${r1(y-8*s)}L${r1(x+7.2*s)} ${r1(y+8.6*s)}`,'#141c36',r1(1.3*s))+L_(`M${r1(x-6.6*s)} ${r1(y-8*s)}L${r1(x+7.2*s)} ${r1(y+8.6*s)}`,'#6a86c8',r1(.35*s),'opacity=".7"')}
+function bust(q,u){
+  let s=P('M6 100Q8 82 20 74L80 74Q92 82 94 100Z',LE(q));
+  s+=P('M36 72L64 72L66 100H34Z',BL(q))+L_('M36 72L34 100M64 72L66 100',AU(q),.7,'opacity=".8"');
+  s+=emblem(q,50,87.4,1);
+  s+=L_('M24 76L70 100','#22181a',3.2)+L_('M24 76L70 100','#5a4438',1.1,'opacity=".8"');
+  s+=`<g transform="translate(22.4 73) rotate(-28)">`+P('M-1.6 0H1.6V-12H-1.6Z','#22181a')+L_('M-1.6 -3H1.6M-1.6 -6H1.6M-1.6 -9H1.6','#6a5446',.4)+P('M-4.6 .6H4.6V2.6H-4.6Z',AU(q))+C_(0,-13.2,1.8,AU(q))+'</g>';
+  s+=ruff(q,50,66,40);
+  return s}
+/* ---------- portrait ---------- */
+const PO={name:'Lucan le Loup de Brume',cls:'Assassin',r:4,TC:'#b8c8ff',
+  bg:['#f6f8fe','#c4cce4','#5a6690','#1c2038','#0a0c16'],glow:['#ffffff','#d4dcf2','#8a9ac8'],halo:'#e4eaff',halo2:'#c8d2f4',
+  frame:['#eef2fc','#9fb0d8'],parts:['#eef2fc','#ffe07a'],rayCol:'#eef2ff'};
+const mist=(q,cx,cy,w,op)=>`<g opacity="${op}">${[[-.55,0,.6],[0,-.12,.7],[.55,0,.6]].map(([x,y,r])=>E_(r1(cx+x*w),r1(cy+y*w*.4),r1(r*w),r1(r*w*.4),`url(#${q}mi)`)).join('')}</g>`;
+const wolfSil=(x,y,s,dir,eyes)=>{const k=v=>r1(v*s);return`<g transform="translate(${x} ${y}) scale(${dir} 1)"><path d="M${k(-9)} ${k(3.5)}L${k(-6)} ${k(-2)}L${k(-5.5)} ${k(-9.5)}L${k(-2.5)} ${k(-4.5)}L${k(-.5)} ${k(-9)}L${k(1)} ${k(-3.5)}Q${k(4)} ${k(-3)} ${k(9.5)} ${k(-.5)}L${k(10)} ${k(.8)}L${k(6)} ${k(2.2)}Q${k(2)} ${k(4)} ${k(-1)} ${k(5.5)}Z" fill="#141828" opacity=".75"/>${eyes?`<circle cx="${k(2.6)}" cy="${k(-1.8)}" r="${k(.9)}" fill="#ffe07a"/>`:''}</g>`};
+function lucPortrait(u){u=Math.max(0,Math.min(3,u|0));if(GC['p'+u])return GC['p'+u];const q='lcp'+u+'_';
+  return GC['p'+u]=HA.portrait(Object.assign({},PO,{u,q,defs:defs(q,u),
+    back:(q,u)=>mist(q,16,84,26,.8)+mist(q,84,82,26,.8)+(u>=1?wolfSil(14,70,1.1,1,u>=2)+wolfSil(86,68,1.1,-1,u>=2):'')+(u>=3?`<circle cx="50" cy="36" r="34" fill="none" stroke="#ffe07a" stroke-width=".6" stroke-dasharray="1 3" opacity=".8"/>`:''),
+    content:(q,u)=>hood(q)+hairBack(q)+bust(q,u)+face(q,u)+snout(q,u)}))}
+/* ---------- corps entier ---------- */
+function knife(q,x,y,a,len,u){return`<g transform="translate(${x} ${y}) rotate(${a})">`
+  +P('M-1.5 -7H1.5V0H-1.5Z','#22181a')+L_('M-1.5 -5H1.5M-1.5 -2.6H1.5','#6a5446',.4)+P('M-4.2 0H4.2V1.8H-4.2Z',AU(q))
+  +P(`M-1.6 1.8H1.8Q3.6 ${r1(len*.45)} .4 ${len}Q-1.2 ${r1(len*.5)} -1.6 1.8Z`,ST(q),'stroke="#6a7084" stroke-width=".3"')+L_(`M0 3Q1.4 ${r1(len*.45)} .2 ${r1(len*.92)}`,'#ffffff',.35,'opacity=".85"')
+  +(u>=2?L_(`M0 3Q1.4 ${r1(len*.45)} .2 ${r1(len*.92)}`,'#b8c8ff',.9,`opacity="${.2+u*.12}"`):'')+'</g>'}
+function lucBody(u,bare){u=Math.max(0,Math.min(3,u|0));const ck='b'+u+(bare?'s':'');if(GC[ck])return GC[ck];const q='lcb'+u+(bare?'s':'')+'_';
+  return GC[ck]=HA.body({u,q,bare,r:4,name:'Lucan le Loup de Brume',defs:defs(q,u),glow:['#ffffff','#d4dcf2','#8a9ac8'],bb:['#c8d2f0','#2a3460','#0a0c16'],
+   halo:'#e4eaff',halo2:'#c8d2f4',parts:['#eef2fc','#ffe07a'],ring:['#e4eaff','#8a9ac8','#ffe07a'],
+   back:(q,u)=>mist(q,30,200,34,1)+mist(q,130,196,34,1)+(u>=1?wolfSil(26,150,1.9,1,u>=2)+wolfSil(134,146,1.9,-1,u>=2):'')
+     +(u>=3?`<g opacity=".35">${wolfSil(80,26,5.4,1,1)}</g>`:'')
+     +[...Array(3)].map((_,k)=>`<ellipse cx="${30+k*50}" cy="210" rx="30" ry="8" fill="url(#${q}mi)" opacity="0"><animate attributeName="opacity" values="0;.35;0" dur="${(5+k).toFixed(1)}s" begin="${-k*1.7}s" repeatCount="indefinite"/><animateTransform attributeName="transform" type="translate" values="-8 0;8 -6;-8 0" dur="${(6+k).toFixed(1)}s" repeatCount="indefinite"/></ellipse>`).join(''),
+   content:(q,u)=>{let s='';
+    /* la peau de loup en cape, jusqu'aux genoux */
+    s+=P('M58 66Q40 80 36 120Q33 150 38 176L44 170L48 180L54 170L60 178L64 166L70 174L74 160L86 160L90 174L96 166L100 178L106 170L112 180L116 170L122 176Q127 150 124 120Q120 80 102 66Z',FU(q));
+    s+=L_('M44 100Q42 130 44 160M116 100Q118 130 116 160M60 92Q56 122 58 150M100 92Q104 122 102 150','#d0d4de',.55,'opacity=".5"');
+    s+=HG(hood(q)+hairBack(q));
+    /* jambes : pantalon de cuir, bottes bandées, revers de fourrure */
+    const boot=(x0,x1,x2,x3)=>P(`M${x0} 170L${x1} 170L${x2} 205L${x3} 208Q${x0-1} 196 ${x0} 170Z`,'#1c1416')+L_(`M${x0+.4} 180L${x1-.4} 184M${x0+.6} 188L${x1} 192M${x0+.8} 196L${x2-.6} 200`,'#5a4a42',.7)
+      +P(`M${x0-1.6} 166Q${(x0+x1)/2} 162 ${x1+1.6} 166L${x1+1.2} 173Q${(x0+x1)/2} 176 ${x0-1.2} 173Z`,FU(q))+L_(`M${x0-1} 170Q${(x0+x1)/2} 172 ${x1+1} 170`,'#dfe2ea',.5,'opacity=".7"');
+    s+=P('M67.4 126L77.8 126L76.8 172L68.6 172Z',LE(q))+P('M82.2 126L92.6 126L91.4 172L83.2 172Z',LE(q));
+    s+=boot(66.4,78.4,79,64.4)+boot(81.8,93.6,96.6,82.2);
+    s+=P('M64 205L79 203.6L79.2 210.6L61 212Q61.2 207.6 64 205Z','#0a0608')+P('M82.2 205L96.6 203.6L99.8 210.4L82 212Z','#0a0608');
+    /* les pans du manteau de cuir, fendus au milieu */
+    s+=P('M60 108Q80 114 100 108L104.6 142Q93 147 84.6 140L80 130L75.4 140Q67 147 55.4 142Z',LE(q))+L_('M80 116V130','#120c0c',.8)+L_('M57 140Q67 145 75 138M103 140Q93 145 85 138','#6a5446',.5,'opacity=".8"');
+    /* ceinture, boucle, fourreau sur la hanche */
+    s+=P('M59.6 104Q80 110 100.4 104L101 112.4Q80 118.6 59 112.4Z','#22181a')+L_('M59.8 106Q80 112 100.2 106','#5a4438',.5)+`<rect x="76.4" y="107.2" width="7.2" height="6.2" rx="1" fill="none" stroke="${AU(q)}" stroke-width="1.2"/>`;
+    s+=P('M95.6 110L101.6 108.6L106 136L101.4 137.4Z','#2a1e1a')+L_('M97 116L102.6 115M98 124L103.6 123','#6a5446',.45);
+    /* le justaucorps de cuir et le tabard bleu de la Garde, déchiré */
+    s+=P('M60 64Q80 58 100 64L101.6 98Q99 110 80 112Q61 110 58.4 98Z',LE(q));
+    s+=P('M68.4 62L91.6 62L93.4 108L88 112L85 106.4L80 113L75.6 106L72 112L66.6 108Z',BL(q))+L_('M68.4 62L66.6 108M91.6 62L93.4 108',AU(q),.6,'opacity=".75"');
+    s+=emblem(q,80,84,1.1);
+    s+=L_('M70 100Q80 103 90 100','#1a2c58',.6,'opacity=".8"');
+    /* fourrure sur les épaules */
+    s+=MB(P('M51.6 84Q51 72 60 66Q66 62.6 71 64.6L67 78Q59 80 51.6 84Z',LE(q)));
+    s+=ruff(q,80,58,30);
+    /* bras droit : pendant, le long couteau tenu à l'envers */
+    s+=P('M52 78Q47 96 48.4 114L58 114.6Q58 96 61.4 82Z',LE(q))+L_('M50 94L58.4 95','#120c0c',.5)+P('M47.6 109.6L58.8 110.2L58.6 119.6L48 119Z','#22181a')+L_('M48 113L58.6 113.6M48 116.4L58.6 117','#6a5446',.45);
+    s+=knife(q,53.4,124,168,40,u)+E_(53.4,123,4.4,3.8,SK(q))+L_('M50.2 124.2Q53.4 126.2 56.6 124.2','#b08068',.45);
+    /* bras gauche : plié, la seconde lame pointée vers l'avant */
+    s+=P('M103.6 75Q112 88 113.4 102L105.4 104Q103 92 97.6 82Z',LE(q))+P('M105 100L114 98.4L114.6 106L106 107.4Z','#22181a');
+    s+=knife(q,108.6,113,-130,30,u)+E_(109.4,111.4,4.2,3.6,SK(q));
+    s+=P('M105.4 104L113.4 102.4Q114.6 108 110.6 112.6L106 110Q107.4 107 105.4 104Z',LE(q));
+    /* la tête */
+    s+=HG(face(q,u)+snout(q,u));
+    if(u>=3)s+=`<circle cx="80" cy="36" r="31" fill="none" stroke="#ffe07a" stroke-width=".8" stroke-dasharray="1.6 3.4" opacity=".8"/>`;
+    return s}})}
+window.lucPortrait=lucPortrait;window.lucBody=lucBody;
+HA.install(LUC,lucPortrait,lucBody,{lucan:()=>lucBody(0,1)});
+try{UTH_H[LUC]={n:'Roi de la Meute',m:'#2a3a68',s:'#c8ccd8',a:'#9fb0d8',e:'#ffe07a',bg:'smoke',w:null,hat:null,fx:'stars',c:'#b8c8ff',c2:'#ffe07a',h3:'#ffffff'}}catch(e){}
+}catch(e){console.warn('lucan art',e)}})();
+
+/* ---------- Instinct de meute, Brume et Curée ---------- */
+(function(){try{
+if(!HEROES[LUC])return;
+const MI2='#b8c8ff',GY='#ffe07a',WH='#f2f6ff',FOG='#c0c8e0';
+const ok=()=>typeof B!=='undefined'&&B&&!B.skip&&typeof FXS!=='undefined'&&FXS.ctx&&!(typeof REDUCED!=='undefined'&&REDUCED);
+const isL=u=>!!u&&u.hid===LUC;
+const snd=(k,d,v)=>{try{if(typeof AU!=='undefined'&&AU&&AU.ctx&&cSnd.ok()&&SND[k])SND[k](AU.F.v,NOW(d||0),v||1)}catch(e){}};
+const PACK=1.3,BONUS=180,FEAR=20;
+let CAST=null,KILL=0;
+{const d0=deal;deal=function(s,t,pct,o){o=o||{};
+  try{if(t&&t.hp>0&&isL(t)&&t.mist>0&&s&&s.side!==t.side&&B){t.mist=0;float(t,'💨 Brume','info');log(`💨 <b>${t.name}</b> se fond dans la brume : le coup de ${s.name} ne le touche pas.`,'ba');
+    if(ok())try{const b=uc(t);smoke(b.x,b.y,10,FOG,16,46);glowPulse(b.x,b.y,MI2,320,b.s*.4)}catch(e){}
+    try{refreshUnits()}catch(e){}return 0}}catch(e){}
+  let p=pct;try{if(isL(s)&&t&&t.side!==s.side&&t.max<1e12&&t.hp>0&&t.hp/t.max<.5)p=pct*PACK}catch(e){}
+  const h0=t?t.hp:0;const d=d0.call(this,s,t,p,o);
+  try{if(isL(s)&&t&&h0>0&&t.hp<=0&&s.hp>0){s.mist=1;if(CAST===s)KILL=1}}catch(e){}
+  return d}}
+{const sk0=skill;skill=function(u,sk,sc){if(!(isL(u)&&sk&&sk.fx&&sk.fx.howl))return sk0.apply(this,arguments);
+  try{if(B){for(const t of alive(1-u.side)){t.en=Math.max(0,(t.en||0)-FEAR);if(!B.skip)float(t,'😱 −'+FEAR,'info')}log(`😱 Le hurlement glace le sang des ennemis : <b>−${FEAR} énergie</b> pour tous.`,'sk')}}catch(e){}
+  CAST=u;KILL=0;let r;try{r=sk0.apply(this,arguments)}finally{CAST=null}
+  try{if(KILL&&B&&alive(1-u.side).length){u.lcGo=1;log(`🐺 <b>${u.name}</b> a goûté le sang : il va rejouer.`,'sk')}}catch(e){}
+  return r}}
+/* la Curée : s'il achève sa cible avec Hurlement, il rejoue tout de suite sur le plus affaibli */
+{const a0=act;act=async function(u){const r=await a0.apply(this,arguments);
+  try{if(B&&!B.done&&isL(u)&&u.lcGo&&u.hp>0){u.lcGo=0;const f=alive(1-u.side);if(f.length){
+    const t=f.reduce((a,b)=>a.hp/a.max<b.hp/b.max?a:b);
+    if(ok()){try{fxSetup();const a=uc(u),b=uc(t);glowPulse(a.x-a.s*.1,a.y-a.s*.32,GY,300,8);glowPulse(a.x+a.s*.1,a.y-a.s*.32,GY,300,8);
+      textPop(a.x,a.y-a.s*.6,'CURÉE',GY,18,700);snd('growl',0,1.1);await cardMove(u,(b.x-a.x)*.55,(b.y-a.y)*.55,200);
+      slashLine(b.x,b.y,b.s*1.1,-.75,[WH,MI2],200,5);slashLine(b.x,b.y,b.s*1.1,.75,[WH,MI2],200,5,70);sparks(b.x,b.y,MI2,12,6,2,22);snd('claw',.02,1)}catch(e){}}
+    const d=deal(u,t,BONUS,{});log(`🐺 <b>${u.name}</b> rejoue et déchire ${t.name} : ${fmt(d)}`,'sk');u.en=Math.min(100,u.en+34);
+    refreshUnits();await wait(420)}}}catch(e){}
+  return r}}
+/* l'étiquette sur la carte */
+{const ru=refreshUnits;refreshUnits=function(){const r=ru.apply(this,arguments);try{if(B)for(const u of B.units){if(!isL(u))continue;const el=document.getElementById('u-'+u.key);if(!el)continue;
+  const on=u.mist>0&&u.hp>0;el.classList.toggle('lcmist',on);if(on){const sx=el.querySelector('.sx');if(sx&&!sx.querySelector('.lctg'))sx.insertAdjacentHTML('beforeend','<span class="lctg" style="color:#c8d4ff">BRUME</span>')}}}catch(e){}return r}}
+
+/* ---------- l'ultime : Hurlement ---------- */
+function wolfC(c,x,y,s,dir,al,eye){c.save();c.translate(x,y);c.scale(dir*s,s);c.globalAlpha=al;c.fillStyle='#0a0d18';c.beginPath();
+  c.moveTo(-9,3.5);c.lineTo(-6,-2);c.lineTo(-5.5,-9.5);c.lineTo(-2.5,-4.5);c.lineTo(-.5,-9);c.lineTo(1,-3.5);c.quadraticCurveTo(4,-3,9.5,-.5);c.lineTo(10,.8);c.lineTo(6,2.2);c.quadraticCurveTo(2,4,-1,5.5);c.closePath();c.fill();
+  if(eye){c.globalCompositeOperation='lighter';c.globalAlpha=al*eye;c.drawImage(spr(GY),2.6-2.4,-1.8-2.4,4.8,4.8)}c.restore()}
+LEG2[LUC]=async X=>{const {u,tg}=X;fxSetup();if(!FXS.ctx)return;
+  const a=uc(u),W=FXS.w,H=FXS.h,t=tg[0];if(!t)return;const b=uc(t),fm=rowMid(1-u.side);
+  /* la brume monte */
+  vignette('#060814',1900,.68);try{dimOn(.62)}catch(e){}
+  fxItem(1700,(c,p)=>{const al=Math.sin(p*Math.PI)*.5;c.globalAlpha=al;for(let k=0;k<9;k++){const x=((k*97+p*60)%(W+160))-80,y=H*(.95-p*.45)-((k*53)%90);const g=c.createRadialGradient(x,y,4,x,y,90);g.addColorStop(0,'rgba(200,210,235,.55)');g.addColorStop(1,'rgba(200,210,235,0)');c.fillStyle=g;c.fillRect(x-90,y-90,180,180)}});
+  /* les loups dans la brume, autour de la proie */
+  const pos=[[-1.15,.05,1],[1.15,-.05,-1],[-.55,.55,1],[.6,.55,-1]];
+  pos.forEach(([dx,dy,dir],i)=>fxItem(1300,(c,p)=>{const al=p<.25?p/.25:p>.8?(1-p)/.2:1;wolfC(c,fm.x+dx*fm.s*1.4,fm.y+dy*fm.s,fm.s*.07,dir,al*.85,p>.3?1:0)},120+i*90));
+  await fxWait(520);if(!B)return;
+  /* le hurlement */
+  snd('growl',0,1.4);snd('growl',.18,1);
+  for(let i=0;i<3;i++)ringFx(a.x,a.y-a.s*.3,i%2?MI2:WH,a.s*(1+i*.45),620,4,1,i*140);
+  shake(2);glowPulse(a.x,a.y-a.s*.3,MI2,600,a.s*.6);
+  await fxWait(420);if(!B)return;
+  /* il disparaît, et réapparaît derrière la proie */
+  smoke(a.x,a.y,12,FOG,18,50);const el=cardEl(u);try{if(el&&el.animate)el.animate([{opacity:1},{opacity:.15},{opacity:.15},{opacity:1}],{duration:700/S.speed})}catch(e){}
+  await fxWait(260);if(!B)return;
+  smoke(b.x,b.y-b.s*.5,10,FOG,16,44);glowPulse(b.x,b.y-b.s*.45,GY,260,10);
+  await fxWait(160);if(!B)return;
+  /* la croix */
+  slashLine(b.x,b.y,b.s*1.5,-.8,[WH,MI2],260,6);slashLine(b.x,b.y,b.s*1.5,.8,[WH,MI2],260,6,90);snd('claw',0,1.2);snd('slash',.09,1);
+  await fxWait(200);if(!B)return;
+  flash('#e8eeff',180,.6);camPunch(b,1.1,420);sparks(b.x,b.y,MI2,18,8,2.2,26);ringFx(b.x,b.y,WH,b.s*.75,480,5);
+  hit(X,t,1.5);
+  await fxWait(320);if(!B)return;
+  if(t.hp<=0&&alive(1-u.side).length){glowPulse(a.x-a.s*.1,a.y-a.s*.32,GY,500,9);glowPulse(a.x+a.s*.1,a.y-a.s*.32,GY,500,9);textPop(a.x,a.y-a.s*.55,'LA MEUTE A FAIM',GY,Math.max(14,Math.min(20,W*.9/14)),900);await fxWait(380)}
+  else await fxWait(200)};
+
+/* ---------- textes ---------- */
+try{const sd=skillDesc;skillDesc=function(sk){let r=sd.apply(this,arguments);
+  try{if(sk&&sk.fx&&sk.fx.howl)r+=` Son hurlement glace le sang : <b>tous les ennemis perdent ${FEAR} énergie</b>. S'il <b>achève sa cible</b>, il <b>rejoue aussitôt</b> : il déchire l'ennemi le plus affaibli pour ${BONUS} % de son ATQ.`}catch(e){}return r}}catch(e){}
+const PASS=`<div class="skill lcpas"><div class="sn">🐺 Instinct de meute</div><div class="muted" style="font-size:11px;font-weight:800;letter-spacing:.4px">CAPACITÉ · PASSIVE</div><p style="margin:6px 0 0;font-size:13px">Il inflige <b>+30 % de dégâts</b> aux ennemis sous 50 % de PV. Quand il achève un ennemi, la <b>brume</b> le cache : le prochain coup qui le vise ne lui fait <b>aucun dégât</b>.</p></div>`;
+try{const hm=heroModal;heroModal=function(id){const r=hm.apply(this,arguments);try{if(+id===LUC){const mo=$('#ovl .modal'),sk=mo&&mo.querySelector('.skill');if(sk&&!mo.querySelector('.lcpas'))sk.insertAdjacentHTML('afterend',PASS)}}catch(e){}return r}}catch(e){}
+const st=document.createElement('style');st.textContent=`
+#battle .u.lcmist .pt{filter:saturate(.6) brightness(1.08) drop-shadow(0 0 8px rgba(200,212,255,.8))}
+.skill.lcpas{border-color:rgba(184,200,255,.5)!important;background:linear-gradient(135deg,rgba(184,200,255,.14),transparent 70%),var(--panel)!important}`;document.head.appendChild(st);
+try{if(typeof STL!=='undefined')STL[LUC]=["Lucan était le capitaine de la Garde d'Éther, celui qu'on mettait à la porte nord parce qu'il ne dormait jamais. Une nuit d'hiver, il l'a ouverte lui-même.",
+  "Cette nuit-là, la Garde est tombée. Lucan s'est enfui dans la brume des montagnes, où une meute de loups l'a accepté avant les hommes. Il a appris à chasser comme eux : il attend que la proie saigne.",
+  "Perrin lui a demandé un jour pourquoi il avait ouvert la porte. Lucan a répondu : « On m'avait dit que ma sœur était de l'autre côté. » Elle n'y était pas. Elle n'y a jamais été."]}catch(e){}
+try{if(typeof VOXD!=='undefined')VOXD[LUC]=['m','deep',["Lucan. Ne me demande pas pourquoi j'ai ouvert la porte.","La meute attend que tu saignes. Moi aussi.","Hurlement !"]]}catch(e){}
+try{const X={'Lucan le Loup de Brume':'Lucan the Mist Wolf','Hurlement':'Howl','CURÉE':'THE KILL','LA MEUTE A FAIM':'THE PACK IS HUNGRY','💨 Brume':'💨 Mist','BRUME':'MIST','Roi de la Meute':'King of the Pack','🐺 Instinct de meute':'🐺 Pack Instinct',
+  "Il inflige <b>+30 % de dégâts</b> aux ennemis sous 50 % de PV. Quand il achève un ennemi, la <b>brume</b> le cache : le prochain coup qui le vise ne lui fait <b>aucun dégât</b>.":"He deals <b>+30 % damage</b> to enemies under 50 % HP. When he finishes off an enemy, the <b>mist</b> hides him: the next hit aimed at him deals <b>no damage</b>.",
+  [`Son hurlement glace le sang : <b>tous les ennemis perdent ${FEAR} énergie</b>. S'il <b>achève sa cible</b>, il <b>rejoue aussitôt</b> : il déchire l'ennemi le plus affaibli pour ${BONUS} % de son ATQ.`]:`His howl chills the blood: <b>every enemy loses ${FEAR} energy</b>. If he <b>finishes off his target</b>, he <b>acts again at once</b>: he tears into the weakest enemy for ${BONUS} % of his ATK.`,
+  "Lucan était le capitaine de la Garde d'Éther, celui qu'on mettait à la porte nord parce qu'il ne dormait jamais. Une nuit d'hiver, il l'a ouverte lui-même.":"Lucan was the captain of the Aether Guard, the one they put at the north gate because he never slept. One winter night, he opened it himself.",
+  "Cette nuit-là, la Garde est tombée. Lucan s'est enfui dans la brume des montagnes, où une meute de loups l'a accepté avant les hommes. Il a appris à chasser comme eux : il attend que la proie saigne.":"That night, the Guard fell. Lucan fled into the mountain mist, where a wolf pack accepted him before men ever did. He learned to hunt like them: he waits for the prey to bleed.",
+  "Perrin lui a demandé un jour pourquoi il avait ouvert la porte. Lucan a répondu : « On m'avait dit que ma sœur était de l'autre côté. » Elle n'y était pas. Elle n'y a jamais été.":"One day Perrin asked him why he had opened the gate. Lucan answered: “They told me my sister was on the other side.” She wasn't. She never had been.",
+  "Lucan. Ne me demande pas pourquoi j'ai ouvert la porte.":"Lucan. Don't ask me why I opened the gate.","La meute attend que tu saignes. Moi aussi.":"The pack is waiting for you to bleed. So am I.","Hurlement !":"Howl!"};Object.assign(I18N_EN,X);for(const k in X)if(k.includes('<')&&window.RDEput)RDEput(k,X[k])}catch(e){}
+}catch(e){console.warn('lucan kit',e)}})();
+
+/* ================= V460 : VEYRA AUX MILLE CLÉS (héroïne de l'événement de saison) =================
+   Geôlière du Tribunal des Lames. Le soir où le Tribunal est tombé, elle a ouvert toutes les cellules.
+   Elle ramène les évadés un par un. Sa chaîne ouvre les protections ; ses clés finissent par tout fermer. */
+const VEY=78;
+(function(){try{
+if(!HEROES[VEY]||!window.HA)return;
+const {r1,P,L_,C_,E_,MI,MB,HG}=HA;
+const GC={};
+const defs=(q,u)=>HA.lin(q+'sk','#f8e0cc','#ecc6aa','#cc9a7e')+HA.lin(q+'hr','#4e3e58','#2a2032','#120c18',1)
+ +HA.lin(q+'co',u>=2?'#3a7e92':'#30707f','#1e4a5a','#0c2a34',1)+HA.lin(q+'ru','#c8784a','#a0603a','#6a3a1e',1)
+ +HA.lin(q+'ir','#e4e8f0','#9aa2b4','#555d70')+HA.lin(q+'br','#fff2b8','#d8b04a','#8a6a1a')
+ +HA.lin(q+'bo','#2e2834','#1e1a24','#0e0c12',1)+HA.rad(q+'kg',[[0,'#ffffff',.9],[.4,'#7fd8ff',.55],[1,'#7fd8ff',0]]);
+const SK=q=>`url(#${q}sk)`,HR=q=>`url(#${q}hr)`,CO=q=>`url(#${q}co)`,RU=q=>`url(#${q}ru)`,IR=q=>`url(#${q}ir)`,BR=q=>`url(#${q}br)`,BO=q=>`url(#${q}bo)`,KG=q=>`url(#${q}kg)`;
+/* une clé : anneau, tige, panneton */
+function key(x,y,s,a,col,w){return`<g transform="translate(${x} ${y}) rotate(${a}) scale(${s})">`
+  +C_(0,0,2.6,'none',`stroke="${col}" stroke-width="${w||1.3}"`)+L_('M0 2.6V11.6',col,w||1.3)+L_('M0 8.6H2.4M0 10.8H3',col,(w||1.3)*.85)+'</g>'}
+/* une chaîne : maillons alternés le long d'une ligne */
+function chain(q,x1,y1,x2,y2,n,w=1){const a=Math.atan2(y2-y1,x2-x1)*180/Math.PI;let s='';
+  for(let i=0;i<=n;i++){const x=r1(x1+(x2-x1)*i/n),y=r1(y1+(y2-y1)*i/n);
+    s+=`<ellipse cx="${x}" cy="${y}" rx="${r1(2.3*w)}" ry="${r1((i%2?.7:1.3)*w)}" transform="rotate(${r1(a)} ${x} ${y})" fill="none" stroke="${IR(q)}" stroke-width="${r1(.8*w)}"/>`}
+  return s}
+function chainPath(q,pts,w=1){let s='';for(let k=0;k<pts.length-1;k++){const [x1,y1]=pts[k],[x2,y2]=pts[k+1];s+=chain(q,x1,y1,x2,y2,Math.max(1,Math.round(Math.hypot(x2-x1,y2-y1)/(3.6*w))),w)}return s}
+function padlock(q,x,y,s){return`<g transform="translate(${x} ${y}) scale(${s})">`+`<path d="M-3.4 -1V-4.4Q-3.4 -8 0 -8Q3.4 -8 3.4 -4.4V-1" fill="none" stroke="${IR(q)}" stroke-width="1.5"/>`
+  +P('M-5 -1.4H5Q6 -1.4 6 -.4V6Q6 7.2 4.8 7.2H-4.8Q-6 7.2 -6 6V-.4Q-6 -1.4 -5 -1.4Z',IR(q))+C_(0,2.2,1.1,'#2a2a34')+L_('M0 2.8V4.8','#2a2a34',.9)+'</g>'}
+/* ---------- la tête ---------- */
+function hairBack(q){return P('M34.6 46Q33 30 42.4 24Q50 20 57.6 24Q67 30 65.4 46Q66 54 64.8 60.6L35.2 60.6Q34 54 34.6 46Z',HR(q))+L_('M36 60.4H64','#0c0810',.8)}
+function face(q,u){
+  let s=`<rect x="45.6" y="55" width="8.8" height="13" fill="${SK(q)}"/>`+P('M45.6 59.6Q50 62.8 54.4 59.6L54.4 64.4Q50 66.2 45.6 64.4Z','#c08a70','opacity=".55"');
+  s+=MI(P('M36.8 44.6Q33.6 44.2 34 48Q34.6 51.4 37.4 51.2Z','#e6b898'));
+  s+=P('M37 44.4Q37 30.6 50 30.6Q63 30.6 63 44.4Q63 52.6 59.6 58.2Q55.4 63.8 50 64.4Q44.6 63.8 40.4 58.2Q37 52.6 37 44.4Z',SK(q));
+  s+=P('M58.4 46Q61.6 52 59 57.4Q56.6 61 53 62.8Q57.6 58.4 59 52.4Z','#c88a6c','opacity=".4"');
+  /* yeux d'eau glacée, un peu plissés : elle te compte parmi les évadés */
+  const eo={w:3.5,h:2.2,iris:u>=3?'#c8f6ff':'#78c4e4',iris2:'#24607e',pupil:'#08141c',lid:'#16101c',lidW:1.2,lash:1,ir:1.7,look:.25,narrow:1,glow:u>=1?'#7fd8ff':null};
+  s+=HA.eye(44,47,eo)+HA.eye(56,47,eo);
+  s+=L_('M39.8 42.4Q43.4 41 47.4 42','#221a2a',1.2)+L_('M52.6 42Q56.6 41 60.2 42.4','#221a2a',1.2);
+  s+=L_('M50.4 48.6L49.7 52.8Q50.4 53.6 51.6 53.1','#c08a70',.65);
+  s+=P('M47 58.2Q50 58.2 53 58.2Q52.2 59.6 50 59.7Q47.8 59.6 47 58.2Z','#a84e56')+L_('M46.6 58.3Q50 58.1 53.4 58.3','#6a2430',.6)+P('M48 59.1Q50 59.9 52 59.1Q50 59.5 48 59.1Z','#e08a8a','opacity=".6"');
+  s+=MI(E_(41.6,53.4,2.8,1.3,'#ff7a7a','opacity=".14"'));
+  /* un petit anneau de fer à chaque oreille */
+  s+=C_(35,52.4,1.1,'none',`stroke="${IR(q)}" stroke-width=".55"`)+C_(65,52.4,1.1,'none',`stroke="${IR(q)}" stroke-width=".55"`);
+  /* carré noir, frange de côté */
+  s+=P('M36 46Q34.4 30.4 43.6 25.4Q51.6 21.6 59.6 25.6Q66 30 64.4 46Q62.6 37 57.6 33.6Q52 37.2 44.6 36.4Q39.6 39 36 46Z',HR(q));
+  s+=P('M59.4 29.6Q50 31.6 42.4 38.6Q39.6 41.4 38.4 45Q40.6 35.6 48.2 30.8Q54 27.6 59.4 29.6Z',HR(q));
+  s+=P('M36.6 40Q34.6 50 36.4 58.8L40.8 57.6Q39.4 49 40.6 42.6Z',HR(q))+P('M63.4 40Q65.4 50 63.6 58.8L59.2 57.6Q60.6 49 59.4 42.6Z',HR(q));
+  s+=L_('M44 27.4Q50 25.2 56 27M41.6 32.6Q47 29 54.4 29.8M60.6 34Q62.6 40 62.4 46','#8a7aa0',.5,'opacity=".8"');
+  return s}
+/* ---------- buste ---------- */
+function bust(q,u){
+  let s=P('M8 100Q10 82 22 74L78 74Q90 82 92 100Z',CO(q))+P('M12 100Q14 86 24 78L28 100Z','#06161c','opacity=".45"');
+  s+=P('M43 68L57 68L60 100H40Z','#1a1420');
+  /* le haut col, doublé de rouille */
+  s+=P('M40.4 64.4Q38.6 71 39.8 78L45.4 76Q44 71 45 65.8Z',RU(q))+P('M59.6 64.4Q61.4 71 60.2 78L54.6 76Q56 71 55 65.8Z',RU(q));
+  s+=P('M38.4 63.4Q35.8 71 37.6 80L40.2 79.4Q38.8 71 40.6 64.2Z',CO(q))+P('M61.6 63.4Q64.2 71 62.4 80L59.8 79.4Q61.2 71 59.4 64.2Z',CO(q));
+  s+=MI(L_('M40 80L36.4 100','#0a242e',.7)+C_(38.4,86,.95,IR(q))+C_(37.6,93,.95,IR(q)));
+  /* la chaîne en bandoulière */
+  s+=chainPath(q,[[16,80],[40,88],[64,98],[70,101]],1);
+  /* la clé bleue, au bout d'un cordon */
+  s+=L_('M45.6 64.6Q50 75 54.4 64.6','#3a2a20',.6);
+  s+=C_(50,80,7,KG(q),`opacity="${.5+u*.15}"`)+key(50,77,1.05,0,'#7fd8ff',1.4)+C_(50,77,1,'#ffffff');
+  return s}
+/* ---------- portrait ---------- */
+const PO={name:'Veyra aux Mille Clés',cls:'Guerrier',r:4,TC:'#7fd8ff',
+  bg:['#f0fcff','#b4e8f6','#2a6a86','#0e2434','#06101a'],glow:['#ffffff','#c8f0ff','#7fd8ff'],halo:'#d4f6ff',halo2:'#a8e8ff',
+  frame:['#e4f8ff','#7fd8ff'],parts:['#e8fbff','#ffd77a'],rayCol:'#e8fbff'};
+const bars=(x0,x1,y0,y1,n,op)=>{let s='';for(let i=0;i<n;i++){const x=r1(x0+(x1-x0)*i/(n-1));s+=`<rect x="${r1(x-1.1)}" y="${y0}" width="2.2" height="${y1-y0}" fill="#0a1a24" opacity="${op}"/>`+L_(`M${r1(x-.4)} ${y0}V${y1}`,'#9ad8f0',.3,`opacity="${r1(op*.8)}"`)}
+  return s+`<rect x="${x0-2}" y="${y0+4}" width="${x1-x0+4}" height="2" fill="#0a1a24" opacity="${op}"/>`};
+const floatKeys=(pts,u)=>pts.slice(0,u+1).map(([x,y,a],k)=>`<g opacity=".85"><animateTransform attributeName="transform" type="translate" values="0 0;0 -5;0 0" dur="${(3+k*.6).toFixed(1)}s" repeatCount="indefinite"/>${key(x,y,1,a,k%2?'#ffd77a':'#bff0ff',1.2)}</g>`).join('');
+function veyPortrait(u){u=Math.max(0,Math.min(3,u|0));if(GC['p'+u])return GC['p'+u];const q='vyp'+u+'_';
+  return GC['p'+u]=HA.portrait(Object.assign({},PO,{u,q,defs:defs(q,u),
+    back:(q,u)=>bars(8,92,6,98,9,.22)+floatKeys([[14,30,-20],[86,26,25],[18,62,10],[84,60,-15]],u)+(u>=3?`<circle cx="50" cy="36" r="33" fill="none" stroke="#7fd8ff" stroke-width=".6" stroke-dasharray="1 3" opacity=".8"/>`:''),
+    content:(q,u)=>hairBack(q)+bust(q,u)+face(q,u)}))}
+/* ---------- corps entier ---------- */
+function ring(q,cx,cy,u){let s=C_(cx,cy,6.4,'none',`stroke="${IR(q)}" stroke-width="1.5"`);
+  const K=[[-60,'#c8ced8'],[-25,'#d8b04a'],[5,'#c8ced8'],[35,'#d8b04a'],[65,'#c8ced8'],[95,'#9aa2b4']];
+  K.forEach(([a,c],k)=>{const r=a*Math.PI/180,x=r1(cx+Math.sin(r)*6.4),y=r1(cy+Math.cos(r)*6.4);s+=key(x,y,.85,-a,c,1.2)});
+  return s}
+function veyBody(u,bare){u=Math.max(0,Math.min(3,u|0));const ck='b'+u+(bare?'s':'');if(GC[ck])return GC[ck];const q='vyb'+u+(bare?'s':'')+'_';
+  return GC[ck]=HA.body({u,q,bare,r:4,name:'Veyra aux Mille Clés',defs:defs(q,u),glow:['#ffffff','#c8f0ff','#7fd8ff'],bb:['#b8ecfa','#1e4a5a','#06101a'],
+   halo:'#d4f6ff',halo2:'#a8e8ff',parts:['#e8fbff','#ffd77a'],ring:['#d4f6ff','#7fd8ff','#ffd77a'],
+   back:(q,u)=>bars(18,142,20,206,9,.18)+floatKeys([[20,60,-20],[140,52,25],[24,120,10],[136,112,-15]],u)
+     +(u>=2?`<g opacity=".5">${chainPath(q,[[10,10],[22,60],[18,110]],1.1)}${chainPath(q,[[150,14],[138,64],[142,112]],1.1)}</g>`:'')
+     +(u>=3?`<g opacity=".55"><circle cx="80" cy="36" r="30" fill="none" stroke="#7fd8ff" stroke-width="1"/><path d="M76 30a4 4 0 1 1 8 0l-1.6 3 2 9h-8.8l2-9z" fill="#7fd8ff" opacity=".5"/></g>`:''),
+   content:(q,u)=>{let s='';
+    s+=HG(hairBack(q));
+    /* les pans du long manteau, doublés de rouille */
+    s+=P('M58.6 64Q44 104 45 184L66.4 190L72.6 122H87.4L93.6 190L115 184Q116 104 101.4 64Z',CO(q));
+    s+=P('M72.6 122L66.4 190L72.6 188.4L77.4 126Z',RU(q))+P('M87.4 122L93.6 190L87.4 188.4L82.6 126Z',RU(q));
+    s+=L_('M50 120Q48 150 49 182M110 120Q112 150 111 182','#0a242e',.6,'opacity=".8"')+L_('M45 184L66.4 190M115 184L93.6 190',RU(q),1);
+    /* jambes : pantalon sombre, hautes bottes à bout de fer */
+    s+=P('M68.4 128L77.6 128L76.6 176L69.2 176Z',BO(q))+P('M82.4 128L91.6 128L90.8 176L83.4 176Z',BO(q));
+    s+=P('M66.8 168L78.4 168L78.8 205L64.6 208Q64 196 66.8 168Z','#100c14')+P('M81.6 168L93.4 168L96.6 205L82.4 208Z','#100c14');
+    s+=L_('M67 172H78.2M81.8 172H93.2','#3a3442',.8)+[178,186,194].map(y=>C_(77.2,y,.7,IR(q))+C_(92.6,y,.7,IR(q))).join('');
+    s+=P('M64.2 205L78.8 203.4L79 210.6L61 212Q61.2 207.6 64.2 205Z',IR(q))+P('M82.4 205L96.4 203.6L99.6 210.4L82 212Z',IR(q));
+    /* ceinture et trousseau */
+    s+=P('M61 108Q80 114.6 99 108L99.6 116.4Q80 123 60.4 116.4Z','#2a1e1a')+L_('M61 110Q80 116.6 99 110','#5a4438',.5)+`<rect x="76.6" y="110.6" width="6.8" height="6" rx="1" fill="none" stroke="${IR(q)}" stroke-width="1.2"/>`;
+    s+=ring(q,104,126,u);
+    /* le manteau fermé sur la poitrine */
+    s+=P('M62 64Q80 58.6 98 64L99.6 96Q97 108 80 110Q63 108 60.4 96Z',CO(q));
+    s+=P('M74 64L86 64L84 108L80 110L76 108Z','#1a1420')+L_('M74 64L76 108M86 64L84 108',RU(q),.8);
+    s+=[76,84,92,100].map(y=>C_(72.6,y,.9,IR(q))+C_(87.4,y,.9,IR(q))).join('');
+    /* le haut col */
+    s+=P('M70 58Q67.6 64 69.6 72L74.6 70Q73.4 64 74.6 60Z',RU(q))+P('M90 58Q92.4 64 90.4 72L85.4 70Q86.6 64 85.4 60Z',RU(q));
+    s+=P('M68 56.6Q64.6 64 67.6 74L70.6 73Q68.6 64 70.6 57.4Z',CO(q))+P('M92 56.6Q95.4 64 92.4 74L89.4 73Q91.4 64 89.4 57.4Z',CO(q));
+    /* la clé bleue */
+    s+=C_(80,82,7,KG(q),`opacity="${.5+u*.15}"`)+L_('M76 64Q80 76 84 64','#3a2a20',.6)+key(80,79,1.1,0,'#7fd8ff',1.4)+C_(80,79,1,'#ffffff');
+    /* la chaîne en bandoulière */
+    s+=chainPath(q,[[64,68],[80,90],[97,110]],.9);
+    /* épaules */
+    s+=MB(P('M53.6 84Q53.4 73 61.6 67Q67 63.6 71 65.6L67 78Q60 80 53.6 84Z',CO(q))+L_('M54.4 82.4Q55.4 73.4 61.6 68.4',IR(q),.7,'opacity=".8"'));
+    /* bras droit : la chaîne tombe de sa main jusqu'au cadenas */
+    s+=P('M52.8 78Q47 96 48.6 114L58.2 114.6Q58 96 61.6 82Z',CO(q))+P('M48 110.6L58.8 111.2L58.6 118L48.2 117.4Z',RU(q));
+    s+=chainPath(q,[[53,124],[46,146],[40,170],[38,192]],1)+padlock(q,38,198,1.15);
+    s+=E_(53.4,123,4.4,3.8,SK(q))+L_('M50.2 124.2Q53.4 126.2 56.6 124.2','#c08a70',.45)+chain(q,50,121,57,125,2,1);
+    /* bras gauche : la main sur le trousseau */
+    s+=P('M103.6 75Q112 86 114.6 98L106.4 101Q103.4 90 97 82Z',CO(q))+P('M105.4 98.6L114.8 96L116.2 101.4L107.2 104Z',RU(q));
+    s+=P('M107.2 103.6L116 101Q117.2 110 110 118L104 115Q108.6 110 107.2 103.6Z',CO(q))+E_(106.6,118.4,4.2,3.6,SK(q));
+    s+=HG(face(q,u));
+    if(u>=3)s+=`<circle cx="80" cy="36" r="31" fill="none" stroke="#7fd8ff" stroke-width=".8" stroke-dasharray="1.6 3.4" opacity=".8"/>`;
+    return s}})}
+window.veyPortrait=veyPortrait;window.veyBody=veyBody;
+HA.install(VEY,veyPortrait,veyBody,{veyra:()=>veyBody(0,1)});
+try{UTH_H[VEY]={n:'Gardienne des Mille Portes',m:'#1e4a5a',s:'#d8b04a',a:'#7fd8ff',e:'#bff0ff',bg:'spirit',w:null,hat:null,fx:'stars',c:'#7fd8ff',c2:'#ffd77a',h3:'#ffffff'}}catch(e){}
+}catch(e){console.warn('veyra art',e)}})();
+
+/* ---------- Trousseau, Cadenas, et l'ultime qui ouvre tout ---------- */
+(function(){try{
+if(!HEROES[VEY])return;
+const CY='#7fd8ff',CY2='#bff0ff',GLD='#ffd77a',IRN='#c8ced8',WH='#f2fbff';
+const KMAX=5,KPCT=12,CAD=200,FREE=20;
+const ok=()=>typeof B!=='undefined'&&B&&!B.skip&&typeof FXS!=='undefined'&&FXS.ctx&&!(typeof REDUCED!=='undefined'&&REDUCED);
+const isV=u=>!!u&&u.hid===VEY;
+const snd=(k,d,v)=>{try{if(typeof AU!=='undefined'&&AU&&AU.ctx&&cSnd.ok()&&SND[k])SND[k](AU.F.v,NOW(d||0),v||1)}catch(e){}};
+let CAST=null;
+function keyC(c,x,y,s,a,col){c.save();c.translate(x,y);c.rotate(a);c.scale(s,s);c.strokeStyle=col;c.lineWidth=1.4;c.beginPath();c.arc(0,0,2.6,0,6.283);c.moveTo(0,2.6);c.lineTo(0,11.6);c.moveTo(0,8.6);c.lineTo(2.6,8.6);c.moveTo(0,10.8);c.lineTo(3.2,10.8);c.stroke();c.restore()}
+function lockC(c,x,y,s,col,open){c.save();c.translate(x,y);c.scale(s,s);c.strokeStyle=col;c.lineWidth=1.6;c.beginPath();if(open){c.moveTo(-3.4,-1);c.lineTo(-3.4,-4.4);c.quadraticCurveTo(-3.4,-8,0,-8);c.quadraticCurveTo(3.4,-8,3.4,-5.6)}else{c.moveTo(-3.4,-1);c.lineTo(-3.4,-4.4);c.quadraticCurveTo(-3.4,-8,0,-8);c.quadraticCurveTo(3.4,-8,3.4,-4.4);c.lineTo(3.4,-1)}c.stroke();
+  c.fillStyle=col;c.beginPath();c.moveTo(-5,-1.4);c.lineTo(5,-1.4);c.lineTo(5,6.4);c.lineTo(-5,6.4);c.closePath();c.fill();c.fillStyle='#1a2230';c.beginPath();c.arc(0,2.2,1.1,0,6.283);c.fill();c.restore()}
+/* les clés et le Cadenas passent par les attaques normales ; l'ultime profite des clés */
+{const d0=deal;deal=function(s,t,pct,o){o=o||{};
+  const vb=isV(s)&&t&&t.hp>0&&s.side!==t.side&&!o.sk&&!o.ct&&!o.ub&&('force' in o)&&pct===100;
+  let p=pct,cad=false;
+  try{if(vb&&(s.keys||0)>=KMAX){cad=true;p=CAD}if(CAST&&s===CAST&&o.sk)p=p*(1+KPCT/100*Math.min(KMAX,s.keys||0))}catch(e){}
+  const d=d0.call(this,s,t,p,o);
+  try{if(vb){if(cad){s.keys=0;let held=false;if(t.hp>0&&(!t.boss||Math.random()<.5)){t.stun=Math.max(t.stun||0,1);held=true}
+      log(`🔒 <b>${s.name}</b> referme le <b>Cadenas</b> sur ${t.name}${held?' : enchaîné, il passe son prochain tour':''} (${fmt(d)}).`,'sk');
+      if(ok()){const a=uc(s),b=uc(t);fxItem(420,(c,p)=>{const g=Math.min(1,p*2.2),al=p>.7?(1-p)/.3:1;c.globalAlpha=al;c.strokeStyle=IRN;c.lineWidth=2.6;c.setLineDash([5,3]);c.beginPath();c.moveTo(a.x,a.y);c.lineTo(a.x+(b.x-a.x)*g,a.y+(b.y-a.y)*g);c.stroke();c.setLineDash([]);c.globalCompositeOperation='lighter';c.globalAlpha=al*.35;c.strokeStyle=CY;c.lineWidth=7;c.stroke()});
+        fxItem(700,(c,p)=>{c.globalAlpha=p>.7?(1-p)/.3:1;lockC(c,b.x,b.y-b.s*.1,b.s*.045*(p<.2?.6+p*2:1),GLD,false)},180);snd('bonk',.18,1);ringFx(b.x,b.y,CY,b.s*.6,420,4,1,180);if(held)float(t,'🔒 Enchaîné','info')}}
+    else s.keys=Math.min(KMAX,(s.keys||0)+1)}}catch(e){}
+  return d}}
+{const sk0=skill;skill=function(u,sk,sc){if(!(isV(u)&&sk&&sk.fx&&sk.fx.unlock&&B))return sk0.apply(this,arguments);
+  const br=[];try{for(const t of alive(1-u.side)){let x=0;if(t.sh>0){t.sh=0;x|=1}if(t.taunt>0){t.taunt=0;x|=2}if(t.guard>0){t.guard=0;x|=4}if(x){br.push(t);if(!B.skip)float(t,'🔓 Ouvert','info')}}}catch(e){}
+  B.vyBr=br;CAST=u;let r;try{r=sk0.apply(this,arguments)}finally{CAST=null}
+  try{const k=u.keys||0;if(br.length)log(`🔓 <b>${u.name}</b> ouvre toutes les portes : ${br.map(t=>t.name).join(', ')} ${br.length>1?'perdent':'perd'} leurs protections (boucliers, provocation, serment).`,'sk');
+    if(k)log(`🔑 ${k} clé${k>1?'s':''} au trousseau : +${k*KPCT} % de dégâts.`,'sk');u.keys=Math.min(KMAX,k+1);
+    for(const a of alive(u.side))if(a!==u)a.en=Math.min(100,(a.en||0)+FREE);log(`🗝️ Libérés, ses alliés gagnent <b>+${FREE} énergie</b>.`,'sk')}catch(e){}
+  return r}}
+{const ru=refreshUnits;refreshUnits=function(){const r=ru.apply(this,arguments);try{if(B)for(const u of B.units){if(!isV(u))continue;const el=document.getElementById('u-'+u.key);if(!el)continue;
+  const k=u.keys||0;el.classList.toggle('vyfull',k>=KMAX&&u.hp>0);if(k&&u.hp>0){const sx=el.querySelector('.sx');if(sx&&!sx.querySelector('.vytg'))sx.insertAdjacentHTML('beforeend',`<span class="vytg" style="color:${k>=KMAX?'#ffd77a':'#9fe4ff'}">${k>=KMAX?'🔒 CADENAS':'🔑'+k}</span>`)}}}catch(e){}return r}}
+
+/* ---------- l'ultime : Toutes les portes s'ouvrent ---------- */
+LEG2[VEY]=async X=>{const {u,tg}=X;fxSetup();if(!FXS.ctx)return;
+  const a=uc(u),W=FXS.w,H=FXS.h,fm=rowMid(1-u.side),am=rowMid(u.side),br=(B&&B.vyBr)||[];
+  vignette('#03101a',2000,.66);try{dimOn(.62)}catch(e){}
+  /* le trousseau tinte */
+  for(let i=0;i<3;i++)snd('chime',i*.09,.7);
+  fxItem(900,(c,p)=>{const al=p<.2?p/.2:p>.8?(1-p)/.2:1;c.globalAlpha=al;for(let k=0;k<5;k++){const an=p*5+k*1.257;keyC(c,a.x+Math.cos(an)*a.s*.55,a.y-a.s*.1+Math.sin(an)*a.s*.3,a.s*.05,an,k%2?GLD:CY2)}});
+  /* le mur de la prison descend sur eux */
+  const bx0=Math.max(8,fm.x-W*.46),bx1=Math.min(W-8,fm.x+W*.46),by0=fm.y-fm.s*.95,by1=fm.y+fm.s*.75,N=Math.max(7,Math.round((bx1-bx0)/34));
+  let open=0;
+  fxItem(2100,(c,p)=>{const al=Math.min(1,p/.18)*(open?Math.max(0,1-open):1),dy=open?-open*(by1-by0)*1.1:0;if(al<=0)return;c.globalAlpha=al*.8;
+    for(let i=0;i<N;i++){const x=bx0+(bx1-bx0)*i/(N-1);const g=c.createLinearGradient(x-4,0,x+4,0);g.addColorStop(0,'#2a3644');g.addColorStop(.5,'#c8d4e4');g.addColorStop(1,'#1a2430');c.fillStyle=g;c.fillRect(x-3.4,by0+dy,6.8,by1-by0)}
+    c.fillStyle='#2a3644';c.fillRect(bx0-6,by0+dy+6,bx1-bx0+12,7);c.fillRect(bx0-6,by1+dy-14,bx1-bx0+12,7)});
+  await fxWait(560);if(!B)return;
+  /* la chaîne tournoie, traînée bleue */
+  fxItem(520,(c,p)=>{c.globalCompositeOperation='lighter';c.globalAlpha=Math.sin(p*Math.PI);c.strokeStyle=CY;c.lineWidth=4;c.setLineDash([6,4]);c.lineDashOffset=-p*80;c.beginPath();c.ellipse(a.x,a.y-a.s*.2,a.s*.75,a.s*.32,0,p*6,p*6+5);c.stroke();c.setLineDash([])});
+  snd('slash',.1,.8);await fxWait(420);if(!B)return;
+  /* elle fouette toute la ligne : un éclair bleu et un « clac » par ennemi */
+  const T=tg.slice().sort((p1,p2)=>uc(p1).x-uc(p2).x);
+  T.forEach((t,i)=>{const b=uc(t),dl=i*110;
+    fxItem(260,(c,p)=>{const g=Math.min(1,p*1.6);c.globalAlpha=p>.6?(1-p)/.4:1;c.strokeStyle=IRN;c.lineWidth=3;c.setLineDash([5,3]);c.beginPath();const mx=(a.x+b.x)/2,my=Math.min(a.y,b.y)-H*.12;c.moveTo(a.x,a.y);
+      const ex=a.x+(b.x-a.x)*g,ey=a.y+(b.y-a.y)*g;c.quadraticCurveTo(mx,my,ex,ey);c.stroke();c.setLineDash([]);c.globalCompositeOperation='lighter';c.globalAlpha*=.4;c.strokeStyle=CY;c.lineWidth=8;c.stroke()},dl);
+    setTimeout(()=>{if(!B||!FXS.ctx)return;flash(CY,120,.25);ringFx(b.x,b.y,CY,b.s*.6,400,4);sparks(b.x,b.y,CY2,10,6,2,20);snd('bonk',0,.9);
+      fxItem(520,(c,p)=>{c.globalAlpha=p>.6?(1-p)/.4:1;lockC(c,b.x,b.y-b.s*.45,b.s*.04,GLD,p>.35)});
+      if(br.includes(t))shapes(b.x,b.y,'tri',[CY,CY2,'#ffffff'],14,6,4,40,.2,{});
+      hit(X,t,1.25)},(dl+200)/S.speed)});
+  await fxWait(T.length*110+420);if(!B)return;
+  /* toutes les portes s'ouvrent */
+  fxItem(700,(c,p)=>{open=ease(p)});flash('#e8f8ff',220,.5);shake(2);camPunch(fm,1.05,380);snd('boom',0,.7);
+  /* la pluie de clés d'or sur l'équipe ; les chaînes des alliés tombent */
+  for(const al of alive(u.side)){const b=uc(al);for(let k=0;k<3;k++){const x0=b.x+rnd(-b.s*.4,b.s*.4),rot=rnd(-1,1);fxItem(800,(c,p)=>{c.globalAlpha=p>.75?(1-p)/.25:1;keyC(c,x0,b.y-b.s*1.1+p*b.s*1.1,b.s*.042,rot+p*2,GLD)},k*120+rnd(0,120))}
+    glows(b.x,b.y,[GLD,CY2],10,3,4,30)}
+  await fxWait(520);if(!B)return;
+  /* la clé bleue s'allume */
+  glowPulse(a.x,a.y-a.s*.05,CY,640,a.s*.5);ringFx(a.x,a.y,CY,a.s*.9,600,4);
+  await fxWait(420)};
+
+/* ---------- textes ---------- */
+try{const sd=skillDesc;skillDesc=function(sk){let r=sd.apply(this,arguments);
+  try{if(sk&&sk.fx&&sk.fx.unlock)r+=` Avant de frapper, elle <b>ouvre toutes les portes</b> : les ennemis perdent leurs <b>boucliers</b>, leur <b>provocation</b> et leur <b>serment</b>. Chaque clé de son trousseau ajoute <b>+${KPCT} % de dégâts</b>. Libérés, ses alliés gagnent <b>+${FREE} énergie</b>.`}catch(e){}return r}}catch(e){}
+const PASS=`<div class="skill vypas"><div class="sn">🔑 Trousseau</div><div class="muted" style="font-size:11px;font-weight:800;letter-spacing:.4px">CAPACITÉ · PASSIVE</div><p style="margin:6px 0 0;font-size:13px">Chaque attaque normale et chaque ultime lui donne <b>une clé</b> (5 au maximum). À 5 clés, sa prochaine attaque normale devient le <b>Cadenas</b> : ${CAD} % de son ATQ, et la cible est <b>enchaînée</b> (elle passe son tour ; une chance sur deux contre un boss). Le Cadenas utilise les 5 clés.</p></div>`;
+try{const hm=heroModal;heroModal=function(id){const r=hm.apply(this,arguments);try{if(+id===VEY){const mo=$('#ovl .modal'),sk=mo&&mo.querySelector('.skill');if(sk&&!mo.querySelector('.vypas'))sk.insertAdjacentHTML('afterend',PASS)}}catch(e){}return r}}catch(e){}
+const st=document.createElement('style');st.textContent=`
+#battle .u.vyfull .pt{box-shadow:0 0 0 2px #ffd77a,0 0 14px rgba(255,215,122,.55)}
+.skill.vypas{border-color:rgba(127,216,255,.5)!important;background:linear-gradient(135deg,rgba(127,216,255,.14),transparent 70%),var(--panel)!important}`;document.head.appendChild(st);
+try{if(typeof STL!=='undefined')STL[VEY]=["Veyra était la geôlière de la prison du Tribunal des Lames. Mille cellules, mille clés, et elle savait laquelle ouvrait quoi les yeux fermés.",
+  "Le soir où le Tribunal est tombé, un prisonnier lui a dit, en pleurant : « Ouvre, je suis innocent, ils vont nous laisser mourir ici. » Elle a ouvert toutes les portes. Les innocents et les monstres sont partis ensemble dans la nuit.",
+  "Depuis, elle les ramène un par un. Le dernier, c'était celui qui pleurait. Il n'avait jamais été innocent : c'est lui qui avait tout préparé. Elle l'a enfermé pour de bon, et elle garde la clé bleue autour du cou pour ne jamais oublier qu'elle l'avait cru."]}catch(e){}
+try{if(typeof VOXD!=='undefined')VOXD[VEY]=['f','normal',["Veyra. J'ai mille clés, et je sais où va chacune.","Toutes les portes finissent par se refermer.","Toutes les portes s'ouvrent !"]]}catch(e){}
+try{const X={'Veyra aux Mille Clés':'Veyra of the Thousand Keys',"Toutes les portes s'ouvrent":'Every Door Opens','Gardienne des Mille Portes':'Keeper of a Thousand Doors','🔑 Trousseau':'🔑 Key Ring','🔓 Ouvert':'🔓 Opened','🔒 Enchaîné':'🔒 Chained','🔒 CADENAS':'🔒 PADLOCK',
+  [`Avant de frapper, elle <b>ouvre toutes les portes</b> : les ennemis perdent leurs <b>boucliers</b>, leur <b>provocation</b> et leur <b>serment</b>. Chaque clé de son trousseau ajoute <b>+${KPCT} % de dégâts</b>. Libérés, ses alliés gagnent <b>+${FREE} énergie</b>.`]:`Before striking, she <b>opens every door</b>: enemies lose their <b>shields</b>, their <b>taunt</b> and their <b>oath</b>. Each key on her ring adds <b>+${KPCT} % damage</b>. Set free, her allies gain <b>+${FREE} energy</b>.`,
+  [`Chaque attaque normale et chaque ultime lui donne <b>une clé</b> (5 au maximum). À 5 clés, sa prochaine attaque normale devient le <b>Cadenas</b> : ${CAD} % de son ATQ, et la cible est <b>enchaînée</b> (elle passe son tour ; une chance sur deux contre un boss). Le Cadenas utilise les 5 clés.`]:`Each normal attack and each ultimate gives her <b>a key</b> (5 at most). At 5 keys, her next normal attack becomes the <b>Padlock</b>: ${CAD} % of her ATK, and the target is <b>chained</b> (it skips its turn; one chance in two against a boss). The Padlock uses all 5 keys.`,
+  "Veyra était la geôlière de la prison du Tribunal des Lames. Mille cellules, mille clés, et elle savait laquelle ouvrait quoi les yeux fermés.":"Veyra was the jailer of the Court of Blades prison. A thousand cells, a thousand keys, and she knew which opened what with her eyes closed.",
+  "Le soir où le Tribunal est tombé, un prisonnier lui a dit, en pleurant : « Ouvre, je suis innocent, ils vont nous laisser mourir ici. » Elle a ouvert toutes les portes. Les innocents et les monstres sont partis ensemble dans la nuit.":"The night the Court fell, a prisoner told her, in tears: “Open up, I'm innocent, they'll leave us here to die.” She opened every door. The innocent and the monsters fled together into the night.",
+  "Depuis, elle les ramène un par un. Le dernier, c'était celui qui pleurait. Il n'avait jamais été innocent : c'est lui qui avait tout préparé. Elle l'a enfermé pour de bon, et elle garde la clé bleue autour du cou pour ne jamais oublier qu'elle l'avait cru.":"Since then she has brought them back one by one. The last one was the one who cried. He had never been innocent: he was the one who planned it all. She locked him away for good, and she wears the blue key around her neck so she never forgets she believed him.",
+  "Veyra. J'ai mille clés, et je sais où va chacune.":"Veyra. I have a thousand keys, and I know where each one goes.","Toutes les portes finissent par se refermer.":"Every door closes in the end.","Toutes les portes s'ouvrent !":"Every door opens!"};Object.assign(I18N_EN,X);for(const k in X)if(k.includes('<')&&window.RDEput)RDEput(k,X[k])}catch(e){}
+}catch(e){console.warn('veyra kit',e)}})();
+
+/* ================= V461 : OSSIAN LE JUGE AUX YEUX BANDÉS (mythique de l'événement de saison) =================
+   Trente ans juge suprême du Tribunal des Lames. Il a fermé les yeux sur les duels truqués ;
+   depuis la chute du Tribunal, il les garde bandés. Il note chaque faute, et il rend son verdict. */
+const OSS=79;
+(function(){try{
+if(!HEROES[OSS]||!window.HA)return;
+const {r1,P,L_,C_,E_,MI,MB,HG}=HA;
+const GC={};
+const defs=(q,u)=>HA.lin(q+'sk','#f2dac2','#dcbc9c','#ae8a6a')+HA.lin(q+'hr','#ffffff','#e4e2ea','#a8a6b4',1)
+ +HA.lin(q+'ro','#3a2c40','#221a28','#0e0a12',1)+HA.lin(q+'cr',u>=2?'#c42a3c':'#a8202f','#7e1424','#4a0a14',1)
+ +HA.lin(q+'au','#fff6c8','#ffd77a','#b8862a')+HA.lin(q+'iv','#ffffff','#f6efe2','#d8ccb6',1)
+ +HA.lin(q+'wd','#8a5a34','#6a4224','#3e2614',1)+HA.rad(q+'bf',[[0,'#fff8d8',.95],[.5,'#ffd77a',.5],[1,'#ffd77a',0]]);
+const SK=q=>`url(#${q}sk)`,HR=q=>`url(#${q}hr)`,RO=q=>`url(#${q}ro)`,CR=q=>`url(#${q}cr)`,AU=q=>`url(#${q}au)`,IV=q=>`url(#${q}iv)`,WD=q=>`url(#${q}wd)`;
+/* la balance (brisée : un plateau pend au bout d'une seule chaîne) */
+function balance(q,x,y,s,tilt){const t=tilt||0;return`<g transform="translate(${x} ${y}) scale(${s})">`
+  +L_('M0 -2V14',AU(q),1.2)+C_(0,-3,1.4,'none',`stroke="${AU(q)}" stroke-width=".8"`)
+  +`<g transform="rotate(${t})">${L_('M-12 0H12',AU(q),1.3)+C_(-12,0,.9,AU(q))+C_(12,0,.9,AU(q))
+   +L_('M-12 0L-15.4 9M-12 0L-8.6 9',AU(q),.4)+P('M-17 9H-7Q-8 12.6 -12 12.6Q-16 12.6 -17 9Z',AU(q))
+   +L_('M12 0L15.4 10.4',AU(q),.4)+`<g transform="rotate(${-t-24} 15.4 10.4)">${P('M10.4 10.4H20.4Q19.4 14 15.4 14Q11.4 14 10.4 10.4Z',AU(q))}</g>`}</g>`+'</g>'}
+function gavel(q,x,y,a,s){return`<g transform="translate(${x} ${y}) rotate(${a}) scale(${s||1})">`
+  +P('M-1.3 0H1.3V22H-1.3Z',WD(q))+P('M-7 -4.2H7Q8.4 -4.2 8.4 -2.8V2.8Q8.4 4.2 7 4.2H-7Q-8.4 4.2 -8.4 2.8V-2.8Q-8.4 -4.2 -7 -4.2Z',WD(q))
+  +L_('M-6.4 -4.2V4.2M6.4 -4.2V4.2',AU(q),1)+L_('M-7 -2.6H7','#b88a5a',.4,'opacity=".8"')+'</g>'}
+/* ---------- la tête ---------- */
+function hairBack(q){return P('M33.6 46Q32 30 42 23.6Q50 19.6 58 23.6Q68 30 66.4 46Q68 60 66.6 73L60.4 71Q62.2 58 61 47L39 47Q37.8 58 39.6 71L33.4 73Q32 60 33.6 46Z',HR(q))}
+function ribbons(q){return P('M64.4 45.6Q70 52 69 64L66.6 64.6Q67.4 54 63 48Z',IV(q))+P('M64.6 46.4Q72.6 50 74.4 60L72 61.4Q70 53 63.8 49Z',IV(q))+L_('M66.8 52Q68 58 67.6 63','#d8ccb6',.4)}
+function face(q,u){
+  let s=`<rect x="45.2" y="55" width="9.6" height="13" fill="${SK(q)}"/>`+P('M45.2 59.6Q50 63 54.8 59.6L54.8 64.6Q50 66.4 45.2 64.6Z','#a8805e','opacity=".55"');
+  s+=MI(P('M36.8 44.6Q33.4 44.2 33.8 48.2Q34.4 51.8 37.4 51.4Z','#d4b090'));
+  s+=P('M37 44.2Q37 30.6 50 30.6Q63 30.6 63 44.2Q63 53.4 60.2 58.6Q56.4 64.2 50 64.8Q43.6 64.2 39.8 58.6Q37 53.4 37 44.2Z',SK(q));
+  s+=P('M58.4 46Q61.8 52.6 59.2 57.8Q56.6 61.6 52.6 63.4Q57.6 58.8 59 52.6Z','#a8805e','opacity=".4"');
+  /* rides du front, plis du nez */
+  s+=L_('M43 36.4Q50 35 57 36.4M44.4 38.6Q50 37.6 55.6 38.6','#b89070',.4,'opacity=".7"');
+  s+=L_('M45.4 52.4Q44.4 55.4 45.6 57.6M54.6 52.4Q55.6 55.4 54.4 57.6','#a8805e',.45,'opacity=".7"');
+  s+=L_('M50.4 47.6L49.3 53.2Q50.2 54.2 52 53.6','#a8805e',.75);
+  /* la bouche, sévère, un peu tombante */
+  s+=L_('M47.2 58.6Q50 58.1 52.8 58.6','#5a2e28',.8);
+  /* la barbe blanche, courte et nette */
+  s+=P('M39.8 53Q41 64.4 50 69Q59 64.4 60.2 53Q58.8 58.4 55.6 59.4Q53 59 50 59.4Q47 59 44.4 59.4Q41.2 58.4 39.8 53Z',HR(q));
+  s+=P('M44.2 59.6Q45.6 56 50 56.4Q54.4 56 55.8 59.6Q54 57.6 50 57.8Q46 57.6 44.2 59.6Z',HR(q));
+  s+=L_('M44 62.6Q47 65.6 50 66.4Q53 65.6 56 62.6','#c8c6d2',.45,'opacity=".8"');
+  /* les sourcils blancs, broussailleux, au-dessus du bandeau */
+  s+=L_('M40.6 41.2Q43.8 39.8 47.2 40.8','#e2e0ea',1.05)+L_('M52.8 40.8Q56.2 39.8 59.4 41.2','#e2e0ea',1.05);
+  /* le bandeau sur les yeux */
+  s+=P('M35.4 43.4Q50 41.4 64.6 43.4L64.4 50.4Q50 48.6 35.6 50.4Z',IV(q))+L_('M35.4 43.4Q50 41.4 64.6 43.4M35.6 50.4Q50 48.6 64.4 50.4',AU(q),.6);
+  s+=L_('M40 46.6Q50 45 60 46.6','#d8ccb6',.4,'opacity=".8"');
+  if(u>=1)s+=E_(44,46.4,3.6,1.6,`url(#${q}bf)`,`opacity="${.25+u*.18}"`)+E_(56,46.4,3.6,1.6,`url(#${q}bf)`,`opacity="${.25+u*.18}"`);
+  s+=C_(64.6,46.8,1.8,IV(q))+C_(64.6,46.8,1.8,'none',`stroke="${AU(q)}" stroke-width=".4"`);
+  /* cheveux blancs, raie au milieu, tombant sur les épaules */
+  s+=P('M36.4 44Q35 30.4 43.4 25.4Q50 22 56.6 25.4Q65 30.4 63.6 44Q62.2 35.4 56.6 32Q53 30.6 50 31Q47 30.6 43.4 32Q37.8 35.4 36.4 44Z',HR(q));
+  s+=P('M36.6 42Q34.6 52 36.8 62L40.2 60.4Q38.6 52 40 45Z',HR(q))+P('M63.4 42Q65.4 52 63.2 62L59.8 60.4Q61.4 52 60 45Z',HR(q));
+  s+=L_('M50 25.4V31M45 27.6Q41 30 39.4 35M55 27.6Q59 30 60.6 35','#c8c6d2',.5,'opacity=".8"');
+  /* la toque de juge */
+  s+=P('M38.4 30.4Q37.6 19.6 50 18.4Q62.4 19.6 61.6 30.4Q56 27.6 50 27.6Q44 27.6 38.4 30.4Z',RO(q))+L_('M38.6 29.6Q50 25.6 61.4 29.6',AU(q),1.5)+L_('M43 22Q50 19.6 57 22','#5a4a64',.5,'opacity=".8"');
+  return s}
+/* ---------- buste ---------- */
+function ermine(q,pts){let s='';for(const [x,y] of pts)s+=P(`M${x} ${y}L${r1(x-.7)} ${r1(y+2.4)}L${x} ${r1(y+1.8)}L${r1(x+.7)} ${r1(y+2.4)}Z`,'#141018');return s}
+function bust(q,u){
+  let s=P('M6 100Q8 82 20 74L80 74Q92 82 94 100Z',RO(q));
+  /* l'étole cramoisie brodée d'or */
+  s+=P('M30 74L42 72L44 100H30Z',CR(q))+P('M70 74L58 72L56 100H70Z',CR(q))+L_('M30 74L30 100M42 72L44 100M70 74L70 100M58 72L56 100',AU(q),.6,'opacity=".9"');
+  s+=balance(q,36.4,84,.42,-8)+balance(q,63.6,84,.42,8);
+  /* le col d'hermine */
+  s+=P('M14 84Q22 70 40 66L50 69L60 66Q78 70 86 84Q76 78 64 77L50 79L36 77Q24 78 14 84Z',IV(q))+ermine(q,[[24,76],[32,72.4],[42,70.2],[58,70.2],[68,72.4],[76,76],[30,77.4],[70,77.4]]);
+  /* le rabat blanc */
+  s+=P('M45.6 68L49.6 69L49 82L45 81.4Z',IV(q))+P('M54.4 68L50.4 69L51 82L55 81.4Z',IV(q))+L_('M47.4 72L47 80M52.6 72L53 80','#d8ccb6',.35);
+  /* la chaîne de l'ordre et sa médaille */
+  s+=L_('M38 74Q50 92 62 74',AU(q),.9,'stroke-dasharray="1.6 .8"')+C_(50,88,3.6,AU(q))+C_(50,88,2.4,'#7e1424')+balance(q,50,86.4,.16,0);
+  return s}
+/* ---------- portrait ---------- */
+const PO={name:'Ossian le Juge aux Yeux Bandés',cls:'Mage',r:5,TC:'#ffd77a',
+  bg:['#fffaf0','#ffe8b8','#a8823a','#2a1e0c','#100a04'],glow:['#ffffff','#fff0c8','#ffd77a'],halo:'#fff2c0',halo2:'#ffe08a',
+  frame:['#fff2c0','#ff8ae0'],parts:['#fff6d8','#ff8a9a'],rayCol:'#fff8e0'};
+const cols=(xs,y0,y1,op,col)=>xs.map(([x,w,br],k)=>`<g opacity="${op}">${P(`M${x-w} ${y1}V${y0+br}L${x-w*.3} ${y0+br-3}L${x+w*.2} ${y0+br+2}L${x+w} ${y0+br-1}V${y1}Z`,col)}${L_(`M${x-w*.5} ${y1}V${y0+br+4}M${x+w*.4} ${y1}V${y0+br+4}`,'#00000033',.8)}</g>`).join('');
+const papers=(pts,u)=>pts.slice(0,1+u).map(([x,y,a],k)=>`<g opacity=".9"><animateTransform attributeName="transform" type="translate" values="0 0;2 -6;0 0" dur="${(3.4+k*.5).toFixed(1)}s" repeatCount="indefinite"/><g transform="translate(${x} ${y}) rotate(${a})"><rect x="-3" y="-4" width="6" height="8" fill="#f4ead8"/><path d="M-1.8 -2H1.8M-1.8 0H1.8M-1.8 2H.8" stroke="#c42a3c" stroke-width=".5"/></g></g>`).join('');
+function ossPortrait(u){u=Math.max(0,Math.min(3,u|0));if(GC['p'+u])return GC['p'+u];const q='osp'+u+'_';
+  return GC['p'+u]=HA.portrait(Object.assign({},PO,{u,q,defs:defs(q,u),
+    back:(q,u)=>cols([[10,5,30],[90,5,22]],10,100,.35,'#e8d4a0')+papers([[16,28,-15],[84,30,20],[18,58,10],[84,58,-10]],u)+(u>=2?balance(q,50,8,.9,-6):''),
+    content:(q,u)=>hairBack(q)+ribbons(q)+bust(q,u)+face(q,u)}))}
+/* ---------- corps entier ---------- */
+function ossBody(u,bare){u=Math.max(0,Math.min(3,u|0));const ck='b'+u+(bare?'s':'');if(GC[ck])return GC[ck];const q='osb'+u+(bare?'s':'')+'_';
+  return GC[ck]=HA.body({u,q,bare,r:5,name:'Ossian le Juge aux Yeux Bandés',defs:defs(q,u),glow:['#ffffff','#fff0c8','#ffd77a'],bb:['#ffe8b8','#5a3a12','#100a04'],
+   halo:'#fff2c0',halo2:'#ffe08a',parts:['#fff6d8','#ff8a9a'],ring:['#fff2c0','#ffd77a','#ff8a9a'],
+   back:(q,u)=>cols([[18,7,40],[142,7,30],[36,5,80],[124,5,70]],20,206,.3,'#e8d4a0')+papers([[22,70,-15],[138,64,20],[28,130,10],[132,124,-10]],u)
+     +(u>=2?`<g opacity=".45">${balance(q,80,2,2.2,-8)}</g>`:''),
+   content:(q,u)=>{let s='';
+    s+=HG(hairBack(q)+ribbons(q));
+    /* la grande robe noire jusqu'au sol, évasée */
+    s+=P('M60 64Q80 58.6 100 64L104 120Q110 170 116 206Q98 212 80 212Q62 212 44 206Q50 170 56 120Z',RO(q));
+    s+=L_('M66 112Q62 160 56 204M94 112Q98 160 104 204M80 120V210','#3e3048',.6,'opacity=".7"');
+    s+=P('M70 206Q75 202 80 206L79 211H71Z','#0a080c')+P('M90 206Q85 202 80 206L81 211H89Z','#0a080c');
+    /* l'étole cramoisie, du cou jusqu'aux genoux */
+    s+=P('M66 64L74 62L76 178L66 182Z',CR(q))+P('M94 64L86 62L84 178L94 182Z',CR(q))+L_('M66 64L66 182M74 62L76 178M94 64L94 182M86 62L84 178',AU(q),.6,'opacity=".9"');
+    s+=P('M66 182L71 176L76 178Z',AU(q))+P('M94 182L89 176L84 178Z',AU(q));
+    s+=[92,124,156].map(y=>balance(q,70.6,y,.34,-6)+balance(q,89.4,y,.34,6)).join('');
+    /* la ceinture de soie */
+    s+=P('M58 108Q80 114 102 108L102.6 115Q80 121 57.4 115Z',CR(q))+L_('M58 109.4Q80 115.4 102 109.4',AU(q),.5);
+    /* le col d'hermine */
+    s+=P('M50 84Q58 66 70 61.6L80 64L90 61.6Q102 66 110 84Q100 77 90 76L80 78L70 76Q60 77 50 84Z',IV(q))+ermine(q,[[58,74],[66,68.6],[74,66],[86,66],[94,68.6],[102,74],[63,76.4],[97,76.4]]);
+    /* le rabat */
+    s+=P('M76.4 64L79.6 65L79 77L75.8 76.4Z',IV(q))+P('M83.6 64L80.4 65L81 77L84.2 76.4Z',IV(q));
+    s+=L_('M70 72Q80 88 90 72',AU(q),.9,'stroke-dasharray="1.6 .8"')+C_(80,84,3.4,AU(q))+C_(80,84,2.2,'#7e1424');
+    /* bras droit : le marteau, tenu bas */
+    s+=P('M52 80Q44 100 46 120L57 121Q56 102 61.6 84Z',RO(q))+P('M45 116L57.6 117L58 124L45 123Z',IV(q))+ermine(q,[[48,118],[54,118.6]]);
+    s+=gavel(q,51.4,131,8,1.05)+E_(51.6,128,4.4,3.8,SK(q))+L_('M48.4 129.2Q51.6 131.2 54.8 129.2','#a8805e',.45);
+    /* bras gauche : la balance brisée, tenue par l'anneau */
+    s+=P('M104 78Q114 90 116 104L107 108Q104 96 98 86Z',RO(q))+P('M106 104L117 100L119.6 107L108.4 111Z',IV(q));
+    s+=E_(114,112,4.2,3.6,SK(q))+balance(q,114,118,1.15,u>=3?0:-10);
+    /* la tête */
+    s+=HG(face(q,u));
+    if(u>=3)s+=`<circle cx="80" cy="36" r="31" fill="none" stroke="#ffd77a" stroke-width=".8" stroke-dasharray="1.6 3.4" opacity=".85"/>`;
+    return s}})}
+window.ossPortrait=ossPortrait;window.ossBody=ossBody;
+HA.install(OSS,ossPortrait,ossBody,{ossian:()=>ossBody(0,1)});
+try{UTH_H[OSS]={n:'Le Juge Céleste',m:'#221a28',s:'#ffd77a',a:'#c42a3c',e:'#fff6c8',bg:'holy',w:'wings-gold',hat:'halo',fx:'stars',c:'#ffd77a',c2:'#ff6a7e',h3:'#ffffff'}}catch(e){}
+}catch(e){console.warn('ossian art',e)}})();
+
+/* ---------- Fautes, Témoignage, Grâce et Verdict ---------- */
+(function(){try{
+if(!HEROES[OSS])return;
+const GD='#ffd77a',GD2='#fff6c8',RD='#ff3a4a',WH='#fffaf0';
+const FMAX=5,FPCT=25,EXEC=25;
+const ok=()=>typeof B!=='undefined'&&B&&!B.skip&&typeof FXS!=='undefined'&&FXS.ctx&&!(typeof REDUCED!=='undefined'&&REDUCED);
+const isO=u=>!!u&&u.hid===OSS;
+const snd=(k,d,v)=>{try{if(typeof AU!=='undefined'&&AU&&AU.ctx&&cSnd.ok()&&SND[k])SND[k](AU.F.v,NOW(d||0),v||1)}catch(e){}};
+const judge=side=>B&&B.units.find(x=>isO(x)&&x.side===side&&x.hp>0);
+const addF=(t,n)=>{t.fau=Math.min(FMAX,(t.fau||0)+n)};
+let CAST=null;
+/* chaque coup porté à un allié du juge est une faute */
+try{window.RDEonHit((s,t,d,o)=>{try{if(!B||!s||!t||s.side===t.side||s.hp<=0||!judge(t.side))return;addF(s,1)}catch(e){}})}catch(e){}
+/* Témoignage : ses attaques normales notent aussi une faute ; le Verdict pèse les fautes */
+{const d0=deal;deal=function(s,t,pct,o){o=o||{};let p=pct;
+  try{if(CAST&&s===CAST&&o.sk&&t)p=pct*(1+FPCT/100*Math.min(FMAX,t.fau||0))}catch(e){}
+  const d=d0.call(this,s,t,p,o);
+  try{if(isO(s)&&t&&t.side!==s.side&&t.hp>0&&!o.sk&&!o.ct&&!o.ub&&('force' in o)&&pct===100)addF(t,1)}catch(e){}
+  return d}}
+/* Grâce : une fois par combat, le premier allié qui devrait tomber reste debout avec 1 PV */
+{const h0=hurt;hurt=function(t,d,c){try{if(B&&t&&t.hp>0&&d>0&&!t.boss&&!(B.osGr&&B.osGr[t.side])){const J=judge(t.side);if(J){const eff=d-Math.min(t.sh>0?t.sh:0,d);
+  if(t.hp-eff<=0){B.osGr=B.osGr||{};B.osGr[t.side]=1;d=Math.max(0,d-(eff-(t.hp-1)));
+    log(`⚖️ <b>${J.name}</b> accorde sa <b>Grâce</b> : ${t.name} reste debout avec 1 PV.`,'cs');
+    if(!B.skip){try{float(t,'⚖️ Grâce','heal');if(ok()){const b=uc(t);glowPulse(b.x,b.y,GD,520,b.s*.5);ringFx(b.x,b.y,GD,b.s*.7,520,3)}}catch(e){}}}}}}catch(e){}
+  return h0.call(this,t,d,c)}}
+{const sk0=skill;skill=function(u,sk,sc){if(!(isO(u)&&sk&&sk.fx&&sk.fx.verdict&&B))return sk0.apply(this,arguments);
+  const F=new Map();for(const t of alive(1-u.side))F.set(t,Math.min(FMAX,t.fau||0));B.osF=F;
+  CAST=u;let r;try{r=sk0.apply(this,arguments)}finally{CAST=null}
+  const ex=[];try{for(const [t,n] of F){if(t.hp>0&&n>=FMAX&&!t.boss&&t.max<1e12&&t.hp/t.max<=EXEC/100){const v=t.hp;t.sh=0;hurt(t,v,'crit');if(t.hp<=0){u.dmg+=v;ex.push(t);if(B.track)B.track.seq.push(t)}}}}catch(e){}
+  B.osEx=ex;
+  try{const tot=[...F.values()].reduce((a,b)=>a+b,0);if(tot)log(`⚖️ <b>Verdict</b> : ${tot} faute${tot>1?'s':''} pesée${tot>1?'s':''} (+${FPCT} % de dégâts par faute).`,'sk');
+    for(const t of ex)log(`⚖️ <b>${t.name}</b> est déclaré <b>COUPABLE</b>.`,'sk');for(const t of B.units)if(t.side!==u.side)t.fau=0}catch(e){}
+  return r}}
+{const ru=refreshUnits;refreshUnits=function(){const r=ru.apply(this,arguments);try{if(B){const any=B.units.some(isO);if(any)for(const u of B.units){const n=u.fau||0;if(!n||u.hp<=0)continue;const el=document.getElementById('u-'+u.key);if(!el)continue;
+  const sx=el.querySelector('.sx');if(sx&&!sx.querySelector('.ostg'))sx.insertAdjacentHTML('beforeend',`<span class="ostg" style="color:${n>=FMAX?'#ff5a6a':'#ffd77a'}">⚖️${n}</span>`)}}}catch(e){}return r}}
+
+/* ---------- l'ultime : Verdict ---------- */
+function gavelC(c,x,y,s,a){c.save();c.translate(x,y);c.rotate(a);c.scale(s,s);c.fillStyle='#6a4224';c.fillRect(-1.4,0,2.8,24);c.fillStyle='#8a5a34';c.beginPath();c.moveTo(-8,-4.6);c.lineTo(8,-4.6);c.lineTo(8,4.6);c.lineTo(-8,4.6);c.closePath();c.fill();
+  c.strokeStyle=GD;c.lineWidth=1.2;c.beginPath();c.moveTo(-6.6,-4.6);c.lineTo(-6.6,4.6);c.moveTo(6.6,-4.6);c.lineTo(6.6,4.6);c.stroke();c.restore()}
+function balanceC(c,x,y,s,tilt,al){c.save();c.globalAlpha=al;c.translate(x,y);c.scale(s,s);c.strokeStyle=GD;c.fillStyle=GD;c.lineWidth=1.6;c.beginPath();c.moveTo(0,-4);c.lineTo(0,22);c.stroke();
+  c.beginPath();c.moveTo(-6,22);c.lineTo(6,22);c.stroke();c.rotate(tilt);c.beginPath();c.moveTo(-20,0);c.lineTo(20,0);c.stroke();
+  c.lineWidth=.7;c.beginPath();c.moveTo(-20,0);c.lineTo(-24,13);c.moveTo(-20,0);c.lineTo(-16,13);c.moveTo(20,0);c.lineTo(23,14);c.stroke();
+  c.save();c.translate(-20,13);c.rotate(-tilt);c.beginPath();c.moveTo(-6,0);c.lineTo(6,0);c.quadraticCurveTo(0,6,-6,0);c.fill();c.restore();
+  c.save();c.translate(23,14);c.rotate(-tilt+.5);c.beginPath();c.moveTo(-6,0);c.lineTo(6,0);c.quadraticCurveTo(0,6,-6,0);c.fill();c.restore();c.restore()}
+LEG2[OSS]=async X=>{const {u,tg}=X;fxSetup();if(!FXS.ctx)return;
+  const a=uc(u),W=FXS.w,H=FXS.h,fm=rowMid(1-u.side),F=(B&&B.osF)||new Map(),EX=(B&&B.osEx)||[];
+  const tot=[...F.values()].reduce((p,q)=>p+q,0),cx=W/2,cy=Math.min(a.y,fm.y)+Math.abs(a.y-fm.y)*.5;
+  /* le coup de marteau : le temps ralentit */
+  fxItem(520,(c,p)=>{const an=p<.5?-1.2+p*2.4:0;c.globalAlpha=p>.8?(1-p)/.2:1;gavelC(c,a.x+a.s*.35,a.y-a.s*.55,a.s*.06,an)});
+  await fxWait(300);if(!B)return;
+  snd('thud',0,1.3);flash('#fff6e0',200,.55);vignette('#1a1004',2200,.7);try{dimOn(.66)}catch(e){}
+  /* le tribunal en ruine, la balance géante */
+  fxItem(2000,(c,p)=>{const al=Math.min(1,p/.2)*(p>.85?(1-p)/.15:1)*.32;c.globalAlpha=al;c.fillStyle='#e8d4a0';for(let k=0;k<6;k++){const x=W*(k+.5)/6,h=H*(.5+((k*37)%30)/100),w=Math.max(10,W*.035);c.fillRect(x-w/2,H-h,w,h);c.fillRect(x-w*.8,H-h,w*1.6,6)}});
+  let tilt=0;
+  const BY=cy-Math.min(W,H)*.05,BS=Math.min(W,H)*.0085;
+  fxItem(2000,(c,p)=>{const al=Math.min(1,p/.15)*(p>.88?(1-p)/.12:1);balanceC(c,cx,BY,BS,tilt,al*.92)});
+  await fxWait(380);if(!B)return;
+  /* les fautes s'envolent vers le plateau */
+  const bx=cx-BS*20,by=BY+BS*13;let flown=0;
+  for(const t of tg){const n=F.get(t)||0,b=uc(t);for(let k=0;k<n;k++){const d=(flown++)*60,r0=rnd(-.6,.6);
+    fxItem(620,(c,p)=>{const e=ease(p);const x=b.x+(bx-b.x)*e,y=b.y+(by-b.y)*e-Math.sin(p*Math.PI)*40;c.globalAlpha=p>.9?(1-p)/.1:1;c.save();c.translate(x,y);c.rotate(r0+p*3);c.fillStyle='#f4ead8';c.fillRect(-4,-5,8,10);c.fillStyle=RD;c.fillRect(-2.4,-2.4,4.8,1);c.fillRect(-2.4,0,4.8,1);c.restore()},d)}}
+  fxItem(Math.max(400,flown*60+620),(c,p)=>{tilt=-Math.min(.45,tot*.04)*ease(p)});
+  if(flown)for(let k=0;k<Math.min(5,flown);k++)try{if(typeof AU!=='undefined'&&AU&&AU.ctx&&cSnd.ok())cSnd.card(k)}catch(e){}
+  await fxWait(Math.min(1400,flown*60+640));if(!B)return;
+  /* le marteau tombe */
+  fxItem(360,(c,p)=>{const an=-1.4+ease(p)*1.4;c.globalAlpha=p>.85?(1-p)/.15:1;gavelC(c,cx,cy+20,Math.min(W,H)*.012,an)});
+  await fxWait(300);if(!B)return;
+  snd('boom',0,1);flash(GD2,220,.6);shake(2);camPunch({x:cx,y:cy},1.06,420);ringFx(cx,cy+20,GD,Math.min(W,H)*.35,620,6);
+  /* des colonnes d'or, d'autant plus hautes que la faute est lourde */
+  tg.forEach((t,i)=>{const n=F.get(t)||0,b=uc(t),h=b.s*(.9+n*.35);
+    fxItem(700,(c,p)=>{const al=Math.sin(p*Math.PI);c.globalCompositeOperation='lighter';c.globalAlpha=al*.85;const g=c.createLinearGradient(0,b.y-h,0,b.y+b.s*.3);g.addColorStop(0,'rgba(255,215,122,0)');g.addColorStop(.4,'rgba(255,230,160,.85)');g.addColorStop(1,'rgba(255,246,200,.9)');c.fillStyle=g;const w=b.s*(.22+n*.05);c.fillRect(b.x-w/2,b.y-h,w,h+b.s*.3)},i*60);
+    setTimeout(()=>{if(B)hit(X,t,1+n*.1)},(i*60+160)/S.speed)});
+  await fxWait(520);if(!B)return;
+  /* COUPABLE */
+  for(const t of EX){const b=uc(t),sx=Math.max(b.s*.62,Math.min(W-b.s*.62,b.x));fxItem(900,(c,p)=>{const s=p<.15?1.6-p*4:1;c.globalAlpha=p>.75?(1-p)/.25:1;c.save();c.translate(sx,b.y-b.s*.2);c.rotate(-.18);c.scale(s,s);c.strokeStyle=RD;c.lineWidth=3;c.strokeRect(-b.s*.48,-b.s*.13,b.s*.96,b.s*.26);c.fillStyle=RD;c.font=`900 ${Math.round(b.s*.17)}px system-ui,sans-serif`;c.textAlign='center';c.textBaseline='middle';c.fillText('COUPABLE',0,1);c.restore()});snd('thud',0,1)}
+  if(EX.length)await fxWait(520);if(!B)return;
+  /* le bandeau glisse un instant */
+  glowPulse(a.x-a.s*.1,a.y-a.s*.34,GD2,420,7);glowPulse(a.x+a.s*.1,a.y-a.s*.34,GD2,420,7);
+  await fxWait(420)};
+
+/* ---------- textes ---------- */
+try{const sd=skillDesc;skillDesc=function(sk){let r=sd.apply(this,arguments);
+  try{if(sk&&sk.fx&&sk.fx.verdict)r+=` Chaque <b>faute</b> d'un ennemi ajoute <b>+${FPCT} %</b> de dégâts contre lui. Un ennemi à <b>5 fautes</b> qui finit sous <b>${EXEC} % de PV</b> est déclaré <b>coupable</b> et tombe (sauf les boss). Les fautes sont ensuite effacées.`}catch(e){}return r}}catch(e){}
+const PASS=`<div class="skill ospas"><div class="sn">⚖️ Le Juge</div><div class="muted" style="font-size:11px;font-weight:800;letter-spacing:.4px">CAPACITÉ · PASSIVE</div><p style="margin:6px 0 0;font-size:13px"><b>Fautes</b> : tant qu'il est debout, chaque coup porté à l'un de ses alliés donne une faute à celui qui frappe (5 au maximum). Ses attaques normales en notent une aussi. <b>Grâce</b> : une fois par combat, le premier allié qui devrait tomber reste debout avec <b>1 PV</b>.</p></div>`;
+try{const hm=heroModal;heroModal=function(id){const r=hm.apply(this,arguments);try{if(+id===OSS){const mo=$('#ovl .modal'),sk=mo&&mo.querySelector('.skill');if(sk&&!mo.querySelector('.ospas'))sk.insertAdjacentHTML('afterend',PASS)}}catch(e){}return r}}catch(e){}
+const st=document.createElement('style');st.textContent=`.skill.ospas{border-color:rgba(255,215,122,.5)!important;background:linear-gradient(135deg,rgba(255,215,122,.14),transparent 70%),var(--panel)!important}`;document.head.appendChild(st);
+try{if(typeof STL!=='undefined')STL[OSS]=["Pendant trente ans, Ossian a été le juge suprême du Tribunal des Lames. Un différend, un duel : c'était la loi, et il la faisait respecter.",
+  "Il savait que certains duels étaient truqués. Il a fermé les yeux, parce que les tricheurs payaient bien et que la loi restait la loi. Rouge-Garance a fait tomber son Tribunal en un seul combat.",
+  "Depuis, il porte un bandeau, pour ne plus jamais juger sur ce qu'on lui montre. Il répare ses vieux verdicts un par un, poursuivi par les Juges Célestes. On lui a demandé de juger Lucan. Il n'a pas encore rendu sa décision."]}catch(e){}
+try{if(typeof VOXD!=='undefined')VOXD[OSS]=['m','deep',["Ossian. J'ai les yeux bandés, mais je vois très bien ce que tu as fait.","Chaque coup que tu portes est noté.","Verdict !"]]}catch(e){}
+try{const X={'Ossian le Juge aux Yeux Bandés':'Ossian the Blindfolded Judge','Verdict':'Verdict','VERDICT':'VERDICT','COUPABLE':'GUILTY','Le Juge Céleste':'The Celestial Judge','⚖️ Le Juge':'⚖️ The Judge','⚖️ Grâce':'⚖️ Grace',
+  [`Chaque <b>faute</b> d'un ennemi ajoute <b>+${FPCT} %</b> de dégâts contre lui. Un ennemi à <b>5 fautes</b> qui finit sous <b>${EXEC} % de PV</b> est déclaré <b>coupable</b> et tombe (sauf les boss). Les fautes sont ensuite effacées.`]:`Each of an enemy's <b>faults</b> adds <b>+${FPCT} %</b> damage against them. An enemy with <b>5 faults</b> left under <b>${EXEC} % HP</b> is found <b>guilty</b> and falls (except bosses). Faults are then cleared.`,
+  "<b>Fautes</b> : tant qu'il est debout, chaque coup porté à l'un de ses alliés donne une faute à celui qui frappe (5 au maximum). Ses attaques normales en notent une aussi. <b>Grâce</b> : une fois par combat, le premier allié qui devrait tomber reste debout avec <b>1 PV</b>.":"<b>Faults</b>: while he stands, every hit on one of his allies gives a fault to the attacker (5 at most). His normal attacks note one too. <b>Grace</b>: once per battle, the first ally who should fall stays up with <b>1 HP</b>.",
+  "Pendant trente ans, Ossian a été le juge suprême du Tribunal des Lames. Un différend, un duel : c'était la loi, et il la faisait respecter.":"For thirty years, Ossian was the high judge of the Court of Blades. A dispute, a duel: that was the law, and he enforced it.",
+  "Il savait que certains duels étaient truqués. Il a fermé les yeux, parce que les tricheurs payaient bien et que la loi restait la loi. Rouge-Garance a fait tomber son Tribunal en un seul combat.":"He knew some duels were rigged. He looked away, because cheaters paid well and the law was still the law. Rouge-Garance brought his Court down in a single fight.",
+  "Depuis, il porte un bandeau, pour ne plus jamais juger sur ce qu'on lui montre. Il répare ses vieux verdicts un par un, poursuivi par les Juges Célestes. On lui a demandé de juger Lucan. Il n'a pas encore rendu sa décision.":"Since then he wears a blindfold, so he never again judges by what he is shown. He mends his old verdicts one by one, hunted by the Celestial Judges. He has been asked to judge Lucan. He has not yet given his ruling.",
+  "Ossian. J'ai les yeux bandés, mais je vois très bien ce que tu as fait.":"Ossian. My eyes are bound, but I can see exactly what you did.","Chaque coup que tu portes est noté.":"Every blow you strike is noted.","Verdict !":"Verdict!"};Object.assign(I18N_EN,X);for(const k in X)if(k.includes('<')&&window.RDEput)RDEput(k,X[k])}catch(e){}
+}catch(e){console.warn('ossian kit',e)}})();
+
+/* ================= V462 : LES LIENS ENTRE LES HÉROS DE SAISON, ET LES HÉROS DES CHRONIQUES =================
+   · Affinités : Lucan, Veyra et Ossian ont chacun des liens avec les héros de leur histoire
+     (la Garde d'Éther, le Tribunal des Lames). Celles de Veyra et d'Ossian apparaissent à leur arrivée.
+   · Marn et Perrin s'obtenaient avec les Chroniques des Héros (retirées en v81) : ils rejoignent l'Invocation standard.
+   · Le héros de la semaine ne change pas en cours de semaine quand un héros rejoint les invocations. */
+(function(){try{
+const T=(fr,en)=>(typeof LANG!=='undefined'&&LANG&&LANG!=='fr')?en:fr;
+const NOWT=()=>window.__HEVNOW||Date.now();
+const HD=window.RDEHEVD||{};
+const has=v=>typeof v==='number'&&HEROES[v];
+const add=(name,id)=>{try{const a=AFF.find(x=>x.n===name);if(a&&has(id)&&!a.ids.includes(id))a.ids.push(id)}catch(e){}};
+const neu=a=>{try{if(a.ids.every(has)&&!AFF.some(x=>x.n===a.n))AFF.push(a)}catch(e){}};
+const NEW=[
+ {n:'La Garde brisée',ic:'⚜️',ids:[77,76,69],need:2,fx:{atk:.08,hp:.08},d:'+8 % PV et ATQ',q:"Perrin : « Je ne vous crois pas, capitaine. » — Lucan : « Alors ne me quitte pas des yeux. »"},
+ {n:'Brume et Lune',ic:'🌙',ids:[77,62],need:2,fx:{crit:.08,atk:.06},d:'+8 % critique, +6 % ATQ',q:"Nyx : « Tes loups hurlent après ma lune. » — Lucan : « Ils hurlent pour qu'elle les voie. »"},
+ {n:'Ceux qui ont ouvert',ic:'🚪',ids:[77,78],need:2,fx:{atk:.10,en:10},d:'+10 % ATQ, +10 énergie au départ',q:"Veyra : « Toi aussi, tu as ouvert une porte que tu devais garder. » — Lucan : « Et toi aussi, tu as cru quelqu'un. »"},
+ {n:'Les Guetteurs',ic:'🔭',ids:[78,71],need:2,fx:{spd:.06,crit:.06},d:'+6 % vitesse, +6 % critique',q:"Sorën : « Il est passé par la porte nord, il y a une heure. » — Veyra : « Alors j'ai encore le temps. »"},
+ {n:'Le Tribunal des Lames',ic:'⚖️',ids:[79,78,74],need:2,fx:{skm:.12,crit:.06},d:'+12 % puissance des ultimes, +6 % critique',q:"Garance : « Votre Tribunal est tombé, juge. » — Ossian : « Je sais. J'étais assis dedans. »"},
+ {n:'Le Verdict et la Brume',ic:'🌫️',ids:[79,77],need:2,fx:{en:20,tm:.06},d:'+20 énergie au départ, −6 % dégâts subis',q:"Ossian : « On m'a demandé de te juger. » — Lucan : « Alors regarde-moi me battre d'abord. »"}];
+const apply=()=>{for(const a of NEW)neu(Object.assign({},a,{ids:a.ids.slice(),fx:Object.assign({},a.fx)}))};
+apply();
+{const rd=render;render=function(){apply();return rd.apply(this,arguments)}}
+{const sb=startBattle;startBattle=function(){apply();return sb.apply(this,arguments)}}
+try{Object.assign(I18N_EN,{'La Garde brisée':'The Broken Guard','Brume et Lune':'Mist and Moon','Ceux qui ont ouvert':'Those Who Opened','Les Guetteurs':'The Watchers','Le Tribunal des Lames':'The Court of Blades','Le Verdict et la Brume':'The Verdict and the Mist',
+ '+8 % PV et ATQ':'+8 % HP and ATK','+8 % critique, +6 % ATQ':'+8 % crit, +6 % ATK','+10 % ATQ, +10 énergie au départ':'+10 % ATK, +10 starting energy','+6 % vitesse, +6 % critique':'+6 % speed, +6 % crit',
+ '+12 % puissance des ultimes, +6 % critique':'+12 % ultimate power, +6 % crit','+20 énergie au départ, −6 % dégâts subis':'+20 starting energy, −6 % damage taken',
+ "Perrin : « Je ne vous crois pas, capitaine. » — Lucan : « Alors ne me quitte pas des yeux. »":"Perrin: “I don't believe you, captain.” — Lucan: “Then don't take your eyes off me.”",
+ "Nyx : « Tes loups hurlent après ma lune. » — Lucan : « Ils hurlent pour qu'elle les voie. »":"Nyx: “Your wolves howl at my moon.” — Lucan: “They howl so she'll see them.”",
+ "Veyra : « Toi aussi, tu as ouvert une porte que tu devais garder. » — Lucan : « Et toi aussi, tu as cru quelqu'un. »":"Veyra: “You too opened a door you were meant to guard.” — Lucan: “And you too believed someone.”",
+ "Sorën : « Il est passé par la porte nord, il y a une heure. » — Veyra : « Alors j'ai encore le temps. »":"Sorën: “He went through the north gate an hour ago.” — Veyra: “Then I still have time.”",
+ "Garance : « Votre Tribunal est tombé, juge. » — Ossian : « Je sais. J'étais assis dedans. »":"Garance: “Your Court has fallen, judge.” — Ossian: “I know. I was sitting in it.”",
+ "Ossian : « On m'a demandé de te juger. » — Lucan : « Alors regarde-moi me battre d'abord. »":"Ossian: “I've been asked to judge you.” — Lucan: “Then watch me fight first.”"})}catch(e){}
+
+/* ---------- Marn et Perrin rejoignent l'Invocation standard ---------- */
+const JOINT=Date.UTC(2026,10,27,12,0);
+for(const i of[73,76]){const h=HEROES[i];if(!h)continue;try{delete h.ex}catch(e){}try{delete h.exd}catch(e){}}
+try{for(const k in METAC)delete METAC[k]}catch(e){}
+/* ---------- le héros de la semaine ne bouge pas en cours de semaine ---------- */
+const JOIN={73:JOINT,76:JOINT};for(const i of[77,78,79])if(HD[i])JOIN[i]=HD[i].e;
+try{featHero=function(){const w=weekKey(Date.now());const L=HEROES.filter(h=>h.r===4&&!h.ex&&h.i!==FORTUNA&&!(JOIN[h.i]&&weekKey(JOIN[h.i])>=w));return L[((w%L.length)+L.length)%L.length]}}catch(e){}
+
+/* ---------- la page Méta : recalée sur des simulations (comme en v433) ---------- */
+/* Arène et Aventure : chaque nouveau héros a remplacé un héros de sa classe dans la même équipe (80 combats en miroir
+   par duel, 60 combats à l'étape 100). Raids et boss de guilde : dégâts totaux de l'équipe. */
+const COR2={77:{pve:1.33,pvp:1.04},78:{pve:1.05,pvp:1.03},79:{pve:.9,pvp:1.06}};
+const RCOR2={77:{raid0:.85,raid1:.9,raid2:.85},78:{raid0:1.1,raid1:1.3,raid2:1.35,guild:1.2},79:{raid0:1.4,raid2:1.25,guild:1.25}};
+try{const mm=modeMult;modeMult=function(h,mk){let m=mm.apply(this,arguments);try{if(h){const c=(mk==='guild'||/^raid\d$/.test(mk))?RCOR2[h.i]:COR2[h.i];if(c&&c[mk])m*=c[mk]}}catch(e){}return m}}catch(e){}
+try{for(const k in METAC)delete METAC[k]}catch(e){}
+/* « Autour du dernier héros sorti » et « Les nouveautés dans la méta » suivent les sorties */
+try{const L=[74,75,76,77,78,79].filter(i=>HEROES[i]);if(L.length)META_NEW.splice(0,META_NEW.length,...L)}catch(e){}
+
+/* l'ancienne annonce des Chroniques des Héros (retirées en v81) ne s'affiche plus */
+try{const al=annList;annList=function(){const L=al.apply(this,arguments);try{return L.filter(a=>a&&a.k!=='hchr')}catch(e){return L}}}catch(e){}
+
+/* ---------- notes de version ---------- */
+try{const it=[
+ "🐺 <b>Nouveau héros : Lucan le Loup de Brume</b> (Assassin légendaire). L'ancien capitaine de la Garde d'Éther achève les blessés : <b>+30 % de dégâts</b> sur les ennemis sous 50 % de PV, la <b>brume</b> le protège du coup suivant quand il tue, et son ultime « <b>Hurlement</b> » le fait <b>rejouer</b> s'il achève sa cible.",
+ "🎪 <b>Les événements de héros</b> remplacent les Chroniques : chaque saison, un nouveau héros arrive avec sa tente dans la <b>Fête foraine</b>, sa monnaie et sa boutique, où tu peux <b>l'obtenir gratuitement en jouant</b>. Sa bannière (50/50 puis garanti) est ouverte en même temps.",
+ "🐾 Les <b>Crocs de Brume</b> : +40 chaque jour (à récupérer dans la tente), +5 par victoire (150 par jour) et +20 par expédition au Donjon des Échos. Boutique : Lucan, des tickets de sa bannière, le cadre « Brume des Loups », le titre « Loup de Brume », des éclats, des gemmes et de l'or. L'événement dure jusqu'au <b>8 décembre</b>, et ce qui reste à la fin est changé en or.",
+ "🤝 Nouvelles affinités : <b>La Garde brisée</b> (Lucan + Perrin ou Aegis) et <b>Brume et Lune</b> (Lucan + Nyx). D'autres arriveront avec les prochains héros : leurs histoires se croisent.",
+ "🛡️ <b>Marn</b> et <b>Perrin</b>, qu'on obtenait avec les Chroniques des Héros, rejoignent l'Invocation standard.",
+ "🔒 Le prochain héros arrive le <b>8 décembre</b>, avec la nouvelle saison du pass."];
+ PATCH.unshift({v:82,d:'27 novembre 2026',t:'Lucan et les événements de héros',items:it});
+ const E=[
+ "🐺 <b>New hero: Lucan the Mist Wolf</b> (legendary Assassin). The former captain of the Aether Guard finishes off the wounded: <b>+30 % damage</b> on enemies under 50 % HP, the <b>mist</b> shields him from the next hit when he kills, and his ultimate “<b>Howl</b>” lets him <b>act again</b> if he finishes off his target.",
+ "🎪 <b>Hero events</b> replace the Chronicles: every season, a new hero arrives with a tent in the <b>Fair</b>, a currency and a shop where you can <b>get them for free by playing</b>. Their banner (50/50 then guaranteed) opens at the same time.",
+ "🐾 The <b>Mist Fangs</b>: +40 every day (claim it in the tent), +5 per win (150 per day) and +20 per Echo Dungeon run. Shop: Lucan, tickets for his banner, the “Mist Wolves” frame, the “Mist Wolf” title, shards, gems and gold. The event lasts until <b>December 8</b>, and whatever is left at the end turns into gold.",
+ "🤝 New affinities: <b>The Broken Guard</b> (Lucan + Perrin or Aegis) and <b>Mist and Moon</b> (Lucan + Nyx). More will come with the next heroes: their stories cross.",
+ "🛡️ <b>Marn</b> and <b>Perrin</b>, who were earned through the Hero Chronicles, join the Standard Summon.",
+ "🔒 The next hero arrives on <b>December 8</b>, with the new pass season."];
+ it.forEach((x,i)=>{I18N_EN[x]=E[i];try{RDEput(x,E[i])}catch(e){}});
+ Object.assign(I18N_EN,{'Lucan et les événements de héros':'Lucan and the hero events','# décembre #':'December #, #','# janvier #':'January #, #','# décembre':'December #','# janvier':'January #'});
+ /* les arrivées suivantes s'annoncent toutes seules, à leur date */
+ if(HEROES[78]&&NOWT()>=(HD[78]||{}).s){const it2=[
+   "🗝️ <b>Nouvelle héroïne : Veyra aux Mille Clés</b> (Guerrière légendaire). La geôlière du Tribunal des Lames gagne une clé à chaque attaque ; à 5 clés, son <b>Cadenas</b> enchaîne l'ennemi. Son ultime « <b>Toutes les portes s'ouvrent</b> » <b>brise les boucliers, la provocation et le serment</b> de toute l'équipe adverse.",
+   "🔑 Son événement est ouvert dans la Fête foraine jusqu'au <b>22 décembre</b> : les <b>Clés Rouillées</b> permettent de la recruter gratuitement en jouant.",
+   "🤝 Nouvelles affinités : <b>Ceux qui ont ouvert</b> (Veyra + Lucan), <b>Les Guetteurs</b> (Veyra + Sorën) et <b>Le Tribunal des Lames</b> (Veyra + Rouge-Garance).",
+   "🐺 <b>Lucan</b> rejoint l'Invocation standard."];
+   PATCH.unshift({v:82.1,d:'8 décembre 2026',t:'Veyra aux Mille Clés',items:it2,nogem:1});
+   const E2=["🗝️ <b>New hero: Veyra of the Thousand Keys</b> (legendary Warrior). The jailer of the Court of Blades gains a key with every attack; at 5 keys, her <b>Padlock</b> chains an enemy. Her ultimate “<b>Every Door Opens</b>” <b>breaks the shields, taunt and oath</b> of the whole enemy team.",
+     "🔑 Her event is open in the Fair until <b>December 22</b>: the <b>Rusty Keys</b> let you recruit her for free by playing.",
+     "🤝 New affinities: <b>Those Who Opened</b> (Veyra + Lucan), <b>The Watchers</b> (Veyra + Sorën) and <b>The Court of Blades</b> (Veyra + Rouge-Garance).",
+     "🐺 <b>Lucan</b> joins the Standard Summon."];
+   it2.forEach((x,i)=>{I18N_EN[x]=E2[i];try{RDEput(x,E2[i])}catch(e){}});I18N_EN['Veyra aux Mille Clés']='Veyra of the Thousand Keys'}
+ if(HEROES[79]&&NOWT()>=(HD[79]||{}).s){const it3=[
+   "⚖️ <b>Nouveau héros MYTHIQUE : Ossian le Juge aux Yeux Bandés</b> (Mage). Chaque coup porté à ses alliés donne <b>une faute</b> à celui qui frappe ; son ultime « <b>Verdict</b> » frappe toute l'équipe adverse, <b>+25 % par faute</b>, et qui en a cinq est déclaré <b>coupable</b>. Une fois par combat, sa <b>Grâce</b> garde un allié debout avec 1 PV.",
+   "🔏 Son événement est ouvert dans la Fête foraine jusqu'au <b>5 janvier</b> : les <b>Sceaux du Tribunal</b> permettent de le recruter gratuitement en jouant.",
+   "🤝 Nouvelles affinités : <b>Le Tribunal des Lames</b> (Ossian + Veyra / Rouge-Garance) et <b>Le Verdict et la Brume</b> (Ossian + Lucan).",
+   "🗝️ <b>Veyra</b> rejoint l'Invocation standard."];
+   PATCH.unshift({v:82.2,d:'22 décembre 2026',t:'Ossian, le Juge aux Yeux Bandés',items:it3,nogem:1});
+   const E3=["⚖️ <b>New MYTHIC hero: Ossian the Blindfolded Judge</b> (Mage). Every hit on his allies gives <b>a fault</b> to the attacker; his ultimate “<b>Verdict</b>” strikes the whole enemy team, <b>+25 % per fault</b>, and anyone with five is found <b>guilty</b>. Once per battle, his <b>Grace</b> keeps an ally standing with 1 HP.",
+     "🔏 His event is open in the Fair until <b>January 5</b>: the <b>Court Seals</b> let you recruit him for free by playing.",
+     "🤝 New affinities: <b>The Court of Blades</b> (Ossian + Veyra / Rouge-Garance) and <b>The Verdict and the Mist</b> (Ossian + Lucan).",
+     "🗝️ <b>Veyra</b> joins the Standard Summon."];
+   it3.forEach((x,i)=>{I18N_EN[x]=E3[i];try{RDEput(x,E3[i])}catch(e){}});I18N_EN['Ossian, le Juge aux Yeux Bandés']='Ossian, the Blindfolded Judge'}
+}catch(e){}
+}catch(e){console.warn('v462',e)}})();
 /* ================= toujours en dernier : l'écran de chargement reprend les dessins à jour ================= */
 (function(){try{
   /* Livre III : le Roi de Cendre (nouveau design) au premier rang, et le souvenir du jeune Éryndel au-dessus de la couronne */

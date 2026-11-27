@@ -62,9 +62,9 @@ const addRw=txt=>{try{const rw=document.querySelector('#battle .result .rw');if(
       if(n){save();addRw(`${LUNE} ${n} ${T('Larmes de Lune','Moon Tears')}`)}
       else if(S.lmd&&S.lmd.n>=DAYCAP)addRw(`${LUNE} ${T("Larmes de Lune : plafond du jour atteint (60)","Moon Tears: daily cap reached (60)")}`)}}catch(e){}
   return r}}
-if(typeof dgEnd==='function'){const de=dgEnd;dgEnd=function(win,rw){let depth=0;try{const R=DG().run;if(R)depth=R.fl*DG_ROWS+(R.pos?R.pos[0]+1:0)}catch(e){}
+if(typeof dgEnd==='function'){const de=dgEnd;dgEnd=function(win,rw){let depth=0,had=false;try{const R=DG().run;if(R){had=true;depth=R.fl*DG_ROWS+(R.pos?R.pos[0]+1:0)}}catch(e){}
   const out=de.apply(this,arguments);
-  try{const n=giveL(Math.min(25,2+Math.floor(depth/2))+(win?10:0),false);if(n){save();const t=`${LUNE} ${n} ${T('Larmes de Lune','Moon Tears')}`;if(Array.isArray(out))out.push(t);else if(Array.isArray(rw)&&rw!==out)rw.push(t)}}catch(e){}
+  try{if(!had)return out;const n=giveL(Math.min(25,2+Math.floor(depth/2))+(win?10:0),false);if(n){save();const t=`${LUNE} ${n} ${T('Larmes de Lune','Moon Tears')}`;if(Array.isArray(out))out.push(t);else if(Array.isArray(rw)&&rw!==out)rw.push(t)}}catch(e){}
   return out}}
 
 /* ---------- 3. les Chroniques des Héros s'en vont ---------- */
