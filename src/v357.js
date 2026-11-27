@@ -9,7 +9,7 @@ try{I18N_RULES.push([/^🏷️ Nouveau titre : « (.+) » !$/,(m)=>'🏷️ New 
 /* profil et salle des trophées : beaucoup moins d'animations en même temps (ça faisait ramer les téléphones) */
 (function(){const st=document.createElement('style');st.id='v357css';st.textContent=`
 .frames .frm-pick:not(.sel) .fav,.frames .frm-pick:not(.sel) .fav::before,.frames .frm-pick:not(.sel) .fav::after{animation:none!important}
-body:has(#ovl .modal) #main *,body:has(#ovl .modal) #main *::before,body:has(#ovl .modal) #main *::after{animation-play-state:paused!important}
+html.mdlo #main *,html.mdlo #main *::before,html.mdlo #main *::after{animation-play-state:paused!important}
 #ovl .modal{overscroll-behavior:contain;-webkit-overflow-scrolling:touch;touch-action:pan-y}
 #ovl .modal.haspbg{overflow-x:hidden!important;overflow-y:auto!important}
 .frames .frm-pick{content-visibility:auto;contain-intrinsic-size:auto 120px}

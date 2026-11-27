@@ -15,7 +15,7 @@ const toUrl=svg=>{let u=PURL.get(svg);if(u)return u;
   if(PURL.size>1500){let n=0;for(const [k,v] of PURL){if(n++>=500)break;PURL.delete(k);setTimeout(()=>{try{URL.revokeObjectURL(v)}catch(e){}},30000)}}
   return u};
 const RX=/<svg\b[^>]*viewBox="0 0 100 100"[\s\S]*?<\/svg>/g;
-function light(h){if(typeof h!=='string'||h.length<20000)return h;
+function light(h,force){if(typeof h!=='string'||(!force&&h.length<20000))return h;
   try{return h.replace(RX,m=>{if(m.length<2500)return m;const k=m.indexOf('<svg',4);if(k>0)return m;const op=m.slice(0,m.indexOf('>')+1);if(/preserveAspectRatio/.test(op))return m;
     /* portrait déjà « emballé » (une image dans un SVG) : on garde seulement l'image du dedans, un seul décodage */
     const w=/^<svg[^>]*><image href="data:image\/svg\+xml;charset=utf-8,([^"]+)"[^>]*\/><\/svg>$/.exec(m);

@@ -16,6 +16,8 @@ function patch(a,b){
   if(a.nodeType===3||a.nodeType===8){if(a.nodeValue!==b.nodeValue)a.nodeValue=b.nodeValue;return a}
   /* un SVG est gardé tel quel s'il n'a pas changé (ses animations continuent), sinon remplacé d'un bloc */
   if(a.namespaceURI===SVGNS&&a.nodeName.toLowerCase()==='svg'){if(!a.isEqualNode(b)){a.replaceWith(b);return b}return a}
+  /* v84 : un tchat est une liste à clés : les messages déjà affichés sont gardés tels quels (avec leur bouton 🌐), seuls les nouveaux arrivent */
+  if((a.id==='chat'||a.id==='wchat')&&window.RDEkeyed){let ok=false;try{ok=RDEkeyed(a,b)}catch(e){}if(ok){syncAttrs(a,b);return a}}
   const tag=a.nodeName;
   /* champs de saisie : comme un écran tout neuf, sauf celui qu'on est en train d'utiliser */
   if(tag==='INPUT'||tag==='TEXTAREA'||tag==='SELECT'){const foc=document.activeElement===a,v=a.value;
@@ -36,9 +38,10 @@ function morphKids(from,to){
 const LAST=new WeakMap();let OFF=false;
 function morph(el,html){html=html==null?'':String(html);if(el.id==='main'&&window.RDElight)try{html=RDElight(html)}catch(e){}
   let pend=0;try{pend=el.__obs?el.__obs.takeRecords().length:0}catch(e){}if(pend)LAST.delete(el);
-  if(OFF||!el.isConnected||!el.firstChild||html===''){PD.set.call(el,html)}
+  if(OFF||!el.isConnected||!el.firstChild||html===''){PD.set.call(el,html);try{if(window.RDEprepDom)RDEprepDom(el)}catch(e){}}
   else if(LAST.get(el)===html&&el.childNodes.length){return}     /* rien n'a changé et personne n'y a touché : rien à faire */
   else{const t=document.createElement('template');PD.set.call(t,html);
+    try{if(window.RDEprepDom)RDEprepDom(t.content)}catch(e){}
     try{morphKids(el,t.content)}catch(e){console.warn('morph',e);PD.set.call(el,html)}}
   LAST.set(el,html);try{el.__obs&&el.__obs.takeRecords()}catch(e){}}
 window.RDEmorph={off:v=>{OFF=!!v},morph};
